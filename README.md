@@ -1,21 +1,14 @@
-# Webpack Template for Grafana plugins development
-
-
-
-Grafana [plugin](http://docs.grafana.org/plugins/developing/development/)
-[webpack](https://webpack.github.io) & [TypeScript](https://github.com/Microsoft/TypeScript) version
-
-Based on [grafana-plugin-template-webpack](https://github.com/CorpGlory/grafana-plugin-template-webpack) and [@types/grafana](https://github.com/CorpGlory/types-grafana)
+# proj-rms-plugin-app
 
 # Build
-
 ```
 npm install
 npm run build
+
+grunt
 ```
 
 # Development
-
 ```
 npm instlal
 npm run dev
