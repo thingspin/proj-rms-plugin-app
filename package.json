@@ -1,0 +1,32 @@
+{
+  "name": "grafana-plugin-template-webpack-typescript",
+  "version": "1.0.0",
+  "description": "Some description",
+  "main": "dist/module",
+  "scripts": {
+    "build": "webpack --progress --config build/webpack.prod.js",
+    "dev": "webpack --progress --config build/webpack.dev.js"
+  },
+  "keywords": [],
+  "author": "Alexey Velikiy",
+  "license": "MIT",
+  "repository": "https://github.com/CorpGlory/grafana-plugin-template-webpack-typescript",
+  "devDependencies": {
+    "@types/grafana": "git+https://git@github.com/CorpGlory/types-grafana.git",
+    "copy-webpack-plugin": "^4.5.1",
+    "html-loader": "^0.5.5",
+    "loader-utils": "^1.1.0",
+    "ts-loader": "^4.2.0",
+    "typescript": "^2.8.3",
+    "webpack": "^4.7.0",
+    "webpack-cli": "^2.1.2",
+    "grunt": "^0.4.5",
+    "grunt-sass": "^2.0.0",
+    "grunt-contrib-clean": "^1.1.0",
+    "grunt-webpack": "^3.1.1",
+    "grunt-contrib-watch": "^1.0.1"
+  },
+  "dependencies": {
+    "mqtt": "latest"
+  }
+}

@@ -1,0 +1,145 @@
+{
+  "title": "생산 실적",
+  "__requires": [
+    {
+      "type": "datasource",
+      "id": "mysql",
+      "name": "REMOTESOLUTIONS(V1.0)",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "thingspin",
+      "id": "thingspin",
+      "name": "ThingSPIN",
+      "version": "1.0.1"
+    }
+  ],
+  "editable": false,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "columns": [],
+      "datasource": "REMOTESOLUTIONS(V1.0)",
+      "fontSize": "90%",
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "hideTimeOverride": true,
+      "id": 2,
+      "links": [],
+      "pageSize": 5,
+      "repeat": null,
+      "scroll": false,
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "link": true,
+          "linkTargetBlank": true,
+          "linkTooltip": "$__cell_1",
+          "linkUrl": "/plugins/proj-rms-plugin-app/page/geomsahangmog-bulryangyuhyeong?var-MODEL=$__cell",
+          "mappingType": 1,
+          "pattern": "MODEL",
+          "preserveFormat": false,
+          "sanitize": false,
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "link": false,
+          "mappingType": 1,
+          "pattern": "DETAIL",
+          "preserveFormat": true,
+          "sanitize": true,
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "alias": "",
+          "format": "table",
+          "rawSql": "SELECT MODEL_ID AS MODEL, DESCRIPTION, CONCAT(\"<a href=\", \"\\\"#?\", \"var-MODEL=\", MODEL_ID, \"\\\"><span><i class=\\\"fa fa-plus-square-o\\\" aria-hidden=\\\"true\\\"></i></span></a>\") AS \"DETAIL\" FROM T_MODEL;",
+          "refId": "A"
+        }
+      ],
+      "title": "PRODUCT MODELS",
+      "transform": "table",
+      "transparent": false,
+      "type": "table"
+    }
+  ],
+  "schemaVersion": 16,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "hidden": true,
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "",
+  "version": 1
+}

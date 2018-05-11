@@ -1,0 +1,10 @@
+{
+	"version": 3,
+	"file": "rms-plugins-app.dark.css",
+	"sources": [
+		"../../src/sass/rms-plugins-app.dark.scss",
+		"../../src/sass/common.scss"
+	],
+	"names": [],
+	"mappings": ""
+}

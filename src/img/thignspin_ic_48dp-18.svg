@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 22.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="레이어_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+	 y="0px" viewBox="0 0 48 48" style="enable-background:new 0 0 48 48;" xml:space="preserve">
+<style type="text/css">
+	.st0{clip-path:url(#SVGID_2_);}
+	.st1{opacity:0.1;}
+	.st2{opacity:0.4;fill:none;stroke:#000000;stroke-width:0.1;stroke-miterlimit:10;}
+	.st3{opacity:0.1;fill:none;stroke:#000000;stroke-width:0.1;stroke-miterlimit:10;}
+	.st4{fill:none;stroke:#000000;stroke-width:0.2;stroke-miterlimit:10;}
+	.st5{opacity:0.3;}
+	.st6{opacity:0.1;fill:none;stroke:#000000;stroke-width:0.2;stroke-miterlimit:10;}
+	.st7{opacity:0.6;}
+	.st8{fill:#00B28E;}
+	.st9{fill:none;stroke:#000000;stroke-miterlimit:10;}
+	.st10{fill:none;}
+	.st11{clip-path:url(#SVGID_4_);}
+	.st12{clip-path:url(#SVGID_6_);}
+	.st13{fill:none;stroke:#00B28E;stroke-miterlimit:10;}
+	.st14{fill:none;stroke:#00B28E;stroke-miterlimit:10;stroke-dasharray:2.9849,4.9749;}
+</style>
+<g>
+	<path class="st10" d="M48,48H0V0h48V48z"/>
+	<path d="M46,38h-4V10h4V38z M38,38h-4V10h4V38z"/>
+	<g>
+		<circle cx="16" cy="24" r="3"/>
+		<path d="M4,38h24c1.1,0,2-0.9,2-2V12c0-1.1-0.9-2-2-2H4c-1.1,0-2,0.9-2,2v24C2,37.1,2.9,38,4,38z M6.3,20.7l2-3.5
+			C8.5,17,8.7,17,8.9,17l2.5,1c0.5-0.4,1.1-0.7,1.7-1l0.4-2.6c0-0.2,0.3-0.4,0.5-0.4h4c0.3,0,0.5,0.2,0.5,0.4l0.4,2.6
+			c0.6,0.2,1.2,0.6,1.7,1l2.5-1c0.2-0.1,0.5,0,0.6,0.2l2,3.5c0.1,0.2,0.1,0.5-0.1,0.6L23.4,23c0,0.3,0.1,0.6,0.1,1
+			c0,0.3,0,0.7-0.1,1l2.1,1.7c0.2,0.2,0.2,0.4,0.1,0.6l-2,3.5C23.5,31,23.3,31,23.1,31l-2.5-1c-0.5,0.4-1.1,0.7-1.7,1l-0.4,2.6
+			c0,0.2-0.3,0.4-0.5,0.4h-4c-0.2,0-0.5-0.2-0.5-0.4l-0.4-2.6c-0.6-0.2-1.2-0.6-1.7-1L9,31c-0.2,0.1-0.5,0-0.6-0.2l-2-3.5
+			c-0.1-0.2-0.1-0.5,0.1-0.6L8.6,25c-0.1-0.3-0.1-0.6-0.1-1c0-0.3,0-0.7,0.1-1l-2.1-1.7C6.3,21.2,6.2,20.9,6.3,20.7z"/>
+	</g>
+</g>
+</svg>
