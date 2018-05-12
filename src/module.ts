@@ -19,6 +19,5 @@ export {
   RemoteSolutionWSCtrl as RemoteSolutionWS,
 
   InspectionPropertyPageCtrl as InspectionProperty,
-  SettingActionInAdvancePageCtrl as SettingActionInAdvance
-
+  SettingActionInAdvancePageCtrl as SettingActionInAdvance,
 };

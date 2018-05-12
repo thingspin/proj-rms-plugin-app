@@ -9,8 +9,9 @@ function resolve(dir) {
 module.exports = {
   target: 'node',
   context: resolve('src'),
-  entry: {
-    'module.js': './module.ts'
+  entry:{
+      'module.js' : './module.ts',
+      'panel/alarms/module.js' : './panel/alarms/module.ts'
   },
   output: {
     path: resolve('dist'),

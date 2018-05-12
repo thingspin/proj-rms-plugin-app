@@ -27,6 +27,8 @@
     "grunt-contrib-watch": "^1.0.1"
   },
   "dependencies": {
-    "mqtt": "latest"
+    "mqtt": "^2.18.0",
+    "tabulator": "^0.2.38",
+    "chart.js": "^2.7.2"
   }
 }

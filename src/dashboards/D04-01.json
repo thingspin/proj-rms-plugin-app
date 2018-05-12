@@ -1,129 +1,65 @@
 {
-  "title": "CPK",
-  "__requires": [
-    {
-      "type": "datasource",
-      "id": "mysql",
-      "name": "MySQL",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "remotesolutions-p001-panel",
-      "name": "검사항목등록",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    },
-    {
-      "type": "thingspin",
-      "id": "thingspin",
-      "name": "ThingSPIN",
-      "version": "1.0.1"
-    }
-  ],
   "annotations": {
-    "list": []
+    "list": [
+    ]
   },
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "hideControls": false,
-  "id": null,
   "links": [],
-  "rows": [
+  "panels": [
     {
-      "collapse": false,
-      "height": 101,
-      "panels": [
+      "datasource": "REMOTESOLUTIONS(V1.0)",
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 4,
+      "links": [],
+      "targets": [
         {
-          "id": 2,
-          "links": [],
-          "span": 12,
-          "title": "검사항목 신규 등록",
-          "type": "remotesolutions-p001-panel"
+          "alias": "",
+          "format": "time_series",
+          "rawSql": "SELECT\n  UNIX_TIMESTAMP(PLAN_DATE) as time_sec,\n  AMOUNT as value,\n  MODEL_ID as metric\nFROM t_product_plan\nWHERE $__timeFilter(PLAN_DATE)\nORDER BY PLAN_DATE ASC\n",
+          "refId": "A"
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Dashboard Row",
-      "titleSize": "h6"
+      "title": "time series to chart example",
+      "type": "rms-plugin-app-p001"
     },
     {
-      "collapse": false,
-      "height": 743,
-      "panels": [
+      "datasource": "REMOTESOLUTIONS(V1.0)",
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 2,
+      "links": [],
+      "targets": [
         {
-          "columns": [],
-          "datasource": "${DS_MARIADB}",
-          "fontSize": "100%",
-          "id": 1,
-          "links": [],
-          "pageSize": null,
-          "scroll": true,
-          "showHeader": true,
-          "sort": {
-            "col": 0,
-            "desc": false
-          },
-          "span": 12,
-          "styles": [
-            {
-              "alias": "Time",
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "pattern": "Time",
-              "type": "date"
-            },
-            {
-              "alias": "",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "decimals": 2,
-              "pattern": "/.*/",
-              "thresholds": [],
-              "type": "number",
-              "unit": "short"
-            }
-          ],
-          "targets": [
-            {
-              "alias": "",
-              "format": "table",
-              "rawSql": "select faulty_id as 'Index', faulty_name as '검사 항목' from t_faulty;",
-              "refId": "A"
-            }
-          ],
-          "title": "검사항목 리스트",
-          "transform": "table",
-          "type": "table"
+          "alias": "",
+          "format": "time_series",
+          "rawSql": "SELECT * FROM t_model WHERE $__timeFilter(REGDATE);",
+          "refId": "A"
         }
       ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Dashboard Row",
-      "titleSize": "h6"
+      "title": "Table to chart samples",
+      "transparent": true,
+      "type": "rms-plugin-app-p001"
     }
   ],
-  "schemaVersion": 14,
+  "schemaVersion": 16,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
@@ -152,5 +88,7 @@
     ]
   },
   "timezone": "",
-  "version": 2
+  "title": "CPK",
+  "Slug": "CPK",
+  "version": 25
 }

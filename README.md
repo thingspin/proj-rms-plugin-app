@@ -11,7 +11,7 @@ Based on [grafana-plugin-template-webpack](https://github.com/CorpGlory/grafana-
 
 ```
 npm install
-npm run build
+grunt
 ```
 
 # Development

@@ -29,7 +29,7 @@ class InsertFaultyPanelCtrl extends PanelCtrl {
     let query = [
         "insert into t_faulty (faulty_name, faulty_field values ('" + name + "', " + "'" + field + "'" + ");",
     ];
-    console.log(selectId + " " + query)
+    console.log(selectId + " " + query);
 
     this.dsSrv.query(selectId, query).then( result => {
       this.$scope.inspectionName = "";
