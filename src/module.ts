@@ -3,9 +3,9 @@ import {loadPluginCss} from 'grafana/app/plugins/sdk';
 import {RemoteSolutionDSCtrl} from './services/remoteSolutionDS';
 import {RemoteSolutionWSCtrl} from './services/remoteSolutionWS';
 
-import {AppConfigCtrl} from './components/config';
-import {SettingActionInAdvancePageCtrl} from './components/actionInAdvance/actionInAdvance';
-import {InspectionPropertyPageCtrl} from './components/inspectionProperty/inspectionProperty';
+import {AppConfigCtrl} from './pages/app-config/config';
+import {SettingActionInAdvancePageCtrl} from './pages/actionInAdvance/actionInAdvance';
+import {InspectionPropertyPageCtrl} from './pages/inspectionProperty/inspectionProperty';
 
 loadPluginCss({
   dark: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.dark.css',

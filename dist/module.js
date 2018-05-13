@@ -83,10 +83,51 @@ var require;var require;(function(f){if(true){module.exports=f()}else { var g; }
 
 /***/ }),
 
-/***/ "./components/actionInAdvance/actionInAdvance.html":
-/*!*********************************************************!*\
-  !*** ./components/actionInAdvance/actionInAdvance.html ***!
-  \*********************************************************/
+/***/ "./module.ts":
+/*!*******************!*\
+  !*** ./module.ts ***!
+  \*******************/
+/*! exports provided: ConfigCtrl, RemoteSolutionDS, RemoteSolutionWS, InspectionProperty, SettingActionInAdvance */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! grafana/app/plugins/sdk */ "grafana/app/plugins/sdk");
+/* harmony import */ var grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _services_remoteSolutionDS__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./services/remoteSolutionDS */ "./services/remoteSolutionDS.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RemoteSolutionDS", function() { return _services_remoteSolutionDS__WEBPACK_IMPORTED_MODULE_1__["RemoteSolutionDSCtrl"]; });
+
+/* harmony import */ var _services_remoteSolutionWS__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./services/remoteSolutionWS */ "./services/remoteSolutionWS.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RemoteSolutionWS", function() { return _services_remoteSolutionWS__WEBPACK_IMPORTED_MODULE_2__["RemoteSolutionWSCtrl"]; });
+
+/* harmony import */ var _pages_app_config_config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pages/app-config/config */ "./pages/app-config/config.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ConfigCtrl", function() { return _pages_app_config_config__WEBPACK_IMPORTED_MODULE_3__["AppConfigCtrl"]; });
+
+/* harmony import */ var _pages_actionInAdvance_actionInAdvance__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./pages/actionInAdvance/actionInAdvance */ "./pages/actionInAdvance/actionInAdvance.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SettingActionInAdvance", function() { return _pages_actionInAdvance_actionInAdvance__WEBPACK_IMPORTED_MODULE_4__["SettingActionInAdvancePageCtrl"]; });
+
+/* harmony import */ var _pages_inspectionProperty_inspectionProperty__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./pages/inspectionProperty/inspectionProperty */ "./pages/inspectionProperty/inspectionProperty.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "InspectionProperty", function() { return _pages_inspectionProperty_inspectionProperty__WEBPACK_IMPORTED_MODULE_5__["InspectionPropertyPageCtrl"]; });
+
+
+
+
+
+
+
+Object(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_0__["loadPluginCss"])({
+    dark: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.dark.css',
+    light: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.light.css'
+});
+
+
+
+/***/ }),
+
+/***/ "./pages/actionInAdvance/actionInAdvance.html":
+/*!****************************************************!*\
+  !*** ./pages/actionInAdvance/actionInAdvance.html ***!
+  \****************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -94,10 +135,10 @@ module.exports = "<div class=\"page-in-fullscreen\">\r\n    <div ng-switch on='c
 
 /***/ }),
 
-/***/ "./components/actionInAdvance/actionInAdvance.ts":
-/*!*******************************************************!*\
-  !*** ./components/actionInAdvance/actionInAdvance.ts ***!
-  \*******************************************************/
+/***/ "./pages/actionInAdvance/actionInAdvance.ts":
+/*!**************************************************!*\
+  !*** ./pages/actionInAdvance/actionInAdvance.ts ***!
+  \**************************************************/
 /*! exports provided: SettingActionInAdvancePageCtrl */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -106,7 +147,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SettingActionInAdvancePageCtrl", function() { return SettingActionInAdvancePageCtrl; });
 /* harmony import */ var mqtt_dist_mqtt_min__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mqtt/dist/mqtt.min */ "../node_modules/mqtt/dist/mqtt.min.js");
 /* harmony import */ var mqtt_dist_mqtt_min__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mqtt_dist_mqtt_min__WEBPACK_IMPORTED_MODULE_0__);
-var template = __webpack_require__(/*! ./actionInAdvance.html */ "./components/actionInAdvance/actionInAdvance.html");
+var template = __webpack_require__(/*! ./actionInAdvance.html */ "./pages/actionInAdvance/actionInAdvance.html");
 
 var SettingActionInAdvancePageCtrl = /** @class */ (function () {
     function SettingActionInAdvancePageCtrl($location, $q, $scope, $injector, rsDsSrv) {
@@ -145,10 +186,10 @@ var SettingActionInAdvancePageCtrl = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./components/config.html":
-/*!********************************!*\
-  !*** ./components/config.html ***!
-  \********************************/
+/***/ "./pages/app-config/config.html":
+/*!**************************************!*\
+  !*** ./pages/app-config/config.html ***!
+  \**************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -156,10 +197,10 @@ module.exports = "<div class=\"page-header\">\r\n\t<h1>데이터 소스</h1>\r\n
 
 /***/ }),
 
-/***/ "./components/config.ts":
-/*!******************************!*\
-  !*** ./components/config.ts ***!
-  \******************************/
+/***/ "./pages/app-config/config.ts":
+/*!************************************!*\
+  !*** ./pages/app-config/config.ts ***!
+  \************************************/
 /*! exports provided: AppConfigCtrl */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -169,7 +210,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var grafana_app_core_app_events__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! grafana/app/core/app_events */ "grafana/app/core/app_events");
 /* harmony import */ var grafana_app_core_app_events__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(grafana_app_core_app_events__WEBPACK_IMPORTED_MODULE_0__);
 
-var template = __webpack_require__(/*! ./config.html */ "./components/config.html");
+var template = __webpack_require__(/*! ./config.html */ "./pages/app-config/config.html");
 
 var AppConfigCtrl = /** @class */ (function () {
     function AppConfigCtrl($scope, $injector, $q, $location, rsDsSrv, backendSrv) {
@@ -235,16 +276,16 @@ var AppConfigCtrl = /** @class */ (function () {
     return AppConfigCtrl;
 }());
 ;
-// AppConfigCtrl.templateURL = './components/config.html';
+// AppConfigCtrl.templateURL = './pages/config.html';
 
 
 
 /***/ }),
 
-/***/ "./components/inspectionProperty/inspectionProperty.html":
-/*!***************************************************************!*\
-  !*** ./components/inspectionProperty/inspectionProperty.html ***!
-  \***************************************************************/
+/***/ "./pages/inspectionProperty/inspectionProperty.html":
+/*!**********************************************************!*\
+  !*** ./pages/inspectionProperty/inspectionProperty.html ***!
+  \**********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -252,17 +293,17 @@ module.exports = "<div class=\"page-in-fullscreen\">\r\n<div ng-switch on='ctrl.
 
 /***/ }),
 
-/***/ "./components/inspectionProperty/inspectionProperty.ts":
-/*!*************************************************************!*\
-  !*** ./components/inspectionProperty/inspectionProperty.ts ***!
-  \*************************************************************/
+/***/ "./pages/inspectionProperty/inspectionProperty.ts":
+/*!********************************************************!*\
+  !*** ./pages/inspectionProperty/inspectionProperty.ts ***!
+  \********************************************************/
 /*! exports provided: InspectionPropertyPageCtrl */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InspectionPropertyPageCtrl", function() { return InspectionPropertyPageCtrl; });
-var template = __webpack_require__(/*! ./inspectionProperty.html */ "./components/inspectionProperty/inspectionProperty.html");
+var template = __webpack_require__(/*! ./inspectionProperty.html */ "./pages/inspectionProperty/inspectionProperty.html");
 var InspectionPropertyPageCtrl = /** @class */ (function () {
     function InspectionPropertyPageCtrl($scope, $rootScope, $location, rsDsSrv, alertSrv, $q, contextSrv) {
         this.$scope = $scope;
@@ -427,47 +468,6 @@ var InspectionPropertyPageCtrl = /** @class */ (function () {
     InspectionPropertyPageCtrl.template = template;
     return InspectionPropertyPageCtrl;
 }());
-
-
-
-/***/ }),
-
-/***/ "./module.ts":
-/*!*******************!*\
-  !*** ./module.ts ***!
-  \*******************/
-/*! exports provided: ConfigCtrl, RemoteSolutionDS, RemoteSolutionWS, InspectionProperty, SettingActionInAdvance */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! grafana/app/plugins/sdk */ "grafana/app/plugins/sdk");
-/* harmony import */ var grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _services_remoteSolutionDS__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./services/remoteSolutionDS */ "./services/remoteSolutionDS.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RemoteSolutionDS", function() { return _services_remoteSolutionDS__WEBPACK_IMPORTED_MODULE_1__["RemoteSolutionDSCtrl"]; });
-
-/* harmony import */ var _services_remoteSolutionWS__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./services/remoteSolutionWS */ "./services/remoteSolutionWS.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RemoteSolutionWS", function() { return _services_remoteSolutionWS__WEBPACK_IMPORTED_MODULE_2__["RemoteSolutionWSCtrl"]; });
-
-/* harmony import */ var _components_config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/config */ "./components/config.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ConfigCtrl", function() { return _components_config__WEBPACK_IMPORTED_MODULE_3__["AppConfigCtrl"]; });
-
-/* harmony import */ var _components_actionInAdvance_actionInAdvance__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/actionInAdvance/actionInAdvance */ "./components/actionInAdvance/actionInAdvance.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SettingActionInAdvance", function() { return _components_actionInAdvance_actionInAdvance__WEBPACK_IMPORTED_MODULE_4__["SettingActionInAdvancePageCtrl"]; });
-
-/* harmony import */ var _components_inspectionProperty_inspectionProperty__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/inspectionProperty/inspectionProperty */ "./components/inspectionProperty/inspectionProperty.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "InspectionProperty", function() { return _components_inspectionProperty_inspectionProperty__WEBPACK_IMPORTED_MODULE_5__["InspectionPropertyPageCtrl"]; });
-
-
-
-
-
-
-
-Object(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_0__["loadPluginCss"])({
-    dark: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.dark.css',
-    light: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.light.css'
-});
 
 
 
