@@ -1,22 +1,19 @@
 import $ from 'jquery';
 import 'jquery-ui';
 import 'jquery.tabulator/dist/js/tabulator.min';
-//import style from 'jquery.tabulator/dist/css/tabulator.min.css';
-
 import {PanelCtrl, MetricsPanelCtrl, loadPluginCss} from  'grafana/app/plugins/sdk';
-
-loadPluginCss({
-  dark: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.dark.css',
-  light: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.light.css'
-});
 
 loadPluginCss({
   dark: 'plugins/proj-rms-plugin-app/panel/tabulator-table/css/tabulator.min.css',
   light: 'plugins/proj-rms-plugin-app/panel/tabulator-table/css/tabulator.min.css'
 });
 
+loadPluginCss({
+  dark: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.dark.css',
+  light: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.light.css'
+});
+
 const template = require("./templet.html");
-const style = require("jquery.tabulator/dist/css/tabulator.min.css");
 
 class RmsAlarmRulePanelCtrl extends MetricsPanelCtrl {
   static template = template;
@@ -39,52 +36,39 @@ class RmsAlarmRulePanelCtrl extends MetricsPanelCtrl {
   }
 
   OnInitialized() {
-    console.log("panel initialized!");
-    return Promise.apply(this.createTable());
+    return Promise.apply(this.fillTable());
   }
 
   onInitEditMode() {
   }
 
-  createTable() {
-    console.log("create table ...");
-
-  var tabledata = [
-    { id: 1, name: "Oli Bob", age: "12", col: "red", dob: ""},
-    { id: 2, name: "Mary May", age: "1", col: "blue", dob: "14/05/1982"},
-    { id: 3, name: "Christine Lobowski", age: "42", col: "green", dob: "22/05/1982"},
-    { id: 4, name: "Brendon Philips", age: "125", col: "orange", dob: "01/08/1980"},
-    { id: 5, name: "Margret Marmajuke", age: "16", col: "yellow", dob: "31/01/1999"},
-  ];
+  fillTable() {
+    var tabledata = [
+      { id: 1, name: "Oli Bob", age: "12", col: "red", dob: ""},
+      { id: 2, name: "Mary May", age: "1", col: "blue", dob: "14/05/1982"},
+      { id: 3, name: "Christine Lobowski", age: "42", col: "green", dob: "22/05/1982"},
+      { id: 4, name: "Brendon Philips", age: "125", col: "orange", dob: "01/08/1980"},
+      { id: 5, name: "Margret Marmajuke", age: "16", col: "yellow", dob: "31/01/1999"},
+    ];
 
     this.container.tabulator("setData", tabledata);
-
-
     this.initalized = true;
   }
 
   OnDraw() {
-    console.log("raw table ...; skip!");
-    //$("#example-table").tabulator("refresh");
-    this.createTable();
+    this.fillTable();
   }
 
   onRender() {
-
-    console.log("render table ...");
-
     if (!this.container) {
-      console.log("container not found!");
       return Promise.reject({});
     }
 
     if (!this.initalized) {
-      console.log("table is not initialized, yet!");
-      return Promise.resolve(this.createTable());
+      return Promise.resolve(this.fillTable());
     }
 
     if (this.container && this.initalized) {
-      console.log("draw the table for render data.");
       return Promise.resolve(this.OnDraw());
     }
 
@@ -92,7 +76,6 @@ class RmsAlarmRulePanelCtrl extends MetricsPanelCtrl {
   }
 
   link(scope, elem, attrs, ctrl) {
-    console.log("find container ...");
     let t = elem.find('.thingspin-table')[0];
     t.id = this.divID;
 
