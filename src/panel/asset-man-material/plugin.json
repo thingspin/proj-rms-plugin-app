@@ -1,7 +1,7 @@
 {
   "type": "panel",
-  "name": "(RMS) Comany",
-  "id": "rms-asset-man-company",
+  "name": "(RMS) Material",
+  "id": "rms-asset-man-material",
 
   "info": {
     "description": "Asset management : Company",
