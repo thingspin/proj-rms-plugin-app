@@ -12,7 +12,8 @@ module.exports = {
   entry:{
       'module.js' : './module.ts',
       'panel/bar-chart/module.js' : './panel/bar-chart/module.ts',
-      'panel/tabulator-table/module.js' : './panel/tabulator-table/module.ts'
+      'panel/tabulator-table/module.js' : './panel/tabulator-table/module.ts',
+      'panel/asset-man-company/module.js' : './panel/asset-man-company/module.ts'
   },
   output: {
     path: resolve('dist'),

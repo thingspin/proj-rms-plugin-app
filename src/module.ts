@@ -3,7 +3,7 @@ import {loadPluginCss} from 'grafana/app/plugins/sdk';
 import {RemoteSolutionDSCtrl} from './services/remoteSolutionDS';
 import {RemoteSolutionWSCtrl} from './services/remoteSolutionWS';
 
-import {AppConfigCtrl} from './pages/app-config/config';
+import {AppConfigCtrl} from './app-config/config';
 import {SettingActionInAdvancePageCtrl} from './pages/actionInAdvance/actionInAdvance';
 import {InspectionPropertyPageCtrl} from './pages/inspectionProperty/inspectionProperty';
 

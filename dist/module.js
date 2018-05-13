@@ -83,6 +83,102 @@ var require;var require;(function(f){if(true){module.exports=f()}else { var g; }
 
 /***/ }),
 
+/***/ "./app-config/config.html":
+/*!********************************!*\
+  !*** ./app-config/config.html ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"page-header\">\r\n\t<h1>데이터 소스</h1>\r\n\t<a class=\"btn btn-success\" href=\"/datasources/new\" ng-show=\"ctrl.isOrgEditor\">\r\n\t\t<i class=\"fa fa-plus\"></i>\r\n\t\t새로만들기\r\n\t</a>\r\n</div>\r\n\r\n<div ng-if=\"!ctrl.pageReady\">\r\n\t... 로딩 ...\r\n</div>\r\n\r\n<div ng-if=\"ctrl.pageReady\">\r\n\t<table class=\"filter-table form-inline\">\r\n\t\t<thead>\r\n\t\t\t<tr>\r\n\t\t\t\t<th style=\"width: 80%\">Name</th>\r\n\t\t\t\t<th></th>\r\n\t\t\t</tr>\r\n\t\t</thead>\r\n\t\t<tbody>\r\n\t\t\t<tr class=\"dashlist-item\" ng-repeat=\"ds in ctrl.dsList\">\r\n\t\t\t\t<td style=\"font-size: 1.3rem; padding: 0\">\r\n\t\t\t\t\t<a style=\"display: block; padding: 15px; height: 100%;\" href=\"/datasources/edit/{{ds.id}}\">\r\n\t\t\t\t\t\t{{ds.name}}\r\n\t\t\t\t\t</a>\r\n\t\t\t\t</td>\r\n\t\t\t\t<td class=\"text-right\">\r\n\t\t\t\t\t<a ng-click=\"ctrl.deleteDs(ds)\" class=\"btn btn-danger btn-mini\">\r\n\t\t\t\t\t\t<i class=\"fa fa-trash\"></i>\r\n\t\t\t\t\t</a>\r\n\t\t\t\t\t<input type=\"radio\" ng-model=\"ctrl.appModel.jsonData.datasourceID\" value=\"{{ds.id}}\" />\r\n\t\t\t\t</td>\r\n\t\t\t</tr>\r\n\t\t</tbody>\r\n\t</table>\r\n\r\n\t<div ng-if=\"ctrl.dsList.length === 0\">\r\n\t\t<div style=\"text-align: center; padding-top: 90px; min-height: 220px; min-width: 400px;  margin: 0 auto;\">\r\n\t\t\t<i ng-class=\"icon\" class=\"icon-gf icon-gf-endpoint no-endpoints\"></i>\r\n\t\t\t<p ng-if=\"ctrl.isOrgEditor\">아직, 데이터베이스 연결이 설정되지 않았습니다.\r\n\t\t\t\t<br>\r\n\t\t\t\t<a class=\"highlight-word\" href=\"/datasources/new\">데이터 연결 새로 만들기</a>\r\n\t\t\t</p>\r\n\t\t\t<p ng-if=\"!ctrl.isOrgEditor\">아직, 데이터베이스 연결이 설정되지 않았습니다. 관리자에게 연락하시기 바랍니다.\r\n\t\t\t</p>\r\n\t\t</div>\r\n\t</div>\r\n</div>";
+
+/***/ }),
+
+/***/ "./app-config/config.ts":
+/*!******************************!*\
+  !*** ./app-config/config.ts ***!
+  \******************************/
+/*! exports provided: AppConfigCtrl */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppConfigCtrl", function() { return AppConfigCtrl; });
+/* harmony import */ var grafana_app_core_app_events__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! grafana/app/core/app_events */ "grafana/app/core/app_events");
+/* harmony import */ var grafana_app_core_app_events__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(grafana_app_core_app_events__WEBPACK_IMPORTED_MODULE_0__);
+
+var template = __webpack_require__(/*! ./config.html */ "./app-config/config.html");
+
+var AppConfigCtrl = /** @class */ (function () {
+    function AppConfigCtrl($scope, $injector, $q, $location, rsDsSrv, backendSrv) {
+        this.$scope = $scope;
+        this.$injector = $injector;
+        this.$q = $q;
+        this.$location = $location;
+        this.rsDsSrv = rsDsSrv;
+        this.backendSrv = backendSrv;
+        this.enabled = false;
+        this.setDatasourceList(0);
+        this.appEditCtrl.setPreUpdateHook(this.preUpdate.bind(this));
+        this.appEditCtrl.setPostUpdateHook(this.postUpdate.bind(this));
+    }
+    AppConfigCtrl.prototype.setDatasourceList = function (p) {
+        var _this = this;
+        this.rsDsSrv.getDatasources()
+            .then(function (result) {
+            _this.dsList = result;
+            _this.pageReady = true;
+        }).catch(function (err) {
+            console.error(err);
+        });
+    };
+    AppConfigCtrl.prototype.preUpdate = function () {
+        return this.$q.resolve();
+    };
+    AppConfigCtrl.prototype.postUpdate = function () {
+        var _this = this;
+        if (!this.appModel.enabled) {
+            return this.$q.resolve();
+        }
+        return this.appEditCtrl.importDashboards().then(function () {
+            _this.enabled = true;
+            return {
+                url: "plugins/proj-rms-plugin-app/page/beobinbyeol-saengsanhyeonhwang",
+                message: "App enabled!"
+            };
+        });
+    };
+    AppConfigCtrl.prototype.confirmDelete = function (id) {
+        var _this = this;
+        this.backendSrv.delete('/api/datasources/' + id).then(function () {
+            _this.setDatasourceList(0);
+        });
+    };
+    AppConfigCtrl.prototype.deleteDs = function (ds) {
+        var _this = this;
+        grafana_app_core_app_events__WEBPACK_IMPORTED_MODULE_0___default.a.emit('confirm-modal', {
+            title: '데이터 소스 제거',
+            text: '이 데이터 소스를 제거하시겠습니까?',
+            yesText: "Delete",
+            icon: "fa-trash",
+            onConfirm: function () {
+                _this.confirmDelete(ds.id);
+            }
+        });
+    };
+    AppConfigCtrl.prototype.dsInfo = function (ds) {
+        this.$location.path("/datasources/edit/" + ds.id);
+    };
+    AppConfigCtrl.template = template;
+    return AppConfigCtrl;
+}());
+;
+// AppConfigCtrl.templateURL = './pages/config.html';
+
+
+
+/***/ }),
+
 /***/ "./module.ts":
 /*!*******************!*\
   !*** ./module.ts ***!
@@ -100,8 +196,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_remoteSolutionWS__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./services/remoteSolutionWS */ "./services/remoteSolutionWS.ts");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RemoteSolutionWS", function() { return _services_remoteSolutionWS__WEBPACK_IMPORTED_MODULE_2__["RemoteSolutionWSCtrl"]; });
 
-/* harmony import */ var _pages_app_config_config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pages/app-config/config */ "./pages/app-config/config.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ConfigCtrl", function() { return _pages_app_config_config__WEBPACK_IMPORTED_MODULE_3__["AppConfigCtrl"]; });
+/* harmony import */ var _app_config_config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./app-config/config */ "./app-config/config.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ConfigCtrl", function() { return _app_config_config__WEBPACK_IMPORTED_MODULE_3__["AppConfigCtrl"]; });
 
 /* harmony import */ var _pages_actionInAdvance_actionInAdvance__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./pages/actionInAdvance/actionInAdvance */ "./pages/actionInAdvance/actionInAdvance.ts");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SettingActionInAdvance", function() { return _pages_actionInAdvance_actionInAdvance__WEBPACK_IMPORTED_MODULE_4__["SettingActionInAdvancePageCtrl"]; });
@@ -181,102 +277,6 @@ var SettingActionInAdvancePageCtrl = /** @class */ (function () {
     SettingActionInAdvancePageCtrl.template = template;
     return SettingActionInAdvancePageCtrl;
 }());
-
-
-
-/***/ }),
-
-/***/ "./pages/app-config/config.html":
-/*!**************************************!*\
-  !*** ./pages/app-config/config.html ***!
-  \**************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"page-header\">\r\n\t<h1>데이터 소스</h1>\r\n\t<a class=\"btn btn-success\" href=\"/datasources/new\" ng-show=\"ctrl.isOrgEditor\">\r\n\t\t<i class=\"fa fa-plus\"></i>\r\n\t\t새로만들기\r\n\t</a>\r\n</div>\r\n\r\n<div ng-if=\"!ctrl.pageReady\">\r\n\t... 로딩 ...\r\n</div>\r\n\r\n<div ng-if=\"ctrl.pageReady\">\r\n\t<table class=\"filter-table form-inline\">\r\n\t\t<thead>\r\n\t\t\t<tr>\r\n\t\t\t\t<th style=\"width: 80%\">Name</th>\r\n\t\t\t\t<th></th>\r\n\t\t\t</tr>\r\n\t\t</thead>\r\n\t\t<tbody>\r\n\t\t\t<tr class=\"dashlist-item\" ng-repeat=\"ds in ctrl.dsList\">\r\n\t\t\t\t<td style=\"font-size: 1.3rem; padding: 0\">\r\n\t\t\t\t\t<a style=\"display: block; padding: 15px; height: 100%;\" href=\"/datasources/edit/{{ds.id}}\">\r\n\t\t\t\t\t\t{{ds.name}}\r\n\t\t\t\t\t</a>\r\n\t\t\t\t</td>\r\n\t\t\t\t<td class=\"text-right\">\r\n\t\t\t\t\t<a ng-click=\"ctrl.deleteDs(ds)\" class=\"btn btn-danger btn-mini\">\r\n\t\t\t\t\t\t<i class=\"fa fa-trash\"></i>\r\n\t\t\t\t\t</a>\r\n\t\t\t\t\t<input type=\"radio\" ng-model=\"ctrl.appModel.jsonData.datasourceID\" value=\"{{ds.id}}\" />\r\n\t\t\t\t</td>\r\n\t\t\t</tr>\r\n\t\t</tbody>\r\n\t</table>\r\n\r\n\t<div ng-if=\"ctrl.dsList.length === 0\">\r\n\t\t<div style=\"text-align: center; padding-top: 90px; min-height: 220px; min-width: 400px;  margin: 0 auto;\">\r\n\t\t\t<i ng-class=\"icon\" class=\"icon-gf icon-gf-endpoint no-endpoints\"></i>\r\n\t\t\t<p ng-if=\"ctrl.isOrgEditor\">아직, 데이터베이스 연결이 설정되지 않았습니다.\r\n\t\t\t\t<br>\r\n\t\t\t\t<a class=\"highlight-word\" href=\"/datasources/new\">데이터 연결 새로 만들기</a>\r\n\t\t\t</p>\r\n\t\t\t<p ng-if=\"!ctrl.isOrgEditor\">아직, 데이터베이스 연결이 설정되지 않았습니다. 관리자에게 연락하시기 바랍니다.\r\n\t\t\t</p>\r\n\t\t</div>\r\n\t</div>\r\n</div>";
-
-/***/ }),
-
-/***/ "./pages/app-config/config.ts":
-/*!************************************!*\
-  !*** ./pages/app-config/config.ts ***!
-  \************************************/
-/*! exports provided: AppConfigCtrl */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppConfigCtrl", function() { return AppConfigCtrl; });
-/* harmony import */ var grafana_app_core_app_events__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! grafana/app/core/app_events */ "grafana/app/core/app_events");
-/* harmony import */ var grafana_app_core_app_events__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(grafana_app_core_app_events__WEBPACK_IMPORTED_MODULE_0__);
-
-var template = __webpack_require__(/*! ./config.html */ "./pages/app-config/config.html");
-
-var AppConfigCtrl = /** @class */ (function () {
-    function AppConfigCtrl($scope, $injector, $q, $location, rsDsSrv, backendSrv) {
-        this.$scope = $scope;
-        this.$injector = $injector;
-        this.$q = $q;
-        this.$location = $location;
-        this.rsDsSrv = rsDsSrv;
-        this.backendSrv = backendSrv;
-        this.enabled = false;
-        this.setDatasourceList(0);
-        this.appEditCtrl.setPreUpdateHook(this.preUpdate.bind(this));
-        this.appEditCtrl.setPostUpdateHook(this.postUpdate.bind(this));
-    }
-    AppConfigCtrl.prototype.setDatasourceList = function (p) {
-        var _this = this;
-        this.rsDsSrv.getDatasources()
-            .then(function (result) {
-            _this.dsList = result;
-            _this.pageReady = true;
-        }).catch(function (err) {
-            console.error(err);
-        });
-    };
-    AppConfigCtrl.prototype.preUpdate = function () {
-        return this.$q.resolve();
-    };
-    AppConfigCtrl.prototype.postUpdate = function () {
-        var _this = this;
-        if (!this.appModel.enabled) {
-            return this.$q.resolve();
-        }
-        return this.appEditCtrl.importDashboards().then(function () {
-            _this.enabled = true;
-            return {
-                url: "plugins/proj-rms-plugin-app/page/beobinbyeol-saengsanhyeonhwang",
-                message: "App enabled!"
-            };
-        });
-    };
-    AppConfigCtrl.prototype.confirmDelete = function (id) {
-        var _this = this;
-        this.backendSrv.delete('/api/datasources/' + id).then(function () {
-            _this.setDatasourceList(0);
-        });
-    };
-    AppConfigCtrl.prototype.deleteDs = function (ds) {
-        var _this = this;
-        grafana_app_core_app_events__WEBPACK_IMPORTED_MODULE_0___default.a.emit('confirm-modal', {
-            title: '데이터 소스 제거',
-            text: '이 데이터 소스를 제거하시겠습니까?',
-            yesText: "Delete",
-            icon: "fa-trash",
-            onConfirm: function () {
-                _this.confirmDelete(ds.id);
-            }
-        });
-    };
-    AppConfigCtrl.prototype.dsInfo = function (ds) {
-        this.$location.path("/datasources/edit/" + ds.id);
-    };
-    AppConfigCtrl.template = template;
-    return AppConfigCtrl;
-}());
-;
-// AppConfigCtrl.templateURL = './pages/config.html';
 
 
 

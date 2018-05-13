@@ -1,0 +1,13 @@
+{
+  "type": "panel",
+  "name": "(RMS) Comany",
+  "id": "rms-asset-man-company",
+
+  "info": {
+    "description": "Asset management : Company",
+    "author": {
+      "name": "lonycell@thingspin.io",
+      "url": "http://thingspin.io"
+    }
+  }
+}
