@@ -8,18 +8,64 @@
   "links": [],
   "panels": [
     {
+      "companies": [
+        {
+          "$$hashKey": "object:114",
+          "code": "0000",
+          "name": "한컴MDS"
+        },
+        {
+          "$$hashKey": "object:115",
+          "code": "0001",
+          "name": "리모트솔루션"
+        },
+        {
+          "$$hashKey": "object:116",
+          "code": "0002",
+          "name": "삼성전자"
+        }
+      ],
       "datasource": null,
       "gridPos": {
-        "h": 11,
+        "h": 17,
         "w": 24,
         "x": 0,
         "y": 0
       },
       "id": 2,
       "links": [],
+      "materialCategory": [
+        "실린더",
+        "리노핀",
+        "솔레노이드밸브",
+        "모터",
+        "센서",
+        "기타"
+      ],
+      "materialItem": {
+        "category": "실린더",
+        "company": {
+          "$$hashKey": "object:117",
+          "code": "0000",
+          "name": "한컴MDS"
+        },
+        "currAmount": 0,
+        "etc": "",
+        "lifeAmount": 1000,
+        "memo": "",
+        "name": "DSDSDSD",
+        "safeAmount": 200
+      },
+      "options": {
+        "legend": {
+          "show": true,
+          "values": false
+        },
+        "legendTable": false,
+        "traceColors": {}
+      },
       "targets": [
         {
-          "$$hashKey": "object:541",
           "refId": "A"
         }
       ],
@@ -51,5 +97,5 @@
   },
   "timezone": "",
   "title": "소모품 등록",
-  "version": 4
+  "version": 17
 }

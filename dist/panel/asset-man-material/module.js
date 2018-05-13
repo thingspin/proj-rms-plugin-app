@@ -1,4 +1,4 @@
-define(["app/plugins/sdk","jquery"], function(__WEBPACK_EXTERNAL_MODULE_grafana_app_plugins_sdk__, __WEBPACK_EXTERNAL_MODULE_jquery__) { return /******/ (function(modules) { // webpackBootstrap
+define(["app/plugins/sdk","jquery","lodash"], function(__WEBPACK_EXTERNAL_MODULE_grafana_app_plugins_sdk__, __WEBPACK_EXTERNAL_MODULE_jquery__, __WEBPACK_EXTERNAL_MODULE_lodash__) { return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -66,584 +66,10 @@ define(["app/plugins/sdk","jquery"], function(__WEBPACK_EXTERNAL_MODULE_grafana_
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./panel/asset-man-company/module.ts");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./panel/asset-man-material/module.ts");
 /******/ })
 /************************************************************************/
 /******/ ({
-
-/***/ "../../../../node_modules/css-loader/lib/css-base.js":
-/*!**********************************************************************************************************!*\
-  !*** C:/Users/lonycell/works/src/github.com/thingspin/thingspin/node_modules/css-loader/lib/css-base.js ***!
-  \**********************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
-}
-
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
-
-
-/***/ }),
-
-/***/ "../../../../node_modules/style-loader/lib/addStyles.js":
-/*!*************************************************************************************************************!*\
-  !*** C:/Users/lonycell/works/src/github.com/thingspin/thingspin/node_modules/style-loader/lib/addStyles.js ***!
-  \*************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-
-var stylesInDom = {};
-
-var	memoize = function (fn) {
-	var memo;
-
-	return function () {
-		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-		return memo;
-	};
-};
-
-var isOldIE = memoize(function () {
-	// Test for IE <= 9 as proposed by Browserhacks
-	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
-	// Tests for existence of standard globals is to allow style-loader
-	// to operate correctly into non-standard environments
-	// @see https://github.com/webpack-contrib/style-loader/issues/177
-	return window && document && document.all && !window.atob;
-});
-
-var getTarget = function (target) {
-  return document.querySelector(target);
-};
-
-var getElement = (function (fn) {
-	var memo = {};
-
-	return function(target) {
-                // If passing function in options, then use it for resolve "head" element.
-                // Useful for Shadow Root style i.e
-                // {
-                //   insertInto: function () { return document.querySelector("#foo").shadowRoot }
-                // }
-                if (typeof target === 'function') {
-                        return target();
-                }
-                if (typeof memo[target] === "undefined") {
-			var styleTarget = getTarget.call(this, target);
-			// Special case to return head of iframe instead of iframe itself
-			if (window.HTMLIFrameElement && styleTarget instanceof window.HTMLIFrameElement) {
-				try {
-					// This will throw an exception if access to iframe is blocked
-					// due to cross-origin restrictions
-					styleTarget = styleTarget.contentDocument.head;
-				} catch(e) {
-					styleTarget = null;
-				}
-			}
-			memo[target] = styleTarget;
-		}
-		return memo[target]
-	};
-})();
-
-var singleton = null;
-var	singletonCounter = 0;
-var	stylesInsertedAtTop = [];
-
-var	fixUrls = __webpack_require__(/*! ./urls */ "../../../../node_modules/style-loader/lib/urls.js");
-
-module.exports = function(list, options) {
-	if (typeof DEBUG !== "undefined" && DEBUG) {
-		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-	}
-
-	options = options || {};
-
-	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
-
-	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-	// tags it will allow on a page
-	if (!options.singleton && typeof options.singleton !== "boolean") options.singleton = isOldIE();
-
-	// By default, add <style> tags to the <head> element
-        if (!options.insertInto) options.insertInto = "head";
-
-	// By default, add <style> tags to the bottom of the target
-	if (!options.insertAt) options.insertAt = "bottom";
-
-	var styles = listToStyles(list, options);
-
-	addStylesToDom(styles, options);
-
-	return function update (newList) {
-		var mayRemove = [];
-
-		for (var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
-
-			domStyle.refs--;
-			mayRemove.push(domStyle);
-		}
-
-		if(newList) {
-			var newStyles = listToStyles(newList, options);
-			addStylesToDom(newStyles, options);
-		}
-
-		for (var i = 0; i < mayRemove.length; i++) {
-			var domStyle = mayRemove[i];
-
-			if(domStyle.refs === 0) {
-				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
-
-				delete stylesInDom[domStyle.id];
-			}
-		}
-	};
-};
-
-function addStylesToDom (styles, options) {
-	for (var i = 0; i < styles.length; i++) {
-		var item = styles[i];
-		var domStyle = stylesInDom[item.id];
-
-		if(domStyle) {
-			domStyle.refs++;
-
-			for(var j = 0; j < domStyle.parts.length; j++) {
-				domStyle.parts[j](item.parts[j]);
-			}
-
-			for(; j < item.parts.length; j++) {
-				domStyle.parts.push(addStyle(item.parts[j], options));
-			}
-		} else {
-			var parts = [];
-
-			for(var j = 0; j < item.parts.length; j++) {
-				parts.push(addStyle(item.parts[j], options));
-			}
-
-			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-		}
-	}
-}
-
-function listToStyles (list, options) {
-	var styles = [];
-	var newStyles = {};
-
-	for (var i = 0; i < list.length; i++) {
-		var item = list[i];
-		var id = options.base ? item[0] + options.base : item[0];
-		var css = item[1];
-		var media = item[2];
-		var sourceMap = item[3];
-		var part = {css: css, media: media, sourceMap: sourceMap};
-
-		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
-		else newStyles[id].parts.push(part);
-	}
-
-	return styles;
-}
-
-function insertStyleElement (options, style) {
-	var target = getElement(options.insertInto)
-
-	if (!target) {
-		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
-	}
-
-	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
-
-	if (options.insertAt === "top") {
-		if (!lastStyleElementInsertedAtTop) {
-			target.insertBefore(style, target.firstChild);
-		} else if (lastStyleElementInsertedAtTop.nextSibling) {
-			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
-		} else {
-			target.appendChild(style);
-		}
-		stylesInsertedAtTop.push(style);
-	} else if (options.insertAt === "bottom") {
-		target.appendChild(style);
-	} else if (typeof options.insertAt === "object" && options.insertAt.before) {
-		var nextSibling = getElement(options.insertInto + " " + options.insertAt.before);
-		target.insertBefore(style, nextSibling);
-	} else {
-		throw new Error("[Style Loader]\n\n Invalid value for parameter 'insertAt' ('options.insertAt') found.\n Must be 'top', 'bottom', or Object.\n (https://github.com/webpack-contrib/style-loader#insertat)\n");
-	}
-}
-
-function removeStyleElement (style) {
-	if (style.parentNode === null) return false;
-	style.parentNode.removeChild(style);
-
-	var idx = stylesInsertedAtTop.indexOf(style);
-	if(idx >= 0) {
-		stylesInsertedAtTop.splice(idx, 1);
-	}
-}
-
-function createStyleElement (options) {
-	var style = document.createElement("style");
-
-	options.attrs.type = "text/css";
-
-	addAttrs(style, options.attrs);
-	insertStyleElement(options, style);
-
-	return style;
-}
-
-function createLinkElement (options) {
-	var link = document.createElement("link");
-
-	options.attrs.type = "text/css";
-	options.attrs.rel = "stylesheet";
-
-	addAttrs(link, options.attrs);
-	insertStyleElement(options, link);
-
-	return link;
-}
-
-function addAttrs (el, attrs) {
-	Object.keys(attrs).forEach(function (key) {
-		el.setAttribute(key, attrs[key]);
-	});
-}
-
-function addStyle (obj, options) {
-	var style, update, remove, result;
-
-	// If a transform function was defined, run it on the css
-	if (options.transform && obj.css) {
-	    result = options.transform(obj.css);
-
-	    if (result) {
-	    	// If transform returns a value, use that instead of the original css.
-	    	// This allows running runtime transformations on the css.
-	    	obj.css = result;
-	    } else {
-	    	// If the transform function returns a falsy value, don't add this css.
-	    	// This allows conditional loading of css
-	    	return function() {
-	    		// noop
-	    	};
-	    }
-	}
-
-	if (options.singleton) {
-		var styleIndex = singletonCounter++;
-
-		style = singleton || (singleton = createStyleElement(options));
-
-		update = applyToSingletonTag.bind(null, style, styleIndex, false);
-		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
-
-	} else if (
-		obj.sourceMap &&
-		typeof URL === "function" &&
-		typeof URL.createObjectURL === "function" &&
-		typeof URL.revokeObjectURL === "function" &&
-		typeof Blob === "function" &&
-		typeof btoa === "function"
-	) {
-		style = createLinkElement(options);
-		update = updateLink.bind(null, style, options);
-		remove = function () {
-			removeStyleElement(style);
-
-			if(style.href) URL.revokeObjectURL(style.href);
-		};
-	} else {
-		style = createStyleElement(options);
-		update = applyToTag.bind(null, style);
-		remove = function () {
-			removeStyleElement(style);
-		};
-	}
-
-	update(obj);
-
-	return function updateStyle (newObj) {
-		if (newObj) {
-			if (
-				newObj.css === obj.css &&
-				newObj.media === obj.media &&
-				newObj.sourceMap === obj.sourceMap
-			) {
-				return;
-			}
-
-			update(obj = newObj);
-		} else {
-			remove();
-		}
-	};
-}
-
-var replaceText = (function () {
-	var textStore = [];
-
-	return function (index, replacement) {
-		textStore[index] = replacement;
-
-		return textStore.filter(Boolean).join('\n');
-	};
-})();
-
-function applyToSingletonTag (style, index, remove, obj) {
-	var css = remove ? "" : obj.css;
-
-	if (style.styleSheet) {
-		style.styleSheet.cssText = replaceText(index, css);
-	} else {
-		var cssNode = document.createTextNode(css);
-		var childNodes = style.childNodes;
-
-		if (childNodes[index]) style.removeChild(childNodes[index]);
-
-		if (childNodes.length) {
-			style.insertBefore(cssNode, childNodes[index]);
-		} else {
-			style.appendChild(cssNode);
-		}
-	}
-}
-
-function applyToTag (style, obj) {
-	var css = obj.css;
-	var media = obj.media;
-
-	if(media) {
-		style.setAttribute("media", media)
-	}
-
-	if(style.styleSheet) {
-		style.styleSheet.cssText = css;
-	} else {
-		while(style.firstChild) {
-			style.removeChild(style.firstChild);
-		}
-
-		style.appendChild(document.createTextNode(css));
-	}
-}
-
-function updateLink (link, options, obj) {
-	var css = obj.css;
-	var sourceMap = obj.sourceMap;
-
-	/*
-		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
-		and there is no publicPath defined then lets turn convertToAbsoluteUrls
-		on by default.  Otherwise default to the convertToAbsoluteUrls option
-		directly
-	*/
-	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
-
-	if (options.convertToAbsoluteUrls || autoFixUrls) {
-		css = fixUrls(css);
-	}
-
-	if (sourceMap) {
-		// http://stackoverflow.com/a/26603875
-		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
-	}
-
-	var blob = new Blob([css], { type: "text/css" });
-
-	var oldSrc = link.href;
-
-	link.href = URL.createObjectURL(blob);
-
-	if(oldSrc) URL.revokeObjectURL(oldSrc);
-}
-
-
-/***/ }),
-
-/***/ "../../../../node_modules/style-loader/lib/urls.js":
-/*!********************************************************************************************************!*\
-  !*** C:/Users/lonycell/works/src/github.com/thingspin/thingspin/node_modules/style-loader/lib/urls.js ***!
-  \********************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-
-/**
- * When source maps are enabled, `style-loader` uses a link element with a data-uri to
- * embed the css on the page. This breaks all relative urls because now they are relative to a
- * bundle instead of the current page.
- *
- * One solution is to only use full urls, but that may be impossible.
- *
- * Instead, this function "fixes" the relative urls to be absolute according to the current page location.
- *
- * A rudimentary test suite is located at `test/fixUrls.js` and can be run via the `npm test` command.
- *
- */
-
-module.exports = function (css) {
-  // get current location
-  var location = typeof window !== "undefined" && window.location;
-
-  if (!location) {
-    throw new Error("fixUrls requires window.location");
-  }
-
-	// blank or null?
-	if (!css || typeof css !== "string") {
-	  return css;
-  }
-
-  var baseUrl = location.protocol + "//" + location.host;
-  var currentDir = baseUrl + location.pathname.replace(/\/[^\/]*$/, "/");
-
-	// convert each url(...)
-	/*
-	This regular expression is just a way to recursively match brackets within
-	a string.
-
-	 /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
-	   (  = Start a capturing group
-	     (?:  = Start a non-capturing group
-	         [^)(]  = Match anything that isn't a parentheses
-	         |  = OR
-	         \(  = Match a start parentheses
-	             (?:  = Start another non-capturing groups
-	                 [^)(]+  = Match anything that isn't a parentheses
-	                 |  = OR
-	                 \(  = Match a start parentheses
-	                     [^)(]*  = Match anything that isn't a parentheses
-	                 \)  = Match a end parentheses
-	             )  = End Group
-              *\) = Match anything and then a close parens
-          )  = Close non-capturing group
-          *  = Match anything
-       )  = Close capturing group
-	 \)  = Match a close parens
-
-	 /gi  = Get all matches, not the first.  Be case insensitive.
-	 */
-	var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function(fullMatch, origUrl) {
-		// strip quotes (if they exist)
-		var unquotedOrigUrl = origUrl
-			.trim()
-			.replace(/^"(.*)"$/, function(o, $1){ return $1; })
-			.replace(/^'(.*)'$/, function(o, $1){ return $1; });
-
-		// already a full url? no change
-		if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/|\s*$)/i.test(unquotedOrigUrl)) {
-		  return fullMatch;
-		}
-
-		// convert the url to a full url
-		var newUrl;
-
-		if (unquotedOrigUrl.indexOf("//") === 0) {
-		  	//TODO: should we add protocol?
-			newUrl = unquotedOrigUrl;
-		} else if (unquotedOrigUrl.indexOf("/") === 0) {
-			// path should be relative to the base url
-			newUrl = baseUrl + unquotedOrigUrl; // already starts with '/'
-		} else {
-			// path should be relative to current directory
-			newUrl = currentDir + unquotedOrigUrl.replace(/^\.\//, ""); // Strip leading './'
-		}
-
-		// send back the fixed url(...)
-		return "url(" + JSON.stringify(newUrl) + ")";
-	});
-
-	// send back the fixed css
-	return fixedCss;
-};
-
-
-/***/ }),
 
 /***/ "../node_modules/jquery-ui/ui/version.js":
 /*!***********************************************!*\
@@ -1415,36 +841,6 @@ return $.widget;
 
 /***/ }),
 
-/***/ "../node_modules/jquery.tabulator/dist/css/tabulator.min.css":
-/*!*******************************************************************!*\
-  !*** ../node_modules/jquery.tabulator/dist/css/tabulator.min.css ***!
-  \*******************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-var content = __webpack_require__(/*! !../../../typings-for-css-modules-loader/lib??ref--6-1!./tabulator.min.css */ "../node_modules/typings-for-css-modules-loader/lib/index.js??ref--6-1!../node_modules/jquery.tabulator/dist/css/tabulator.min.css");
-
-if(typeof content === 'string') content = [[module.i, content, '']];
-
-var transform;
-var insertInto;
-
-
-
-var options = {"hmr":true}
-
-options.transform = transform
-options.insertInto = undefined;
-
-var update = __webpack_require__(/*! ../../../../../../../node_modules/style-loader/lib/addStyles.js */ "../../../../node_modules/style-loader/lib/addStyles.js")(content, options);
-
-if(content.locals) module.exports = content.locals;
-
-if(false) {}
-
-/***/ }),
-
 /***/ "../node_modules/jquery.tabulator/dist/js/tabulator.min.js":
 /*!*****************************************************************!*\
   !*** ../node_modules/jquery.tabulator/dist/js/tabulator.min.js ***!
@@ -1467,104 +863,26 @@ this.hiddenColumns=[],this.table.columnManager.columnsByIndex.forEach(function(e
 
 /***/ }),
 
-/***/ "../node_modules/typings-for-css-modules-loader/lib/index.js??ref--6-1!../node_modules/jquery.tabulator/dist/css/tabulator.min.css":
-/*!********************************************************************************************************************************!*\
-  !*** ../node_modules/typings-for-css-modules-loader/lib??ref--6-1!../node_modules/jquery.tabulator/dist/css/tabulator.min.css ***!
-  \********************************************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(/*! ../../../../../../../node_modules/css-loader/lib/css-base.js */ "../../../../node_modules/css-loader/lib/css-base.js")(false);
-// imports
-
-
-// module
-exports.push([module.i, "/* Tabulator v3.5.1 (c) Oliver Folkerd */\n._23A3sdaWti9Ol9m7dL9O2w{position:relative;border:1px solid #999;background-color:#888;font-size:14px;text-align:left;overflow:hidden;transform:translatez(0)}._23A3sdaWti9Ol9m7dL9O2w[tabulator-layout=fitDataFill] .GBzrAVkiQXaBkDE2uQ8Xg ._2_izzybMx8aorM_ZbFo11j{min-width:100%}._23A3sdaWti9Ol9m7dL9O2w._1aQk6_LSUhCYFiE2dPRIQS{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}._23A3sdaWti9Ol9m7dL9O2w ._2Y9oOGaM602IF1Qlz8SwJE{position:relative;box-sizing:border-box;width:100%;border-bottom:1px solid #999;background-color:#e6e6e6;color:#555;font-weight:700;white-space:nowrap;overflow:hidden;-moz-user-select:none;-khtml-user-select:none;-webkit-user-select:none;-o-user-select:none}._23A3sdaWti9Ol9m7dL9O2w ._2Y9oOGaM602IF1Qlz8SwJE ._1mBAQcrY_qeReg6RBAzQ8W{display:inline-block;position:relative;box-sizing:border-box;border-right:1px solid #aaa;background:#e6e6e6;text-align:left;vertical-align:bottom;overflow:hidden}._23A3sdaWti9Ol9m7dL9O2w ._2Y9oOGaM602IF1Qlz8SwJE ._1mBAQcrY_qeReg6RBAzQ8W.F6TS0epUJdy-qSwKH6Kg-{position:absolute;border:1px solid #999;background:#cdcdcd;pointer-events:none}._23A3sdaWti9Ol9m7dL9O2w ._2Y9oOGaM602IF1Qlz8SwJE ._1mBAQcrY_qeReg6RBAzQ8W ._23GLIqEC19vw19rMJL4xHE{box-sizing:border-box;position:relative;padding:4px}._23A3sdaWti9Ol9m7dL9O2w ._2Y9oOGaM602IF1Qlz8SwJE ._1mBAQcrY_qeReg6RBAzQ8W ._23GLIqEC19vw19rMJL4xHE ._1YGyFWFRaoTTjhIrFb3fzl{box-sizing:border-box;width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;vertical-align:bottom}._23A3sdaWti9Ol9m7dL9O2w ._2Y9oOGaM602IF1Qlz8SwJE ._1mBAQcrY_qeReg6RBAzQ8W ._23GLIqEC19vw19rMJL4xHE ._1YGyFWFRaoTTjhIrFb3fzl ._33Gc8EbH3e0JbkahvSiAp0{box-sizing:border-box;width:100%;border:1px solid #999;padding:1px;background:#fff}._23A3sdaWti9Ol9m7dL9O2w ._2Y9oOGaM602IF1Qlz8SwJE ._1mBAQcrY_qeReg6RBAzQ8W ._23GLIqEC19vw19rMJL4xHE ._3R6vqupQkifYTk1J8lIlu_{display:inline-block;position:absolute;top:9px;right:8px;width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:6px solid #bbb}._23A3sdaWti9Ol9m7dL9O2w ._2Y9oOGaM602IF1Qlz8SwJE ._1mBAQcrY_qeReg6RBAzQ8W._25CS9WXre-QNaCVaKEFa1o ._1jHPe84-P1u3GwTYEe6XcE{position:relative;display:-ms-flexbox;display:flex;border-top:1px solid #aaa;overflow:hidden}._23A3sdaWti9Ol9m7dL9O2w ._2Y9oOGaM602IF1Qlz8SwJE ._1mBAQcrY_qeReg6RBAzQ8W._25CS9WXre-QNaCVaKEFa1o ._1jHPe84-P1u3GwTYEe6XcE ._1mBAQcrY_qeReg6RBAzQ8W:last-child{margin-right:-1px}._23A3sdaWti9Ol9m7dL9O2w ._2Y9oOGaM602IF1Qlz8SwJE ._1mBAQcrY_qeReg6RBAzQ8W:first-child ._1ojFqidpFkrj3My_wA0zxt._3wHo6u4_Y0p7904XuoRbkK{display:none}._23A3sdaWti9Ol9m7dL9O2w ._2Y9oOGaM602IF1Qlz8SwJE ._1mBAQcrY_qeReg6RBAzQ8W._2KP788JTKOoZwTIxu4xNkb{position:absolute;background-color:#e6e6e6!important;border:1px solid #aaa}._23A3sdaWti9Ol9m7dL9O2w ._2Y9oOGaM602IF1Qlz8SwJE ._1mBAQcrY_qeReg6RBAzQ8W ._3YEchhjqhiVWar-ONzOs37{position:relative;box-sizing:border-box;margin-top:2px;width:100%;text-align:center}._23A3sdaWti9Ol9m7dL9O2w ._2Y9oOGaM602IF1Qlz8SwJE ._1mBAQcrY_qeReg6RBAzQ8W ._3YEchhjqhiVWar-ONzOs37 textarea{height:auto!important}._23A3sdaWti9Ol9m7dL9O2w ._2Y9oOGaM602IF1Qlz8SwJE ._1mBAQcrY_qeReg6RBAzQ8W ._3YEchhjqhiVWar-ONzOs37 svg{margin-top:3px}._23A3sdaWti9Ol9m7dL9O2w ._2Y9oOGaM602IF1Qlz8SwJE ._1mBAQcrY_qeReg6RBAzQ8W._1ArP0ynFbN-z9JukWtoinv ._1YGyFWFRaoTTjhIrFb3fzl{padding-right:25px}._23A3sdaWti9Ol9m7dL9O2w ._2Y9oOGaM602IF1Qlz8SwJE ._1mBAQcrY_qeReg6RBAzQ8W._1ArP0ynFbN-z9JukWtoinv:hover{cursor:pointer;background-color:#cdcdcd}._23A3sdaWti9Ol9m7dL9O2w ._2Y9oOGaM602IF1Qlz8SwJE ._1mBAQcrY_qeReg6RBAzQ8W._1ArP0ynFbN-z9JukWtoinv[aria-sort=none] ._23GLIqEC19vw19rMJL4xHE ._3R6vqupQkifYTk1J8lIlu_{border-top:none;border-bottom:6px solid #bbb}._23A3sdaWti9Ol9m7dL9O2w ._2Y9oOGaM602IF1Qlz8SwJE ._1mBAQcrY_qeReg6RBAzQ8W._1ArP0ynFbN-z9JukWtoinv[aria-sort=asc] ._23GLIqEC19vw19rMJL4xHE ._3R6vqupQkifYTk1J8lIlu_{border-top:none;border-bottom:6px solid #666}._23A3sdaWti9Ol9m7dL9O2w ._2Y9oOGaM602IF1Qlz8SwJE ._1mBAQcrY_qeReg6RBAzQ8W._1ArP0ynFbN-z9JukWtoinv[aria-sort=desc] ._23GLIqEC19vw19rMJL4xHE ._3R6vqupQkifYTk1J8lIlu_{border-top:6px solid #666;border-bottom:none}._23A3sdaWti9Ol9m7dL9O2w ._2Y9oOGaM602IF1Qlz8SwJE ._2VwCVyUqe3k19zXWfIA3J7{display:inline-block;position:absolute;z-index:1}._23A3sdaWti9Ol9m7dL9O2w ._2Y9oOGaM602IF1Qlz8SwJE ._2VwCVyUqe3k19zXWfIA3J7._2HY3bh5oi1jgxQaAKN7GN6{border-right:2px solid #aaa}._23A3sdaWti9Ol9m7dL9O2w ._2Y9oOGaM602IF1Qlz8SwJE ._2VwCVyUqe3k19zXWfIA3J7._2bLXyI3vZvpFluyT8VlFq4{border-left:2px solid #aaa}._23A3sdaWti9Ol9m7dL9O2w ._2Y9oOGaM602IF1Qlz8SwJE ._3cmi0L9nQKktQGhueJdcet{box-sizing:border-box;min-width:200%;background:#f3f3f3!important;border-top:1px solid #aaa;border-bottom:1px solid #aaa;overflow:hidden}._23A3sdaWti9Ol9m7dL9O2w ._2Y9oOGaM602IF1Qlz8SwJE ._3cmi0L9nQKktQGhueJdcet ._2v7LTNNL3WXZMY-HCrh1c-{background:#f3f3f3!important}._23A3sdaWti9Ol9m7dL9O2w ._2Y9oOGaM602IF1Qlz8SwJE ._3cmi0L9nQKktQGhueJdcet ._2v7LTNNL3WXZMY-HCrh1c- ._1ojFqidpFkrj3My_wA0zxt{display:none}._23A3sdaWti9Ol9m7dL9O2w ._2Y9oOGaM602IF1Qlz8SwJE ._2j1stoaHXf4s5aGDlI3hHA{min-width:200%}._23A3sdaWti9Ol9m7dL9O2w ._2Y9oOGaM602IF1Qlz8SwJE ._2j1stoaHXf4s5aGDlI3hHA:empty{display:none}._23A3sdaWti9Ol9m7dL9O2w .GBzrAVkiQXaBkDE2uQ8Xg{position:relative;width:100%;white-space:nowrap;overflow:auto;-webkit-overflow-scrolling:touch}._23A3sdaWti9Ol9m7dL9O2w .GBzrAVkiQXaBkDE2uQ8Xg:focus{outline:none}._23A3sdaWti9Ol9m7dL9O2w .GBzrAVkiQXaBkDE2uQ8Xg ._1PPPe2yaNFYMAEHkvW5144{position:absolute;box-sizing:border-box;display:-ms-flexbox;display:flex;-ms-flex-align:center;align-items:center;top:0;left:0;height:100%;width:100%}._23A3sdaWti9Ol9m7dL9O2w .GBzrAVkiQXaBkDE2uQ8Xg ._1PPPe2yaNFYMAEHkvW5144 span{display:inline-block;margin:0 auto;padding:10px;color:#ccc;font-weight:700;font-size:20px}._23A3sdaWti9Ol9m7dL9O2w .GBzrAVkiQXaBkDE2uQ8Xg ._2_izzybMx8aorM_ZbFo11j{position:relative;display:inline-block;background-color:#fff;white-space:nowrap;overflow:visible;color:#333}._23A3sdaWti9Ol9m7dL9O2w .GBzrAVkiQXaBkDE2uQ8Xg ._2_izzybMx8aorM_ZbFo11j ._2v7LTNNL3WXZMY-HCrh1c-._1ML75w3VWlWFT6gp0mPy-I{font-weight:700;background:#e2e2e2!important}._23A3sdaWti9Ol9m7dL9O2w .GBzrAVkiQXaBkDE2uQ8Xg ._2_izzybMx8aorM_ZbFo11j ._2v7LTNNL3WXZMY-HCrh1c-._1ML75w3VWlWFT6gp0mPy-I._35GAJixm6g6bl71l46O0UG{border-bottom:2px solid #aaa}._23A3sdaWti9Ol9m7dL9O2w .GBzrAVkiQXaBkDE2uQ8Xg ._2_izzybMx8aorM_ZbFo11j ._2v7LTNNL3WXZMY-HCrh1c-._1ML75w3VWlWFT6gp0mPy-I._2ld6mbT1VM0pQyUMJhdwAe{border-top:2px solid #aaa}._23A3sdaWti9Ol9m7dL9O2w ._12imnjZgUDcLCaDbedTfY3{padding:5px 10px;border-top:1px solid #999;background-color:#e6e6e6;text-align:right;color:#555;font-weight:700;white-space:nowrap;-ms-user-select:none;user-select:none;-moz-user-select:none;-khtml-user-select:none;-webkit-user-select:none;-o-user-select:none}._23A3sdaWti9Ol9m7dL9O2w ._12imnjZgUDcLCaDbedTfY3 ._3cmi0L9nQKktQGhueJdcet{box-sizing:border-box;width:calc(\"100% + 20px\");margin:-5px -10px 5px;text-align:left;background:#f3f3f3!important;border-bottom:1px solid #aaa;border-top:1px solid #aaa;overflow:hidden}._23A3sdaWti9Ol9m7dL9O2w ._12imnjZgUDcLCaDbedTfY3 ._3cmi0L9nQKktQGhueJdcet ._2v7LTNNL3WXZMY-HCrh1c-{background:#f3f3f3!important}._23A3sdaWti9Ol9m7dL9O2w ._12imnjZgUDcLCaDbedTfY3 ._3cmi0L9nQKktQGhueJdcet ._2v7LTNNL3WXZMY-HCrh1c- ._1ojFqidpFkrj3My_wA0zxt{display:none}._23A3sdaWti9Ol9m7dL9O2w ._12imnjZgUDcLCaDbedTfY3 ._3cmi0L9nQKktQGhueJdcet:only-child{margin-bottom:-5px;border-bottom:none}._23A3sdaWti9Ol9m7dL9O2w ._12imnjZgUDcLCaDbedTfY3 ._3WG1GVfImkWPKFaByFEhaS{margin:0 7px}._23A3sdaWti9Ol9m7dL9O2w ._12imnjZgUDcLCaDbedTfY3 ._2piaosnvHmqUAcuvCXHlSN{display:inline-block;margin:0 2px;padding:2px 5px;border:1px solid #aaa;border-radius:3px;background:hsla(0,0%,100%,.2);color:#555;font-family:inherit;font-weight:inherit;font-size:inherit}._23A3sdaWti9Ol9m7dL9O2w ._12imnjZgUDcLCaDbedTfY3 ._2piaosnvHmqUAcuvCXHlSN._33dsM2Pn_Sa15GQ6WCn34T{color:#d00}._23A3sdaWti9Ol9m7dL9O2w ._12imnjZgUDcLCaDbedTfY3 ._2piaosnvHmqUAcuvCXHlSN:disabled{opacity:.5}._23A3sdaWti9Ol9m7dL9O2w ._12imnjZgUDcLCaDbedTfY3 ._2piaosnvHmqUAcuvCXHlSN:not(._1D593Qb2jjBxdoLXYhvZvh):hover{cursor:pointer;background:rgba(0,0,0,.2);color:#fff}._23A3sdaWti9Ol9m7dL9O2w ._1ojFqidpFkrj3My_wA0zxt{position:absolute;right:0;top:0;bottom:0;width:5px}._23A3sdaWti9Ol9m7dL9O2w ._1ojFqidpFkrj3My_wA0zxt._3wHo6u4_Y0p7904XuoRbkK{left:0;right:auto}._23A3sdaWti9Ol9m7dL9O2w ._1ojFqidpFkrj3My_wA0zxt:hover{cursor:ew-resize}._23A3sdaWti9Ol9m7dL9O2w ._3VaEe1NDOxAhRnrB3mQz40{position:absolute;display:-ms-flexbox;display:flex;-ms-flex-align:center;align-items:center;top:0;left:0;z-index:3;height:100%;width:100%;background:rgba(0,0,0,.4);text-align:center}._23A3sdaWti9Ol9m7dL9O2w ._3VaEe1NDOxAhRnrB3mQz40 ._1ZAobCGkJsO0sLv9PQfzW6{display:inline-block;margin:0 auto;padding:10px 20px;border-radius:10px;background:#fff;font-weight:700;font-size:16px}._23A3sdaWti9Ol9m7dL9O2w ._3VaEe1NDOxAhRnrB3mQz40 ._1ZAobCGkJsO0sLv9PQfzW6._6y4wzTvly_MwN1hQi3flo{border:4px solid #333;color:#000}._23A3sdaWti9Ol9m7dL9O2w ._3VaEe1NDOxAhRnrB3mQz40 ._1ZAobCGkJsO0sLv9PQfzW6._1nCY03KrGjHXtBIlGPjsfR{border:4px solid #d00;color:#590000}._2v7LTNNL3WXZMY-HCrh1c-{position:relative;box-sizing:border-box;min-height:22px;background-color:#fff}._2v7LTNNL3WXZMY-HCrh1c-.IqZOqnNCZaedmERsADVIw{background-color:#efefef}._2v7LTNNL3WXZMY-HCrh1c-._2hQCaEzosZ_xjbNhsLVFUE:hover{background-color:#bbb;cursor:pointer}._2v7LTNNL3WXZMY-HCrh1c-._3PsmGjk7IMEHuu9Jg_upBp{background-color:#9abcea}._2v7LTNNL3WXZMY-HCrh1c-._3PsmGjk7IMEHuu9Jg_upBp:hover{background-color:#769bcc;cursor:pointer}._2v7LTNNL3WXZMY-HCrh1c-._2r33c4RS9ZufQJTfw8QRjO{border:1px solid #000;background:#fff}._2v7LTNNL3WXZMY-HCrh1c-.F6TS0epUJdy-qSwKH6Kg-{position:absolute;border-top:1px solid #aaa;border-bottom:1px solid #aaa;pointer-events:none;z-index:2}._2v7LTNNL3WXZMY-HCrh1c- .pUn1FxHomUwQCdYs9CoOE{position:absolute;right:0;bottom:0;left:0;height:5px}._2v7LTNNL3WXZMY-HCrh1c- .pUn1FxHomUwQCdYs9CoOE._3wHo6u4_Y0p7904XuoRbkK{top:0;bottom:auto}._2v7LTNNL3WXZMY-HCrh1c- .pUn1FxHomUwQCdYs9CoOE:hover{cursor:ns-resize}._2v7LTNNL3WXZMY-HCrh1c- ._2VwCVyUqe3k19zXWfIA3J7{display:inline-block;position:absolute;background-color:inherit;z-index:1}._2v7LTNNL3WXZMY-HCrh1c- ._2VwCVyUqe3k19zXWfIA3J7._2HY3bh5oi1jgxQaAKN7GN6{border-right:2px solid #aaa}._2v7LTNNL3WXZMY-HCrh1c- ._2VwCVyUqe3k19zXWfIA3J7._2bLXyI3vZvpFluyT8VlFq4{border-left:2px solid #aaa}._2v7LTNNL3WXZMY-HCrh1c- .vj-_8EiF_8Aq-Fiz96Alh{box-sizing:border-box;padding:5px;border-top:1px solid #aaa;border-bottom:1px solid #aaa}._2v7LTNNL3WXZMY-HCrh1c- .vj-_8EiF_8Aq-Fiz96Alh:empty{display:none}._2v7LTNNL3WXZMY-HCrh1c- .vj-_8EiF_8Aq-Fiz96Alh table{font-size:14px}._2v7LTNNL3WXZMY-HCrh1c- .vj-_8EiF_8Aq-Fiz96Alh table tr td{position:relative}._2v7LTNNL3WXZMY-HCrh1c- .vj-_8EiF_8Aq-Fiz96Alh table tr td:first-of-type{padding-right:10px}._2v7LTNNL3WXZMY-HCrh1c- ._2O6AjZq5O0BG__NTOoB-N5{display:inline-block;position:relative;box-sizing:border-box;padding:4px;border-right:1px solid #aaa;vertical-align:middle;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}._2v7LTNNL3WXZMY-HCrh1c- ._2O6AjZq5O0BG__NTOoB-N5._2FIv9UJ5QDLMIhq2X_hzwn{border:1px solid #1d68cd;padding:0}._2v7LTNNL3WXZMY-HCrh1c- ._2O6AjZq5O0BG__NTOoB-N5._2FIv9UJ5QDLMIhq2X_hzwn input,._2v7LTNNL3WXZMY-HCrh1c- ._2O6AjZq5O0BG__NTOoB-N5._2FIv9UJ5QDLMIhq2X_hzwn select{border:1px;background:transparent}._2v7LTNNL3WXZMY-HCrh1c- ._2O6AjZq5O0BG__NTOoB-N5._3frif-sqX4uZco4Ajyq2W9{border:1px solid #d00}._2v7LTNNL3WXZMY-HCrh1c- ._2O6AjZq5O0BG__NTOoB-N5._3frif-sqX4uZco4Ajyq2W9 input,._2v7LTNNL3WXZMY-HCrh1c- ._2O6AjZq5O0BG__NTOoB-N5._3frif-sqX4uZco4Ajyq2W9 select{border:1px;background:transparent;color:#d00}._2v7LTNNL3WXZMY-HCrh1c- ._2O6AjZq5O0BG__NTOoB-N5:first-child ._1ojFqidpFkrj3My_wA0zxt._3wHo6u4_Y0p7904XuoRbkK{display:none}._2v7LTNNL3WXZMY-HCrh1c- ._2O6AjZq5O0BG__NTOoB-N5._2NVx0q-HwqrM9EfFiwzdA-{display:-ms-inline-flexbox;display:inline-flex;-ms-flex-align:center;align-items:center;-ms-flex-pack:center;justify-content:center;-moz-user-select:none;-khtml-user-select:none;-webkit-user-select:none;-o-user-select:none}._2v7LTNNL3WXZMY-HCrh1c- ._2O6AjZq5O0BG__NTOoB-N5._2NVx0q-HwqrM9EfFiwzdA- ._2VdeEm6uJ880pUUwPk3HsT{width:80%}._2v7LTNNL3WXZMY-HCrh1c- ._2O6AjZq5O0BG__NTOoB-N5._2NVx0q-HwqrM9EfFiwzdA- ._2VdeEm6uJ880pUUwPk3HsT ._3RGrtzAhE-R-qOTL3-LmkB{width:100%;height:3px;margin-top:2px;background:#666}._2v7LTNNL3WXZMY-HCrh1c- ._2O6AjZq5O0BG__NTOoB-N5 ._3FOcgbBjQinIgHq-REZZAg{display:-ms-inline-flexbox;display:inline-flex;-ms-flex-align:center;align-items:center;-ms-flex-pack:center;justify-content:center;-moz-user-select:none;-khtml-user-select:none;-webkit-user-select:none;-o-user-select:none;height:15px;width:15px;border-radius:20px;background:#666;color:#fff;font-weight:700;font-size:1.1em}._2v7LTNNL3WXZMY-HCrh1c- ._2O6AjZq5O0BG__NTOoB-N5 ._3FOcgbBjQinIgHq-REZZAg:hover{opacity:.7}._2v7LTNNL3WXZMY-HCrh1c- ._2O6AjZq5O0BG__NTOoB-N5 ._3FOcgbBjQinIgHq-REZZAg._1IJ7xnjgXK-uNjqTb36C7g ._2zONRq0TnC2XOPZSD3frv_{display:initial}._2v7LTNNL3WXZMY-HCrh1c- ._2O6AjZq5O0BG__NTOoB-N5 ._3FOcgbBjQinIgHq-REZZAg._1IJ7xnjgXK-uNjqTb36C7g ._10da_84RZM4WuoUGbNWpxu,._2v7LTNNL3WXZMY-HCrh1c- ._2O6AjZq5O0BG__NTOoB-N5 ._3FOcgbBjQinIgHq-REZZAg ._2zONRq0TnC2XOPZSD3frv_{display:none}._2v7LTNNL3WXZMY-HCrh1c-._1N8e0-ZYyMWmLEXDTWw8yZ{box-sizing:border-box;border-bottom:1px solid #999;border-right:1px solid #aaa;border-top:1px solid #999;padding:5px;padding-left:10px;background:#ccc;font-weight:700;min-width:100%}._2v7LTNNL3WXZMY-HCrh1c-._1N8e0-ZYyMWmLEXDTWw8yZ:hover{cursor:pointer;background-color:rgba(0,0,0,.1)}._2v7LTNNL3WXZMY-HCrh1c-._1N8e0-ZYyMWmLEXDTWw8yZ._25dKsR8xKyA55AispS_uL7 ._3R6vqupQkifYTk1J8lIlu_{margin-right:10px;border-left:6px solid transparent;border-right:6px solid transparent;border-top:6px solid #666;border-bottom:0}._2v7LTNNL3WXZMY-HCrh1c-._1N8e0-ZYyMWmLEXDTWw8yZ._275vbxa1U3u1Ii50JNFCf5 ._3R6vqupQkifYTk1J8lIlu_{margin-left:20px}._2v7LTNNL3WXZMY-HCrh1c-._1N8e0-ZYyMWmLEXDTWw8yZ._1cxqTXEpdKYV7HKJ_cA5e2 ._3R6vqupQkifYTk1J8lIlu_{margin-left:40px}._2v7LTNNL3WXZMY-HCrh1c-._1N8e0-ZYyMWmLEXDTWw8yZ.dgDgS3eAfJDKbliHXNUTm ._3R6vqupQkifYTk1J8lIlu_{margin-left:60px}._2v7LTNNL3WXZMY-HCrh1c-._1N8e0-ZYyMWmLEXDTWw8yZ._2z4JhDr-v7OfIAYFaTw1hg ._3R6vqupQkifYTk1J8lIlu_{margin-left:80px}._2v7LTNNL3WXZMY-HCrh1c-._1N8e0-ZYyMWmLEXDTWw8yZ.d2CFN6DNYqcWA9t9c1KGD ._3R6vqupQkifYTk1J8lIlu_{margin-left:100px}._2v7LTNNL3WXZMY-HCrh1c-._1N8e0-ZYyMWmLEXDTWw8yZ ._3R6vqupQkifYTk1J8lIlu_{display:inline-block;width:0;height:0;margin-right:16px;border-top:6px solid transparent;border-bottom:6px solid transparent;border-right:0;border-left:6px solid #666;vertical-align:middle}._2v7LTNNL3WXZMY-HCrh1c-._1N8e0-ZYyMWmLEXDTWw8yZ span{margin-left:10px;color:#d00}\n", ""]);
-
-// exports
-exports.locals = {
-	"tabulator": "_23A3sdaWti9Ol9m7dL9O2w",
-	"tabulator-tableHolder": "GBzrAVkiQXaBkDE2uQ8Xg",
-	"tabulator-table": "_2_izzybMx8aorM_ZbFo11j",
-	"tabulator-block-select": "_1aQk6_LSUhCYFiE2dPRIQS",
-	"tabulator-header": "_2Y9oOGaM602IF1Qlz8SwJE",
-	"tabulator-col": "_1mBAQcrY_qeReg6RBAzQ8W",
-	"tabulator-moving": "F6TS0epUJdy-qSwKH6Kg-",
-	"tabulator-col-content": "_23GLIqEC19vw19rMJL4xHE",
-	"tabulator-col-title": "_1YGyFWFRaoTTjhIrFb3fzl",
-	"tabulator-title-editor": "_33Gc8EbH3e0JbkahvSiAp0",
-	"tabulator-arrow": "_3R6vqupQkifYTk1J8lIlu_",
-	"tabulator-col-group": "_25CS9WXre-QNaCVaKEFa1o",
-	"tabulator-col-group-cols": "_1jHPe84-P1u3GwTYEe6XcE",
-	"tabulator-col-resize-handle": "_1ojFqidpFkrj3My_wA0zxt",
-	"prev": "_3wHo6u4_Y0p7904XuoRbkK",
-	"ui-sortable-helper": "_2KP788JTKOoZwTIxu4xNkb",
-	"tabulator-header-filter": "_3YEchhjqhiVWar-ONzOs37",
-	"tabulator-sortable": "_1ArP0ynFbN-z9JukWtoinv",
-	"tabulator-frozen": "_2VwCVyUqe3k19zXWfIA3J7",
-	"tabulator-frozen-left": "_2HY3bh5oi1jgxQaAKN7GN6",
-	"tabulator-frozen-right": "_2bLXyI3vZvpFluyT8VlFq4",
-	"tabulator-calcs-holder": "_3cmi0L9nQKktQGhueJdcet",
-	"tabulator-row": "_2v7LTNNL3WXZMY-HCrh1c-",
-	"tabulator-frozen-rows-holder": "_2j1stoaHXf4s5aGDlI3hHA",
-	"tabulator-placeholder": "_1PPPe2yaNFYMAEHkvW5144",
-	"tabulator-calcs": "_1ML75w3VWlWFT6gp0mPy-I",
-	"tabulator-calcs-top": "_35GAJixm6g6bl71l46O0UG",
-	"tabulator-calcs-bottom": "_2ld6mbT1VM0pQyUMJhdwAe",
-	"tabulator-footer": "_12imnjZgUDcLCaDbedTfY3",
-	"tabulator-pages": "_3WG1GVfImkWPKFaByFEhaS",
-	"tabulator-page": "_2piaosnvHmqUAcuvCXHlSN",
-	"active": "_33dsM2Pn_Sa15GQ6WCn34T",
-	"disabled": "_1D593Qb2jjBxdoLXYhvZvh",
-	"tablulator-loader": "_3VaEe1NDOxAhRnrB3mQz40",
-	"tabulator-loader-msg": "_1ZAobCGkJsO0sLv9PQfzW6",
-	"tabulator-loading": "_6y4wzTvly_MwN1hQi3flo",
-	"tabulator-error": "_1nCY03KrGjHXtBIlGPjsfR",
-	"tabulator-row-even": "IqZOqnNCZaedmERsADVIw",
-	"tabulator-selectable": "_2hQCaEzosZ_xjbNhsLVFUE",
-	"tabulator-selected": "_3PsmGjk7IMEHuu9Jg_upBp",
-	"tabulator-row-moving": "_2r33c4RS9ZufQJTfw8QRjO",
-	"tabulator-row-resize-handle": "pUn1FxHomUwQCdYs9CoOE",
-	"tabulator-responsive-collapse": "vj-_8EiF_8Aq-Fiz96Alh",
-	"tabulator-cell": "_2O6AjZq5O0BG__NTOoB-N5",
-	"tabulator-editing": "_2FIv9UJ5QDLMIhq2X_hzwn",
-	"tabulator-validation-fail": "_3frif-sqX4uZco4Ajyq2W9",
-	"tabulator-row-handle": "_2NVx0q-HwqrM9EfFiwzdA-",
-	"tabulator-row-handle-box": "_2VdeEm6uJ880pUUwPk3HsT",
-	"tabulator-row-handle-bar": "_3RGrtzAhE-R-qOTL3-LmkB",
-	"tabulator-responsive-collapse-toggle": "_3FOcgbBjQinIgHq-REZZAg",
-	"open": "_1IJ7xnjgXK-uNjqTb36C7g",
-	"tabulator-responsive-collapse-toggle-close": "_2zONRq0TnC2XOPZSD3frv_",
-	"tabulator-responsive-collapse-toggle-open": "_10da_84RZM4WuoUGbNWpxu",
-	"tabulator-group": "_1N8e0-ZYyMWmLEXDTWw8yZ",
-	"tabulator-group-visible": "_25dKsR8xKyA55AispS_uL7",
-	"tabulator-group-level-1": "_275vbxa1U3u1Ii50JNFCf5",
-	"tabulator-group-level-2": "_1cxqTXEpdKYV7HKJ_cA5e2",
-	"tabulator-group-level-3": "dgDgS3eAfJDKbliHXNUTm",
-	"tabulator-group-level-4": "_2z4JhDr-v7OfIAYFaTw1hg",
-	"tabulator-group-level-5": "d2CFN6DNYqcWA9t9c1KGD"
-};
-
-/***/ }),
-
-/***/ "./panel/asset-man-company/module.ts":
-/*!*******************************************!*\
-  !*** ./panel/asset-man-company/module.ts ***!
-  \*******************************************/
+/***/ "./panel/asset-man-material/module.ts":
+/*!********************************************!*\
+  !*** ./panel/asset-man-material/module.ts ***!
+  \********************************************/
 /*! exports provided: PanelCtrl */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PanelCtrl", function() { return RmsAlarmRulePanelCtrl; });
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "jquery");
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var jquery_ui__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! jquery-ui */ "../node_modules/jquery-ui/ui/widget.js");
-/* harmony import */ var jquery_ui__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(jquery_ui__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var jquery_tabulator_dist_js_tabulator_min__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! jquery.tabulator/dist/js/tabulator.min */ "../node_modules/jquery.tabulator/dist/js/tabulator.min.js");
-/* harmony import */ var jquery_tabulator_dist_js_tabulator_min__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(jquery_tabulator_dist_js_tabulator_min__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! grafana/app/plugins/sdk */ "grafana/app/plugins/sdk");
-/* harmony import */ var grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "lodash");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! jquery */ "jquery");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var jquery_ui__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! jquery-ui */ "../node_modules/jquery-ui/ui/widget.js");
+/* harmony import */ var jquery_ui__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(jquery_ui__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var jquery_tabulator_dist_js_tabulator_min__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! jquery.tabulator/dist/js/tabulator.min */ "../node_modules/jquery.tabulator/dist/js/tabulator.min.js");
+/* harmony import */ var jquery_tabulator_dist_js_tabulator_min__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(jquery_tabulator_dist_js_tabulator_min__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! grafana/app/plugins/sdk */ "grafana/app/plugins/sdk");
+/* harmony import */ var grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_4__);
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -1578,102 +896,188 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 
 
-//import style from 'jquery.tabulator/dist/css/tabulator.min.css';
 
-Object(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_3__["loadPluginCss"])({
-    dark: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.dark.css',
-    light: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.light.css'
-});
-Object(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_3__["loadPluginCss"])({
+
+Object(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_4__["loadPluginCss"])({
     dark: 'plugins/proj-rms-plugin-app/panel/tabulator-table/css/tabulator.min.css',
     light: 'plugins/proj-rms-plugin-app/panel/tabulator-table/css/tabulator.min.css'
 });
-var template = __webpack_require__(/*! ./templet.html */ "./panel/asset-man-company/templet.html");
-var style = __webpack_require__(/*! jquery.tabulator/dist/css/tabulator.min.css */ "../node_modules/jquery.tabulator/dist/css/tabulator.min.css");
+Object(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_4__["loadPluginCss"])({
+    dark: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.dark.css',
+    light: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.light.css'
+});
+var template = __webpack_require__(/*! ./partial/templet.html */ "./panel/asset-man-material/partial/templet.html");
+var options = __webpack_require__(/*! ./partial/options.html */ "./panel/asset-man-material/partial/options.html");
 var RmsAlarmRulePanelCtrl = /** @class */ (function (_super) {
     __extends(RmsAlarmRulePanelCtrl, _super);
     function RmsAlarmRulePanelCtrl($scope, $injector, $http, $location, uiSegmentSrv, annotationsSrv) {
         var _this = _super.call(this, $scope, $injector) || this;
+        _this.panelDefaults = {
+            options: {
+                legend: {
+                    show: true,
+                    values: false
+                },
+                legendTable: false,
+                traceColors: {}
+            },
+            companies: [
+                { code: '0000', name: '한컴MDS' },
+                { code: '0001', name: '리모트솔루션' },
+                { code: '0002', name: '삼성전자' },
+            ],
+            materialCategory: [
+                '실린더',
+                '리노핀',
+                '솔레노이드밸브',
+                '모터',
+                '센서',
+                '기타'
+            ],
+            materialItem: {
+                'category': '',
+                'name': '',
+                company: '',
+                safeAmount: 200,
+                currAmount: 0,
+                lifeAmount: 1000,
+                memo: '',
+                etc: ''
+            }
+        };
+        lodash__WEBPACK_IMPORTED_MODULE_0___default.a.defaults(_this.panel, _this.panelDefaults);
         _this.divID = 'table-rms-' + _this.panel.id;
         _this.events.on('init-edit-mode', _this.onInitEditMode.bind(_this));
         _this.events.on('render', _this.onRender.bind(_this));
         _this.events.on('panel-initialized', _this.onRender.bind(_this));
         return _this;
     }
-    RmsAlarmRulePanelCtrl.prototype.OnInitialized = function () {
-        console.log("panel initialized!");
-        return Promise.apply(this.createTable());
+    RmsAlarmRulePanelCtrl.prototype.onInitialized = function () {
+        return Promise.apply(this.fillTable());
     };
     RmsAlarmRulePanelCtrl.prototype.onInitEditMode = function () {
     };
-    RmsAlarmRulePanelCtrl.prototype.createTable = function () {
-        console.log("create table ...");
-        var tabledata = [
-            { id: 1, name: "Oli Bob", age: "12", col: "red", dob: "" },
-            { id: 2, name: "Mary May", age: "1", col: "blue", dob: "14/05/1982" },
-            { id: 3, name: "Christine Lobowski", age: "42", col: "green", dob: "22/05/1982" },
-            { id: 4, name: "Brendon Philips", age: "125", col: "orange", dob: "01/08/1980" },
-            { id: 5, name: "Margret Marmajuke", age: "16", col: "yellow", dob: "31/01/1999" },
+    RmsAlarmRulePanelCtrl.prototype.fillTable = function () {
+        this.data = [
+            { id: 1, category: "실린더", name: "SA549-E", company: "한컴MDS",
+                safeAmount: 200,
+                currAmount: 200,
+                lifeAmount: 200,
+                memo: '',
+                etc: '',
+                regdate: "2018/05/14"
+            },
+            { id: 2, category: "모터", name: "PRD343-FDF", company: "한컴MDS",
+                safeAmount: 200,
+                currAmount: 50,
+                lifeAmount: 200,
+                memo: '',
+                etc: '',
+                regdate: "2018/05/14"
+            },
+            { id: 3, category: "센서", name: "HUMDSD-MISD", company: "한컴MDS",
+                safeAmount: 200,
+                currAmount: 20,
+                lifeAmount: 200,
+                memo: '긴급 추가 구매 요망!',
+                etc: '',
+                regdate: "2018/05/14"
+            },
+            { id: 4, category: "리노핀", name: "REFVDF003403", company: "한컴MDS",
+                safeAmount: 200,
+                currAmount: 130,
+                lifeAmount: 200,
+                memo: '',
+                etc: '',
+                regdate: "2018/05/14"
+            },
+            { id: 5, category: "솔레노이드밸브", name: "434354FEDP-FF", company: "한컴MDS",
+                safeAmount: 200,
+                currAmount: 260,
+                lifeAmount: 200,
+                memo: '',
+                etc: '',
+                regdate: "2018/05/14"
+            },
         ];
-        this.container.tabulator("setData", tabledata);
+        this.container.tabulator("setData", this.data);
         this.initalized = true;
     };
     RmsAlarmRulePanelCtrl.prototype.OnDraw = function () {
-        console.log("raw table ...; skip!");
-        //$("#example-table").tabulator("refresh");
-        this.createTable();
+        this.fillTable();
     };
     RmsAlarmRulePanelCtrl.prototype.onRender = function () {
-        console.log("render table ...");
         if (!this.container) {
-            console.log("container not found!");
             return Promise.reject({});
         }
         if (!this.initalized) {
-            console.log("table is not initialized, yet!");
-            return Promise.resolve(this.createTable());
+            return Promise.resolve(this.fillTable());
         }
         if (this.container && this.initalized) {
-            console.log("draw the table for render data.");
             return Promise.resolve(this.OnDraw());
         }
         return Promise.resolve({});
     };
     RmsAlarmRulePanelCtrl.prototype.link = function (scope, elem, attrs, ctrl) {
-        console.log("find container ...");
         var t = elem.find('.thingspin-table')[0];
         t.id = this.divID;
-        this.container = jquery__WEBPACK_IMPORTED_MODULE_0___default()(t);
+        this.container = jquery__WEBPACK_IMPORTED_MODULE_1___default()(t);
         this.dataTable = this.container.tabulator({
-            height: 205,
+            height: 340,
             layout: "fitColumns",
             columns: [
-                { title: "Name", field: "name", width: 150 },
-                { title: "Age", field: "age", align: "left", formatter: "progress" },
-                { title: "Favourite Color", field: "col" },
-                { title: "Date Of Birth", field: "dob", sorter: "date", align: "center" },
+                { title: "등록일", field: "regdate", sorter: "date" },
+                { title: "품종", field: "category", width: 150 },
+                { title: "스펙", field: "name", align: "left" },
+                { title: "안전수량", field: "safeAmount", align: "right", width: 100 },
+                { title: "재고수량", field: "currAmount", align: "right", width: 100 },
+                { title: "", field: "currAmount", formatter: "progress" },
+                { title: "교체주기", field: "lifeAmount", align: "right", width: 100 },
+                { title: "공급업체", field: "company" },
+                { title: "메모", field: "memo", width: 200 },
+                { title: "비고", field: "etc" }
             ],
             rowClick: function (e, row) {
                 alert("Row " + row.getData().id + " Clicked!!!!");
             },
         });
     };
+    RmsAlarmRulePanelCtrl.prototype.onSave = function () {
+        // TODO ! - call database inasert/update query.
+        var info = this.panel.materialItem;
+        info.id = this.data.length + 1;
+        info.company = info.company.name;
+        info.regdate = new Date('YYYY/MM/DD').toString();
+        this.data.push(info);
+        this.container.tabulator("setData", this.data);
+    };
     RmsAlarmRulePanelCtrl.template = template;
     return RmsAlarmRulePanelCtrl;
-}(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_3__["MetricsPanelCtrl"]));
+}(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_4__["MetricsPanelCtrl"]));
 
 
 
 /***/ }),
 
-/***/ "./panel/asset-man-company/templet.html":
-/*!**********************************************!*\
-  !*** ./panel/asset-man-company/templet.html ***!
-  \**********************************************/
+/***/ "./panel/asset-man-material/partial/options.html":
+/*!*******************************************************!*\
+  !*** ./panel/asset-man-material/partial/options.html ***!
+  \*******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"gf-form-group\" style=\"margin:0px;\">\r\n    <div class=\"gf-form\">\r\n        <span class=\"gf-form-label\"></span>\r\n        <div class=\"gf-form--grow\">\r\n            <input class=\"gf-form-input\" type=\"text\" ng-model=\"inspectionName\" />\r\n        </div> \r\n        <div class=\"gf-form--grow\" ng-style=\"gf-form-button-row:0;\">\r\n            <button type=\"submit\" class=\"btn btn-success\" ng-click=\"ctrl.addInspectionItem(inspectionName, inspectionField)\">등록</button>\r\n        </div>\r\n    </div>\r\n    <div class=\"clearfix\"></div>\r\n</div>\r\n<div class=\"thingspin-table\"></div>\r\n\r\n";
+module.exports = "<div></div>";
+
+/***/ }),
+
+/***/ "./panel/asset-man-material/partial/templet.html":
+/*!*******************************************************!*\
+  !*** ./panel/asset-man-material/partial/templet.html ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"editor-row\">\r\n        <div class=\"section gf-form-group\">\r\n            <div class=\"gf-form\">\r\n                <label class=\"gf-form-label width-7\">소모품(품목)</label>\r\n                <div class=\"gf-form-select-wrapper\">\r\n                    <select class=\"gf-form-input min-width-10 width-12 max-width-16\" \r\n                        ng-model=\"ctrl.panel.materialItem.category\"\r\n                        ng-options=\"f for f in ctrl.panel.materialCategory\" ng-change=\"ctrl.render()\">\r\n                    </select>\r\n                </div>\r\n            </div>\r\n    \r\n            <div class=\"gf-form\" ng-show='1 || ctrl.panel.materialItem.category.length !== 0'>\r\n                <label class=\"gf-form-label width-7\">스펙(품명)</label>\r\n                <input type=\"text\" class=\"gf-form-input min-width-10 width-12 max-width-16\" ng-model=\"ctrl.panel.materialItem.name\" placeholder=\"type here spec name\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\r\n            </div>\r\n            \r\n            <div class=\"gf-form\">\r\n                <label class=\"gf-form-label width-7\">납품회사</label>\r\n                <div class=\"gf-form-select-wrapper\">\r\n                    <select class=\"gf-form-input min-width-10 width-12 max-width-16\" \r\n                        ng-model=\"ctrl.panel.materialItem.company\"\r\n                        ng-options=\"c.name for c in ctrl.panel.companies\" ng-change=\"ctrl.render()\">\r\n                    </select>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        \r\n        <div class=\"section gf-form-group\" ng-show='1 || ctrl.panel.materialItem.name.length !== 0'>\r\n            <div class=\"gf-form\">\r\n                <label class=\"gf-form-label width-7\">안전수량</label>\r\n                <input type=\"text\" class=\"gf-form-input width-8 max-width-12\"  data-placement=\"auto\" ng-model=\"ctrl.panel.materialItem.safeAmount\" placeholder=\"확보해야 하는 수량\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\r\n            </div>\r\n    \r\n            <div class=\"gf-form\">\r\n                <label class=\"gf-form-label width-7\">재고수량</label>\r\n                <input type=\"number\" class=\"gf-form-input width-8 max-width-12\"  data-placement=\"auto\" ng-model=\"ctrl.panel.materialItem.currAmount\" placeholder=\"현재 남아있는 수량\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\r\n            </div>\r\n            \r\n            <div class=\"gf-form\">\r\n                <label class=\"gf-form-label width-7\">교체주기</label>\r\n                <input type=\"number\" class=\"gf-form-inputwidth-8 max-width-12\"  data-placement=\"auto\" ng-model=\"ctrl.panel.materialItem.lifeAmount\" placeholder=\"교체주기\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\r\n            </div>\r\n            <div class=\"clearfix\"></div>\r\n        </div>\r\n        <div class=\"section gf-form-group\" ng-show='1 || ctrl.panel.materialItem.name.length !== 0'>\r\n            <div class=\"gf-form\">\r\n                <label class=\"gf-form-label width-7\">메모</label>\r\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.materialItem.memo\" placeholder=\"\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\r\n            </div>\r\n    \r\n            <div class=\"gf-form\">\r\n                <label class=\"gf-form-label width-7\">비고</label>\r\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.materialItem.etc\" placeholder=\"\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\r\n            </div>\r\n            \r\n            <div class=\"gf-form\">\r\n                <button class=\"btn btn-success min-width-23 width-23\" ng-click=\"ctrl.onSave()\">\r\n                    Save\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    \r\n    <div class=\"editor-row\">\r\n        <div class=\"thingspin-table\"></div>\r\n    </div>\r\n    ";
 
 /***/ }),
 
@@ -1696,6 +1100,17 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_grafana_app_plugins_sdk__;
 /***/ (function(module, exports) {
 
 module.exports = __WEBPACK_EXTERNAL_MODULE_jquery__;
+
+/***/ }),
+
+/***/ "lodash":
+/*!*************************!*\
+  !*** external "lodash" ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_lodash__;
 
 /***/ })
 
