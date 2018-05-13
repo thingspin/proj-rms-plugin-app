@@ -29,30 +29,30 @@
 
   "HideFromList": false,  
   "includes": [
-    {"type": "menu", "name": "분석", "mainMenu": true,  "img":"img/M00.png", "menuID": 1},
-    {"type": "dashboard", "name": "CPK", "path": "dashboards/D04-01.json", "AddToNav": true, "menuID": 1, "ico":"fa fa-industry"},
-    {"type": "dashboard", "name": "불량 횟수", "path": "dashboards/D04-02.json", "AddToNav": true, "menuID": 1, "ico":"fa fa-industry"},
-    {"type": "dashboard", "name": "불량 분포", "path": "dashboards/D04-03.json", "AddToNav": true, "menuID": 1, "ico":"fa fa-industry"},
+    {"type": "menu", "name": "분석", "mainMenu": true,  "img":"img/M00.png", "menuID": 0},
+    {"type": "dashboard", "name": "CPK 현황", "path": "dashboards/D00-01.json", "AddToNav": true, "menuID": 0, "ico":"fa fa-industry"},
+    {"type": "dashboard", "name": "불량 현황", "path": "dashboards/D00-02.json", "AddToNav": true, "menuID": 0, "ico":"fa fa-industry"},
+    {"type": "dashboard", "name": "설비 불량 현황", "path": "dashboards/D00-03.json", "AddToNav": true, "menuID": 0, "ico":"fa fa-industry"},
 
-    {"type": "menu", "name": "생산 현황", "mainMenu": true, "img":"img/M01.png", "menuId": 0},
-    {"type": "dashboard", "name": "생산 계획", "path": "dashboards/D01-00.json", "defaultNav": true, "addToNav": true, "menuID": 0, "ico":"fa fa-industry"},
-    {"type": "dashboard", "name": "생산 실적", "path": "dashboards/D01-01.json", "defaultNav": true, "addToNav": true, "menuID": 0, "ico":"fa fa-industry"},
-    {"type": "dashboard", "name": "설비 감시", "path": "dashboards/D01-02.json", "AddToNav": true, "menuID": 0, "ico":"fa fa-industry"},
+    {"type": "menu", "name": "생산 현황", "mainMenu": true, "img":"img/M01.png", "menuId": 1},
+    {"type": "dashboard", "name": "생산 계획", "path": "dashboards/D01-00.json", "defaultNav": true, "addToNav": true, "menuID": 1, "ico":"fa fa-industry"},
+    {"type": "dashboard", "name": "법인별 생산 현황", "path": "dashboards/D01-01.json", "defaultNav": true, "addToNav": true, "menuID": 1, "ico":"fa fa-industry"},
+    {"type": "dashboard", "name": "설비 감시", "path": "dashboards/D01-02.json", "AddToNav": true, "menuID": 1, "ico":"fa fa-industry"},
 
-    {"type": "menu", "name": "공정 설정", "mainMenu": true, "img":"img/M02.png", "menuID": 3},
-    {"type": "page", "name": "검사항목 / 불량유형", "component": "InspectionProperty", "Slug": "3-1", "AddToNav": true, "menuID": 3, "ico":"fa fa-industry"},
-    {"type": "page", "name": "사전조치 설정", "component": "SettingActionInAdvance", "Slug": "3-2", "AddToNav": true, "menuID": 3, "ico":"fa fa-industry"},
-    {"type": "dashboard", "name": "모델별 검사기록", "path": "dashboards/D03-01.json", "AddToNav": true, "menuID": 3, "ico":"fa fa-industry"},
+    {"type": "menu", "name": "공정 설정", "mainMenu": true, "img":"img/M02.png", "menuID": 2},
+    {"type": "page", "name": "검사항목 / 불량유형", "component": "InspectionProperty", "Slug": "3-1", "AddToNav": true, "menuID": 2, "ico":"fa fa-industry"},
+    {"type": "page", "name": "사전조치 설정", "component": "SettingActionInAdvance", "Slug": "3-2", "AddToNav": true, "menuID": 2, "ico":"fa fa-industry"},
+    {"type": "dashboard", "name": "모델별 검사기록", "path": "dashboards/D02-01.json", "AddToNav": true, "menuID": 2, "ico":"fa fa-industry"},
 
-    {"type": "menu", "name": "설비 현황", "mainMenu": true, "img":"img/M03.png", "menuID": 4},
-    {"type": "dashboard", "name": "소모품 등록", "path": "dashboards/D02-01.json", "AddToNav": true, "menuID": 4, "ico":"fa fa-industry"},
-    {"type": "dashboard", "name": "장비별 소모품 등록", "path": "dashboards/D02-02.json", "AddToNav": true, "menuID": 4, "ico":"fa fa-industry"},
-    {"type": "dashboard", "name": "업체 리스트", "path": "dashboards/D02-03.json", "AddToNav": true, "menuID": 4, "ico":"fa fa-industry"},
-    {"type": "dashboard", "name": "금형 리스트", "path": "dashboards/D02-04.json", "AddToNav": true, "menuID": 4, "ico":"fa fa-industry"},
+    {"type": "menu", "name": "설비 현황", "mainMenu": true, "img":"img/M03.png", "menuID": 3},
+    {"type": "dashboard", "name": "소모품 등록", "path": "dashboards/D03-01.json", "AddToNav": true, "menuID": 3, "ico":"fa fa-industry"},
+    {"type": "dashboard", "name": "장비별 소모품 등록", "path": "dashboards/D03-02.json", "AddToNav": true, "menuID": 3, "ico":"fa fa-industry"},
+    {"type": "dashboard", "name": "업체 리스트", "path": "dashboards/D03-03.json", "AddToNav": true, "menuID": 3, "ico":"fa fa-industry"},
+    {"type": "dashboard", "name": "금형 리스트", "path": "dashboards/D03-04.json", "AddToNav": true, "menuID": 3, "ico":"fa fa-industry"},
 
-    {"type": "menu", "name": "추적", "mainMenu": true, "img":"img/M05.png", "menuID": 2},
-    {"type": "dashboard", "name": "선추적", "path": "dashboards/D05-01.json", "AddToNav": true, "menuID": 2, "ico":"fa fa-industry"},
-    {"type": "dashboard", "name": "역추적", "path": "dashboards/D05-02.json", "AddToNav": true, "menuID": 2, "ico":"fa fa-industry"}
+    {"type": "menu", "name": "추적", "mainMenu": true, "img":"img/M05.png", "menuID": 4},
+    {"type": "dashboard", "name": "선추적", "path": "dashboards/D04-01.json", "AddToNav": true, "menuID": 4, "ico":"fa fa-industry"},
+    {"type": "dashboard", "name": "역추적", "path": "dashboards/D04-02.json", "AddToNav": true, "menuID": 4, "ico":"fa fa-industry"}
   ],
   "routes": [
     {

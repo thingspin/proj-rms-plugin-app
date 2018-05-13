@@ -1,111 +1,14 @@
 {
-  "title": "생산 실적",
-  "__requires": [
-    {
-      "type": "datasource",
-      "id": "mysql",
-      "name": "REMOTESOLUTIONS(V1.0)",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    },
-    {
-      "type": "thingspin",
-      "id": "thingspin",
-      "name": "ThingSPIN",
-      "version": "1.0.1"
-    }
-  ],
-  "editable": false,
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": null,
   "links": [],
-  "panels": [
-    {
-      "columns": [],
-      "datasource": "REMOTESOLUTIONS(V1.0)",
-      "fontSize": "90%",
-      "gridPos": {
-        "h": 7,
-        "w": 24,
-        "x": 0,
-        "y": 0
-      },
-      "hideTimeOverride": true,
-      "id": 2,
-      "links": [],
-      "pageSize": 5,
-      "repeat": null,
-      "scroll": false,
-      "showHeader": true,
-      "sort": {
-        "col": 0,
-        "desc": true
-      },
-      "styles": [
-        {
-          "alias": "",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "link": true,
-          "linkTargetBlank": true,
-          "linkTooltip": "$__cell_1",
-          "linkUrl": "/plugins/proj-rms-plugin-app/page/geomsahangmog-bulryangyuhyeong?var-MODEL=$__cell",
-          "mappingType": 1,
-          "pattern": "MODEL",
-          "preserveFormat": false,
-          "sanitize": false,
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        },
-        {
-          "alias": "",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "link": false,
-          "mappingType": 1,
-          "pattern": "DETAIL",
-          "preserveFormat": true,
-          "sanitize": true,
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        }
-      ],
-      "targets": [
-        {
-          "alias": "",
-          "format": "table",
-          "rawSql": "SELECT MODEL_ID AS MODEL, DESCRIPTION, CONCAT(\"<a href=\", \"\\\"#?\", \"var-MODEL=\", MODEL_ID, \"\\\"><span><i class=\\\"fa fa-plus-square-o\\\" aria-hidden=\\\"true\\\"></i></span></a>\") AS \"DETAIL\" FROM T_MODEL;",
-          "refId": "A"
-        }
-      ],
-      "title": "PRODUCT MODELS",
-      "transform": "table",
-      "transparent": false,
-      "type": "table"
-    }
-  ],
+  "panels": [],
   "schemaVersion": 16,
-  "style": "dark",
+  "style": "light",
   "tags": [],
   "templating": {
     "list": []
@@ -141,5 +44,6 @@
     ]
   },
   "timezone": "",
-  "version": 1
+  "title": "법인별 생산 현황",
+  "version": 8
 }
