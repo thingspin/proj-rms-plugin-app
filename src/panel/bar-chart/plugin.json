@@ -1,0 +1,13 @@
+{
+  "type": "panel",
+  "name": "Bar Chart",
+  "id": "rms-plugin-app-p001",
+
+  "info": {
+    "description": "ThingSPIN Bar Chart with chart.js",
+    "author": {
+      "name": "lonycell@thingspin.io",
+      "url": "http://thingspin.io"
+    }
+  }
+}

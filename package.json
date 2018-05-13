@@ -24,11 +24,14 @@
     "grunt-sass": "^2.0.0",
     "grunt-contrib-clean": "^1.1.0",
     "grunt-webpack": "^3.1.1",
-    "grunt-contrib-watch": "^1.0.1"
+    "grunt-contrib-watch": "^1.0.1",
+    "typings-for-css-modules-loader": "^1.7.0"
   },
   "dependencies": {
     "mqtt": "^2.18.0",
     "tabulator": "^0.2.38",
-    "chart.js": "^2.7.2"
+    "chart.js": "^2.7.2",
+    "jquery-ui": "^1.12.1",
+    "jquery.tabulator": "^3.5.1"
   }
 }

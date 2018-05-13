@@ -11,7 +11,8 @@ module.exports = {
   context: resolve('src'),
   entry:{
       'module.js' : './module.ts',
-      'panel/alarms/module.js' : './panel/alarms/module.ts'
+      'panel/bar-chart/module.js' : './panel/bar-chart/module.ts',
+      'panel/tabulator-table/module.js' : './panel/tabulator-table/module.ts'
   },
   output: {
     path: resolve('dist'),
@@ -35,6 +36,7 @@ module.exports = {
       // { from: 'plugin.json' },
       { from: '**/*.json' },
       { from: 'img/**' },
+      { from: '**/*.css' },
     ]),
   ],
   resolve: {
@@ -43,7 +45,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.html$/,
+        test: /\.(html|svg)$/,
         exclude: /node_modules/,
         use: { loader: 'html-loader' },
       },
@@ -52,6 +54,20 @@ module.exports = {
         loaders: ["ts-loader"],
         exclude: /node_modules/,
       },
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          {
+            loader: 'typings-for-css-modules-loader?modules',
+            options: {
+              modules: true,
+              namedExport: false,
+              camelCase: false
+            }
+          }
+        ]
+      }
     ]
   }
 }

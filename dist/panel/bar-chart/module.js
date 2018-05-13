@@ -66,7 +66,7 @@ define(["app/plugins/sdk"], function(__WEBPACK_EXTERNAL_MODULE_grafana_app_plugi
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./panel/alarms/module.ts");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./panel/bar-chart/module.ts");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -91,10 +91,10 @@ var require;var require;/*!
 
 /***/ }),
 
-/***/ "./panel/alarms/module.ts":
-/*!********************************!*\
-  !*** ./panel/alarms/module.ts ***!
-  \********************************/
+/***/ "./panel/bar-chart/module.ts":
+/*!***********************************!*\
+  !*** ./panel/bar-chart/module.ts ***!
+  \***********************************/
 /*! exports provided: PanelCtrl */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -117,7 +117,7 @@ var __extends = (undefined && undefined.__extends) || (function () {
 })();
 
 
-var template = __webpack_require__(/*! ./templet.html */ "./panel/alarms/templet.html");
+var template = __webpack_require__(/*! ./templet.html */ "./panel/bar-chart/templet.html");
 var RmsAlarmRulePanelCtrl = /** @class */ (function (_super) {
     __extends(RmsAlarmRulePanelCtrl, _super);
     function RmsAlarmRulePanelCtrl($scope, $injector, $http, $location, uiSegmentSrv, annotationsSrv, $window) {
@@ -209,10 +209,10 @@ var RmsAlarmRulePanelCtrl = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "./panel/alarms/templet.html":
-/*!***********************************!*\
-  !*** ./panel/alarms/templet.html ***!
-  \***********************************/
+/***/ "./panel/bar-chart/templet.html":
+/*!**************************************!*\
+  !*** ./panel/bar-chart/templet.html ***!
+  \**************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
