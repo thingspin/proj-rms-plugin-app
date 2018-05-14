@@ -1,54 +1,98 @@
 {
-  "title": "설비 감시",
   "annotations": {
-    "list": [
-      {
-        "builtIn": 1,
-        "datasource": "-- Simulator --",
-        "enable": true,
-        "hide": true,
-        "iconColor": "rgba(0, 211, 255, 1)",
-        "name": "Annotations & Alerts",
-        "type": "dashboard"
-      }
-    ]
+    "list": []
   },
-  "editable": false,
+  "editable": true,
   "gnetId": null,
-  "graphTooltip": 0,
-  "id": null,
+  "graphTooltip": 1,
   "links": [],
   "panels": [
     {
-      "bgimage": "public/img/brand/thingspin/15.min.svg",
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "#299c46",
+        "rgba(237, 129, 40, 0.89)",
+        "#d44a3a"
+      ],
       "datasource": null,
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
       "gridPos": {
-        "h": 5,
-        "w": 9,
+        "h": 3,
+        "w": 10,
         "x": 0,
         "y": 0
       },
-      "height": "400px",
-      "id": 6,
+      "id": 8,
+      "interval": null,
       "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
       "repeat": null,
-      "sensors": [],
-      "series": [],
-      "seriesList": [],
-      "targets": [],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "$$hashKey": "object:212",
+          "refId": "A"
+        }
+      ],
+      "thresholds": "",
       "title": "",
-      "transparent": true,
-      "type": "bessler-pictureit-panel",
-      "valueMaps": [],
-      "width": "100px"
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "avg"
     },
     {
       "bgimage": "public/img/brand/thingspin/pnid/power/turbine.svg",
       "datasource": null,
       "gridPos": {
-        "h": 12,
+        "h": 11,
         "w": 14,
-        "x": 9,
+        "x": 10,
         "y": 0
       },
       "height": "400px",
@@ -60,116 +104,40 @@
       "seriesList": [],
       "targets": [],
       "title": "",
-      "transparent": true,
+      "transparent": false,
       "type": "bessler-pictureit-panel",
       "valueMaps": [],
       "width": "100px"
     },
     {
-      "content": "<TABLE width=\"100%\">\n<TR>\n  <TD>라인</TD>\n  <TD>설비</TD>\n  <TD>이상</TD>\n</TR>\n\n<TR>\n  <TD>000001</TD>\n  <TD>검사기001</TD>\n  <TD>라인 정지 알람 ....</TD>\n</TR>\n\n<TR>\n  <TD>000001</TD>\n  <TD>검사기001</TD>\n  <TD>라인 정지 알람 ....</TD>\n</TR>\n\n<TR>\n  <TD>000001</TD>\n  <TD>검사기001</TD>\n  <TD>라인 정지 알람 ....</TD>\n</TR>\n\n<TR>\n  <TD>000001</TD>\n  <TD>검사기001</TD>\n  <TD>라인 정지 알람 ....</TD>\n</TR>\n\n<TR>\n  <TD>000001</TD>\n  <TD>검사기001</TD>\n  <TD>라인 정지 알람 ....</TD>\n</TR>\n</TABLE>",
+      "datasource": null,
       "gridPos": {
-        "h": 7,
-        "w": 9,
+        "h": 8,
+        "w": 10,
         "x": 0,
-        "y": 5
+        "y": 3
       },
       "id": 4,
-      "links": [],
-      "mode": "html",
-      "title": "",
-      "transparent": true,
-      "type": "text"
+      "targets": [
+        {}
+      ],
+      "title": "Panel Title",
+      "type": "rms-plugin-app-p002"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "-- Simulator --",
-      "fill": 1,
+      "datasource": null,
       "gridPos": {
-        "h": 5,
+        "h": 17,
         "w": 24,
         "x": 0,
-        "y": 12
+        "y": 11
       },
-      "id": 8,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "percentage": false,
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "repeat": null,
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      "id": 6,
       "targets": [
-        {
-          "alias": "",
-          "format": "time_series",
-          "rawSql": "SELECT\n  UNIX_TIMESTAMP(<time_column>) as time_sec,\n  <value column> as value,\n  <series name column> as metric\nFROM <table name>\nWHERE $__timeFilter(time_column)\nORDER BY <time_column> ASC\n",
-          "refId": "A"
-        },
-        {
-          "refId": "B"
-        },
-        {
-          "refId": "C"
-        }
+        {}
       ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
+      "type": "rms-plugin-app-p002"
     }
   ],
   "schemaVersion": 16,
@@ -209,5 +177,6 @@
     ]
   },
   "timezone": "",
-  "version": 1
+  "title": "설비 감시",
+  "version": 12
 }

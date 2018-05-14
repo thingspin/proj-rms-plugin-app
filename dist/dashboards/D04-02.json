@@ -1,182 +1,18 @@
 {
-  "title": "불량 횟수",
-  "__requires": [
-    {
-      "type": "datasource",
-      "id": "mysql",
-      "name": "MySQL",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    },
-    {
-      "type": "thingspin",
-      "id": "thingspin",
-      "name": "ThingSPIN",
-      "version": "1.0.1"
-    }
-  ],
   "annotations": {
-    "list": []
+    "list": [
+    ]
   },
   "editable": true,
   "gnetId": null,
-  "graphTooltip": 0,
-  "hideControls": false,
-  "id": null,
+  "graphTooltip": 1,
   "links": [],
-  "rows": [
-    {
-      "collapse": false,
-      "height": 449,
-      "panels": [
-        {
-          "columns": [],
-          "datasource": "${DS_MARIADB}",
-          "fontSize": "100%",
-          "id": 1,
-          "links": [],
-          "pageSize": null,
-          "scroll": true,
-          "showHeader": true,
-          "sort": {
-            "col": 0,
-            "desc": false
-          },
-          "span": 12,
-          "styles": [
-            {
-              "alias": "Time",
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "pattern": "Time",
-              "type": "date"
-            },
-            {
-              "alias": "",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "decimals": 2,
-              "pattern": "/.*/",
-              "thresholds": [],
-              "type": "number",
-              "unit": "short"
-            }
-          ],
-          "targets": [
-            {
-              "alias": "",
-              "format": "table",
-              "rawSql": "select faulty_name as '항목', faulty_count as '연속 불량', cpk as 'cpk 불량 조건', faulty_action_name as '조치 상태' from t_faulty_type_report join (t_faulty, t_faulty_action) on (t_faulty.faulty_id = t_faulty_type_report.faulty_id and t_faulty_type_report.faulty_action_id = t_faulty_action.faulty_action_id)",
-              "refId": "A"
-            }
-          ],
-          "title": "불량 항목 리스트",
-          "transform": "table",
-          "type": "table"
-        }
-      ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Dashboard Row",
-      "titleSize": "h6"
-    },
-    {
-      "collapse": false,
-      "height": 250,
-      "panels": [
-        {
-          "columns": [],
-          "datasource": "${DS_MARIADB}",
-          "fontSize": "100%",
-          "id": 2,
-          "links": [],
-          "pageSize": null,
-          "scroll": true,
-          "showHeader": true,
-          "sort": {
-            "col": 0,
-            "desc": true
-          },
-          "span": 12,
-          "styles": [
-            {
-              "alias": "Time",
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "pattern": "Time",
-              "type": "date"
-            },
-            {
-              "alias": "",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "decimals": 2,
-              "pattern": "/.*/",
-              "thresholds": [],
-              "type": "number",
-              "unit": "short"
-            }
-          ],
-          "targets": [
-            {
-              "alias": "",
-              "format": "table",
-              "rawSql": "select faulty_type_guide as '점검내용' from t_faulty_guide join t_faulty_type_report on t_faulty_type_report.faulty_type_id = t_faulty_guide.faulty_type_id where t_faulty_guide.faulty_type_id = (select faulty_type_id from t_faulty_type_report join t_faulty on t_faulty.faulty_id = t_faulty_type_report.faulty_id where t_faulty.faulty_name = $FaultyName);",
-              "refId": "A"
-            }
-          ],
-          "title": "",
-          "transform": "table",
-          "type": "table"
-        }
-      ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Dashboard Row",
-      "titleSize": "h6"
-    }
-  ],
-  "schemaVersion": 14,
-  "style": "dark",
+  "panels": [],
+  "schemaVersion": 16,
+  "style": "light",
   "tags": [],
   "templating": {
-    "list": [
-      {
-        "allValue": null,
-        "current": {},
-        "datasource": "${DS_MARIADB}",
-        "hide": 0,
-        "includeAll": false,
-        "label": "불량 항목",
-        "multi": false,
-        "name": "FaultyName",
-        "options": [],
-        "query": "select faulty_name from t_faulty_type_report join t_faulty on t_faulty.faulty_id = t_faulty_type_report.faulty_id;",
-        "refresh": 1,
-        "regex": "",
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      }
-    ]
+    "list": []
   },
   "time": {
     "from": "now-6h",
@@ -184,29 +20,19 @@
   },
   "timepicker": {
     "refresh_intervals": [
-      "5s",
-      "10s",
-      "30s",
-      "1m",
-      "5m",
-      "15m",
-      "30m",
       "1h",
-      "2h",
       "1d"
     ],
     "time_options": [
-      "5m",
-      "15m",
       "1h",
       "6h",
       "12h",
       "24h",
-      "2d",
       "7d",
       "30d"
     ]
   },
   "timezone": "",
-  "version": 3
+  "title": "역추적",
+  "version": 6
 }
