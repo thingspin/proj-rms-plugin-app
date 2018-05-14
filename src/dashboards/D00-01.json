@@ -1,33 +1,10 @@
 {
-  "title": "CPK 현황",
-  "__requires": [
-    {
-      "type": "datasource",
-      "id": "mysql",
-      "name": "MySQL",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    },
-    {
-      "type": "thingspin",
-      "id": "thingspin",
-      "name": "ThingSPIN",
-      "version": "1.0.1"
-    }
-  ],
   "annotations": {
-    "list": [
-    ]
+    "list": []
   },
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": null,
   "links": [],
   "panels": [
     {
@@ -60,12 +37,10 @@
       "mappingType": 1,
       "mappingTypes": [
         {
-          "$$hashKey": "object:394",
           "name": "value to text",
           "value": 1
         },
         {
-          "$$hashKey": "object:395",
           "name": "range to text",
           "value": 2
         }
@@ -98,7 +73,6 @@
       "valueFontSize": "80%",
       "valueMaps": [
         {
-          "$$hashKey": "object:397",
           "op": "=",
           "text": "RC0356",
           "value": "null"
@@ -107,27 +81,22 @@
       "valueName": "avg"
     },
     {
-      "datasource": "REMOTESOLUTIONS(V1.0)",
+      "datasource": null,
       "gridPos": {
         "h": 10,
-        "w": 12,
+        "w": 11,
         "x": 12,
         "y": 0
       },
-      "id": 2,
+      "id": 12,
       "links": [],
       "targets": [
         {
-          "$$hashKey": "object:144",
-          "alias": "",
-          "format": "time_series",
-          "rawSql": "SELECT * FROM t_model WHERE $__timeFilter(REGDATE);",
           "refId": "A"
         }
       ],
-      "title": "Table to chart samples",
-      "transparent": false,
-      "type": "rms-plugin-app-p001"
+      "title": "",
+      "type": "rms-plugin-app-cpk-01"
     },
     {
       "cacheTimeout": null,
@@ -190,7 +159,6 @@
       "tableColumn": "",
       "targets": [
         {
-          "$$hashKey": "object:301",
           "refId": "A"
         }
       ],
@@ -231,8 +199,8 @@
     {
       "datasource": null,
       "gridPos": {
-        "h": 6,
-        "w": 24,
+        "h": 10,
+        "w": 23,
         "x": 0,
         "y": 10
       },
@@ -240,7 +208,6 @@
       "links": [],
       "targets": [
         {
-          "$$hashKey": "object:249",
           "refId": "A"
         }
       ],
@@ -284,5 +251,6 @@
     ]
   },
   "timezone": "",
-  "version": 1
+  "title": "CPK 현황",
+  "version": 10
 }

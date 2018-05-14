@@ -12,6 +12,7 @@ module.exports = {
   entry:{
       'module.js' : './module.ts',
       'panel/bar-chart/module.js' : './panel/bar-chart/module.ts',
+      'panel/cpk-chart/module.js' : './panel/cpk-chart/module.ts',
       'panel/tabulator-table/module.js' : './panel/tabulator-table/module.ts',
       'panel/asset-man-material/module.js' : './panel/asset-man-material/module.ts'
   },
@@ -22,7 +23,7 @@ module.exports = {
   },
   externals: [
     // remove the line below if you don't want to use buildin versions
-    'jquery', 'lodash', 'moment',
+    //'jquery', 'lodash', 'moment',
     function (context, request, callback) {
       var prefix = 'grafana/';
       if (request.indexOf(prefix) === 0) {
@@ -54,20 +55,6 @@ module.exports = {
         test: /\.tsx?$/,
         loaders: ["ts-loader"],
         exclude: /node_modules/,
-      },
-      {
-        test: /\.css$/,
-        use: [
-          'style-loader',
-          {
-            loader: 'typings-for-css-modules-loader?modules',
-            options: {
-              modules: true,
-              namedExport: false,
-              camelCase: false
-            }
-          }
-        ]
       }
     ]
   }
