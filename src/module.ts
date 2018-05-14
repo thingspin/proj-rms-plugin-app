@@ -1,5 +1,7 @@
 import {loadPluginCss} from 'grafana/app/plugins/sdk';
 
+import './vendor/mds_customs/isteven-angular-multiselect/isteven-multi-select';
+
 // register Remote Solution Services
 import './services/remoteSolutionDS';
 import './services/remoteSolutionWS';
