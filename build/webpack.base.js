@@ -22,7 +22,7 @@ module.exports = {
   },
   externals: [
     // remove the line below if you don't want to use buildin versions
-    'jquery', 'lodash', 'moment',
+    //'jquery', 'lodash', 'moment',
     function (context, request, callback) {
       var prefix = 'grafana/';
       if (request.indexOf(prefix) === 0) {
@@ -54,20 +54,6 @@ module.exports = {
         test: /\.tsx?$/,
         loaders: ["ts-loader"],
         exclude: /node_modules/,
-      },
-      {
-        test: /\.css$/,
-        use: [
-          'style-loader',
-          {
-            loader: 'typings-for-css-modules-loader?modules',
-            options: {
-              modules: true,
-              namedExport: false,
-              camelCase: false
-            }
-          }
-        ]
       }
     ]
   }

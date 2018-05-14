@@ -16,7 +16,7 @@ loadPluginCss({
 });
 
 const template = require("./templet.html");
-const style = require("jquery.tabulator/dist/css/tabulator.min.css");
+//const style = require("jquery.tabulator/dist/css/tabulator.min.css");
 
 class RmsAlarmRulePanelCtrl extends MetricsPanelCtrl {
   static template = template;
