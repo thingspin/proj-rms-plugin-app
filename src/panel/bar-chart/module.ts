@@ -1,7 +1,7 @@
-import {PanelCtrl, MetricsPanelCtrl} from  'grafana/app/plugins/sdk';
+import {MetricsPanelCtrl} from  'grafana/app/plugins/sdk';
 
 import * as Chart from 'chart.js/dist/Chart.min';
-import * as cbundle from 'chart.js/dist/Chart.bundle.min';
+// import * as cbundle from 'chart.js/dist/Chart.bundle.min';
 
 const template = require("./templet.html");
 
@@ -17,7 +17,7 @@ class RmsAlarmRulePanelCtrl extends MetricsPanelCtrl {
   chart: any;
   mouse: any;
 
-  constructor($scope, $injector, $http, $location, uiSegmentSrv, annotationsSrv, private $window) {
+  constructor($scope, $injector) {
     super($scope, $injector);
 
     this.chartID = 'chart-rms-alrams-' + this.panel.id;

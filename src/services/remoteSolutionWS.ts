@@ -1,24 +1,16 @@
 //import _ from 'lodash';
 import coreModule from 'grafana/app/core/core_module';
 import appEvents from 'grafana/app/core/app_events';
-import { strictEqual } from 'assert';
+// import { strictEqual } from 'assert';
 
 export class RemoteSolutionWSCtrl {
-    $location: any;
-    $q: any;
-    backendSrv: any;
     wsInfo: any;
 
     //===================================================================================
     // Remote Solution Websocket Initialize
     //===================================================================================
 
-    constructor($q, backendSrv, $location) {
-        // set external services
-        this.$location =  $location;
-        this.$q = $q;
-        this.backendSrv = backendSrv;
-
+    constructor(private $location) {
         // set internal variable
         this.wsInfo = {};
 
@@ -137,7 +129,7 @@ export class RemoteSolutionWSCtrl {
     // Remote Solution Websocket Utils
     //===================================================================================
 
-    getSessionId(appId){
+    getSessionId(appId) {
         return this.wsInfo[appId].id;
     }
 }

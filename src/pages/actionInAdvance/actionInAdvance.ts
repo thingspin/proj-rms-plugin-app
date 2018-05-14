@@ -1,5 +1,4 @@
 var template = require("./actionInAdvance.html");
-import * as mqtt from 'mqtt/dist/mqtt.min';
 
 export class SettingActionInAdvancePageCtrl {
     static template = template;
@@ -10,10 +9,8 @@ export class SettingActionInAdvancePageCtrl {
     isOrgEditor: boolean;
     IP_LIST: any[];
 
-    constructor(private $location, $q, private $scope, $injector, private rsDsSrv) {
+    constructor(private $location, private rsDsSrv) {
         this.mode = "list";
-
-        var c = mqtt.connect("ws://192.168.0.1");
 
         let selectId = this.appModel.jsonData.datasourceID;
 

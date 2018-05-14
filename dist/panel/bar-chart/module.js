@@ -117,12 +117,12 @@ var __extends = (undefined && undefined.__extends) || (function () {
 })();
 
 
+// import * as cbundle from 'chart.js/dist/Chart.bundle.min';
 var template = __webpack_require__(/*! ./templet.html */ "./panel/bar-chart/templet.html");
 var RmsAlarmRulePanelCtrl = /** @class */ (function (_super) {
     __extends(RmsAlarmRulePanelCtrl, _super);
-    function RmsAlarmRulePanelCtrl($scope, $injector, $http, $location, uiSegmentSrv, annotationsSrv, $window) {
+    function RmsAlarmRulePanelCtrl($scope, $injector) {
         var _this = _super.call(this, $scope, $injector) || this;
-        _this.$window = $window;
         _this.chartID = 'chart-rms-alrams-' + _this.panel.id;
         _this.events.on('init-edit-mode', _this.onInitEditMode.bind(_this));
         _this.events.on('render', _this.onRender.bind(_this));
@@ -216,7 +216,7 @@ var RmsAlarmRulePanelCtrl = /** @class */ (function (_super) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <div class=\"chart-container\" style=\"position: relative; height:40vh; width:80vw\"> -->\r\n<canvas class=\"chart\" style=\"position: relative; width:100%\"></canvas>";
+module.exports = "<!-- <div class=\"chart-container\" style=\"position: relative; height:40vh; width:80vw\"> -->\n<canvas class=\"chart\" style=\"position: relative; width:100%\"></canvas>";
 
 /***/ }),
 

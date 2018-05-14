@@ -22,7 +22,7 @@
     "noImplicitThis": false,
     "noImplicitUseStrict": false,
     "noImplicitAny": false,
-    "noUnusedLocals": false,
+    "noUnusedLocals": true,
     "allowUnreachableCode": true,
     "paths": {
       "@": ["."]

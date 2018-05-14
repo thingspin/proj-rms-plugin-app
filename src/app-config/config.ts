@@ -1,8 +1,4 @@
-'use strict';
-
-import _ from 'lodash';
 var template = require("./config.html");
-import {PanelCtrl} from 'grafana/app/plugins/sdk';
 import appEvents from 'grafana/app/core/app_events';
 
 class AppConfigCtrl {
@@ -15,7 +11,7 @@ class AppConfigCtrl {
   appEditCtrl: any;
   enabled: boolean;
 
-  constructor(private $scope, private $injector, private $q, private $location, private rsDsSrv, private backendSrv) {
+  constructor(private $q, private $location, private rsDsSrv, private backendSrv) {
 
     this.enabled = false;
     this.setDatasourceList(0);

@@ -90,7 +90,7 @@ var require;var require;(function(f){if(true){module.exports=f()}else { var g; }
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"page-header\">\r\n\t<h1>데이터 소스</h1>\r\n\t<a class=\"btn btn-success\" href=\"/datasources/new\" ng-show=\"ctrl.isOrgEditor\">\r\n\t\t<i class=\"fa fa-plus\"></i>\r\n\t\t새로만들기\r\n\t</a>\r\n</div>\r\n\r\n<div ng-if=\"!ctrl.pageReady\">\r\n\t... 로딩 ...\r\n</div>\r\n\r\n<div ng-if=\"ctrl.pageReady\">\r\n\t<table class=\"filter-table form-inline\">\r\n\t\t<thead>\r\n\t\t\t<tr>\r\n\t\t\t\t<th style=\"width: 80%\">Name</th>\r\n\t\t\t\t<th></th>\r\n\t\t\t</tr>\r\n\t\t</thead>\r\n\t\t<tbody>\r\n\t\t\t<tr class=\"dashlist-item\" ng-repeat=\"ds in ctrl.dsList\">\r\n\t\t\t\t<td style=\"font-size: 1.3rem; padding: 0\">\r\n\t\t\t\t\t<a style=\"display: block; padding: 15px; height: 100%;\" href=\"/datasources/edit/{{ds.id}}\">\r\n\t\t\t\t\t\t{{ds.name}}\r\n\t\t\t\t\t</a>\r\n\t\t\t\t</td>\r\n\t\t\t\t<td class=\"text-right\">\r\n\t\t\t\t\t<a ng-click=\"ctrl.deleteDs(ds)\" class=\"btn btn-danger btn-mini\">\r\n\t\t\t\t\t\t<i class=\"fa fa-trash\"></i>\r\n\t\t\t\t\t</a>\r\n\t\t\t\t\t<input type=\"radio\" ng-model=\"ctrl.appModel.jsonData.datasourceID\" value=\"{{ds.id}}\" />\r\n\t\t\t\t</td>\r\n\t\t\t</tr>\r\n\t\t</tbody>\r\n\t</table>\r\n\r\n\t<div ng-if=\"ctrl.dsList.length === 0\">\r\n\t\t<div style=\"text-align: center; padding-top: 90px; min-height: 220px; min-width: 400px;  margin: 0 auto;\">\r\n\t\t\t<i ng-class=\"icon\" class=\"icon-gf icon-gf-endpoint no-endpoints\"></i>\r\n\t\t\t<p ng-if=\"ctrl.isOrgEditor\">아직, 데이터베이스 연결이 설정되지 않았습니다.\r\n\t\t\t\t<br>\r\n\t\t\t\t<a class=\"highlight-word\" href=\"/datasources/new\">데이터 연결 새로 만들기</a>\r\n\t\t\t</p>\r\n\t\t\t<p ng-if=\"!ctrl.isOrgEditor\">아직, 데이터베이스 연결이 설정되지 않았습니다. 관리자에게 연락하시기 바랍니다.\r\n\t\t\t</p>\r\n\t\t</div>\r\n\t</div>\r\n</div>";
+module.exports = "<div class=\"page-header\">\n\t<h1>데이터 소스</h1>\n\t<a class=\"btn btn-success\" href=\"/datasources/new\" ng-show=\"ctrl.isOrgEditor\">\n\t\t<i class=\"fa fa-plus\"></i>\n\t\t새로만들기\n\t</a>\n</div>\n\n<div ng-if=\"!ctrl.pageReady\">\n\t... 로딩 ...\n</div>\n\n<div ng-if=\"ctrl.pageReady\">\n\t<table class=\"filter-table form-inline\">\n\t\t<thead>\n\t\t\t<tr>\n\t\t\t\t<th style=\"width: 80%\">Name</th>\n\t\t\t\t<th></th>\n\t\t\t</tr>\n\t\t</thead>\n\t\t<tbody>\n\t\t\t<tr class=\"dashlist-item\" ng-repeat=\"ds in ctrl.dsList\">\n\t\t\t\t<td style=\"font-size: 1.3rem; padding: 0\">\n\t\t\t\t\t<a style=\"display: block; padding: 15px; height: 100%;\" href=\"/datasources/edit/{{ds.id}}\">\n\t\t\t\t\t\t{{ds.name}}\n\t\t\t\t\t</a>\n\t\t\t\t</td>\n\t\t\t\t<td class=\"text-right\">\n\t\t\t\t\t<a ng-click=\"ctrl.deleteDs(ds)\" class=\"btn btn-danger btn-mini\">\n\t\t\t\t\t\t<i class=\"fa fa-trash\"></i>\n\t\t\t\t\t</a>\n\t\t\t\t\t<input type=\"radio\" ng-model=\"ctrl.appModel.jsonData.datasourceID\" value=\"{{ds.id}}\" />\n\t\t\t\t</td>\n\t\t\t</tr>\n\t\t</tbody>\n\t</table>\n\n\t<div ng-if=\"ctrl.dsList.length === 0\">\n\t\t<div style=\"text-align: center; padding-top: 90px; min-height: 220px; min-width: 400px;  margin: 0 auto;\">\n\t\t\t<i ng-class=\"icon\" class=\"icon-gf icon-gf-endpoint no-endpoints\"></i>\n\t\t\t<p ng-if=\"ctrl.isOrgEditor\">아직, 데이터베이스 연결이 설정되지 않았습니다.\n\t\t\t\t<br>\n\t\t\t\t<a class=\"highlight-word\" href=\"/datasources/new\">데이터 연결 새로 만들기</a>\n\t\t\t</p>\n\t\t\t<p ng-if=\"!ctrl.isOrgEditor\">아직, 데이터베이스 연결이 설정되지 않았습니다. 관리자에게 연락하시기 바랍니다.\n\t\t\t</p>\n\t\t</div>\n\t</div>\n</div>";
 
 /***/ }),
 
@@ -106,13 +106,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppConfigCtrl", function() { return AppConfigCtrl; });
 /* harmony import */ var grafana_app_core_app_events__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! grafana/app/core/app_events */ "grafana/app/core/app_events");
 /* harmony import */ var grafana_app_core_app_events__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(grafana_app_core_app_events__WEBPACK_IMPORTED_MODULE_0__);
-
 var template = __webpack_require__(/*! ./config.html */ "./app-config/config.html");
 
 var AppConfigCtrl = /** @class */ (function () {
-    function AppConfigCtrl($scope, $injector, $q, $location, rsDsSrv, backendSrv) {
-        this.$scope = $scope;
-        this.$injector = $injector;
+    function AppConfigCtrl($q, $location, rsDsSrv, backendSrv) {
         this.$q = $q;
         this.$location = $location;
         this.rsDsSrv = rsDsSrv;
@@ -183,7 +180,7 @@ var AppConfigCtrl = /** @class */ (function () {
 /*!*******************!*\
   !*** ./module.ts ***!
   \*******************/
-/*! exports provided: ConfigCtrl, RemoteSolutionDS, RemoteSolutionWS, InspectionProperty, SettingActionInAdvance */
+/*! exports provided: ConfigCtrl, InspectionProperty, SettingActionInAdvance */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -191,20 +188,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! grafana/app/plugins/sdk */ "grafana/app/plugins/sdk");
 /* harmony import */ var grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _services_remoteSolutionDS__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./services/remoteSolutionDS */ "./services/remoteSolutionDS.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RemoteSolutionDS", function() { return _services_remoteSolutionDS__WEBPACK_IMPORTED_MODULE_1__["RemoteSolutionDSCtrl"]; });
-
 /* harmony import */ var _services_remoteSolutionWS__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./services/remoteSolutionWS */ "./services/remoteSolutionWS.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RemoteSolutionWS", function() { return _services_remoteSolutionWS__WEBPACK_IMPORTED_MODULE_2__["RemoteSolutionWSCtrl"]; });
+/* harmony import */ var _services_remoteSolutionMQTT__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./services/remoteSolutionMQTT */ "./services/remoteSolutionMQTT.ts");
+/* harmony import */ var _app_config_config__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./app-config/config */ "./app-config/config.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ConfigCtrl", function() { return _app_config_config__WEBPACK_IMPORTED_MODULE_4__["AppConfigCtrl"]; });
 
-/* harmony import */ var _app_config_config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./app-config/config */ "./app-config/config.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ConfigCtrl", function() { return _app_config_config__WEBPACK_IMPORTED_MODULE_3__["AppConfigCtrl"]; });
+/* harmony import */ var _pages_actionInAdvance_actionInAdvance__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./pages/actionInAdvance/actionInAdvance */ "./pages/actionInAdvance/actionInAdvance.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SettingActionInAdvance", function() { return _pages_actionInAdvance_actionInAdvance__WEBPACK_IMPORTED_MODULE_5__["SettingActionInAdvancePageCtrl"]; });
 
-/* harmony import */ var _pages_actionInAdvance_actionInAdvance__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./pages/actionInAdvance/actionInAdvance */ "./pages/actionInAdvance/actionInAdvance.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SettingActionInAdvance", function() { return _pages_actionInAdvance_actionInAdvance__WEBPACK_IMPORTED_MODULE_4__["SettingActionInAdvancePageCtrl"]; });
+/* harmony import */ var _pages_inspectionProperty_inspectionProperty__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./pages/inspectionProperty/inspectionProperty */ "./pages/inspectionProperty/inspectionProperty.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "InspectionProperty", function() { return _pages_inspectionProperty_inspectionProperty__WEBPACK_IMPORTED_MODULE_6__["InspectionPropertyPageCtrl"]; });
 
-/* harmony import */ var _pages_inspectionProperty_inspectionProperty__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./pages/inspectionProperty/inspectionProperty */ "./pages/inspectionProperty/inspectionProperty.ts");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "InspectionProperty", function() { return _pages_inspectionProperty_inspectionProperty__WEBPACK_IMPORTED_MODULE_5__["InspectionPropertyPageCtrl"]; });
 
+// register Remote Solution Services
 
 
 
@@ -227,7 +223,7 @@ Object(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_0__["loadPluginCss"])({
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"page-in-fullscreen\">\r\n    <div ng-switch on='ctrl.mode'>\r\n    <div class=\"page-container\" ng-switch-default>\r\n        <div class=\"page-in-fullscreen page-header gf-form-inline\">\r\n            <h1> 검사 항목 </h1>\r\n            <div class=\"btn-group\">\r\n                <button type=\"button\" class=\"btn btn-large btn-primary\" ng-click=\"ctrl.deleteInspectionItem()\" ng-show=\"ctrl.enEtcMenu\">삭제</button>\r\n                <button type=\"button\" class=\"btn btn-large btn-primary\" ng-click=\"ctrl.setMode('edit')\" ng-show=\"ctrl.enEtcMenu\">수정</button>\r\n                <button type=\"submit\" class=\"btn btn-large btn-primary\" ng-click=\"ctrl.setMode('new')\">신규등록</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"page-container\" ng-switch-when=\"new\">\r\n        <div class=\"page-header\">\r\n            <h1>신규 검사항목 등록</h1>\r\n        </div>\r\n        <div class=\"page-body\">\r\n            <div class=\"gf-form-group\">\r\n                <div class=\"gf-form-inline\">\r\n                    <div class=\"gf-form\">\r\n                        <span class=\"gf-form-label width-10\">검사 항목</span>\r\n                        <select class=\"gf-form-input\" ng-model=\"ip\" ng-options=\"opts.NAME for opts in ctrl.IP_LIST\" ng-init=\"ip = ctrl.IP_LIST[0]\" required></select>\r\n                    </div>\r\n                    <isteven-multi-select input-model=\"modernBrowsers\" output-model=\"outputBrowsers\" button-label=\"icon name\" item-label=\"icon name maker\" tick-property=\"ticked\">\r\n                    </isteven-multi-select>\r\n                    <div class=\"gf-form\">\r\n                        <span class=\"gf-form-label width-10\">검사 항목</span>\r\n                        <input class=\"gf-form-input width-30\" type=\"text\" ng-model=\"inspectionName\" ng-model-onblur ng-change=\"ctrl.refresh()\">\r\n                    </div>\r\n                    <div class=\"gf-form\">\r\n                        <span class=\"gf-form-label width-10\">설명</span>\r\n                        <input class=\"gf-form-input width-30\" type=\"text\" ng-model=\"description\" ng-model-onblur ng-change=\"ctrl.refresh()\" >\r\n                    </div>\r\n                    <div class=\"gf-form\">\r\n                            <span class=\"gf-form-label width-10\">기본 검사치 최소값</span>\r\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"def_min\" ng-init=\"def_min=0\" ng-model-onblur ng-change=\"ctrl.refresh()\">\r\n                    </div>\r\n                    <div class=\"gf-form\">\r\n                            <span class=\"gf-form-label width-10\">기본 검사치 최대값</span>\r\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"def_max\"  ng-init=\"def_max=0\" ng-model-onblur ng-change=\"ctrl.refresh()\">\r\n                    </div>\r\n                    <div class=\"gf-form\">\r\n                            <span class=\"gf-form-label width-10\">기본 CPK 최소값</span>\r\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"def_cpk_min\" ng-init=\"def_cpk_min=0\" ng-model-onblur ng-change=\"ctrl.refresh()\">\r\n                    </div>\r\n                    <div class=\"gf-form\">\r\n                            <span class=\"gf-form-label width-10\">기본 CPK 최소값</span>\r\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"def_cpk_max\" ng-init=\"def_cpk_max=0\" ng-model-onblur ng-change=\"ctrl.refresh()\">\r\n                    </div>\r\n                    <div class=\"gf-form-button-row\">\r\n                        <button type=\"button\" class=\"btn btn-success\" ng-click=\"ctrl.addInspectionItem(ipType, inspectionName, description, def_min, def_max, def_cpk_min, def_cpk_max)\">등록</button>\r\n                        <a class=\"btn btn-link\" ng-click=\"ctrl.setMode('list')\">Back</a>\r\n                    </div>\r\n                    <div class=\"clearfix\"></div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"page-container\" ng-switch-when=\"edit\">\r\n        <div class=\"page-header\">\r\n            <h1>신규 검사항목 수정</h1>\r\n        </div>\r\n        <div class=\"page-body\">\r\n            <div class=\"gf-form-group\">\r\n                <div class=\"gf-form-inline\">\r\n                    <div class=\"gf-form\">\r\n                        <span class=\"gf-form-label width-10\">검사 항목</span>\r\n                        <input class=\"gf-form-input width-30\" type=\"text\" ng-model=\"ctrl.selectObj.NAME\" ng-model-onblur ng-change=\"ctrl.refresh()\">\r\n                    </div>\r\n                    <div class=\"gf-form\">\r\n                        <span class=\"gf-form-label width-10\">설명</span>\r\n                        <input class=\"gf-form-input width-30\" type=\"text\" ng-model=\"ctrl.selectObj.DESCRIPTION\" ng-model-onblur ng-change=\"ctrl.refresh()\" >\r\n                    </div>\r\n                    <div class=\"gf-form\">\r\n                            <span class=\"gf-form-label width-10\">기본 검사치 최소값</span>\r\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"ctrl.selectObj.DEFAULT_MIN\" ng-model-onblur ng-change=\"ctrl.refresh()\">\r\n                    </div>\r\n                    <div class=\"gf-form\">\r\n                            <span class=\"gf-form-label width-10\">기본 검사치 최대값</span>\r\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"ctrl.selectObj.DEFAULT_MAX\"  ng-model-onblur ng-change=\"ctrl.refresh()\">\r\n                    </div>\r\n                    <div class=\"gf-form\">\r\n                            <span class=\"gf-form-label width-10\">기본 CPK 최소값</span>\r\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"ctrl.selectObj.DEFAULT_CPK_MIN\" ng-model-onblur ng-change=\"ctrl.refresh()\">\r\n                    </div>\r\n                    <div class=\"gf-form\">\r\n                            <span class=\"gf-form-label width-10\">기본 CPK 최소값</span>\r\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"ctrl.selectObj.DEFAULT_CPK_MAX\" ng-model-onblur ng-change=\"ctrl.refresh()\">\r\n                    </div>\r\n                    <div class=\"gf-form-button-row\">\r\n                        <button type=\"button\" class=\"btn btn-success\" ng-click=\"ctrl.updateInspectionItem()\">수정</button>\r\n                        <a class=\"btn btn-link\" ng-click=\"ctrl.setMode('list')\">Back</a>\r\n                    </div>\r\n                    <div class=\"clearfix\"></div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n</div>\r\n";
+module.exports = "<div class=\"page-in-fullscreen\">\n    <div ng-switch on='ctrl.mode'>\n    <div class=\"page-container\" ng-switch-default>\n        <div class=\"page-in-fullscreen page-header gf-form-inline\">\n            <h1> 검사 항목 </h1>\n            <div class=\"btn-group\">\n                <button type=\"button\" class=\"btn btn-large btn-primary\" ng-click=\"ctrl.deleteInspectionItem()\" ng-show=\"ctrl.enEtcMenu\">삭제</button>\n                <button type=\"button\" class=\"btn btn-large btn-primary\" ng-click=\"ctrl.setMode('edit')\" ng-show=\"ctrl.enEtcMenu\">수정</button>\n                <button type=\"submit\" class=\"btn btn-large btn-primary\" ng-click=\"ctrl.setMode('new')\">신규등록</button>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"page-container\" ng-switch-when=\"new\">\n        <div class=\"page-header\">\n            <h1>신규 검사항목 등록</h1>\n        </div>\n        <div class=\"page-body\">\n            <div class=\"gf-form-group\">\n                <div class=\"gf-form-inline\">\n                    <div class=\"gf-form\">\n                        <span class=\"gf-form-label width-10\">검사 항목</span>\n                        <select class=\"gf-form-input\" ng-model=\"ip\" ng-options=\"opts.NAME for opts in ctrl.IP_LIST\" ng-init=\"ip = ctrl.IP_LIST[0]\" required></select>\n                    </div>\n                    <isteven-multi-select input-model=\"modernBrowsers\" output-model=\"outputBrowsers\" button-label=\"icon name\" item-label=\"icon name maker\" tick-property=\"ticked\">\n                    </isteven-multi-select>\n                    <div class=\"gf-form\">\n                        <span class=\"gf-form-label width-10\">검사 항목</span>\n                        <input class=\"gf-form-input width-30\" type=\"text\" ng-model=\"inspectionName\" ng-model-onblur ng-change=\"ctrl.refresh()\">\n                    </div>\n                    <div class=\"gf-form\">\n                        <span class=\"gf-form-label width-10\">설명</span>\n                        <input class=\"gf-form-input width-30\" type=\"text\" ng-model=\"description\" ng-model-onblur ng-change=\"ctrl.refresh()\" >\n                    </div>\n                    <div class=\"gf-form\">\n                            <span class=\"gf-form-label width-10\">기본 검사치 최소값</span>\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"def_min\" ng-init=\"def_min=0\" ng-model-onblur ng-change=\"ctrl.refresh()\">\n                    </div>\n                    <div class=\"gf-form\">\n                            <span class=\"gf-form-label width-10\">기본 검사치 최대값</span>\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"def_max\"  ng-init=\"def_max=0\" ng-model-onblur ng-change=\"ctrl.refresh()\">\n                    </div>\n                    <div class=\"gf-form\">\n                            <span class=\"gf-form-label width-10\">기본 CPK 최소값</span>\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"def_cpk_min\" ng-init=\"def_cpk_min=0\" ng-model-onblur ng-change=\"ctrl.refresh()\">\n                    </div>\n                    <div class=\"gf-form\">\n                            <span class=\"gf-form-label width-10\">기본 CPK 최소값</span>\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"def_cpk_max\" ng-init=\"def_cpk_max=0\" ng-model-onblur ng-change=\"ctrl.refresh()\">\n                    </div>\n                    <div class=\"gf-form-button-row\">\n                        <button type=\"button\" class=\"btn btn-success\" ng-click=\"ctrl.addInspectionItem(ipType, inspectionName, description, def_min, def_max, def_cpk_min, def_cpk_max)\">등록</button>\n                        <a class=\"btn btn-link\" ng-click=\"ctrl.setMode('list')\">Back</a>\n                    </div>\n                    <div class=\"clearfix\"></div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"page-container\" ng-switch-when=\"edit\">\n        <div class=\"page-header\">\n            <h1>신규 검사항목 수정</h1>\n        </div>\n        <div class=\"page-body\">\n            <div class=\"gf-form-group\">\n                <div class=\"gf-form-inline\">\n                    <div class=\"gf-form\">\n                        <span class=\"gf-form-label width-10\">검사 항목</span>\n                        <input class=\"gf-form-input width-30\" type=\"text\" ng-model=\"ctrl.selectObj.NAME\" ng-model-onblur ng-change=\"ctrl.refresh()\">\n                    </div>\n                    <div class=\"gf-form\">\n                        <span class=\"gf-form-label width-10\">설명</span>\n                        <input class=\"gf-form-input width-30\" type=\"text\" ng-model=\"ctrl.selectObj.DESCRIPTION\" ng-model-onblur ng-change=\"ctrl.refresh()\" >\n                    </div>\n                    <div class=\"gf-form\">\n                            <span class=\"gf-form-label width-10\">기본 검사치 최소값</span>\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"ctrl.selectObj.DEFAULT_MIN\" ng-model-onblur ng-change=\"ctrl.refresh()\">\n                    </div>\n                    <div class=\"gf-form\">\n                            <span class=\"gf-form-label width-10\">기본 검사치 최대값</span>\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"ctrl.selectObj.DEFAULT_MAX\"  ng-model-onblur ng-change=\"ctrl.refresh()\">\n                    </div>\n                    <div class=\"gf-form\">\n                            <span class=\"gf-form-label width-10\">기본 CPK 최소값</span>\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"ctrl.selectObj.DEFAULT_CPK_MIN\" ng-model-onblur ng-change=\"ctrl.refresh()\">\n                    </div>\n                    <div class=\"gf-form\">\n                            <span class=\"gf-form-label width-10\">기본 CPK 최소값</span>\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"ctrl.selectObj.DEFAULT_CPK_MAX\" ng-model-onblur ng-change=\"ctrl.refresh()\">\n                    </div>\n                    <div class=\"gf-form-button-row\">\n                        <button type=\"button\" class=\"btn btn-success\" ng-click=\"ctrl.updateInspectionItem()\">수정</button>\n                        <a class=\"btn btn-link\" ng-click=\"ctrl.setMode('list')\">Back</a>\n                    </div>\n                    <div class=\"clearfix\"></div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n</div>\n";
 
 /***/ }),
 
@@ -241,17 +237,12 @@ module.exports = "<div class=\"page-in-fullscreen\">\r\n    <div ng-switch on='c
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SettingActionInAdvancePageCtrl", function() { return SettingActionInAdvancePageCtrl; });
-/* harmony import */ var mqtt_dist_mqtt_min__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! mqtt/dist/mqtt.min */ "../node_modules/mqtt/dist/mqtt.min.js");
-/* harmony import */ var mqtt_dist_mqtt_min__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(mqtt_dist_mqtt_min__WEBPACK_IMPORTED_MODULE_0__);
 var template = __webpack_require__(/*! ./actionInAdvance.html */ "./pages/actionInAdvance/actionInAdvance.html");
-
 var SettingActionInAdvancePageCtrl = /** @class */ (function () {
-    function SettingActionInAdvancePageCtrl($location, $q, $scope, $injector, rsDsSrv) {
+    function SettingActionInAdvancePageCtrl($location, rsDsSrv) {
         this.$location = $location;
-        this.$scope = $scope;
         this.rsDsSrv = rsDsSrv;
         this.mode = "list";
-        var c = mqtt_dist_mqtt_min__WEBPACK_IMPORTED_MODULE_0__["connect"]("ws://192.168.0.1");
         var selectId = this.appModel.jsonData.datasourceID;
         if (selectId === undefined) {
             this.$location.path('/plugins/proj-rms-plugin-app/edit');
@@ -289,7 +280,7 @@ var SettingActionInAdvancePageCtrl = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"page-in-fullscreen\">\r\n<div ng-switch on='ctrl.mode'>\r\n    <div class=\"page-container\" ng-switch-default>\r\n        <div class=\"page-in-fullscreen page-header gf-form-inline\">\r\n            <h1> 검사 항목 </h1>\r\n            <div class=\"btn-group\">\r\n                <button type=\"button\" class=\"btn btn-large btn-primary\" ng-click=\"ctrl.deleteInspectionItem()\" ng-show=\"ctrl.enEtcMenu\">삭제</button>\r\n                <button type=\"button\" class=\"btn btn-large btn-primary\" ng-click=\"ctrl.setMode('edit')\" ng-show=\"ctrl.enEtcMenu\">수정</button>\r\n                <button type=\"submit\" class=\"btn btn-large btn-primary\" ng-click=\"ctrl.setMode('new')\">신규등록</button>\r\n            </div>\r\n        </div>\r\n        <div class=\"page-body\" >\r\n            <div class=\"section gf-form-group status-table\" >\r\n                <h5 class=\"section-heading\"> 검사 항목 리스트 </h5>\r\n                <table class=\"filter-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th> </th> <th> ID </th> <th> 검사 항목명 </th> <th> 설명 </th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr ng-repeat=\"list in ctrl.inspectList\">\r\n                            <td><input type=\"radio\" name=\"selectedObj\" ng-model=\"selectedObj\" ng-value=\"list\" ng-change=\"ctrl.showEtcMenu(selectedObj)\"></td>\r\n                            <td>{{list.IDX}}</td> <td>{{list.NAME}}</td> <td>{{list.DESCRIPTION}}</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n\r\n            <div class=\"section gf-form-group status-table\" >\r\n                <h5 class=\"section-heading\"> 불량 입력 항목 리스트 </h5>\r\n                <table class=\"filter-table\">\r\n                    <thead>\r\n                        <tr>\r\n                            <th> </th> <th> ID </th> <th> 검사 항목명 </th> <th> 설명 </th>\r\n                        </tr>\r\n                    </thead>\r\n                    <tbody>\r\n                        <tr ng-repeat=\"list in ctrl.faultyList\">\r\n                            <td><input type=\"radio\" name=\"selectedObj\" ng-model=\"selectedObj\" ng-value=\"list\" ng-change=\"ctrl.showEtcMenu(selectedObj)\"></td>\r\n                            <td>{{list.IDX}}</td> <td>{{list.NAME}}</td> <td>{{list.DESCRIPTION}}</td>\r\n                        </tr>\r\n                    </tbody>\r\n                </table>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"page-container\" ng-switch-when=\"new\">\r\n        <div class=\"page-header\">\r\n            <h1>신규 검사항목 등록</h1>\r\n        </div>\r\n        <div class=\"page-body\">\r\n            <div class=\"gf-form-group\">\r\n                <div class=\"gf-form-inline\">\r\n                    <div class=\"gf-form\">\r\n                        <span class=\"gf-form-label width-10\">항목</span>\r\n                        <select class=\"gf-form-input\" ng-model=\"ipType\" ng-options=\"opts.name for opts in ctrl.ip_class\" ng-init=\"ipType = ctrl.ip_class[0]\" required></select>\r\n                    </div>\r\n\r\n                    <div class=\"gf-form\">\r\n                        <span class=\"gf-form-label width-10\">검사 항목</span>\r\n                        <input class=\"gf-form-input width-30\" type=\"text\" ng-model=\"inspectionName\" ng-model-onblur ng-change=\"ctrl.refresh()\">\r\n                    </div>\r\n                    <div class=\"gf-form\">\r\n                        <span class=\"gf-form-label width-10\">설명</span>\r\n                        <input class=\"gf-form-input width-30\" type=\"text\" ng-model=\"description\" ng-model-onblur ng-change=\"ctrl.refresh()\" >\r\n                    </div>\r\n                    <div class=\"gf-form\">\r\n                            <span class=\"gf-form-label width-10\">기본 검사치 최소값</span>\r\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"def_min\" ng-init=\"def_min=0\" ng-model-onblur ng-change=\"ctrl.refresh()\">\r\n                    </div>\r\n                    <div class=\"gf-form\">\r\n                            <span class=\"gf-form-label width-10\">기본 검사치 최대값</span>\r\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"def_max\"  ng-init=\"def_max=0\" ng-model-onblur ng-change=\"ctrl.refresh()\">\r\n                    </div>\r\n                    <div class=\"gf-form\">\r\n                            <span class=\"gf-form-label width-10\">기본 CPK 최소값</span>\r\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"def_cpk_min\" ng-init=\"def_cpk_min=0\" ng-model-onblur ng-change=\"ctrl.refresh()\">\r\n                    </div>\r\n                    <div class=\"gf-form\">\r\n                            <span class=\"gf-form-label width-10\">기본 CPK 최소값</span>\r\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"def_cpk_max\" ng-init=\"def_cpk_max=0\" ng-model-onblur ng-change=\"ctrl.refresh()\">\r\n                    </div>\r\n                    <div class=\"gf-form-button-row\">\r\n                        <button type=\"button\" class=\"btn btn-success\" ng-click=\"ctrl.addInspectionItem(ipType, inspectionName, description, def_min, def_max, def_cpk_min, def_cpk_max)\">등록</button>\r\n                        <a class=\"btn btn-link\" ng-click=\"ctrl.setMode('list')\">Back</a>\r\n                    </div>\r\n                    <div class=\"clearfix\"></div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"page-container\" ng-switch-when=\"edit\">\r\n        <div class=\"page-header\">\r\n            <h1>신규 검사항목 수정</h1>\r\n        </div>\r\n        <div class=\"page-body\">\r\n            <div class=\"gf-form-group\">\r\n                <div class=\"gf-form-inline\">\r\n                    <div class=\"gf-form\">\r\n                        <span class=\"gf-form-label width-10\">검사 항목</span>\r\n                        <input class=\"gf-form-input width-30\" type=\"text\" ng-model=\"ctrl.selectObj.NAME\" ng-model-onblur ng-change=\"ctrl.refresh()\">\r\n                    </div>\r\n                    <div class=\"gf-form\">\r\n                        <span class=\"gf-form-label width-10\">설명</span>\r\n                        <input class=\"gf-form-input width-30\" type=\"text\" ng-model=\"ctrl.selectObj.DESCRIPTION\" ng-model-onblur ng-change=\"ctrl.refresh()\" >\r\n                    </div>\r\n                    <div class=\"gf-form\">\r\n                            <span class=\"gf-form-label width-10\">기본 검사치 최소값</span>\r\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"ctrl.selectObj.DEFAULT_MIN\" ng-model-onblur ng-change=\"ctrl.refresh()\">\r\n                    </div>\r\n                    <div class=\"gf-form\">\r\n                            <span class=\"gf-form-label width-10\">기본 검사치 최대값</span>\r\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"ctrl.selectObj.DEFAULT_MAX\"  ng-model-onblur ng-change=\"ctrl.refresh()\">\r\n                    </div>\r\n                    <div class=\"gf-form\">\r\n                            <span class=\"gf-form-label width-10\">기본 CPK 최소값</span>\r\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"ctrl.selectObj.DEFAULT_CPK_MIN\" ng-model-onblur ng-change=\"ctrl.refresh()\">\r\n                    </div>\r\n                    <div class=\"gf-form\">\r\n                            <span class=\"gf-form-label width-10\">기본 CPK 최소값</span>\r\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"ctrl.selectObj.DEFAULT_CPK_MAX\" ng-model-onblur ng-change=\"ctrl.refresh()\">\r\n                    </div>\r\n                    <div class=\"gf-form-button-row\">\r\n                        <button type=\"button\" class=\"btn btn-success\" ng-click=\"ctrl.updateInspectionItem()\">수정</button>\r\n                        <a class=\"btn btn-link\" ng-click=\"ctrl.setMode('list')\">Back</a>\r\n                    </div>\r\n                    <div class=\"clearfix\"></div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n</div>\r\n";
+module.exports = "<div class=\"page-in-fullscreen\">\n<div ng-switch on='ctrl.mode'>\n    <div class=\"page-container\" ng-switch-default>\n        <div class=\"page-in-fullscreen page-header gf-form-inline\">\n            <h1> 검사 항목 </h1>\n            <div class=\"btn-group\">\n                <button type=\"button\" class=\"btn btn-large btn-primary\" ng-click=\"ctrl.deleteInspectionItem()\" ng-show=\"ctrl.enEtcMenu\">삭제</button>\n                <button type=\"button\" class=\"btn btn-large btn-primary\" ng-click=\"ctrl.setMode('edit')\" ng-show=\"ctrl.enEtcMenu\">수정</button>\n                <button type=\"submit\" class=\"btn btn-large btn-primary\" ng-click=\"ctrl.setMode('new')\">신규등록</button>\n            </div>\n        </div>\n        <div class=\"page-body\" >\n            <div class=\"section gf-form-group status-table\" >\n                <h5 class=\"section-heading\"> 검사 항목 리스트 </h5>\n                <table class=\"filter-table\">\n                    <thead>\n                        <tr>\n                            <th> </th> <th> ID </th> <th> 검사 항목명 </th> <th> 설명 </th>\n                        </tr>\n                    </thead>\n                    <tbody>\n                        <tr ng-repeat=\"list in ctrl.inspectList\">\n                            <td><input type=\"radio\" name=\"selectedObj\" ng-model=\"selectedObj\" ng-value=\"list\" ng-change=\"ctrl.showEtcMenu(selectedObj)\"></td>\n                            <td>{{list.IDX}}</td> <td>{{list.NAME}}</td> <td>{{list.DESCRIPTION}}</td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n\n            <div class=\"section gf-form-group status-table\" >\n                <h5 class=\"section-heading\"> 불량 입력 항목 리스트 </h5>\n                <table class=\"filter-table\">\n                    <thead>\n                        <tr>\n                            <th> </th> <th> ID </th> <th> 검사 항목명 </th> <th> 설명 </th>\n                        </tr>\n                    </thead>\n                    <tbody>\n                        <tr ng-repeat=\"list in ctrl.faultyList\">\n                            <td><input type=\"radio\" name=\"selectedObj\" ng-model=\"selectedObj\" ng-value=\"list\" ng-change=\"ctrl.showEtcMenu(selectedObj)\"></td>\n                            <td>{{list.IDX}}</td> <td>{{list.NAME}}</td> <td>{{list.DESCRIPTION}}</td>\n                        </tr>\n                    </tbody>\n                </table>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"page-container\" ng-switch-when=\"new\">\n        <div class=\"page-header\">\n            <h1>신규 검사항목 등록</h1>\n        </div>\n        <div class=\"page-body\">\n            <div class=\"gf-form-group\">\n                <div class=\"gf-form-inline\">\n                    <div class=\"gf-form\">\n                        <span class=\"gf-form-label width-10\">항목</span>\n                        <select class=\"gf-form-input\" ng-model=\"ipType\" ng-options=\"opts.name for opts in ctrl.ip_class\" ng-init=\"ipType = ctrl.ip_class[0]\" required></select>\n                    </div>\n\n                    <div class=\"gf-form\">\n                        <span class=\"gf-form-label width-10\">검사 항목</span>\n                        <input class=\"gf-form-input width-30\" type=\"text\" ng-model=\"inspectionName\" ng-model-onblur ng-change=\"ctrl.refresh()\">\n                    </div>\n                    <div class=\"gf-form\">\n                        <span class=\"gf-form-label width-10\">설명</span>\n                        <input class=\"gf-form-input width-30\" type=\"text\" ng-model=\"description\" ng-model-onblur ng-change=\"ctrl.refresh()\" >\n                    </div>\n                    <div class=\"gf-form\">\n                            <span class=\"gf-form-label width-10\">기본 검사치 최소값</span>\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"def_min\" ng-init=\"def_min=0\" ng-model-onblur ng-change=\"ctrl.refresh()\">\n                    </div>\n                    <div class=\"gf-form\">\n                            <span class=\"gf-form-label width-10\">기본 검사치 최대값</span>\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"def_max\"  ng-init=\"def_max=0\" ng-model-onblur ng-change=\"ctrl.refresh()\">\n                    </div>\n                    <div class=\"gf-form\">\n                            <span class=\"gf-form-label width-10\">기본 CPK 최소값</span>\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"def_cpk_min\" ng-init=\"def_cpk_min=0\" ng-model-onblur ng-change=\"ctrl.refresh()\">\n                    </div>\n                    <div class=\"gf-form\">\n                            <span class=\"gf-form-label width-10\">기본 CPK 최소값</span>\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"def_cpk_max\" ng-init=\"def_cpk_max=0\" ng-model-onblur ng-change=\"ctrl.refresh()\">\n                    </div>\n                    <div class=\"gf-form-button-row\">\n                        <button type=\"button\" class=\"btn btn-success\" ng-click=\"ctrl.addInspectionItem(ipType, inspectionName, description, def_min, def_max, def_cpk_min, def_cpk_max)\">등록</button>\n                        <a class=\"btn btn-link\" ng-click=\"ctrl.setMode('list')\">Back</a>\n                    </div>\n                    <div class=\"clearfix\"></div>\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <div class=\"page-container\" ng-switch-when=\"edit\">\n        <div class=\"page-header\">\n            <h1>신규 검사항목 수정</h1>\n        </div>\n        <div class=\"page-body\">\n            <div class=\"gf-form-group\">\n                <div class=\"gf-form-inline\">\n                    <div class=\"gf-form\">\n                        <span class=\"gf-form-label width-10\">검사 항목</span>\n                        <input class=\"gf-form-input width-30\" type=\"text\" ng-model=\"ctrl.selectObj.NAME\" ng-model-onblur ng-change=\"ctrl.refresh()\">\n                    </div>\n                    <div class=\"gf-form\">\n                        <span class=\"gf-form-label width-10\">설명</span>\n                        <input class=\"gf-form-input width-30\" type=\"text\" ng-model=\"ctrl.selectObj.DESCRIPTION\" ng-model-onblur ng-change=\"ctrl.refresh()\" >\n                    </div>\n                    <div class=\"gf-form\">\n                            <span class=\"gf-form-label width-10\">기본 검사치 최소값</span>\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"ctrl.selectObj.DEFAULT_MIN\" ng-model-onblur ng-change=\"ctrl.refresh()\">\n                    </div>\n                    <div class=\"gf-form\">\n                            <span class=\"gf-form-label width-10\">기본 검사치 최대값</span>\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"ctrl.selectObj.DEFAULT_MAX\"  ng-model-onblur ng-change=\"ctrl.refresh()\">\n                    </div>\n                    <div class=\"gf-form\">\n                            <span class=\"gf-form-label width-10\">기본 CPK 최소값</span>\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"ctrl.selectObj.DEFAULT_CPK_MIN\" ng-model-onblur ng-change=\"ctrl.refresh()\">\n                    </div>\n                    <div class=\"gf-form\">\n                            <span class=\"gf-form-label width-10\">기본 CPK 최소값</span>\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"ctrl.selectObj.DEFAULT_CPK_MAX\" ng-model-onblur ng-change=\"ctrl.refresh()\">\n                    </div>\n                    <div class=\"gf-form-button-row\">\n                        <button type=\"button\" class=\"btn btn-success\" ng-click=\"ctrl.updateInspectionItem()\">수정</button>\n                        <a class=\"btn btn-link\" ng-click=\"ctrl.setMode('list')\">Back</a>\n                    </div>\n                    <div class=\"clearfix\"></div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>\n</div>\n";
 
 /***/ }),
 
@@ -305,14 +296,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "InspectionPropertyPageCtrl", function() { return InspectionPropertyPageCtrl; });
 var template = __webpack_require__(/*! ./inspectionProperty.html */ "./pages/inspectionProperty/inspectionProperty.html");
 var InspectionPropertyPageCtrl = /** @class */ (function () {
-    function InspectionPropertyPageCtrl($scope, $rootScope, $location, rsDsSrv, alertSrv, $q, contextSrv) {
-        this.$scope = $scope;
+    function InspectionPropertyPageCtrl($rootScope, $location, $q, alertSrv, rsDsSrv, rsMqttSrv) {
         this.$rootScope = $rootScope;
         this.$location = $location;
-        this.rsDsSrv = rsDsSrv;
-        this.alertSrv = alertSrv;
         this.$q = $q;
-        this.contextSrv = contextSrv;
+        this.alertSrv = alertSrv;
+        this.rsDsSrv = rsDsSrv;
+        this.rsMqttSrv = rsMqttSrv;
         this.mode = "list";
         this.enEtcMenu = false;
         this.ip_class = [
@@ -326,7 +316,19 @@ var InspectionPropertyPageCtrl = /** @class */ (function () {
         else {
             this.updateInspectionPropertyList(selectId);
         }
+        // param : host:string, topic:string, recvcallback:function
+        this.rsMqttSrv.connect("ws://219.251.4.236:1884");
+        this.rsMqttSrv.subscribe = '#';
+        this.rsMqttSrv.recvMessage(this.mqttRecv.bind(this));
+        this.mqttdefaultOpts = {
+            qos: 0,
+            retain: true,
+            dup: false,
+        };
     }
+    InspectionPropertyPageCtrl.prototype.mqttRecv = function (topic, message) {
+        console.log(topic, message.toString());
+    };
     InspectionPropertyPageCtrl.prototype.updateInspectionPropertyList = function (selectId) {
         var _this = this;
         this.$q.all([this.$q(function (resolve, reject) {
@@ -354,6 +356,17 @@ var InspectionPropertyPageCtrl = /** @class */ (function () {
         }, function (err) {
             _this.alertSrv.set("Error", err, 'error', 5000);
         });
+    };
+    InspectionPropertyPageCtrl.prototype.getInspectionProperty = function (name) {
+        var selectId = this.appModel.jsonData.datasourceID;
+        var deferred = this.$q.defer();
+        var query = ["select * from t_inspection_property where name='" + name + "'"];
+        this.rsDsSrv.query(selectId, query).then(function (result) {
+            deferred.resolve(result);
+        }).catch(function (err) {
+            deferred.reject(err);
+        });
+        return deferred.promise;
     };
     InspectionPropertyPageCtrl.prototype.addInspectionItem = function (ipType, name, desc, min, max, cpk_min, cpk_max) {
         var _this = this;
@@ -403,6 +416,18 @@ var InspectionPropertyPageCtrl = /** @class */ (function () {
             "insert into t_inspection_property " + columns + " values " + values,
         ];
         this.rsDsSrv.query(selectId, query).then(function (result) {
+            _this.getInspectionProperty(name).then(function (res) {
+                var data = _this.rsDsSrv.getTableObj(res);
+                if (data.length === 1 && data[0].length === 1) {
+                    var topic = 'INSPPROP/' + data[0][0].IDX;
+                    var obj = data[0][0];
+                    var messageObj = {
+                        "NAME": obj.NAME,
+                        "DESCRIPTION": obj.DESCRIPTION
+                    };
+                    _this.rsMqttSrv.publishMessage(topic, JSON.stringify(messageObj), _this.mqttdefaultOpts);
+                }
+            });
             _this.setMode('list');
             _this.updateInspectionPropertyList(selectId);
             _this.alertSrv.set(name + "이(가) 추가되었습니다.", '', 'success', 1000);
@@ -425,6 +450,8 @@ var InspectionPropertyPageCtrl = /** @class */ (function () {
                 query.push("delete from t_inspection_property where IDX = "
                     + item.IDX);
                 _this.rsDsSrv.query(selectId, query).then(function (result) {
+                    var topic = 'INSPPROP/' + item.IDX;
+                    _this.rsMqttSrv.publishMessage(topic, '', _this.mqttdefaultOpts);
                     _this.setMode('list');
                     _this.updateInspectionPropertyList(selectId);
                     _this.alertSrv.set(item.NAME + "이(가) 삭제되었습니다.", '', 'success', 3000);
@@ -449,6 +476,12 @@ var InspectionPropertyPageCtrl = /** @class */ (function () {
         query.push("update t_inspection_property set " + updateData + " where IDX = "
             + obj.IDX);
         this.rsDsSrv.query(selectId, query).then(function (result) {
+            var topic = 'INSPPROP/' + obj.IDX;
+            var messageObj = {
+                "NAME": obj.NAME,
+                "DESCRIPTION": obj.DESCRIPTION
+            };
+            _this.rsMqttSrv.publishMessage(topic, JSON.stringify(messageObj), _this.mqttdefaultOpts);
             _this.setMode('list');
             _this.updateInspectionPropertyList(selectId);
             _this.alertSrv.set(name + "이(가) 수정되었습니다.", '', 'success', 1000);
@@ -592,6 +625,95 @@ grafana_app_core_core_module__WEBPACK_IMPORTED_MODULE_1___default.a.service('rsD
 
 /***/ }),
 
+/***/ "./services/remoteSolutionMQTT.ts":
+/*!****************************************!*\
+  !*** ./services/remoteSolutionMQTT.ts ***!
+  \****************************************/
+/*! exports provided: RemoteSolutionMQTTCtrl */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RemoteSolutionMQTTCtrl", function() { return RemoteSolutionMQTTCtrl; });
+/* harmony import */ var grafana_app_core_core_module__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! grafana/app/core/core_module */ "grafana/app/core/core_module");
+/* harmony import */ var grafana_app_core_core_module__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(grafana_app_core_core_module__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var mqtt_dist_mqtt_min__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mqtt/dist/mqtt.min */ "../node_modules/mqtt/dist/mqtt.min.js");
+/* harmony import */ var mqtt_dist_mqtt_min__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(mqtt_dist_mqtt_min__WEBPACK_IMPORTED_MODULE_1__);
+
+
+var RemoteSolutionMQTTCtrl = /** @class */ (function () {
+    function RemoteSolutionMQTTCtrl() {
+    }
+    Object.defineProperty(RemoteSolutionMQTTCtrl.prototype, "host", {
+        get: function () { return this._host; },
+        set: function (host) { this._host = host; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RemoteSolutionMQTTCtrl.prototype, "subscribe", {
+        get: function () { return this._subscribe; },
+        set: function (subscribe) {
+            if (this.client !== undefined) {
+                if (this._subscribe !== undefined) {
+                    console.log("[MQTT] unsubscribe : ", this._subscribe);
+                    this.client.unsubscribe(this._subscribe);
+                }
+                console.log("[MQTT] subscribe : ", subscribe);
+                this.client.subscribe(subscribe);
+            }
+            this._subscribe = subscribe;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RemoteSolutionMQTTCtrl.prototype, "client", {
+        get: function () { return this._connect; },
+        set: function (client) { this._connect = client; },
+        enumerable: true,
+        configurable: true
+    });
+    RemoteSolutionMQTTCtrl.prototype.connect = function (host) {
+        this.host = host;
+        try {
+            this.client = mqtt_dist_mqtt_min__WEBPACK_IMPORTED_MODULE_1__["connect"](host);
+            this.client.on('connect', this.onConnect.bind(this));
+            this.client.on('close', this.onClose.bind(this));
+        }
+        catch (e) {
+            console.error(e);
+            this.client = null;
+        }
+    };
+    RemoteSolutionMQTTCtrl.prototype.onConnect = function () {
+        console.log("[MQTT] Connected : " + this.host);
+    };
+    RemoteSolutionMQTTCtrl.prototype.onClose = function () {
+        this.client = null;
+    };
+    RemoteSolutionMQTTCtrl.prototype.recvMessage = function (callback) {
+        if (this.client !== undefined) {
+            this.client.on('message', callback.bind(this));
+        }
+    };
+    RemoteSolutionMQTTCtrl.prototype.publishMessage = function (topic, message, options) {
+        if (this.client !== undefined) {
+            console.log('[MQTT publish]', topic, message, options);
+            try {
+                this.client.publish(topic, message, options);
+            }
+            catch (e) {
+                console.error(e);
+            }
+        }
+    };
+    return RemoteSolutionMQTTCtrl;
+}());
+
+grafana_app_core_core_module__WEBPACK_IMPORTED_MODULE_0___default.a.service('rsMqttSrv', RemoteSolutionMQTTCtrl);
+
+
+/***/ }),
+
 /***/ "./services/remoteSolutionWS.ts":
 /*!**************************************!*\
   !*** ./services/remoteSolutionWS.ts ***!
@@ -609,15 +731,13 @@ __webpack_require__.r(__webpack_exports__);
 //import _ from 'lodash';
 
 
+// import { strictEqual } from 'assert';
 var RemoteSolutionWSCtrl = /** @class */ (function () {
     //===================================================================================
     // Remote Solution Websocket Initialize
     //===================================================================================
-    function RemoteSolutionWSCtrl($q, backendSrv, $location) {
-        // set external services
+    function RemoteSolutionWSCtrl($location) {
         this.$location = $location;
-        this.$q = $q;
-        this.backendSrv = backendSrv;
         // set internal variable
         this.wsInfo = {};
         // init function or test function call
