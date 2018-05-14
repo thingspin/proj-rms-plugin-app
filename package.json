@@ -1,7 +1,6 @@
 {
-  "name": "grafana-plugin-template-webpack-typescript",
+  "name": "thingspin-rms-app",
   "version": "1.0.0",
-  "description": "Some description",
   "main": "dist/module",
   "scripts": {
     "build": "webpack --progress --config build/webpack.prod.js",
@@ -10,7 +9,7 @@
   "keywords": [],
   "author": "Alexey Velikiy",
   "license": "MIT",
-  "repository": "https://github.com/CorpGlory/grafana-plugin-template-webpack-typescript",
+  "repository": "https://github.com/thingspin/prog-rms-plugin-app",
   "devDependencies": {
     "@types/node": "^10.0.8",
     "@types/grafana": "git+https://git@github.com/CorpGlory/types-grafana.git",
