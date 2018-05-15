@@ -170,7 +170,7 @@ chart_js_dist_Chart_min__WEBPACK_IMPORTED_MODULE_1__["plugins"].register({
 });
 var RmsAlarmRulePanelCtrl = /** @class */ (function (_super) {
     __extends(RmsAlarmRulePanelCtrl, _super);
-    function RmsAlarmRulePanelCtrl($scope, $injector, $http, $location, uiSegmentSrv, annotationsSrv, $window) {
+    function RmsAlarmRulePanelCtrl($scope, $injector, $window) {
         var _this = _super.call(this, $scope, $injector) || this;
         _this.$window = $window;
         _this.chartID = 'chart-rms-alrams-' + _this.panel.id;
@@ -183,44 +183,44 @@ var RmsAlarmRulePanelCtrl = /** @class */ (function (_super) {
             datasets: [{
                     type: 'bar',
                     label: 'Dataset 1',
-                    backgroundColor: color($window.chartColors.red).alpha(0.2).rgbString(),
-                    borderColor: $window.chartColors.red,
+                    backgroundColor: color(_this.$window.chartColors.red).alpha(0.2).rgbString(),
+                    borderColor: _this.$window.chartColors.red,
                     data: [
-                        $window.randomScalingFactor(),
-                        $window.randomScalingFactor(),
-                        $window.randomScalingFactor(),
-                        $window.randomScalingFactor(),
-                        $window.randomScalingFactor(),
-                        $window.randomScalingFactor(),
-                        $window.randomScalingFactor()
+                        _this.$window.randomScalingFactor(),
+                        _this.$window.randomScalingFactor(),
+                        _this.$window.randomScalingFactor(),
+                        _this.$window.randomScalingFactor(),
+                        _this.$window.randomScalingFactor(),
+                        _this.$window.randomScalingFactor(),
+                        _this.$window.randomScalingFactor()
                     ]
                 }, {
                     type: 'line',
                     label: 'Dataset 2',
-                    backgroundColor: color($window.chartColors.blue).alpha(0.2).rgbString(),
-                    borderColor: $window.chartColors.blue,
+                    backgroundColor: color(_this.$window.chartColors.blue).alpha(0.2).rgbString(),
+                    borderColor: _this.$window.chartColors.blue,
                     data: [
-                        $window.randomScalingFactor(),
-                        $window.randomScalingFactor(),
-                        $window.randomScalingFactor(),
-                        $window.randomScalingFactor(),
-                        $window.randomScalingFactor(),
-                        $window.randomScalingFactor(),
-                        $window.randomScalingFactor()
+                        _this.$window.randomScalingFactor(),
+                        _this.$window.randomScalingFactor(),
+                        _this.$window.randomScalingFactor(),
+                        _this.$window.randomScalingFactor(),
+                        _this.$window.randomScalingFactor(),
+                        _this.$window.randomScalingFactor(),
+                        _this.$window.randomScalingFactor()
                     ]
                 }, {
                     type: 'bar',
                     label: 'Dataset 3',
-                    backgroundColor: color($window.chartColors.green).alpha(0.2).rgbString(),
-                    borderColor: $window.chartColors.green,
+                    backgroundColor: color(_this.$window.chartColors.green).alpha(0.2).rgbString(),
+                    borderColor: _this.$window.chartColors.green,
                     data: [
-                        $window.randomScalingFactor(),
-                        $window.randomScalingFactor(),
-                        $window.randomScalingFactor(),
-                        $window.randomScalingFactor(),
-                        $window.randomScalingFactor(),
-                        $window.randomScalingFactor(),
-                        $window.randomScalingFactor()
+                        _this.$window.randomScalingFactor(),
+                        _this.$window.randomScalingFactor(),
+                        _this.$window.randomScalingFactor(),
+                        _this.$window.randomScalingFactor(),
+                        _this.$window.randomScalingFactor(),
+                        _this.$window.randomScalingFactor(),
+                        _this.$window.randomScalingFactor()
                     ]
                 }]
         };

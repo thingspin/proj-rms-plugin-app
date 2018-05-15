@@ -1,4 +1,4 @@
-import {PanelCtrl, MetricsPanelCtrl} from  'grafana/app/plugins/sdk';
+import {MetricsPanelCtrl} from  'grafana/app/plugins/sdk';
 
 import * as Chart from 'chart.js/dist/Chart.min';
 import 'chart.js/dist/Chart.bundle.min';
@@ -48,7 +48,7 @@ class RmsAlarmRulePanelCtrl extends MetricsPanelCtrl {
   mouse: any;
   data: any;
 
-  constructor($scope, $injector, $http, $location, uiSegmentSrv, annotationsSrv, private $window) {
+  constructor($scope, $injector, private $window) {
     super($scope, $injector);
 
     this.chartID = 'chart-rms-alrams-' + this.panel.id;
@@ -63,47 +63,47 @@ class RmsAlarmRulePanelCtrl extends MetricsPanelCtrl {
       datasets: [{
         type: 'bar',
         label: 'Dataset 1',
-        backgroundColor: color($window.chartColors.red).alpha(0.2).rgbString(),
-        borderColor: $window.chartColors.red,
+        backgroundColor: color(this.$window.chartColors.red).alpha(0.2).rgbString(),
+        borderColor: this.$window.chartColors.red,
         data: [
-          $window.randomScalingFactor(),
-          $window.randomScalingFactor(),
-          $window.randomScalingFactor(),
-          $window.randomScalingFactor(),
-          $window.randomScalingFactor(),
-          $window.randomScalingFactor(),
-          $window.randomScalingFactor()
+          this.$window.randomScalingFactor(),
+          this.$window.randomScalingFactor(),
+          this.$window.randomScalingFactor(),
+          this.$window.randomScalingFactor(),
+          this.$window.randomScalingFactor(),
+          this.$window.randomScalingFactor(),
+          this.$window.randomScalingFactor()
         ]
       }, {
         type: 'line',
         label: 'Dataset 2',
-        backgroundColor: color($window.chartColors.blue).alpha(0.2).rgbString(),
-        borderColor: $window.chartColors.blue,
+        backgroundColor: color(this.$window.chartColors.blue).alpha(0.2).rgbString(),
+        borderColor: this.$window.chartColors.blue,
         data: [
-          $window.randomScalingFactor(),
-          $window.randomScalingFactor(),
-          $window.randomScalingFactor(),
-          $window.randomScalingFactor(),
-          $window.randomScalingFactor(),
-          $window.randomScalingFactor(),
-          $window.randomScalingFactor()
+          this.$window.randomScalingFactor(),
+          this.$window.randomScalingFactor(),
+          this.$window.randomScalingFactor(),
+          this.$window.randomScalingFactor(),
+          this.$window.randomScalingFactor(),
+          this.$window.randomScalingFactor(),
+          this.$window.randomScalingFactor()
         ]
       }, {
         type: 'bar',
         label: 'Dataset 3',
-        backgroundColor: color($window.chartColors.green).alpha(0.2).rgbString(),
-        borderColor: $window.chartColors.green,
+        backgroundColor: color(this.$window.chartColors.green).alpha(0.2).rgbString(),
+        borderColor: this.$window.chartColors.green,
         data: [
-          $window.randomScalingFactor(),
-          $window.randomScalingFactor(),
-          $window.randomScalingFactor(),
-          $window.randomScalingFactor(),
-          $window.randomScalingFactor(),
-          $window.randomScalingFactor(),
-          $window.randomScalingFactor()
+          this.$window.randomScalingFactor(),
+          this.$window.randomScalingFactor(),
+          this.$window.randomScalingFactor(),
+          this.$window.randomScalingFactor(),
+          this.$window.randomScalingFactor(),
+          this.$window.randomScalingFactor(),
+          this.$window.randomScalingFactor()
         ]
       }]
-    };    
+    };
   }
 
   OnInitialized() {

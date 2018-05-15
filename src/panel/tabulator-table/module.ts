@@ -3,7 +3,7 @@ import 'jquery-ui';
 import 'jquery.tabulator/dist/js/tabulator.min';
 //import style from 'jquery.tabulator/dist/css/tabulator.min.css';
 
-import {PanelCtrl, MetricsPanelCtrl, loadPluginCss} from  'grafana/app/plugins/sdk';
+import {MetricsPanelCtrl, loadPluginCss} from  'grafana/app/plugins/sdk';
 
 loadPluginCss({
   dark: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.dark.css',
@@ -16,7 +16,7 @@ loadPluginCss({
 });
 
 const template = require("./templet.html");
-//const style = require("jquery.tabulator/dist/css/tabulator.min.css");
+// const style = require("jquery.tabulator/dist/css/tabulator.min.css");
 
 class RmsAlarmRulePanelCtrl extends MetricsPanelCtrl {
   static template = template;
@@ -29,7 +29,7 @@ class RmsAlarmRulePanelCtrl extends MetricsPanelCtrl {
   dataTable: any;
   mouse: any;
 
-  constructor($scope, $injector, $http, $location, uiSegmentSrv, annotationsSrv) {
+  constructor($scope, $injector) {
     super($scope, $injector);
 
     this.divID = 'table-rms-' + this.panel.id;

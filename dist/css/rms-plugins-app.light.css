@@ -1,2 +1,24 @@
+<<<<<<< HEAD
+=======
+@import url(../vendor/mds_customs/isteven-angular-multiselect/isteven-multi-select.css);
+.gf-form-group {
+  margin-bottom: 2.5rem;
+  display: inline-block;
+  max-width: 24rem; }
+
+.page-body {
+  margin-bottom: 20px; }
+
+.filter-table th {
+  text-align: center; }
+
+.filter-table td {
+  text-align: center; }
+
+.status-table {
+  flex-grow: 1;
+  min-width: 33%;
+  padding: 0 10px 0 10px; }
+>>>>>>> a1c0a89ce654c95069acc00df088f56b8af68cf5
 
 /*# sourceMappingURL=rms-plugins-app.light.css.map */

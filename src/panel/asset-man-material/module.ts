@@ -2,7 +2,7 @@ import _ from 'lodash';
 import $ from 'jquery';
 import 'jquery-ui';
 import 'jquery.tabulator/dist/js/tabulator.min';
-import {PanelCtrl, MetricsPanelCtrl, loadPluginCss} from  'grafana/app/plugins/sdk';
+import {MetricsPanelCtrl, loadPluginCss} from  'grafana/app/plugins/sdk';
 
 loadPluginCss({
   dark: 'plugins/proj-rms-plugin-app/panel/tabulator-table/css/tabulator.min.css',
@@ -15,7 +15,7 @@ loadPluginCss({
 });
 
 const template = require("./partial/templet.html");
-const options = require("./partial/options.html");
+// const options = require("./partial/options.html");
 
 class RmsAlarmRulePanelCtrl extends MetricsPanelCtrl {
   static template = template;

@@ -3,6 +3,7 @@ var template = require('./inspectionProperty.html');
 export class InspectionPropertyPageCtrl {
     static template = template;
     appModel: any;
+    mqttdefaultOpts: object;
 
     inspectList: any[];
     faultyList: any[];
@@ -12,7 +13,9 @@ export class InspectionPropertyPageCtrl {
     ip_class: any[];
     isOrgEditor: boolean;
 
-    constructor(private $scope, private $rootScope, private $location, private rsDsSrv, private alertSrv, private $q,  private contextSrv) {
+    constructor(private $rootScope, private $location, private $q,
+        private alertSrv,
+        private rsDsSrv, private rsMqttSrv) {
         this.mode = "list";
         this.enEtcMenu = false;
         this.ip_class = [
@@ -25,9 +28,24 @@ export class InspectionPropertyPageCtrl {
         } else {
             this.updateInspectionPropertyList(selectId);
         }
+
+        // param : host:string, topic:string, recvcallback:function
+        this.rsMqttSrv.connect("ws://219.251.4.236:1884");
+        this.rsMqttSrv.subscribe = '#';
+        this.rsMqttSrv.recvMessage(this.mqttRecv.bind(this));
+
+        this.mqttdefaultOpts = {
+            qos: 0,
+            retain: true,
+            dup: false,
+        };
     }
 
-    private updateInspectionPropertyList(selectId) {
+    mqttRecv(topic, message) {
+        console.log(topic, message.toString());
+    }
+
+    updateInspectionPropertyList(selectId) {
         this.$q.all([ this.$q((resolve, reject) => {
             let query = [ "select * from t_inspection_property where IP_TYPE=1"];
             this.rsDsSrv.query(selectId, query).then( result => {
@@ -55,7 +73,19 @@ export class InspectionPropertyPageCtrl {
         });
     }
 
-    private addInspectionItem(ipType, name, desc, min, max, cpk_min, cpk_max) {
+    getInspectionProperty(name) {
+        let selectId = this.appModel.jsonData.datasourceID;
+        let deferred = this.$q.defer();
+        let query = ["select * from t_inspection_property where name='" + name + "'"];
+        this.rsDsSrv.query(selectId, query).then( result => {
+            deferred.resolve(result);
+        }).catch( err => {
+            deferred.reject(err);
+        });
+        return deferred.promise;
+    }
+
+    addInspectionItem(ipType, name, desc, min, max, cpk_min, cpk_max) {
         let selectId = this.appModel.jsonData.datasourceID;
         let columns = "( NAME";
         let values = "('" + name + "'";
@@ -78,6 +108,18 @@ export class InspectionPropertyPageCtrl {
         ];
 
         this.rsDsSrv.query(selectId, query).then( result => {
+            this.getInspectionProperty(name).then((res) => {
+                let data = this.rsDsSrv.getTableObj(res);
+                if (data.length === 1 && data[0].length === 1) {
+                    let topic = 'INSPPROP/' + data[0][0].IDX;
+                    let obj = data[0][0];
+                    let messageObj = {
+                        "NAME": obj.NAME,
+                        "DESCRIPTION": obj.DESCRIPTION
+                    };
+                    this.rsMqttSrv.publishMessage(topic, JSON.stringify(messageObj), this.mqttdefaultOpts);
+                }
+            });
             this.setMode('list');
             this.updateInspectionPropertyList(selectId);
             this.alertSrv.set(name + "이(가) 추가되었습니다.", '', 'success', 1000);
@@ -87,7 +129,7 @@ export class InspectionPropertyPageCtrl {
         });
     }
 
-    private deleteInspectionItem() {
+    deleteInspectionItem() {
         let item = this.selectObj;
         this.$rootScope.appEvent('confirm-modal', {
             title: item.NAME + ' 삭제',
@@ -100,6 +142,9 @@ export class InspectionPropertyPageCtrl {
                 query.push("delete from t_inspection_property where IDX = "
                     + item.IDX);
                 this.rsDsSrv.query(selectId, query).then( result => {
+                    let topic = 'INSPPROP/' + item.IDX;
+                    this.rsMqttSrv.publishMessage(topic, '', this.mqttdefaultOpts);
+
                     this.setMode('list');
                     this.updateInspectionPropertyList(selectId);
                     this.alertSrv.set(item.NAME + "이(가) 삭제되었습니다.", '', 'success', 3000);
@@ -111,7 +156,7 @@ export class InspectionPropertyPageCtrl {
         });
     }
 
-    private updateInspectionItem() {
+    updateInspectionItem() {
         let selectId = this.appModel.jsonData.datasourceID;
         let obj = this.selectObj;
         let query = [];
@@ -125,6 +170,13 @@ export class InspectionPropertyPageCtrl {
             + obj.IDX);
 
         this.rsDsSrv.query(selectId, query).then( result => {
+            let topic = 'INSPPROP/' + obj.IDX;
+            let messageObj = {
+                "NAME": obj.NAME,
+                "DESCRIPTION": obj.DESCRIPTION
+            };
+            this.rsMqttSrv.publishMessage(topic, JSON.stringify(messageObj), this.mqttdefaultOpts);
+
             this.setMode('list');
             this.updateInspectionPropertyList(selectId);
             this.alertSrv.set(name + "이(가) 수정되었습니다.", '', 'success', 1000);
@@ -134,12 +186,12 @@ export class InspectionPropertyPageCtrl {
         });
     }
 
-    private setMode(mode) {
+    setMode(mode) {
         this.mode = mode;
         this.updateInspectionPropertyList(this.appModel.jsonData.datasourceID);
     }
 
-    private showEtcMenu(obj) {
+    showEtcMenu(obj) {
         this.selectObj = obj;
         this.enEtcMenu = true;
     }

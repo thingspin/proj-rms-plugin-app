@@ -1,7 +1,11 @@
 import {loadPluginCss} from 'grafana/app/plugins/sdk';
 
-import {RemoteSolutionDSCtrl} from './services/remoteSolutionDS';
-import {RemoteSolutionWSCtrl} from './services/remoteSolutionWS';
+import './vendor/mds_customs/isteven-angular-multiselect/isteven-multi-select';
+
+// register Remote Solution Services
+import './services/remoteSolutionDS';
+import './services/remoteSolutionWS';
+import './services/remoteSolutionMQTT';
 
 import {AppConfigCtrl} from './app-config/config';
 import {SettingActionInAdvancePageCtrl} from './pages/actionInAdvance/actionInAdvance';
@@ -15,8 +19,6 @@ loadPluginCss({
 export {
   AppConfigCtrl as ConfigCtrl,
 
-  RemoteSolutionDSCtrl as RemoteSolutionDS,
-  RemoteSolutionWSCtrl as RemoteSolutionWS,
 
   InspectionPropertyPageCtrl as InspectionProperty,
   SettingActionInAdvancePageCtrl as SettingActionInAdvance,

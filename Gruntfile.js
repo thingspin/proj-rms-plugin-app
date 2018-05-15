@@ -47,7 +47,11 @@ module.exports = function(grunt) {
           }
         },
         scripts: {
-          files: ['<%= project.dev %>/**/*.js', '<%= project.dev %>/**/*.ts', 'Gruntfile.js'],
+          files: ['Gruntfile.js',
+            '<%= project.dev %>/**/*.js',
+            '<%= project.dev %>/**/*.ts',
+            '<%= project.dev %>/**/*.html',
+          ],
           tasks: ['webpack:prod'], // !important
           options: {
             livereload: true,
