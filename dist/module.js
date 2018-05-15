@@ -116532,6 +116532,7 @@ var SettingActionInAdvancePageCtrl = /** @class */ (function () {
                     this.updateAction(this.selectId);
                     this.updateModels(this.selectId);
                     this.updateMemo();
+                    this.updateEnCheckFacilities();
                     break;
                 case "list":
                     this.selectObj = null;
@@ -116559,7 +116560,11 @@ var SettingActionInAdvancePageCtrl = /** @class */ (function () {
     SettingActionInAdvancePageCtrl.prototype.updateMemo = function () {
         if (this.selectObj !== null) {
             this.memo = this.selectObj.DESCRIPTION;
-            console.log(this.memo);
+        }
+    };
+    SettingActionInAdvancePageCtrl.prototype.updateEnCheckFacilities = function () {
+        if (this.selectObj !== null) {
+            this.enCheckFacilities = this.selectObj.JSON_DATA.enCheckFacilities;
         }
     };
     SettingActionInAdvancePageCtrl.prototype.updateITList = function (id) {

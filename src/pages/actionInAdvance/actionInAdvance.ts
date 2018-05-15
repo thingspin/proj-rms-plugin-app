@@ -52,6 +52,7 @@ export class SettingActionInAdvancePageCtrl {
                 this.updateAction(this.selectId);
                 this.updateModels(this.selectId);
                 this.updateMemo();
+                this.updateEnCheckFacilities();
                 break;
             case "list":
                 this.selectObj = null;
@@ -103,7 +104,11 @@ export class SettingActionInAdvancePageCtrl {
     private updateMemo() {
         if ( this.selectObj !== null ) {
             this.memo = this.selectObj.DESCRIPTION;
-            console.log(this.memo);
+        }
+    }
+    private updateEnCheckFacilities() {
+        if ( this.selectObj !== null ) {
+            this.enCheckFacilities = this.selectObj.JSON_DATA.enCheckFacilities;
         }
     }
 
