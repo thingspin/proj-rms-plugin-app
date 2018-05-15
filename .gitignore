@@ -34,3 +34,4 @@ grafana
 .notouch
 .DS_Store
 .tscache
+.vscode-upload.json
