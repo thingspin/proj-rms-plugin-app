@@ -3,7 +3,7 @@ import appEvents from 'grafana/app/core/app_events';
 import Handsontable from 'handsontable/dist/handsontable.full';
 var template = require('./actionInAdvance.html');
 var modelModalHtml = require('./modelModal.html');
-
+var memoModalHtml = require('./memoModal.html');
 interface LooseObject {
     [key: string]: any;
 }
@@ -449,10 +449,24 @@ export class SettingActionInAdvancePageCtrl {
         this.enEtcMenu = true;
     }
 
+    showSelectedModal(obj, htmlfileName) {
+        this.showObj = obj;
+        appEvents.emit('show-modal', {
+            templateHtml: require(htmlfileName),
+            model: this,
+        });
+    }
     showSelectedModel(obj) {
         this.showObj = obj;
         appEvents.emit('show-modal', {
             templateHtml: modelModalHtml,
+            model: this,
+        });
+    }
+    showSelectedMemo(obj) {
+        this.showObj = obj;
+        appEvents.emit('show-modal', {
+            templateHtml: memoModalHtml,
             model: this,
         });
     }

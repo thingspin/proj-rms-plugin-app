@@ -21,12 +21,12 @@
                             <tr ng-repeat="list in ctrl.aiaList">
                                 <td><input type="radio" name="selectedObj" ng-model="selectedObj" ng-value="list" ng-change="ctrl.showEtcMenu(selectedObj)"></td>
                                 <td>{{list.IT_NAME}}</td> <td>{{list.IP_NAME}}</td> 
-                                <td><a ng-click="ctrl.showSelectedModel(list)">click</a></td>
+                                <td><a ng-click="ctrl.showSelectedModel(list, './modelModal.html')">click</a></td>
                                 <td> 
                                     <div ng-if="list.JSON_DATA.CONT_FAIL">연속불량 : {{list.JSON_DATA.CONT_FAIL.COUNT}} 회 </div>
                                     <div ng-if="list.JSON_DATA.CPK">CPK : {{list.JSON_DATA.CPK.LSL}} 이상 {{list.JSON_DATA.CPK.USL}} 미만</div>
                                 </td>
-                                <td><a ng-click="ctrl.showSelectedMemo(list)">click</a></td>
+                                <td><a ng-click="ctrl.showSelectedMemo(list, './memoModal.html')">click</a></td>
                             </tr>
                         </tbody>
                     </table>
