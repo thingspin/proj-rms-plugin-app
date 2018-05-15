@@ -27,7 +27,9 @@
     "ts-loader": "^4.2.0",
     "typescript": "^2.8.3",
     "webpack": "^4.8.3",
-    "webpack-cli": "^2.1.2"
+    "webpack-cli": "^2.1.2",
+    "style-loader": "~0.21.0",
+    "css-loader": "~0.28.11"
   },
   "dependencies": {
     "mqtt": "^2.18.0",
@@ -38,6 +40,7 @@
     "jquery-ui": "^1.12.1",
     "jquery.tabulator": "^3.5.1",
     "d3": "^5.4.0",
-    "snapsvg": "^0.5.1"
+    "snapsvg": "^0.5.1",
+    "handsontable": "~2.0.0"
   }
 }

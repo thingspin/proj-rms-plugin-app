@@ -1,1 +1,11 @@
 @import '../vendor/mds_customs/isteven-angular-multiselect/isteven-multi-select.css';
+
+#rs-memo-input {
+    width: 670px;
+    height: 150px;
+    overflow: hidden;
+}
+
+.handsontable td {
+    width: 600px;
+}

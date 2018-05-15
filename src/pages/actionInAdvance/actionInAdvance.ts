@@ -1,4 +1,6 @@
+import 'handsontable/dist/handsontable.full.css';
 import appEvents from 'grafana/app/core/app_events';
+import Handsontable from 'handsontable/dist/handsontable.full';
 var template = require('./actionInAdvance.html');
 var modelModalHtml = require('./modelModal.html');
 
@@ -7,13 +9,13 @@ interface LooseObject {
 }
 
 export class SettingActionInAdvancePageCtrl {
-    static template = template;
+    static template: string = template;
     selectId: any;
     appModel: any;
     mqttdefaultOpts: object;
 
     cpk: any;
-    memo: string[];
+    memo: string[][];
     enCPK: boolean;
     selectObj: any;
     enEtcMenu: boolean;
@@ -30,19 +32,26 @@ export class SettingActionInAdvancePageCtrl {
     description: string[];
     PerceptionConditions: any[];
 
+    hot: any;
     showObj: object;
 
     mode: string;
     set setMode(mode) {
         this.mode = mode;
         switch (mode) {
-            case "edit":
             case "new":
+                this.memo = [ [''] ];
+                this.selectObj = null;
+                this.continuousFailure = undefined;
+                this.enContinuousFailure = false;
+                this.enCPK = false;
+            case "edit":
                 this.updateIPList(this.selectId);
                 this.updateITList(this.selectId);
                 this.updatePerceptionConditionList(this.selectId, ["select * from t_perception_condition"]);
                 this.updateAction(this.selectId);
                 this.updateModels(this.selectId);
+                this.updateMemo();
                 break;
             case "list":
                 this.selectObj = null;
@@ -50,16 +59,19 @@ export class SettingActionInAdvancePageCtrl {
                 break;
             default:
                 console.error("mode is not found : ", mode);
+                break;
         }
     }
     get setMode() { return this.mode; }
 
-    constructor(private $q, private $rootScope, private $location,
+    constructor(private $q, private $rootScope, private $location, private $element,
         private rsDsSrv, private rsMqttSrv,
         private alertSrv,) {
         this.setMode = "list";
         this.cpk = {};
         this.selectObj = null;
+        this.memo = [ [''] ];
+
 
         this.selectId = this.appModel.jsonData.datasourceID;
         if (this.selectId === undefined) {
@@ -74,6 +86,25 @@ export class SettingActionInAdvancePageCtrl {
             retain: true,
             dup: false,
         };
+    }
+
+    memoInit() {
+        this.hot = new Handsontable(this.$element.find("#rs-memo-input")[0], {
+            rowHeaders: true,
+            colHeaders: ["점검 내용"],
+            filters: true,
+            dropdownMenu: true,
+            manualColumnResize: true,
+            minSpareRows: 1,
+        });
+        this.hot.loadData(this.memo);
+    }
+
+    private updateMemo() {
+        if ( this.selectObj !== null ) {
+            this.memo = this.selectObj.DESCRIPTION;
+            console.log(this.memo);
+        }
     }
 
     updateITList(id) {
@@ -219,6 +250,7 @@ export class SettingActionInAdvancePageCtrl {
             data.forEach((arr) => {
                 arr.forEach((item) => {
                     item.JSON_DATA = JSON.parse(item.JSON_DATA);
+                    item.DESCRIPTION = JSON.parse(item.DESCRIPTION);
                     this.aiaList.push(item);
                 });
             });
@@ -319,11 +351,12 @@ export class SettingActionInAdvancePageCtrl {
         var jData = this.getJsonData(it, ip, perceptionCond, selectedActions, applyModels);
 
         // insert data
-        let columns = "( IT_IDX, IP_IDX, JSON_DATA )";
+        let columns = "( IT_IDX, IP_IDX, JSON_DATA, DESCRIPTION )";
         let values = "(" +
             it[0].data.IDX + ", " +
             ip[0].data.IDX + ", " +
-            "'" + JSON.stringify(jData) + "'";
+            "'" + JSON.stringify(jData) + "', " +
+            "'" + JSON.stringify(this.memo) + "'";
         values = values + " )";
 
         let selectId = this.appModel.jsonData.datasourceID;
@@ -360,8 +393,8 @@ export class SettingActionInAdvancePageCtrl {
         // insert data
         let updateData = "IT_IDX = " + it[0].data.IDX
             + ", IP_IDX=" + ip[0].data.IDX
-            + ", JSON_DATA=" +
-            "'" + JSON.stringify(jData) + "'";
+            + ", JSON_DATA= '" + JSON.stringify(jData) + "'"
+            + ", DESCRIPTION= '" + JSON.stringify(this.memo) + "'";
 
         let selectId = this.appModel.jsonData.datasourceID;
         let query = [
