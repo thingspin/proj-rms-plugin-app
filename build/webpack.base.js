@@ -14,7 +14,8 @@ module.exports = {
       'panel/bar-chart/module.js' : './panel/bar-chart/module.ts',
       'panel/cpk-chart/module.js' : './panel/cpk-chart/module.ts',
       'panel/tabulator-table/module.js' : './panel/tabulator-table/module.ts',
-      'panel/asset-man-material/module.js' : './panel/asset-man-material/module.ts'
+      'panel/asset-man-material/module.js' : './panel/asset-man-material/module.ts',
+      'panel/monitor-factory/module.js' : './panel/monitor-factory/module.ts',
   },
   output: {
     path: resolve('dist'),
@@ -55,6 +56,11 @@ module.exports = {
         test: /\.tsx?$/,
         loaders: ["ts-loader"],
         exclude: /node_modules/,
+      }
+      ,
+      {
+        test: require.resolve('snapsvg/dist/snap.svg-min.js'),
+        use: 'imports-loader?this=>window,fix=>module.exports=0',
       }
     ]
   }

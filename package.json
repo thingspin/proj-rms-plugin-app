@@ -12,10 +12,12 @@
   "repository": "https://github.com/thingspin/prog-rms-plugin-app",
   "devDependencies": {
     "@types/node": "^10.0.8",
+    "@types/d3": "^5.0.0",
     "@types/grafana": "git+https://git@github.com/CorpGlory/types-grafana.git",
     "copy-webpack-plugin": "^4.5.1",
     "html-loader": "^0.5.5",
     "loader-utils": "^1.1.0",
+    "imports-loader": "^0.8.0",
     "ts-loader": "^4.2.0",
     "typescript": "^2.8.3",
     "webpack": "^4.7.0",
@@ -34,6 +36,8 @@
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "jquery-ui": "^1.12.1",
-    "jquery.tabulator": "^3.5.1"
+    "jquery.tabulator": "^3.5.1",
+    "d3": "^5.4.0",
+    "snapsvg": "^0.5.1"
   }
 }

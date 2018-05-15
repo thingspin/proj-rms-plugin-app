@@ -1,6 +1,7 @@
 {
   "annotations": {
-    "list": []
+    "list": [
+    ]
   },
   "editable": true,
   "gnetId": null,
@@ -8,129 +9,48 @@
   "links": [],
   "panels": [
     {
-      "cacheTimeout": null,
-      "colorBackground": false,
-      "colorValue": false,
-      "colors": [
-        "#299c46",
-        "rgba(237, 129, 40, 0.89)",
-        "#d44a3a"
-      ],
       "datasource": null,
-      "format": "none",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
-      },
       "gridPos": {
-        "h": 3,
+        "h": 6,
         "w": 10,
         "x": 0,
         "y": 0
-      },
-      "id": 8,
-      "interval": null,
-      "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "name": "range to text",
-          "value": 2
-        }
-      ],
-      "maxDataPoints": 100,
-      "nullPointMode": "connected",
-      "nullText": null,
-      "postfix": "",
-      "postfixFontSize": "50%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "repeat": null,
-      "sparkline": {
-        "fillColor": "rgba(31, 118, 189, 0.18)",
-        "full": false,
-        "lineColor": "rgb(31, 120, 193)",
-        "show": false
-      },
-      "tableColumn": "",
-      "targets": [
-        {
-          "$$hashKey": "object:212",
-          "refId": "A"
-        }
-      ],
-      "thresholds": "",
-      "title": "",
-      "type": "singlestat",
-      "valueFontSize": "80%",
-      "valueMaps": [
-        {
-          "op": "=",
-          "text": "N/A",
-          "value": "null"
-        }
-      ],
-      "valueName": "avg"
-    },
-    {
-      "bgimage": "public/img/brand/thingspin/pnid/power/turbine.svg",
-      "datasource": null,
-      "gridPos": {
-        "h": 11,
-        "w": 14,
-        "x": 10,
-        "y": 0
-      },
-      "height": "400px",
-      "id": 2,
-      "links": [],
-      "repeat": null,
-      "sensors": [],
-      "series": [],
-      "seriesList": [],
-      "targets": [],
-      "title": "",
-      "transparent": false,
-      "type": "bessler-pictureit-panel",
-      "valueMaps": [],
-      "width": "100px"
-    },
-    {
-      "datasource": null,
-      "gridPos": {
-        "h": 8,
-        "w": 10,
-        "x": 0,
-        "y": 3
       },
       "id": 4,
       "targets": [
         {}
       ],
-      "title": "Panel Title",
+      "title": "",
       "type": "rms-plugin-app-p002"
     },
     {
       "datasource": null,
       "gridPos": {
-        "h": 17,
+        "h": 6,
+        "w": 14,
+        "x": 10,
+        "y": 0
+      },
+      "id": 10,
+      "links": [],
+      "options": {},
+      "targets": [
+        {
+          "$$hashKey": "object:156",
+          "refId": "A"
+        }
+      ],
+      "title": "",
+      "transparent": false,
+      "type": "rms-monitor-factory"
+    },
+    {
+      "datasource": null,
+      "gridPos": {
+        "h": 9,
         "w": 24,
         "x": 0,
-        "y": 11
+        "y": 6
       },
       "id": 6,
       "targets": [
@@ -178,5 +98,5 @@
   },
   "timezone": "",
   "title": "설비 감시",
-  "version": 12
+  "version": 6
 }
