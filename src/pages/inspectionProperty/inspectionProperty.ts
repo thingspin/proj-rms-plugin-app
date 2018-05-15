@@ -31,8 +31,8 @@ export class InspectionPropertyPageCtrl {
 
         // param : host:string, topic:string, recvcallback:function
         this.rsMqttSrv.connect("ws://219.251.4.236:1884");
-        this.rsMqttSrv.subscribe = '#';
-        this.rsMqttSrv.recvMessage(this.mqttRecv.bind(this));
+        // this.rsMqttSrv.subscribe = '#';
+        // this.rsMqttSrv.recvMessage(this.mqttRecv.bind(this));
 
         this.mqttdefaultOpts = {
             qos: 0,
@@ -115,7 +115,8 @@ export class InspectionPropertyPageCtrl {
                     let obj = data[0][0];
                     let messageObj = {
                         "NAME": obj.NAME,
-                        "DESCRIPTION": obj.DESCRIPTION
+                        "DESCRIPTION": obj.DESCRIPTION,
+                        "TYPE": obj.IP_TYPE
                     };
                     this.rsMqttSrv.publishMessage(topic, JSON.stringify(messageObj), this.mqttdefaultOpts);
                 }

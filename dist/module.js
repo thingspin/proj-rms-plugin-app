@@ -52270,7 +52270,7 @@ Object(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_0__["loadPluginCss"])({
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"page-in-fullscreen\">\n    <div ng-switch on='ctrl.mode'>\n        <div class=\"page-container\" ng-switch-default>\n            <div class=\"page-in-fullscreen page-header gf-form-inline\">\n                <div class=\"btn-group\">\n                    <button type=\"button\" class=\"btn btn-large btn-primary\" ng-click=\"ctrl.deleteAIA()\" ng-show=\"ctrl.enEtcMenu\">삭제</button>\n                    <button type=\"button\" class=\"btn btn-large btn-primary\" ng-click=\"ctrl.setMode = 'edit'\" ng-show=\"ctrl.enEtcMenu\">수정</button>\n                    <button type=\"submit\" class=\"btn btn-large btn-primary\" ng-click=\"ctrl.setMode = 'new'\">신규등록</button>\n                </div>\n            </div>\n            <div class=\"page-body\" >\n                <div class=\"section gf-form-group status-table\" >\n                    <h5 class=\"section-heading\"> 검사 항목 리스트 </h5>\n                    <table class=\"filter-table\">\n                        <thead>\n                            <tr>\n                                <th> </th> <th> 검사 구분 </th> <th> 검사 항목 </th> <th> 검사 대상 </th> <th> 감지조건 </th> <th> 점검내용 </th>\n                            </tr>\n                        </thead>\n                        <tbody>\n                            <tr ng-repeat=\"list in ctrl.aiaList\">\n                                <td><input type=\"radio\" name=\"selectedObj\" ng-model=\"selectedObj\" ng-value=\"list\" ng-change=\"ctrl.showEtcMenu(selectedObj)\"></td>\n                                <td>{{list.IT_NAME}}</td> <td>{{list.IP_NAME}}</td> \n                                <td><a ng-click=\"ctrl.showSelectedModel(list)\">click</a></td>\n                                <td> \n                                    <div ng-if=\"list.JSON_DATA.CONT_FAIL\">연속불량 : {{list.JSON_DATA.CONT_FAIL.COUNT}} 회 </div>\n                                    <div ng-if=\"list.JSON_DATA.CPK\">CPK : {{list.JSON_DATA.CPK.LSL}} 이상 {{list.JSON_DATA.CPK.USL}} 미만</div>\n                                </td>\n                                <td>{{list.DESCRIPTION}}</td>\n                            </tr>\n                        </tbody>\n                    </table>\n                </div>\n            </div>\n        </div>\n    \n        <div class=\"page-container\" ng-switch-when=\"new\">\n            <div class=\"page-header\">\n                <h1>신규 사전 조치 등록</h1>\n            </div>\n            <div class=\"page-body\">\n                <div class=\"gf-form-group\">\n                    <div class=\"gf-form-inline\">\n                        <div class=\"gf-form\">\n                            <span class=\"gf-form-label width-10\">검사 종류</span>\n                            <select class=\"gf-form-input width-30\" ng-model=\"it\" \n                                ng-options=\"opts.NAME for opts in ctrl.IT_LIST\" \n                                ng-init=\"it = ctrl.IT_LIST[0]\" >\n                            </select>\n                        </div>\n                        <div class=\"gf-form\">\n                            <span class=\"gf-form-label width-10\">검사 항목</span>\n                            <select class=\"gf-form-input width-30\" ng-model=\"ip\" \n                                ng-options=\"opts.NAME for opts in ctrl.IP_LIST\" \n                                ng-init=\"ip = ctrl.IP_LIST[0]\" \n                                ng-change=\"ctrl.changeIP(ip)\"\n                                required>\n                            </select>\n                        </div>\n                        <div class=\"gf-form\">\n                            <span class=\"gf-form-label width-10\">감지 조건</span>\n                            <div isteven-multi-select class=\"istevenMultiSelect\"\n                                input-model=\"ctrl.PerceptionConditions\" output-model=\"perceptionCond\"\n                                button-label=\"icon name\" item-label=\"icon name maker\" tick-property=\"ticked\"\n                                on-item-click=\"ctrl.changedPerceptionCond(perceptionCond)\"\n                                on-select-all=\"ctrl.changedPerceptionCond(perceptionCond)\"\n                                on-select-none=\"ctrl.changedPerceptionCond(perceptionCond)\"\n                                on-reset=\"ctrl.changedPerceptionCond(perceptionCond)\"\n                                on-confirm=\"ctrl.changedPerceptionCond(perceptionCond)\"\n                            > </div>\n                        </div>\n    \n                        <div class=\"gf-form\" ng-if=\"ctrl.enContinuousFailure\">\n                            <span class=\"gf-form-label width-10\">연속 불량 횟수</span>\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"ctrl.continuousFailure\" ng-model-onblur ng-change=\"ctrl.refresh()\">\n                        </div>\n                        <div class=\"gf-form\" ng-if=\"ctrl.enCPK\">\n                            <span class=\"gf-form-label width-10\">CPK</span>\n                            <div class=\"gf-form\">\n                                <div class=\"gf-form\">\n                                    <span class=\"gf-form-label width-6\">최소</span>\n                                    <input class=\"gf-form-input width-8\" type=\"number\" ng-model=\"ctrl.cpk.min\" />\n                                </div>\n                                <div class=\"gf-form\">\n                                    <span class=\"gf-form-label width-6\">최대</span>\n                                    <input class=\"gf-form-input width-8\" type=\"number\" ng-model=\"ctrl.cpk.max\" />\n                                </div>\n                            </div>\n                        </div>\n    \n                        <div class=\"gf-form\">\n                            <span class=\"gf-form-label width-10\">조치</span>\n                            <div isteven-multi-select class=\"istevenMultiSelect\"\n                                input-model=\"ctrl.actionList\" output-model=\"selectedActions\"\n                                button-label=\"icon name\" item-label=\"icon name maker\" tick-property=\"ticked\"\n                                selection-mode=\"single\"\n                            > </div>\n                        </div>\n                        <div class=\"gf-form\">\n                            <span class=\"gf-form-label width-10\">적용 모델</span>\n                            <div isteven-multi-select class=\"istevenMultiSelect\"\n                                input-model=\"ctrl.modelList\" output-model=\"applyModels\"\n                                button-label=\"icon name\" item-label=\"icon name maker\" tick-property=\"ticked\"\n                            > </div>\n                        </div>\n    \n                        <gf-form-switch class=\"gf-form\" label-class=\"width-10\" label=\"설비 점검\" checked=\"ctrl.enCheckFacilities\">\n                        </gf-form-switch>\n    \n                        <div class=\"gf-form\">\n                            <span class=\"gf-form-label width-10\">점검 내용</span>\n                            <div class=\"gf-form\">\n                                <div id=\"example\"></div>\n                            </div>\n                        </div>\n                        <div class=\"gf-form-button-row\">\n                            <button type=\"button\" class=\"btn btn-success\" ng-click=\"ctrl.addAIA(it, ip, perceptionCond, selectedActions, applyModels)\">등록</button>\n                            <a class=\"btn btn-link\" ng-click=\"ctrl.setMode = 'list'\">Back</a>\n                        </div>\n                        <div class=\"clearfix\"></div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    \n        <div class=\"page-container\" ng-switch-when=\"edit\">\n            <div class=\"page-header\">\n                <h1>신규 검사항목 수정</h1>\n            </div>\n            <div class=\"page-body\">\n                <div class=\"gf-form-group\">\n                    <div class=\"gf-form-inline\">\n                        <div class=\"gf-form\">\n                            <span class=\"gf-form-label width-10\">검사 항목</span>\n                            <input class=\"gf-form-input width-30\" type=\"text\" ng-model=\"ctrl.selectObj.NAME\" ng-model-onblur ng-change=\"ctrl.refresh()\">\n                        </div>\n                        <div class=\"gf-form\">\n                            <span class=\"gf-form-label width-10\">설명</span>\n                            <input class=\"gf-form-input width-30\" type=\"text\" ng-model=\"ctrl.selectObj.DESCRIPTION\" ng-model-onblur ng-change=\"ctrl.refresh()\" >\n                        </div>\n                        <div class=\"gf-form\">\n                                <span class=\"gf-form-label width-10\">기본 검사치 최소값</span>\n                                <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"ctrl.selectObj.DEFAULT_MIN\" ng-model-onblur ng-change=\"ctrl.refresh()\">\n                        </div>\n                        <div class=\"gf-form\">\n                                <span class=\"gf-form-label width-10\">기본 검사치 최대값</span>\n                                <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"ctrl.selectObj.DEFAULT_MAX\"  ng-model-onblur ng-change=\"ctrl.refresh()\">\n                        </div>\n                        <div class=\"gf-form\">\n                                <span class=\"gf-form-label width-10\">기본 CPK 최소값</span>\n                                <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"ctrl.selectObj.DEFAULT_CPK_MIN\" ng-model-onblur ng-change=\"ctrl.refresh()\">\n                        </div>\n                        <div class=\"gf-form\">\n                                <span class=\"gf-form-label width-10\">기본 CPK 최소값</span>\n                                <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"ctrl.selectObj.DEFAULT_CPK_MAX\" ng-model-onblur ng-change=\"ctrl.refresh()\">\n                        </div>\n                        <div class=\"gf-form-button-row\">\n                            <button type=\"button\" class=\"btn btn-success\" ng-click=\"ctrl.updateInspectionItem()\">수정</button>\n                            <a class=\"btn btn-link\" ng-click=\"ctrl.setMode = 'list'\">Back</a>\n                        </div>\n                        <div class=\"clearfix\"></div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    </div>\n    ";
+module.exports = "<div class=\"page-in-fullscreen\">\n    <div ng-switch on='ctrl.mode'>\n        <div class=\"page-container\" ng-switch-default>\n            <div class=\"page-in-fullscreen page-header gf-form-inline\">\n                <div class=\"btn-group\">\n                    <button type=\"button\" class=\"btn btn-large btn-primary\" ng-click=\"ctrl.deleteAIA()\" ng-show=\"ctrl.enEtcMenu\">삭제</button>\n                    <button type=\"button\" class=\"btn btn-large btn-primary\" ng-click=\"ctrl.setMode = 'edit'\" ng-show=\"ctrl.enEtcMenu\">수정</button>\n                    <button type=\"submit\" class=\"btn btn-large btn-primary\" ng-click=\"ctrl.setMode = 'new'\">신규등록</button>\n                </div>\n            </div>\n            <div class=\"page-body\" >\n                <div class=\"section gf-form-group status-table\" >\n                    <h5 class=\"section-heading\"> 검사 항목 리스트 </h5>\n                    <table class=\"filter-table\">\n                        <thead>\n                            <tr>\n                                <th> </th> <th> 검사 구분 </th> <th> 검사 항목 </th> <th> 검사 대상 </th> <th> 감지조건 </th> <th> 점검내용 </th>\n                            </tr>\n                        </thead>\n                        <tbody>\n                            <tr ng-repeat=\"list in ctrl.aiaList\">\n                                <td><input type=\"radio\" name=\"selectedObj\" ng-model=\"selectedObj\" ng-value=\"list\" ng-change=\"ctrl.showEtcMenu(selectedObj)\"></td>\n                                <td>{{list.IT_NAME}}</td> <td>{{list.IP_NAME}}</td> \n                                <td><a ng-click=\"ctrl.showSelectedModel(list)\">click</a></td>\n                                <td> \n                                    <div ng-if=\"list.JSON_DATA.CONT_FAIL\">연속불량 : {{list.JSON_DATA.CONT_FAIL.COUNT}} 회 </div>\n                                    <div ng-if=\"list.JSON_DATA.CPK\">CPK : {{list.JSON_DATA.CPK.LSL}} 이상 {{list.JSON_DATA.CPK.USL}} 미만</div>\n                                </td>\n                                <td>{{list.DESCRIPTION}}</td>\n                            </tr>\n                        </tbody>\n                    </table>\n                </div>\n            </div>\n        </div>\n    \n        <div class=\"page-container\" ng-switch-when=\"new\">\n            <div class=\"page-header\">\n                <h1>신규 사전 조치 등록</h1>\n            </div>\n            <div class=\"page-body\">\n                <div class=\"gf-form-group\">\n                    <div class=\"gf-form-inline\">\n                        <div class=\"gf-form\">\n                            <span class=\"gf-form-label width-10\">검사 종류</span>\n                            <div isteven-multi-select class=\"istevenMultiSelect\"\n                                input-model=\"ctrl.IT_LIST\" output-model=\"it\"\n                                button-label=\"icon name\" item-label=\"icon name maker\" tick-property=\"ticked\"\n                                selection-mode=\"single\"\n                            > </div>\n                        </div>\n                        <div class=\"gf-form\">\n                            <span class=\"gf-form-label width-10\">검사 항목</span>\n                            <div isteven-multi-select class=\"istevenMultiSelect\"\n                                input-model=\"ctrl.IP_LIST\" output-model=\"ip\"\n                                button-label=\"icon name\" item-label=\"icon name maker\" tick-property=\"ticked\"\n                                selection-mode=\"single\"\n                                on-item-click=\"ctrl.changeIP(ip)\"\n                                on-reset=\"ctrl.changeIP(ip)\"\n                                on-confirm=\"ctrl.changeIP(ip)\"\n                            > </div>\n                        </div>\n                        <div class=\"gf-form\">\n                            <span class=\"gf-form-label width-10\">감지 조건</span>\n                            <div isteven-multi-select class=\"istevenMultiSelect\"\n                                input-model=\"ctrl.PerceptionConditions\" output-model=\"perceptionCond\"\n                                button-label=\"icon name\" item-label=\"icon name maker\" tick-property=\"ticked\"\n                                on-item-click=\"ctrl.changedPerceptionCond(perceptionCond)\"\n                                on-select-all=\"ctrl.changedPerceptionCond(perceptionCond)\"\n                                on-select-none=\"ctrl.changedPerceptionCond(perceptionCond)\"\n                                on-reset=\"ctrl.changedPerceptionCond(perceptionCond)\"\n                                on-confirm=\"ctrl.changedPerceptionCond(perceptionCond)\"\n                            > </div>\n                        </div>\n    \n                        <div class=\"gf-form\" ng-if=\"ctrl.enContinuousFailure\">\n                            <span class=\"gf-form-label width-10\">연속 불량 횟수</span>\n                            <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"ctrl.continuousFailure\" ng-model-onblur ng-change=\"ctrl.refresh()\">\n                        </div>\n                        <div class=\"gf-form\" ng-if=\"ctrl.enCPK\">\n                            <span class=\"gf-form-label width-10\">CPK</span>\n                            <div class=\"gf-form\">\n                                <div class=\"gf-form\">\n                                    <span class=\"gf-form-label width-6\">최소</span>\n                                    <input class=\"gf-form-input width-8\" type=\"number\" ng-model=\"ctrl.cpk.min\" />\n                                </div>\n                                <div class=\"gf-form\">\n                                    <span class=\"gf-form-label width-6\">최대</span>\n                                    <input class=\"gf-form-input width-8\" type=\"number\" ng-model=\"ctrl.cpk.max\" />\n                                </div>\n                            </div>\n                        </div>\n    \n                        <div class=\"gf-form\">\n                            <span class=\"gf-form-label width-10\">조치</span>\n                            <div isteven-multi-select class=\"istevenMultiSelect\"\n                                input-model=\"ctrl.actionList\" output-model=\"selectedActions\"\n                                button-label=\"icon name\" item-label=\"icon name maker\" tick-property=\"ticked\"\n                                selection-mode=\"single\"\n                            > </div>\n                        </div>\n                        <div class=\"gf-form\">\n                            <span class=\"gf-form-label width-10\">적용 모델</span>\n                            <div isteven-multi-select class=\"istevenMultiSelect\"\n                                input-model=\"ctrl.modelList\" output-model=\"applyModels\"\n                                button-label=\"icon name\" item-label=\"icon name maker\" tick-property=\"ticked\"\n                            > </div>\n                        </div>\n    \n                        <gf-form-switch class=\"gf-form\" label-class=\"width-10\" label=\"설비 점검\" checked=\"ctrl.enCheckFacilities\">\n                        </gf-form-switch>\n    \n                        <div class=\"gf-form\">\n                            <span class=\"gf-form-label width-10\">점검 내용</span>\n                            <div class=\"gf-form\">\n                                <div id=\"description\"></div>\n                            </div>\n                        </div>\n\n                        <div class=\"gf-form-button-row\">\n                            <button type=\"button\" class=\"btn btn-success\" ng-click=\"ctrl.addAIA(it, ip, perceptionCond, selectedActions, applyModels)\">등록</button>\n                            <a class=\"btn btn-link\" ng-click=\"ctrl.setMode = 'list'\">Back</a>\n                        </div>\n                        <div class=\"clearfix\"></div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    \n        <div class=\"page-container\" ng-switch-when=\"edit\">\n            <div class=\"page-header\">\n                <h1>신규 사전 조치 수정</h1>\n            </div>\n            <div class=\"page-body\">\n                    <div class=\"gf-form-group\">\n                        <div class=\"gf-form-inline\">\n                            <div class=\"gf-form\">\n                                <span class=\"gf-form-label width-10\">검사 종류</span>\n                                <div isteven-multi-select class=\"istevenMultiSelect\"\n                                    input-model=\"ctrl.IT_LIST\" output-model=\"it\"\n                                    button-label=\"icon name\" item-label=\"icon name maker\" tick-property=\"ticked\"\n                                    selection-mode=\"single\"\n                                > </div>\n                            </div>\n                            <div class=\"gf-form\">\n                                <span class=\"gf-form-label width-10\">검사 항목</span>\n                                <div isteven-multi-select class=\"istevenMultiSelect\"\n                                    input-model=\"ctrl.IP_LIST\" output-model=\"ip\"\n                                    button-label=\"icon name\" item-label=\"icon name maker\" tick-property=\"ticked\"\n                                    selection-mode=\"single\"\n                                    on-item-click=\"ctrl.changeIP(ip)\"\n                                    on-reset=\"ctrl.changeIP(ip)\"\n                                    on-confirm=\"ctrl.changeIP(ip)\"\n                                > </div>\n                            </div>\n                            <div class=\"gf-form\">\n                                <span class=\"gf-form-label width-10\">감지 조건</span>\n                                <div isteven-multi-select class=\"istevenMultiSelect\"\n                                    input-model=\"ctrl.PerceptionConditions\" output-model=\"perceptionCond\"\n                                    button-label=\"icon name\" item-label=\"icon name maker\" tick-property=\"ticked\"\n                                    on-item-click=\"ctrl.changedPerceptionCond(perceptionCond)\"\n                                    on-select-all=\"ctrl.changedPerceptionCond(perceptionCond)\"\n                                    on-select-none=\"ctrl.changedPerceptionCond(perceptionCond)\"\n                                    on-reset=\"ctrl.changedPerceptionCond(perceptionCond)\"\n                                    on-confirm=\"ctrl.changedPerceptionCond(perceptionCond)\"\n                                > </div>\n                            </div>\n        \n                            <div class=\"gf-form\" ng-if=\"ctrl.enContinuousFailure\">\n                                <span class=\"gf-form-label width-10\">연속 불량 횟수</span>\n                                <input class=\"gf-form-input width-30\" type=\"number\" ng-model=\"ctrl.continuousFailure\" ng-model-onblur ng-change=\"ctrl.refresh()\">\n                            </div>\n                            <div class=\"gf-form\" ng-if=\"ctrl.enCPK\">\n                                <span class=\"gf-form-label width-10\">CPK</span>\n                                <div class=\"gf-form\">\n                                    <div class=\"gf-form\">\n                                        <span class=\"gf-form-label width-6\">최소</span>\n                                        <input class=\"gf-form-input width-8\" type=\"number\" ng-model=\"ctrl.cpk.min\" />\n                                    </div>\n                                    <div class=\"gf-form\">\n                                        <span class=\"gf-form-label width-6\">최대</span>\n                                        <input class=\"gf-form-input width-8\" type=\"number\" ng-model=\"ctrl.cpk.max\" />\n                                    </div>\n                                </div>\n                            </div>\n        \n                            <div class=\"gf-form\">\n                                <span class=\"gf-form-label width-10\">조치</span>\n                                <div isteven-multi-select class=\"istevenMultiSelect\"\n                                    input-model=\"ctrl.actionList\" output-model=\"selectedActions\"\n                                    button-label=\"icon name\" item-label=\"icon name maker\" tick-property=\"ticked\"\n                                    selection-mode=\"single\"\n                                > </div>\n                            </div>\n                            <div class=\"gf-form\">\n                                <span class=\"gf-form-label width-10\">적용 모델</span>\n                                <div isteven-multi-select class=\"istevenMultiSelect\"\n                                    input-model=\"ctrl.modelList\" output-model=\"applyModels\"\n                                    button-label=\"icon name\" item-label=\"icon name maker\" tick-property=\"ticked\"\n                                > </div>\n                            </div>\n        \n                            <gf-form-switch class=\"gf-form\" label-class=\"width-10\" label=\"설비 점검\" checked=\"ctrl.enCheckFacilities\">\n                            </gf-form-switch>\n        \n                            <div class=\"gf-form\">\n                                <span class=\"gf-form-label width-10\">점검 내용</span>\n                                <div class=\"gf-form\">\n                                    <div id=\"description\"></div>\n                                </div>\n                            </div>\n        \n                            <div class=\"gf-form-button-row\">\n                                <button type=\"button\" class=\"btn btn-success\" ng-click=\"ctrl.editAIA(it, ip, perceptionCond, selectedActions, applyModels)\">수정</button>\n                                <a class=\"btn btn-link\" ng-click=\"ctrl.setMode = 'list'\">Back</a>\n                            </div>\n                            <div class=\"clearfix\"></div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    ";
 
 /***/ }),
 
@@ -52299,10 +52299,7 @@ var SettingActionInAdvancePageCtrl = /** @class */ (function () {
         this.alertSrv = alertSrv;
         this.setMode = "list";
         this.cpk = {};
-        this.memo = [];
-        this.memo.push("sample");
-        this.pluginId = this.appModel.id;
-        this.baseUrl = this.appModel.baseUrl;
+        this.selectObj = null;
         this.selectId = this.appModel.jsonData.datasourceID;
         if (this.selectId === undefined) {
             this.$location.path('/plugins/proj-rms-plugin-app/edit');
@@ -52310,7 +52307,6 @@ var SettingActionInAdvancePageCtrl = /** @class */ (function () {
         else {
             this.updateAIA(this.selectId);
         }
-        // param : host:string, topic:string, recvcallback:function
         this.rsMqttSrv.connect("ws://219.251.4.236:1884");
         this.mqttdefaultOpts = {
             qos: 0,
@@ -52323,14 +52319,20 @@ var SettingActionInAdvancePageCtrl = /** @class */ (function () {
         set: function (mode) {
             this.mode = mode;
             switch (mode) {
-                case "new":
                 case "edit":
+                case "new":
                     this.updateIPList(this.selectId);
                     this.updateITList(this.selectId);
                     this.updatePerceptionConditionList(this.selectId, ["select * from t_perception_condition"]);
                     this.updateAction(this.selectId);
                     this.updateModels(this.selectId);
                     break;
+                case "list":
+                    this.selectObj = null;
+                    this.enEtcMenu = false;
+                    break;
+                default:
+                    console.error("mode is not found : ", mode);
             }
         },
         enumerable: true,
@@ -52341,8 +52343,20 @@ var SettingActionInAdvancePageCtrl = /** @class */ (function () {
         var query = ["select * from t_inspection_type"];
         this.rsDsSrv.query(id, query).then(function (result) {
             var data = _this.rsDsSrv.getTableObj(result);
-            _this.IT_LIST = data[0];
-            // console.log(data);
+            if (data.length !== 0) {
+                var list_1 = [];
+                data[0].forEach(function (row) {
+                    var ticked = false;
+                    if (_this.selectObj !== null) {
+                        var selectedIT_IDX = _this.selectObj.IT_IDX;
+                        if (selectedIT_IDX === row.IDX) {
+                            ticked = true;
+                        }
+                    }
+                    list_1.push({ name: row.NAME, ticked: ticked, data: row, });
+                });
+                _this.IT_LIST = list_1;
+            }
         }).catch(function (err) {
             console.error(err);
         });
@@ -52352,8 +52366,20 @@ var SettingActionInAdvancePageCtrl = /** @class */ (function () {
         var query = ["select * from t_inspection_property"];
         this.rsDsSrv.query(id, query).then(function (result) {
             var data = _this.rsDsSrv.getTableObj(result);
-            _this.IP_LIST = data[0];
-            // console.log(data);
+            if (data.length !== 0) {
+                var list_2 = [];
+                data[0].forEach(function (row) {
+                    var ticked = false;
+                    if (_this.selectObj !== null) {
+                        var selectedIP_IDX = _this.selectObj.IP_IDX;
+                        if (selectedIP_IDX === row.IDX) {
+                            ticked = true;
+                        }
+                    }
+                    list_2.push({ name: row.NAME, ticked: ticked, data: row, });
+                });
+                _this.IP_LIST = list_2;
+            }
         }).catch(function (err) {
             console.error(err);
         });
@@ -52363,16 +52389,26 @@ var SettingActionInAdvancePageCtrl = /** @class */ (function () {
         this.rsDsSrv.query(id, query).then(function (result) {
             var data = _this.rsDsSrv.getTableObj(result);
             if (data.length !== 0) {
-                var list_1 = [];
+                var list_3 = [];
                 data[0].forEach(function (row) {
-                    list_1.push({
-                        name: row.NAME,
-                        // maker: "(" + row.DESCRIPTION + ")",
-                        ticked: false,
-                        data: row,
-                    });
+                    var ticked = false;
+                    if (_this.selectObj !== null) {
+                        if (_this.selectObj.JSON_DATA.CONT_FAIL !== undefined && row.IDX === 1) {
+                            _this.enContinuousFailure = true;
+                            _this.continuousFailure = _this.selectObj.JSON_DATA.CONT_FAIL.COUNT;
+                            ticked = true;
+                        }
+                        else if (_this.selectObj.JSON_DATA.CPK !== undefined && row.IDX === 2) {
+                            var cpkObj = _this.selectObj.JSON_DATA.CPK;
+                            _this.enCPK = true;
+                            _this.cpk.min = cpkObj.LSL;
+                            _this.cpk.max = cpkObj.USL;
+                            ticked = true;
+                        }
+                    }
+                    list_3.push({ name: row.NAME, ticked: ticked, data: row, });
                 });
-                _this.PerceptionConditions = list_1;
+                _this.PerceptionConditions = list_3;
             }
         }).catch(function (err) {
             console.error(err);
@@ -52384,16 +52420,20 @@ var SettingActionInAdvancePageCtrl = /** @class */ (function () {
         this.rsDsSrv.query(id, query).then(function (result) {
             var data = _this.rsDsSrv.getTableObj(result);
             if (data.length !== 0) {
-                var list_2 = [];
+                var list_4 = [];
                 data[0].forEach(function (row) {
-                    list_2.push({
-                        name: row.DESCRIPTION,
-                        maker: "(" + row.NAME + ")",
-                        ticked: false,
-                        data: row,
-                    });
+                    var ticked = false;
+                    if (_this.selectObj !== null) {
+                        if (_this.selectObj.JSON_DATA.CONT_FAIL !== undefined && row.DESCRIPTION === _this.selectObj.JSON_DATA.CONT_FAIL.ACTION) {
+                            ticked = true;
+                        }
+                        else if (_this.selectObj.JSON_DATA.CPK !== undefined && row.DESCRIPTION === _this.selectObj.JSON_DATA.CPK.ACTION) {
+                            ticked = true;
+                        }
+                    }
+                    list_4.push({ name: row.DESCRIPTION, maker: "(" + row.NAME + ")", ticked: ticked, data: row, });
                 });
-                _this.actionList = list_2;
+                _this.actionList = list_4;
             }
         }).catch(function (err) {
             console.error(err);
@@ -52405,16 +52445,20 @@ var SettingActionInAdvancePageCtrl = /** @class */ (function () {
         this.rsDsSrv.query(id, query).then(function (result) {
             var data = _this.rsDsSrv.getTableObj(result);
             if (data.length !== 0) {
-                var list_3 = [];
+                var list_5 = [];
                 data[0].forEach(function (row) {
-                    list_3.push({
-                        name: row.MODEL_ID,
-                        maker: "(" + row.DESCRIPTION + ")",
-                        ticked: false,
-                        data: row,
-                    });
+                    var ticked = false;
+                    if (_this.selectObj !== null) {
+                        var models = _this.selectObj.JSON_DATA.MODELS;
+                        models.forEach(function (selRow) {
+                            if (selRow.ID === row.MODEL_ID) {
+                                ticked = true;
+                            }
+                        });
+                    }
+                    list_5.push({ name: row.MODEL_ID, maker: "(" + row.DESCRIPTION + ")", ticked: ticked, data: row, });
                 });
-                _this.modelList = list_3;
+                _this.modelList = list_5;
             }
         }).catch(function (err) {
             console.error(err);
@@ -52434,13 +52478,12 @@ var SettingActionInAdvancePageCtrl = /** @class */ (function () {
                     _this.aiaList.push(item);
                 });
             });
-            console.log(_this.aiaList);
         }).catch(function (err) {
             console.error(err);
         });
     };
     SettingActionInAdvancePageCtrl.prototype.changeIP = function (ip) {
-        switch (ip.IP_TYPE) {
+        switch (ip[0].data.IP_TYPE) {
             case 1:
                 this.updatePerceptionConditionList(this.selectId, ["select * from t_perception_condition"]);
                 break;
@@ -52474,7 +52517,7 @@ var SettingActionInAdvancePageCtrl = /** @class */ (function () {
     SettingActionInAdvancePageCtrl.prototype.getJsonData = function (it, ip, perceptionCond, selectedActions, applyModels) {
         var _this = this;
         var jData = {
-            INSPPROP_ID: ip.IDX,
+            INSPPROP_ID: ip[0].data.IDX,
             enCheckFacilities: (this.enCheckFacilities === undefined || this.enCheckFacilities === null) ?
                 false : this.enCheckFacilities,
         };
@@ -52536,8 +52579,8 @@ var SettingActionInAdvancePageCtrl = /** @class */ (function () {
         // insert data
         var columns = "( IT_IDX, IP_IDX, JSON_DATA )";
         var values = "(" +
-            it.IDX + ", " +
-            ip.IDX + ", " +
+            it[0].data.IDX + ", " +
+            ip[0].data.IDX + ", " +
             "'" + JSON.stringify(jData) + "'";
         values = values + " )";
         var selectId = this.appModel.jsonData.datasourceID;
@@ -52545,7 +52588,44 @@ var SettingActionInAdvancePageCtrl = /** @class */ (function () {
             "insert into t_action_in_advance " + columns + " values " + values,
         ];
         this.rsDsSrv.query(selectId, query).then(function (result) {
-            _this.getAIA(it.IDX, ip.IDX).then(function (res) {
+            _this.getAIA(it[0].data.IDX, ip[0].data.IDX).then(function (res) {
+                var data = _this.rsDsSrv.getTableObj(res);
+                if (data.length === 1 && data[0].length === 1) {
+                    var topic = 'ACTINADV/' + data[0][0].ID;
+                    _this.rsMqttSrv.publishMessage(topic, JSON.stringify(jData), _this.mqttdefaultOpts);
+                }
+            });
+            _this.setMode = 'list';
+            _this.updateAIA(selectId);
+        });
+    };
+    SettingActionInAdvancePageCtrl.prototype.editAIA = function (it, ip, perceptionCond, selectedActions, applyModels) {
+        var _this = this;
+        // check input data
+        if (ip === undefined || ip === null) {
+            return;
+        }
+        else if (perceptionCond === undefined || perceptionCond === null) {
+            return;
+        }
+        else if (selectedActions === undefined || selectedActions === null || selectedActions.length === 0) {
+            return;
+        }
+        else if (applyModels === undefined || applyModels === null || applyModels.length === 0) {
+            return;
+        }
+        var jData = this.getJsonData(it, ip, perceptionCond, selectedActions, applyModels);
+        // insert data
+        var updateData = "IT_IDX = " + it[0].data.IDX
+            + ", IP_IDX=" + ip[0].data.IDX
+            + ", JSON_DATA=" +
+            "'" + JSON.stringify(jData) + "'";
+        var selectId = this.appModel.jsonData.datasourceID;
+        var query = [
+            "update t_action_in_advance set " + updateData + " where ID=" + this.selectObj.ID,
+        ];
+        this.rsDsSrv.query(selectId, query).then(function (result) {
+            _this.getAIA(it[0].data.IDX, ip[0].data.IDX).then(function (res) {
                 var data = _this.rsDsSrv.getTableObj(res);
                 if (data.length === 1 && data[0].length === 1) {
                     var topic = 'ACTINADV/' + data[0][0].ID;
@@ -52656,8 +52736,8 @@ var InspectionPropertyPageCtrl = /** @class */ (function () {
         }
         // param : host:string, topic:string, recvcallback:function
         this.rsMqttSrv.connect("ws://219.251.4.236:1884");
-        this.rsMqttSrv.subscribe = '#';
-        this.rsMqttSrv.recvMessage(this.mqttRecv.bind(this));
+        // this.rsMqttSrv.subscribe = '#';
+        // this.rsMqttSrv.recvMessage(this.mqttRecv.bind(this));
         this.mqttdefaultOpts = {
             qos: 0,
             retain: true,
@@ -52761,7 +52841,8 @@ var InspectionPropertyPageCtrl = /** @class */ (function () {
                     var obj = data[0][0];
                     var messageObj = {
                         "NAME": obj.NAME,
-                        "DESCRIPTION": obj.DESCRIPTION
+                        "DESCRIPTION": obj.DESCRIPTION,
+                        "TYPE": obj.IP_TYPE
                     };
                     _this.rsMqttSrv.publishMessage(topic, JSON.stringify(messageObj), _this.mqttdefaultOpts);
                 }
