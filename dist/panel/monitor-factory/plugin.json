@@ -1,0 +1,13 @@
+{
+  "type": "panel",
+  "name": "(RMS) Factory",
+  "id": "rms-monitor-factory",
+
+  "info": {
+    "description": "Monitoring : Factory",
+    "author": {
+      "name": "lonycell@thingspin.io",
+      "url": "http://thingspin.io"
+    }
+  }
+}
