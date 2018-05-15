@@ -56,8 +56,11 @@ module.exports = {
         test: /\.tsx?$/,
         loaders: ["ts-loader"],
         exclude: /node_modules/,
-      }
-      ,
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      },
       {
         test: require.resolve('snapsvg/dist/snap.svg-min.js'),
         use: 'imports-loader?this=>window,fix=>module.exports=0',
