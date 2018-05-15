@@ -1,7 +1,6 @@
 import 'handsontable/dist/handsontable.full.css';
 import appEvents from 'grafana/app/core/app_events';
 import Handsontable from 'handsontable/dist/handsontable.full';
-var template = require('./actionInAdvance.html');
 var modelModalHtml = require('./modelModal.html');
 var memoModalHtml = require('./memoModal.html');
 interface LooseObject {
@@ -9,7 +8,7 @@ interface LooseObject {
 }
 
 export class SettingActionInAdvancePageCtrl {
-    static template: string = template;
+    static template: string = require('./actionInAdvance.html');
     selectId: any;
     appModel: any;
     mqttdefaultOpts: object;
