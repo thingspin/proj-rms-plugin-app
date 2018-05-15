@@ -2,10 +2,10 @@ import _ from 'lodash';
 import $ from 'jquery';
 import 'jquery-ui';
 import 'jquery.tabulator/dist/js/tabulator.min';
-import * as d3 from "d3";
+//import * as d3 from "d3";
 import * as Snap from "snapsvg/dist/snap.svg-min.js";
 
-import {PanelCtrl, MetricsPanelCtrl, loadPluginCss} from  'grafana/app/plugins/sdk';
+import {MetricsPanelCtrl, loadPluginCss} from  'grafana/app/plugins/sdk';
 
 loadPluginCss({
   dark: 'plugins/proj-rms-plugin-app/panel/monitor-factory/css/tabulator.min.css',
@@ -18,7 +18,6 @@ loadPluginCss({
 });
 
 const template = require("./partial/templet.html");
-const options = require("./partial/options.html");
 
 class RmsMonitorFactoryPanelCtrl extends MetricsPanelCtrl {
   static template = template;

@@ -28454,6 +28454,7 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 
 
+//import * as d3 from "d3";
 
 
 Object(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_5__["loadPluginCss"])({
@@ -28465,7 +28466,6 @@ Object(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_5__["loadPluginCss"])({
     light: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.light.css'
 });
 var template = __webpack_require__(/*! ./partial/templet.html */ "./panel/monitor-factory/partial/templet.html");
-var options = __webpack_require__(/*! ./partial/options.html */ "./panel/monitor-factory/partial/options.html");
 var RmsMonitorFactoryPanelCtrl = /** @class */ (function (_super) {
     __extends(RmsMonitorFactoryPanelCtrl, _super);
     function RmsMonitorFactoryPanelCtrl($scope, $injector, $http, $location, uiSegmentSrv, annotationsSrv) {
@@ -28504,17 +28504,6 @@ var RmsMonitorFactoryPanelCtrl = /** @class */ (function (_super) {
 }(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_5__["MetricsPanelCtrl"]));
 
 
-
-/***/ }),
-
-/***/ "./panel/monitor-factory/partial/options.html":
-/*!****************************************************!*\
-  !*** ./panel/monitor-factory/partial/options.html ***!
-  \****************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<div class=\"editor-row\">\n    <div class=\"section gf-form-group\">\n        <div class=\"gf-form\">\n        </div>\n    </div>\n</div>";
 
 /***/ }),
 
