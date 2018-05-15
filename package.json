@@ -38,6 +38,7 @@
     "jquery-ui": "^1.12.1",
     "jquery.tabulator": "^3.5.1",
     "d3": "^5.4.0",
-    "snapsvg": "^0.5.1"
+    "snapsvg": "^0.5.1",
+    "chartjs-plugin-annotation": "^0.5.7"
   }
 }
