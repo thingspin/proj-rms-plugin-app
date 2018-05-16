@@ -1,25 +1,4 @@
 {
-  "title": "불량 현황",
-  "__requires": [
-    {
-      "type": "datasource",
-      "id": "mysql",
-      "name": "MySQL",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    },
-    {
-      "type": "thingspin",
-      "id": "thingspin",
-      "name": "ThingSPIN",
-      "version": "1.0.1"
-    }
-  ],
   "annotations": {
     "list": [
     ]
@@ -27,7 +6,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": null,
+  "iteration": 1526436801423,
   "links": [],
   "panels": [
     {
@@ -60,12 +39,10 @@
       "mappingType": 1,
       "mappingTypes": [
         {
-          "$$hashKey": "object:394",
           "name": "value to text",
           "value": 1
         },
         {
-          "$$hashKey": "object:395",
           "name": "range to text",
           "value": 2
         }
@@ -98,7 +75,6 @@
       "valueFontSize": "80%",
       "valueMaps": [
         {
-          "$$hashKey": "object:397",
           "op": "=",
           "text": "RC0356",
           "value": "null"
@@ -118,7 +94,6 @@
       "links": [],
       "targets": [
         {
-          "$$hashKey": "object:144",
           "alias": "",
           "format": "time_series",
           "rawSql": "SELECT * FROM t_model WHERE $__timeFilter(REGDATE);",
@@ -190,7 +165,6 @@
       "tableColumn": "",
       "targets": [
         {
-          "$$hashKey": "object:301",
           "refId": "A"
         }
       ],
@@ -229,18 +203,133 @@
       "type": "rms-plugin-app-p001"
     },
     {
+      "aliasColors": {
+        "A-series": "#e24d42"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "-- Mixed --",
+      "fill": 1,
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 10
+      },
+      "hideTimeOverride": true,
+      "id": 12,
+      "legend": {
+        "avg": true,
+        "current": false,
+        "hideEmpty": true,
+        "hideZero": true,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "repeat": null,
+      "seriesOverrides": [
+        {
+          "alias": "MIN",
+          "color": "#511749",
+          "dashes": true,
+          "fill": 0,
+          "linewidth": 3
+        },
+        {
+          "alias": "MAX",
+          "dashes": true,
+          "fill": 0,
+          "linewidth": 3
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "",
+          "datasource": "REMOTESOLUTIONS(V1.0)",
+          "format": "time_series",
+          "rawSql": "SELECT \n  FRTO.t AS time_sec,\n  \"MIN\" AS metric,\n  $MIN AS value\nFROM\n  (\n  SELECT $__unixEpochFrom() as t\n  union\n  SELECT $__unixEpochTo() as t\n) AS FRTO\n",
+          "refId": "A"
+        },
+        {
+          "alias": "",
+          "datasource": "REMOTESOLUTIONS(V1.0)",
+          "format": "time_series",
+          "rawSql": "SELECT \n  FRTO.t AS time_sec,\n  \"MAX\" AS metric,\n  $MAX AS value\nFROM\n  (\n  SELECT $__unixEpochFrom() as t\n  union\n  SELECT $__unixEpochTo() as t\n) AS FRTO\n",
+          "refId": "B"
+        },
+        {
+          "datasource": "-- Simulator --",
+          "refId": "C"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "MIN / MAX",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 0,
+          "format": "short",
+          "label": "X",
+          "logBase": 1,
+          "max": "100",
+          "min": "-100",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": "100",
+          "min": "-100",
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": 2
+      }
+    },
+    {
       "datasource": null,
       "gridPos": {
         "h": 6,
         "w": 24,
         "x": 0,
-        "y": 10
+        "y": 19
       },
       "id": 7,
       "links": [],
       "targets": [
         {
-          "$$hashKey": "object:249",
           "refId": "A"
         }
       ],
@@ -252,7 +341,44 @@
   "style": "dark",
   "tags": [],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "current": {
+          "text": "-75.0",
+          "value": "-75.0"
+        },
+        "hide": 2,
+        "label": null,
+        "name": "MIN",
+        "options": [
+          {
+            "selected": true,
+            "text": "-75.0",
+            "value": "-75.0"
+          }
+        ],
+        "query": "-75.0",
+        "type": "constant"
+      },
+      {
+        "current": {
+          "text": "50.0",
+          "value": "50.0"
+        },
+        "hide": 2,
+        "label": null,
+        "name": "MAX",
+        "options": [
+          {
+            "selected": true,
+            "text": "50.0",
+            "value": "50.0"
+          }
+        ],
+        "query": "50.0",
+        "type": "constant"
+      }
+    ]
   },
   "time": {
     "from": "now-1h",
@@ -284,5 +410,6 @@
     ]
   },
   "timezone": "",
-  "version": 1
+  "title": "불량 현황",
+   "version": 9
 }
