@@ -29090,7 +29090,7 @@ var InspectionPropertyPanelCtrl = /** @class */ (function (_super) {
         };
         _this.defTabulatorOpts = {
             pagination: "local",
-            paginationSize: 20,
+            paginationSize: 7,
             selectable: 1,
             fitColumns: true,
             responsiveLayout: true,

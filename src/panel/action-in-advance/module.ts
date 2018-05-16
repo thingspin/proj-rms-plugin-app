@@ -102,7 +102,7 @@ export class SettingActionInAdvancePanelCtrl extends MetricsPanelCtrl {
 
         this.defTabulatorOpts = {
             pagination: "local",
-            paginationSize: 7,
+            paginationSize: 20,
             selectable: 1,
             fitColumns: true,
             responsiveLayout: true,
