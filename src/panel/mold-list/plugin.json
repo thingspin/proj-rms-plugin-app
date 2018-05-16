@@ -1,0 +1,13 @@
+{
+  "type": "panel",
+  "name": "(RMS) Mold List",
+  "id": "mold-list",
+
+  "info": {
+    "description": "Mold List",
+    "author": {
+      "name": "lonycell@thingspin.io",
+      "url": "http://thingspin.io"
+    }
+  }
+}
