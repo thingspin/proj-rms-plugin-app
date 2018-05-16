@@ -28428,41 +28428,6 @@ var template = __webpack_require__(/*! ./partial/templet.html */ "./panel/machin
 // const options = require("./partial/options.html");
 var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
     __extends(RmsMachineMaterialPanelCtrl, _super);
-    /*
-    panelDefaults = {
-      options: {
-        legend: {
-            show: true,
-            values: false
-        },
-        legendTable: false,
-        traceColors : {}
-      },
-      companies: [
-        {code : '0000', name : '한컴MDS'},
-        {code : '0001', name : '리모트솔루션'},
-        {code : '0002', name : '삼성전자'},
-      ],
-      materialCategory: [
-        '실린더',
-        '리노핀',
-        '솔레노이드밸브',
-        '모터',
-        '센서',
-        '기타'
-      ],
-      materialItem: {
-        'category': '',
-        'name': '',
-        company: '',
-        safeAmount : 200,
-        currAmount : 0,
-        lifeAmount : 1000,
-        memo : '',
-        etc : ''
-      }
-    };
-    */
     function RmsMachineMaterialPanelCtrl($scope, $injector, $http, $location, uiSegmentSrv, annotationsSrv) {
         var _this = _super.call(this, $scope, $injector) || this;
         _this.dataRaw = [];
@@ -28471,8 +28436,7 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
         lodash__WEBPACK_IMPORTED_MODULE_0___default.a.defaults(_this.panel);
         _this.divID = 'table-rms-' + _this.panel.id;
         _this.events.on('init-edit-mode', _this.onInitEditMode.bind(_this));
-        // this.events.on('render', this.onRender.bind(this));
-        // this.events.on('panel-initialized', this.onRender.bind(this));
+        // this.events.on('render', this.onRender.bind(this)); //dynamic ui process
         _this.events.on('data-received', _this.onDataReceived.bind(_this));
         _this.events.on('data-error', _this.onDataError.bind(_this));
         return _this;
@@ -28483,122 +28447,14 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
     };
     RmsMachineMaterialPanelCtrl.prototype.onInitEditMode = function () {
     };
-    /*
-    fillTable() {
-      this.data = [
-        { id: 1, category: "실린더", name: "SA549-E", company: "한컴MDS",
-          safeAmount: 200,
-          currAmount: 200,
-          lifeAmount: 200,
-          memo: '',
-          etc: '',
-          regdate: "2018/05/14"
-        },
-        { id: 2, category: "모터", name: "PRD343-FDF", company: "한컴MDS",
-          safeAmount: 200,
-          currAmount: 50,
-          lifeAmount: 200,
-          memo: '',
-          etc: '',
-          regdate: "2018/05/14"
-        },
-        { id: 3, category: "센서", name: "HUMDSD-MISD", company: "한컴MDS",
-          safeAmount: 200,
-          currAmount: 20,
-          lifeAmount: 200,
-          memo: '긴급 추가 구매 요망!',
-          etc: '',
-          regdate: "2018/05/14"
-        },
-        { id: 4, category: "리노핀", name: "REFVDF003403", company: "한컴MDS",
-          safeAmount: 200,
-          currAmount: 130,
-          lifeAmount: 200,
-          memo: '',
-          etc: '',
-          regdate: "2018/05/14"
-        },
-        { id: 5, category: "솔레노이드밸브", name: "434354FEDP-FF", company: "한컴MDS",
-          safeAmount: 200,
-          currAmount: 260,
-          lifeAmount: 200,
-          memo: '',
-          etc: '',
-          regdate: "2018/05/14"
-        },
-      ];
-  
-      this.container.tabulator("setData", this.data);
-      this.initalized = true;
-    }
-  
-    OnDraw() {
-      this.fillTable();
-    }
-  
-    onRender() {
-      if (!this.container) {
-        return Promise.reject({});
-      }
-  
-      if (!this.initalized) {
-        return Promise.resolve(this.fillTable());
-      }
-  
-      if (this.container && this.initalized) {
-        return Promise.resolve(this.OnDraw());
-      }
-  
-      return Promise.resolve({});
-    }
-    */
     RmsMachineMaterialPanelCtrl.prototype.link = function (scope, elem, attrs, ctrl) {
         console.log("link");
         var t = elem.find('.thingspin-table')[0];
         t.id = this.divID;
         this.container = jquery__WEBPACK_IMPORTED_MODULE_1___default()(t);
-        // this.dataTable = this.container.tabulator({
-        //   height: 340,
-        //   layout: "fitColumns",
-        //   columns: this.columns,
-        //   rowClick: function(e, row) {
-        //       alert("Row " + row.getData().id + " Clicked!!!!");
-        //   },
-        // });
     };
-    RmsMachineMaterialPanelCtrl.prototype.onSave = function () {
-        // TODO ! - call database inasert/update query.
-        var info = this.panel.materialItem;
-        info.id = this.data.length + 1;
-        info.company = info.company.name;
-        info.regdate = new Date('YYYY/MM/DD').toString();
-        this.data.push(info);
-        this.container.tabulator("setData", this.data);
-    };
-    /*
+    /* dynamic ui process
     rander() {
-      if (!this.container) {
-        console.log("container not found!");
-        return Promise.reject({});
-      }
-  
-      if (!this.initalized) {
-        if (this.dataJson.length > 0) {
-          console.log("table is not initialized, yet! with data");
-          return Promise.resolve(this.createTable(this.dataJson));
-        } else {
-          console.log("table is not initialized, yet!");
-          return Promise.resolve(this.createTable(null));
-        }
-      }
-  
-      if (this.container && this.initalized) {
-        console.log("draw the table for render data.");
-        return Promise.resolve(this.createTable(this.dataJson));
-        // return super.render(this.container.tabulator);
-      }
-  
-      return super.render(this.container.tabulator);
     }
     */
     RmsMachineMaterialPanelCtrl.prototype.onDataError = function (err) {
@@ -28610,10 +28466,6 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
         this.dataRaw = dataList;
         console.log(this.dataRaw);
         Promise.resolve(this.transformer(this.dataRaw));
-        // if (!this.initalized) {
-        // this.createTable(this.dataJson);
-        // }
-        // this.render();
         this.createTable(this.dataJson);
     };
     RmsMachineMaterialPanelCtrl.prototype.createTable = function (dataList) {
@@ -28632,8 +28484,12 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
             height: 340,
             layout: "fitColumns",
             columns: this.columns,
+            rowClick: function (e, row) {
+                console.log(row.getData());
+                console.log(row);
+                alert("Row " + row.getData() + " Clicked!!!!");
+            },
         });
-        // }
         if (dataList != null) {
             // this.container.tabulator("setData", dataList);
             console.log(this.columns);
