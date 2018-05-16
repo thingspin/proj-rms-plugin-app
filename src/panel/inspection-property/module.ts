@@ -3,6 +3,11 @@ import {MetricsPanelCtrl, loadPluginCss} from  'grafana/app/plugins/sdk';
 import '../../services/remoteSolutionDS';
 import '../../services/remoteSolutionMQTT';
 
+import $ from 'jquery';
+import 'jquery-ui';
+import 'jquery.tabulator/dist/js/tabulator.min';
+import 'jquery.tabulator/dist/css/tabulator.min.css';
+
 loadPluginCss({
     dark: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.dark.css',
     light: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.light.css'
@@ -21,7 +26,10 @@ export class InspectionPropertyPanelCtrl  extends MetricsPanelCtrl  {
     ip_class: any[];
     isOrgEditor: boolean;
 
-    constructor($scope, $injector, private $rootScope,
+    inspectTable: any;
+    faultyTable: any;
+
+    constructor($scope, $injector, private $rootScope, private $element,
         private alertSrv,
         private rsDsSrv, private rsMqttSrv) {
         super($scope, $injector);
@@ -62,16 +70,54 @@ export class InspectionPropertyPanelCtrl  extends MetricsPanelCtrl  {
 
     }
 
+    initInspectTable() {
+        this.inspectTable = $(this.$element.find('#inspectTable')).tabulator({
+            pagination: "local",
+            paginationSize: 7,
+            selectable: 1,
+            fitColumns: true,
+            layout: "fitColumns", //fit columns to width of table (optional)
+            columns: [ //Define Table Columns
+                {title: "ID", field: "IDX"},
+                {title: "항목명", field: "NAME" },
+                {title: "설명", field: "DESCRIPTION" },
+            ],
+            rowClick: (e, row) => { //trigger an alert message when the row is clicked
+                this.showEtcMenu(row.getData());
+                this.faultyTable.tabulator('deselectRow');
+            },
+        });
+    }
+    initFaultyTable() {
+        this.faultyTable = $(this.$element.find('#faultyTable')).tabulator({
+            pagination: "local",
+            paginationSize: 7,
+            selectable: 1,
+            fitColumns: true,
+            layout: "fitColumns", //fit columns to width of table (optional)
+            columns: [ //Define Table Columns
+                {title: "ID", field: "IDX"},
+                {title: "항목명", field: "NAME" },
+                {title: "설명", field: "DESCRIPTION" },
+            ],
+            rowClick: (e, row) => { //trigger an alert message when the row is clicked
+                this.showEtcMenu(row.getData());
+                this.inspectTable.tabulator('deselectRow');
+            },
+        });
+    }
+
     onDataReceived(dataList) {
         let data = this.rsDsSrv.getTableObj(dataList);
         dataList.forEach( (result, idx) => {
             if (result.meta.sql.includes("IP_TYPE=1")) {
                 this.inspectList = data[idx];
+                this.inspectTable.tabulator("setData", data[idx]);
             } else if (result.meta.sql.includes("IP_TYPE=2")) {
                 this.faultyList = data[idx];
+                this.faultyTable.tabulator("setData", data[idx]);
             }
         });
-        this.enEtcMenu = false;
     }
 
     mqttRecv(topic, message) {
@@ -158,7 +204,6 @@ export class InspectionPropertyPanelCtrl  extends MetricsPanelCtrl  {
             });
             this.setMode('list');
             // this.updateInspectionPropertyList(selectId);
-            this.refresh();
             this.alertSrv.set(name + "이(가) 추가되었습니다.", '', 'success', 1000);
         }).catch( err => {
             this.alertSrv.set(name + " 추가 실패", err, 'error', 5000);
@@ -184,7 +229,6 @@ export class InspectionPropertyPanelCtrl  extends MetricsPanelCtrl  {
 
                     this.setMode('list');
                     // this.updateInspectionPropertyList(selectId);
-                    this.refresh();
                     this.alertSrv.set(item.NAME + "이(가) 삭제되었습니다.", '', 'success', 3000);
                 }).catch( err => {
                     this.alertSrv.set(item.NAME + " 삭제 실패", err, 'error', 5000);
@@ -218,7 +262,6 @@ export class InspectionPropertyPanelCtrl  extends MetricsPanelCtrl  {
 
             this.setMode('list');
             // this.updateInspectionPropertyList(selectId);
-            this.refresh();
             this.alertSrv.set(name + "이(가) 수정되었습니다.", '', 'success', 1000);
         }).catch( err => {
             this.alertSrv.set(obj.NAME + " 수정 실패", err, 'error', 5000);
@@ -228,13 +271,20 @@ export class InspectionPropertyPanelCtrl  extends MetricsPanelCtrl  {
 
     setMode(mode) {
         this.mode = mode;
+        switch (mode) {
+            case "list":
+                this.enEtcMenu = false;
+            break;
+        }
         // this.updateInspectionPropertyList(selectId);
         this.refresh();
     }
 
     showEtcMenu(obj) {
+        console.log(obj);
         this.selectObj = obj;
         this.enEtcMenu = true;
+        this.$scope.$apply();
     }
 }
 

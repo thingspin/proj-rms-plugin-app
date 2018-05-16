@@ -1,5 +1,5 @@
 <div ng-switch on='ctrl.mode'>
-    <div class="page-container" ng-switch-default>
+    <div class="page-container-fluid" ng-switch-default>
         <div class="page-in-fullscreen page-header gf-form-inline">
             <div class="btn-group">
                 <button type="button" class="btn btn-large btn-primary" ng-click="ctrl.deleteInspectionItem()" ng-show="ctrl.enEtcMenu">삭제</button>
@@ -8,38 +8,14 @@
             </div>
         </div>
         <div class="page-body" >
-            <div class="section gf-form-group status-table" >
+            <div class="gf-form-group status-table" >
                 <h5 class="section-heading"> 검사 항목 리스트 </h5>
-                <table class="filter-table">
-                    <thead>
-                        <tr>
-                            <th> </th> <th> ID </th> <th> 항목명 </th> <th> 설명 </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="list in ctrl.inspectList">
-                            <td><input type="radio" name="selectedObj" ng-model="selectedObj" ng-value="list" ng-change="ctrl.showEtcMenu(selectedObj)"></td>
-                            <td>{{list.IDX}}</td> <td>{{list.NAME}}</td> <td>{{list.DESCRIPTION}}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div id="inspectTable" ng-init="ctrl.initInspectTable()"></div>
             </div>
 
-            <div class="section gf-form-group status-table" >
+            <div class="gf-form-group status-table" >
                 <h5 class="section-heading"> 불량 입력 항목 리스트 </h5>
-                <table class="filter-table">
-                    <thead>
-                        <tr>
-                            <th> </th> <th> ID </th> <th> 검사 항목명 </th> <th> 설명 </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="list in ctrl.faultyList">
-                            <td><input type="radio" name="selectedObj" ng-model="selectedObj" ng-value="list" ng-change="ctrl.showEtcMenu(selectedObj)"></td>
-                            <td>{{list.IDX}}</td> <td>{{list.NAME}}</td> <td>{{list.DESCRIPTION}}</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div id="faultyTable" ng-init="ctrl.initFaultyTable()"></div>
             </div>
         </div>
     </div>
