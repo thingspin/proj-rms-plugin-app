@@ -16,6 +16,8 @@ module.exports = {
       'panel/tabulator-table/module.js' : './panel/tabulator-table/module.ts',
       'panel/asset-man-material/module.js' : './panel/asset-man-material/module.ts',
       'panel/monitor-factory/module.js' : './panel/monitor-factory/module.ts',
+      'panel/action-in-advance/module.js' : './panel/action-in-advance/module.ts',
+      'panel/inspection-property/module.js' : './panel/inspection-property/module.ts',
   },
   output: {
     path: resolve('dist'),

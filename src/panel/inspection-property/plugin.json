@@ -1,0 +1,13 @@
+{
+  "type": "panel",
+  "name": "(RMS) 검사항목/불량유형",
+  "id": "rms-inspection-property",
+
+  "info": {
+    "description": "Process : Factory",
+    "author": {
+      "name": "whitesky0109@thingspin.io",
+      "url": "http://thingspin.io"
+    }
+  }
+}

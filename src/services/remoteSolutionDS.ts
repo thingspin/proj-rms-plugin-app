@@ -4,7 +4,6 @@ import coreModule from 'grafana/app/core/core_module';
 export class RemoteSolutionDSCtrl {
     dsReady: any;
     datasources: any[];
-    appModel: any;
 
     constructor(private $q, private backendSrv) {
         this.dsReady = false;
@@ -25,7 +24,7 @@ export class RemoteSolutionDSCtrl {
     query(dsIdx, statement) {
         if (!this.dsReady) {
             return this.getDatasources().then( res => {
-                if (this.datasources.length !== 0){
+                if (this.datasources.length !== 0) {
                     this.dsReady = true;
                 } else {
                     console.error("MariaDB datasource is not defined",res);
@@ -75,7 +74,7 @@ export class RemoteSolutionDSCtrl {
         }
       }
 
-      getTableObj(target){
+      getTableObj(target) {
         let data = [];
 
         target.forEach( (item, itemIdx) => {

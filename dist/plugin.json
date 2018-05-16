@@ -40,8 +40,8 @@
     {"type": "dashboard", "name": "설비 감시", "path": "dashboards/D01-02.json", "AddToNav": true, "menuID": 1, "ico":"fa fa-industry"},
 
     {"type": "menu", "name": "공정 설정", "mainMenu": true, "slug": "modelbyeol-geomsagirog", "img":"img/M02.png", "menuID": 2},
-    {"type": "page", "name": "검사항목 / 불량유형", "component": "InspectionProperty", "Slug": "3-1", "AddToNav": true, "menuID": 2, "ico":"fa fa-industry"},
-    {"type": "page", "name": "사전조치 설정", "component": "SettingActionInAdvance", "Slug": "3-2", "AddToNav": true, "menuID": 2, "ico":"fa fa-industry"},
+    {"type": "dashboard", "name": "검사항목 / 불량유형", "path": "panel/inspection-property/module.json", "defaultNav": true, "addToNav": true, "menuID": 2, "ico":"fa fa-industry"},
+    {"type": "dashboard", "name": "사전조치 설정", "path": "panel/action-in-advance/module.json", "defaultNav": true, "addToNav": true, "menuID": 2, "ico":"fa fa-industry"},
     {"type": "dashboard", "name": "모델별 검사기록", "path": "dashboards/D02-01.json", "AddToNav": true, "menuID": 2, "ico":"fa fa-industry"},
 
     {"type": "menu", "name": "설비 현황", "mainMenu": true, "slug": "somopum-deungrog", "img":"img/M03.png", "menuID": 3},

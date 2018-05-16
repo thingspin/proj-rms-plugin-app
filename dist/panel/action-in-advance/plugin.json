@@ -1,0 +1,13 @@
+{
+  "type": "panel",
+  "name": "(RMS) 사전조치 설정",
+  "id": "rms-action-in-advance",
+
+  "info": {
+    "description": "Process : Factory",
+    "author": {
+      "name": "whitesky0109@thingspin.io",
+      "url": "http://thingspin.io"
+    }
+  }
+}
