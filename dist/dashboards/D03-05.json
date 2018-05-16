@@ -66,6 +66,9 @@
       },
       "targets": [
         {
+          "alias": "",
+          "format": "table",
+          "rawSql": "select * from t_machine ",
           "refId": "A"
         }
       ],
