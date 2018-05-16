@@ -1,0 +1,13 @@
+{
+  "type": "panel",
+  "name": "(RMS)Machine Material",
+  "id": "rms-machine-material",
+
+  "info": {
+    "description": "Asset management : Company",
+    "author": {
+      "name": "jiwoong@thingspin.io",
+      "url": "http://thingspin.io"
+    }
+  }
+}

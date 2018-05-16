@@ -18,6 +18,8 @@ module.exports = {
       'panel/monitor-factory/module.js' : './panel/monitor-factory/module.ts',
       'panel/action-in-advance/module.js' : './panel/action-in-advance/module.ts',
       'panel/inspection-property/module.js' : './panel/inspection-property/module.ts',
+      'panel/machine-material/module.js' : './panel/machine-material/module.ts',
+	  'panel/company-list/module.js' : './panel/company-list/module.ts',
   },
   output: {
     path: resolve('dist'),
