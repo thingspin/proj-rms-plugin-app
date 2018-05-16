@@ -28,6 +28,7 @@ export class InspectionPropertyPanelCtrl  extends MetricsPanelCtrl  {
 
     inspectTable: any;
     faultyTable: any;
+    defTabulatorOpts: object;
 
     constructor($scope, $injector, private $rootScope, private $element,
         private alertSrv,
@@ -50,6 +51,19 @@ export class InspectionPropertyPanelCtrl  extends MetricsPanelCtrl  {
             retain: true,
             dup: false,
         };
+        this.defTabulatorOpts = {
+            pagination: "local",
+            paginationSize: 20,
+            selectable: 1,
+            fitColumns: true,
+            responsiveLayout: true,
+            layout: "fitColumns", //fit columns to width of table (optional)
+            columns: [ //Define Table Columns
+                {title: "ID", field: "IDX"},
+                {title: "항목명", field: "NAME" },
+                {title: "설명", field: "DESCRIPTION" },
+            ],
+        };
 
         this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
         this.events.on('render', this.onRender.bind(this));
@@ -71,40 +85,22 @@ export class InspectionPropertyPanelCtrl  extends MetricsPanelCtrl  {
     }
 
     initInspectTable() {
-        this.inspectTable = $(this.$element.find('#inspectTable')).tabulator({
-            pagination: "local",
-            paginationSize: 7,
-            selectable: 1,
-            fitColumns: true,
-            layout: "fitColumns", //fit columns to width of table (optional)
-            columns: [ //Define Table Columns
-                {title: "ID", field: "IDX"},
-                {title: "항목명", field: "NAME" },
-                {title: "설명", field: "DESCRIPTION" },
-            ],
+        let opts = Object.assign({ // deep copy
             rowClick: (e, row) => { //trigger an alert message when the row is clicked
                 this.showEtcMenu(row.getData());
                 this.faultyTable.tabulator('deselectRow');
             },
-        });
+        }, this.defTabulatorOpts);
+        this.inspectTable = $(this.$element.find('#inspectTable')).tabulator(opts);
     }
     initFaultyTable() {
-        this.faultyTable = $(this.$element.find('#faultyTable')).tabulator({
-            pagination: "local",
-            paginationSize: 7,
-            selectable: 1,
-            fitColumns: true,
-            layout: "fitColumns", //fit columns to width of table (optional)
-            columns: [ //Define Table Columns
-                {title: "ID", field: "IDX"},
-                {title: "항목명", field: "NAME" },
-                {title: "설명", field: "DESCRIPTION" },
-            ],
+        let opts = Object.assign({ // deep copy
             rowClick: (e, row) => { //trigger an alert message when the row is clicked
                 this.showEtcMenu(row.getData());
                 this.inspectTable.tabulator('deselectRow');
             },
-        });
+        }, this.defTabulatorOpts);
+        this.faultyTable = $(this.$element.find('#faultyTable')).tabulator(opts);
     }
 
     onDataReceived(dataList) {
@@ -121,7 +117,7 @@ export class InspectionPropertyPanelCtrl  extends MetricsPanelCtrl  {
     }
 
     mqttRecv(topic, message) {
-        console.log(topic, message.toString());
+        // console.log(topic, message.toString());
     }
 
     /*
@@ -281,7 +277,6 @@ export class InspectionPropertyPanelCtrl  extends MetricsPanelCtrl  {
     }
 
     showEtcMenu(obj) {
-        console.log(obj);
         this.selectObj = obj;
         this.enEtcMenu = true;
         this.$scope.$apply();

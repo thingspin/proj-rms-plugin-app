@@ -9,9 +9,10 @@
                 </div>
             </div>
             <div class="page-body" >
-                <div class="section gf-form-group status-table" >
+                <div class="gf-form-group status-table" >
                     <h5 class="section-heading"> 검사 항목 리스트 </h5>
-                    <table class="filter-table">
+                    <div id="aiaTable" ng-init="ctrl.initAIATable()"></div>
+                    <!-- <table class="filter-table">
                         <thead>
                             <tr>
                                 <th> </th> <th> 검사 구분 </th> <th> 검사 항목 </th> <th> 검사 대상 </th> <th> 감지조건 </th> <th> 점검내용 </th>
@@ -29,7 +30,7 @@
                                 <td><a ng-click="ctrl.showSelectedMemo(list, './memoModal.html')">click</a></td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table> -->
                 </div>
             </div>
         </div>

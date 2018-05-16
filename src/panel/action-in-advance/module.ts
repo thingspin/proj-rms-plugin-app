@@ -4,6 +4,11 @@ import appEvents from 'grafana/app/core/app_events';
 import '../../services/remoteSolutionDS';
 import '../../services/remoteSolutionMQTT';
 
+import $ from 'jquery';
+import 'jquery-ui';
+import 'jquery.tabulator/dist/js/tabulator.min';
+import 'jquery.tabulator/dist/css/tabulator.min.css';
+
 import '../../vendor/mds_customs/isteven-angular-multiselect/isteven-multi-select';
 import Handsontable from 'handsontable/dist/handsontable.full';
 import 'handsontable/dist/handsontable.full.css';
@@ -20,6 +25,9 @@ interface LooseObject {
 export class SettingActionInAdvancePanelCtrl extends MetricsPanelCtrl {
     static template: string = require('./view.html');
     mqttdefaultOpts: object;
+    defTabulatorOpts: object;
+
+    aiaTable: any;
 
     cpk: any;
     memo: string[][];
@@ -65,6 +73,7 @@ export class SettingActionInAdvancePanelCtrl extends MetricsPanelCtrl {
             case "list":
                 this.selectObj = null;
                 this.enEtcMenu = false;
+                this.refresh();
                 break;
             default:
                 console.error("mode is not found : ", mode);
@@ -89,6 +98,43 @@ export class SettingActionInAdvancePanelCtrl extends MetricsPanelCtrl {
             qos: 0,
             retain: true,
             dup: false,
+        };
+
+        this.defTabulatorOpts = {
+            pagination: "local",
+            paginationSize: 7,
+            selectable: 1,
+            fitColumns: true,
+            responsiveLayout: true,
+            layout: "fitColumns", //fit columns to width of table (optional)
+            columns: [ //Define Table Columns
+                {title: "검사 구분", field: "IT_NAME"},
+                {title: "검사 항목", field: "IP_NAME" },
+                {title: "검사 대상", field: "JSON_DATA", formatter: (cell, formatterParams) => {
+                    return "click";
+                }, cellClick : (e,cell) => {
+                    let value = cell.getValue();
+                    this.showSelectedModel(value);
+                }},
+                {title: "검사 감지조건", field: "JSON_DATA" ,formatter: (cell, formatterParams) => {
+                    let retVal = "";
+                    let value = cell.getValue();
+                    if (value.CONT_FAIL !== undefined) {
+                        retVal += '<div>연속불량 : '+ value.CONT_FAIL.COUNT +' 회 </div>';
+                    }
+                    if (value.CPK !== undefined) {
+                        retVal += '<div>CPK : ' +value.CPK.LSL + ' 이상 '+ value.CPK.USL +' 미만</div>';
+                    }
+
+                    return retVal;
+                }},
+                {title: "검사 점검내용", field: "DESCRIPTION", formatter: (cell, formatterParams) => {
+                    return "click";
+                }, cellClick : (e,cell) => {
+                    let value = cell.getValue();
+                    this.showSelectedMemo(value);
+                }},
+            ],
         };
 
         this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
@@ -119,6 +165,17 @@ export class SettingActionInAdvancePanelCtrl extends MetricsPanelCtrl {
                 this.aiaList.push(item);
             });
         });
+        this.aiaTable.tabulator("setData", this.aiaList);
+
+    }
+
+    initAIATable() {
+        let opts = Object.assign({ // deep copy
+            rowClick: (e, row) => { //trigger an alert message when the row is clicked
+                this.showEtcMenu(row.getData());
+            },
+        }, this.defTabulatorOpts);
+        this.aiaTable = $(this.$element.find('#aiaTable')).tabulator(opts);
     }
 
     memoInit() {
@@ -232,6 +289,8 @@ export class SettingActionInAdvancePanelCtrl extends MetricsPanelCtrl {
                         } else if (this.selectObj.JSON_DATA.CPK !== undefined &&  row.DESCRIPTION === this.selectObj.JSON_DATA.CPK.ACTION)  {
                             ticked = true;
                         }
+                    } else if (row.DESCRIPTION === "안함") {
+                        ticked = true;
                     }
                     list.push({ name: row.DESCRIPTION, maker: "(" + row.NAME + ")", ticked: ticked, data: row, });
                 });
@@ -478,6 +537,7 @@ export class SettingActionInAdvancePanelCtrl extends MetricsPanelCtrl {
     showEtcMenu(obj) {
         this.selectObj = obj;
         this.enEtcMenu = true;
+        this.$scope.$apply();
     }
 
     showSelectedModal(obj, htmlfileName) {

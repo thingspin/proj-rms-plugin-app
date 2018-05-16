@@ -29088,6 +29088,19 @@ var InspectionPropertyPanelCtrl = /** @class */ (function (_super) {
             retain: true,
             dup: false,
         };
+        _this.defTabulatorOpts = {
+            pagination: "local",
+            paginationSize: 20,
+            selectable: 1,
+            fitColumns: true,
+            responsiveLayout: true,
+            layout: "fitColumns",
+            columns: [
+                { title: "ID", field: "IDX" },
+                { title: "항목명", field: "NAME" },
+                { title: "설명", field: "DESCRIPTION" },
+            ],
+        };
         _this.events.on('init-edit-mode', _this.onInitEditMode.bind(_this));
         _this.events.on('render', _this.onRender.bind(_this));
         _this.events.on('panel-initialized', _this.onInitialized.bind(_this));
@@ -29103,41 +29116,23 @@ var InspectionPropertyPanelCtrl = /** @class */ (function (_super) {
     };
     InspectionPropertyPanelCtrl.prototype.initInspectTable = function () {
         var _this = this;
-        this.inspectTable = jquery__WEBPACK_IMPORTED_MODULE_3___default()(this.$element.find('#inspectTable')).tabulator({
-            pagination: "local",
-            paginationSize: 7,
-            selectable: 1,
-            fitColumns: true,
-            layout: "fitColumns",
-            columns: [
-                { title: "ID", field: "IDX" },
-                { title: "항목명", field: "NAME" },
-                { title: "설명", field: "DESCRIPTION" },
-            ],
+        var opts = Object.assign({
             rowClick: function (e, row) {
                 _this.showEtcMenu(row.getData());
                 _this.faultyTable.tabulator('deselectRow');
             },
-        });
+        }, this.defTabulatorOpts);
+        this.inspectTable = jquery__WEBPACK_IMPORTED_MODULE_3___default()(this.$element.find('#inspectTable')).tabulator(opts);
     };
     InspectionPropertyPanelCtrl.prototype.initFaultyTable = function () {
         var _this = this;
-        this.faultyTable = jquery__WEBPACK_IMPORTED_MODULE_3___default()(this.$element.find('#faultyTable')).tabulator({
-            pagination: "local",
-            paginationSize: 7,
-            selectable: 1,
-            fitColumns: true,
-            layout: "fitColumns",
-            columns: [
-                { title: "ID", field: "IDX" },
-                { title: "항목명", field: "NAME" },
-                { title: "설명", field: "DESCRIPTION" },
-            ],
+        var opts = Object.assign({
             rowClick: function (e, row) {
                 _this.showEtcMenu(row.getData());
                 _this.inspectTable.tabulator('deselectRow');
             },
-        });
+        }, this.defTabulatorOpts);
+        this.faultyTable = jquery__WEBPACK_IMPORTED_MODULE_3___default()(this.$element.find('#faultyTable')).tabulator(opts);
     };
     InspectionPropertyPanelCtrl.prototype.onDataReceived = function (dataList) {
         var _this = this;
@@ -29154,7 +29149,7 @@ var InspectionPropertyPanelCtrl = /** @class */ (function (_super) {
         });
     };
     InspectionPropertyPanelCtrl.prototype.mqttRecv = function (topic, message) {
-        console.log(topic, message.toString());
+        // console.log(topic, message.toString());
     };
     /*
     updateInspectionPropertyList(selectId) {
@@ -29331,7 +29326,6 @@ var InspectionPropertyPanelCtrl = /** @class */ (function (_super) {
         this.refresh();
     };
     InspectionPropertyPanelCtrl.prototype.showEtcMenu = function (obj) {
-        console.log(obj);
         this.selectObj = obj;
         this.enEtcMenu = true;
         this.$scope.$apply();
