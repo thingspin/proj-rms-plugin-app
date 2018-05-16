@@ -66,7 +66,7 @@ define(["app/plugins/sdk"], function(__WEBPACK_EXTERNAL_MODULE_grafana_app_plugi
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./panel/machine-material/module.ts");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./panel/company-list/module.ts");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -28381,16 +28381,16 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ "./panel/machine-material/module.ts":
-/*!******************************************!*\
-  !*** ./panel/machine-material/module.ts ***!
-  \******************************************/
+/***/ "./panel/company-list/module.ts":
+/*!**************************************!*\
+  !*** ./panel/company-list/module.ts ***!
+  \**************************************/
 /*! exports provided: PanelCtrl */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PanelCtrl", function() { return RmsMachineMaterialPanelCtrl; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PanelCtrl", function() { return RmsCompanyListPanelCtrl; });
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "../node_modules/lodash/lodash.js");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! jquery */ "../node_modules/jquery/dist/jquery.js");
@@ -28424,58 +28424,85 @@ Object(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_4__["loadPluginCss"])({
     dark: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.dark.css',
     light: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.light.css'
 });
-var template = __webpack_require__(/*! ./partial/templet.html */ "./panel/machine-material/partial/templet.html");
-// const options = require("./partial/options.html");
-var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
-    __extends(RmsMachineMaterialPanelCtrl, _super);
-    function RmsMachineMaterialPanelCtrl($scope, $injector, $http, $location, uiSegmentSrv, annotationsSrv) {
+var template = __webpack_require__(/*! ./partial/templet.html */ "./panel/company-list/partial/templet.html");
+//const options = require("./partial/options.html");
+var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
+    __extends(RmsCompanyListPanelCtrl, _super);
+    function RmsCompanyListPanelCtrl($scope, $injector, $http, $location, uiSegmentSrv, annotationsSrv) {
         var _this = _super.call(this, $scope, $injector) || this;
         _this.dataRaw = [];
         _this.columns = [];
-        // _.defaults(this.panel, this.panelDefaults);
-        lodash__WEBPACK_IMPORTED_MODULE_0___default.a.defaults(_this.panel);
+        _this.panelDefaults = {
+            options: {
+                legend: {
+                    show: true,
+                    values: false
+                },
+                legendTable: false,
+                traceColors: {}
+            },
+        };
+        lodash__WEBPACK_IMPORTED_MODULE_0___default.a.defaults(_this.panel, _this.panelDefaults);
         _this.divID = 'table-rms-' + _this.panel.id;
         _this.events.on('init-edit-mode', _this.onInitEditMode.bind(_this));
-        // this.events.on('render', this.onRender.bind(this)); //dynamic ui process
+        //this.events.on('render', this.rander.bind(this));
+        // this.events.on('panel-initialized', this.onRender.bind(this));
         _this.events.on('data-received', _this.onDataReceived.bind(_this));
         _this.events.on('data-error', _this.onDataError.bind(_this));
         return _this;
     }
-    RmsMachineMaterialPanelCtrl.prototype.onInitialized = function () {
+    RmsCompanyListPanelCtrl.prototype.onInitialized = function () {
         console.log("onInitialized");
         this.initalized = false;
+        //return Promise.apply(this.fillTable());
     };
-    RmsMachineMaterialPanelCtrl.prototype.onInitEditMode = function () {
+    RmsCompanyListPanelCtrl.prototype.onInitEditMode = function () {
     };
-    RmsMachineMaterialPanelCtrl.prototype.link = function (scope, elem, attrs, ctrl) {
+    RmsCompanyListPanelCtrl.prototype.link = function (scope, elem, attrs, ctrl) {
         console.log("link");
         var t = elem.find('.thingspin-table')[0];
         t.id = this.divID;
         this.container = jquery__WEBPACK_IMPORTED_MODULE_1___default()(t);
     };
-    /* dynamic ui process
-    rander() {
-    }
-    */
-    RmsMachineMaterialPanelCtrl.prototype.onDataError = function (err) {
+    RmsCompanyListPanelCtrl.prototype.onSave = function () {
+        // TODO ! - call database inasert/update query.
+        var info = this.panel.materialItem;
+        info.id = this.data.length + 1;
+        info.company = info.company.name;
+        info.regdate = new Date('YYYY/MM/DD').toString();
+        this.data.push(info);
+        this.container.tabulator("setData", this.data);
+    };
+    // 2018.05.16
+    RmsCompanyListPanelCtrl.prototype.rander = function () {
+        //console.log("rander()...");
+        if (!this.container) {
+            console.log("container not found!");
+            return Promise.reject({});
+        }
+        if (!this.initalized) {
+            console.log("table is not initialized, yet!");
+            //return Promise.resolve(this.createTable(null));
+            return Promise.resolve(this.createTable(this.dataJson));
+        }
+        return _super.prototype.render.call(this, this.container.tabulator);
+    };
+    RmsCompanyListPanelCtrl.prototype.onDataError = function (err) {
         this.dataRaw = [];
         this.render();
     };
-    RmsMachineMaterialPanelCtrl.prototype.onDataReceived = function (dataList) {
+    RmsCompanyListPanelCtrl.prototype.onDataReceived = function (dataList) {
         console.log("onDataReceived");
         this.dataRaw = dataList;
         console.log(this.dataRaw);
         Promise.resolve(this.transformer(this.dataRaw));
         this.createTable(this.dataJson);
     };
-    RmsMachineMaterialPanelCtrl.prototype.createTable = function (dataList) {
+    RmsCompanyListPanelCtrl.prototype.createTable = function (dataList) {
         console.log("create table ...");
         var tabledata = [
-            { id: 1, name: "Oli Bob", age: "12", col: "red", dob: "" },
-            { id: 2, name: "Mary May", age: "1", col: "blue", dob: "14/05/1982" },
-            { id: 3, name: "Christine Lobowski", age: "42", col: "green", dob: "22/05/1982" },
-            { id: 4, name: "Brendon Philips", age: "125", col: "orange", dob: "01/08/1980" },
-            { id: 5, name: "Margret Marmajuke", age: "16", col: "yellow", dob: "31/01/1999" },
+            { id: 1, name: 'A업체', phone: '010-1234-1234', person: '아무개', mail: 'email1@mda.com', memo: '' },
+            { id: 2, name: 'B업체', phone: '010-1234-1234', person: '아무개', mail: 'email1@mda.com', memo: '' },
         ];
         if (this.initalized == true) {
             this.container.tabulator("destroy");
@@ -28502,7 +28529,7 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
         }
         this.initalized = true;
     };
-    RmsMachineMaterialPanelCtrl.prototype.transformer = function (dataList) {
+    RmsCompanyListPanelCtrl.prototype.transformer = function (dataList) {
         this.columns = [];
         var data = dataList[0];
         var rows = data.rows;
@@ -28531,22 +28558,22 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
         this.dataJson = jArray;
     };
     ;
-    RmsMachineMaterialPanelCtrl.template = template;
-    return RmsMachineMaterialPanelCtrl;
+    RmsCompanyListPanelCtrl.template = template;
+    return RmsCompanyListPanelCtrl;
 }(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_4__["MetricsPanelCtrl"]));
 
 
 
 /***/ }),
 
-/***/ "./panel/machine-material/partial/templet.html":
-/*!*****************************************************!*\
-  !*** ./panel/machine-material/partial/templet.html ***!
-  \*****************************************************/
+/***/ "./panel/company-list/partial/templet.html":
+/*!*************************************************!*\
+  !*** ./panel/company-list/partial/templet.html ***!
+  \*************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"editor-row\">\n    <div class=\"thingspin-table\"></div>\n</div>\n    ";
+module.exports = "<div class=\"editor-row\">\n        <div class=\"section gf-form-group\">\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-5\">업체명</label>\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\">\n            </div>\n\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-5\">담당자</label>\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\">\n            </div>\n        </div>\n        \n        <div class=\"section gf-form-group\">\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-5\">연락처</label>\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\">\n            </div>\n\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-5\">이메일</label>\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\">\n            </div>\n        </div>\n        <div class=\"section gf-form-group\">\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-5\">메모</label>\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\">\n            </div>            \n            \n            <div class=\"gf-form\">\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onNew()\">\n                    등록\n                </button>\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onEdit()\">\n                    수정\n                </button>\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onDel()\">\n                    삭제\n                </button>\n            </div>\n        </div>\n    </div>\n    \n    <div class=\"editor-row\">\n        <div class=\"thingspin-table\"></div>\n    </div>\n    ";
 
 /***/ }),
 
