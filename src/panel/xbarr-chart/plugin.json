@@ -1,0 +1,13 @@
+{
+  "type": "panel",
+  "name": "(RMS) XbarR Chart",
+  "id": "rms-plugin-app-xbarr-01",
+
+  "info": {
+    "description": "ThingSPIN XbarR Chart with chart.js",
+    "author": {
+      "name": "lonycell@thingspin.io",
+      "url": "http://thingspin.io"
+    }
+  }
+}
