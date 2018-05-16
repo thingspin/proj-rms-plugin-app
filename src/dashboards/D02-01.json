@@ -3,10 +3,10 @@
     "list": [
     ]
   },
-  "editable": true,
+  "editable": false,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1526478437941,
+  "iteration": 1526480204830,
   "links": [],
   "panels": [
     {
@@ -120,7 +120,7 @@
       "valueMaps": [
         {
           "op": "=",
-          "text": "N/A",
+          "text": "0",
           "value": "null"
         }
       ],
@@ -653,7 +653,9 @@
           ],
           "dateFormat": "YYYY-MM-DD HH:mm:ss",
           "decimals": 2,
-          "link": false,
+          "link": true,
+          "linkTooltip": "$__cell_1",
+          "linkUrl": "/dashboard/db/modelbyeol-geomsagirog?var-MODEL=$__cell_1&var-FACILITY=All&var-CHANNEL=All",
           "mappingType": 1,
           "pattern": "model",
           "preserveFormat": false,
@@ -722,6 +724,9 @@
           ],
           "dateFormat": "YYYY-MM-DD HH:mm:ss",
           "decimals": 2,
+          "link": true,
+          "linkTooltip": "$__cell_3",
+          "linkUrl": "/dashboard/db/modelbyeol-geomsagirog?var-FACILITY=$__cell_3&var-CHANNEL=All",
           "mappingType": 1,
           "pattern": "facility",
           "thresholds": [],
@@ -886,7 +891,6 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -898,7 +902,7 @@
         "name": "MODEL",
         "options": [],
         "query": "show tag values from /inspection/ with key=model",
-        "refresh": 2,
+        "refresh": 1,
         "regex": "",
         "sort": 0,
         "tagValuesQuery": "",
@@ -910,7 +914,8 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
+          "selected": false,
+          "tags": [],
           "text": "All",
           "value": "$__all"
         },
@@ -922,7 +927,7 @@
         "name": "FACILITY",
         "options": [],
         "query": "show tag values from /inspection/ with key=facility",
-        "refresh": 2,
+        "refresh": 1,
         "regex": "",
         "sort": 0,
         "tagValuesQuery": "",
@@ -946,7 +951,7 @@
         "name": "CHANNEL",
         "options": [],
         "query": "show tag values from /inspection/ with key=channel",
-        "refresh": 2,
+        "refresh": 1,
         "regex": "",
         "sort": 0,
         "tagValuesQuery": "",
@@ -960,21 +965,20 @@
         "auto_count": 30,
         "auto_min": "10s",
         "current": {
-          "selected": true,
-          "text": "auto",
-          "value": "$__auto_interval_INTERVAL"
+          "text": "1m",
+          "value": "1m"
         },
         "hide": 0,
         "label": "집계단위",
         "name": "INTERVAL",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "auto",
             "value": "$__auto_interval_INTERVAL"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "1m",
             "value": "1m"
           },
@@ -1151,5 +1155,5 @@
   },
   "timezone": "",
   "title": "모델별 검사기록",
-  "version": 110
+   "version": 120
 }
