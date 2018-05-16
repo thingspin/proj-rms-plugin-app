@@ -6,7 +6,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1526430182080,
+  "iteration": 1526430182082,
   "links": [],
   "panels": [
     {
@@ -20,7 +20,7 @@
       "id": 18,
       "panels": [],
       "repeat": null,
-      "title": "Total Summary : $BRANCH, $INSPPROP_NAME, $MODEL, $INSPPC",
+      "title": "Total Summary : $BRANCH_NAME, $INSPPROP_NAME, $MODEL, $INSPPC",
       "type": "row"
     },
     {
@@ -376,7 +376,7 @@
       "renderer": "flot",
       "repeat": null,
       "repeatDirection": "v",
-      "repeatIteration": 1526430182080,
+      "repeatIteration": 1526430182082,
       "repeatPanelId": 23,
       "scopedVars": {
         "INSPPC": {
@@ -554,7 +554,7 @@
       "renderer": "flot",
       "repeat": null,
       "repeatDirection": "v",
-      "repeatIteration": 1526430182080,
+      "repeatIteration": 1526430182082,
       "repeatPanelId": 23,
       "scopedVars": {
         "INSPPC": {
@@ -8078,5 +8078,5 @@
   },
   "timezone": "",
   "title": "CPK 현황",
-   "version": 66
+  "version": 67
 }
