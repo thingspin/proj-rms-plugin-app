@@ -2,7 +2,7 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:142",
+        "$$hashKey": "object:145",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -13,126 +13,13 @@
       }
     ]
   },
-  "editable": false,
+  "editable": true,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1526536083482,
+  "id": 7,
+  "iteration": 1526542449823,
   "links": [],
   "panels": [
-    {
-      "aliasColors": {},
-      "breakPoint": "50%",
-      "cacheTimeout": null,
-      "combine": {
-        "label": "이상",
-        "threshold": "0.01"
-      },
-      "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
-      "fontSize": "100%",
-      "format": "locale",
-      "gridPos": {
-        "h": 9,
-        "w": 5,
-        "x": 0,
-        "y": 0
-      },
-      "id": 15,
-      "interval": null,
-      "legend": {
-        "percentage": true,
-        "show": true,
-        "values": true
-      },
-      "legendType": "On graph",
-      "links": [],
-      "maxDataPoints": 3,
-      "nullPointMode": "connected",
-      "pieType": "pie",
-      "strokeWidth": 1,
-      "targets": [
-        {
-          "alias": "정상",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "inspection",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT count(\"ok\") FROM \"inspection\" WHERE (\"model\" =~ /^$MODEL$/ AND \"facility\" =~ /^$FACILITY$/ AND \"channel\" =~ /^$CHANNEL$/ AND \"pass\" = 'true') AND $timeFilter",
-          "rawQuery": true,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "불량",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT count(\"ok\") FROM \"inspection\" WHERE (\"model\" =~ /^$MODEL$/ AND \"facility\" =~ /^$FACILITY$/ AND \"channel\" =~ /^$CHANNEL$/ AND \"pass\" = 'false') AND $timeFilter",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "",
-      "transparent": false,
-      "type": "grafana-piechart-panel",
-      "valueName": "current"
-    },
     {
       "cacheTimeout": null,
       "colorBackground": false,
@@ -142,7 +29,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
+      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
       "decimals": 0,
       "format": "locale",
       "gauge": {
@@ -154,8 +41,8 @@
       },
       "gridPos": {
         "h": 3,
-        "w": 5,
-        "x": 5,
+        "w": 10,
+        "x": 0,
         "y": 0
       },
       "id": 5,
@@ -177,7 +64,7 @@
       "nullText": null,
       "postfix": "",
       "postfixFontSize": "50%",
-      "prefix": "합계 ",
+      "prefix": "생산",
       "prefixFontSize": "50%",
       "rangeMaps": [
         {
@@ -255,7 +142,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
+      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
       "decimals": 0,
       "fill": 1,
       "gridPos": {
@@ -504,7 +391,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
+      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
       "decimals": 0,
       "format": "locale",
       "gauge": {
@@ -516,8 +403,8 @@
       },
       "gridPos": {
         "h": 3,
-        "w": 5,
-        "x": 5,
+        "w": 4,
+        "x": 0,
         "y": 3
       },
       "id": 8,
@@ -621,6 +508,121 @@
       "valueName": "current"
     },
     {
+      "aliasColors": {},
+      "breakPoint": "50%",
+      "cacheTimeout": null,
+      "combine": {
+        "label": "이상",
+        "threshold": "0.01"
+      },
+      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "decimals": 0,
+      "fontSize": "80%",
+      "format": "locale",
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 4,
+        "y": 3
+      },
+      "id": 15,
+      "interval": null,
+      "legend": {
+        "percentage": true,
+        "show": true,
+        "values": true
+      },
+      "legendType": "On graph",
+      "links": [],
+      "maxDataPoints": 3,
+      "nullPointMode": "connected",
+      "pieType": "pie",
+      "strokeWidth": "4",
+      "targets": [
+        {
+          "alias": "정상",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "inspection",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT count(\"ok\") FROM \"inspection\" WHERE (\"model\" =~ /^$MODEL$/ AND \"facility\" =~ /^$FACILITY$/ AND \"channel\" =~ /^$CHANNEL$/ AND \"pass\" = 'true') AND $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "불량",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT count(\"ok\") FROM \"inspection\" WHERE (\"model\" =~ /^$MODEL$/ AND \"facility\" =~ /^$FACILITY$/ AND \"channel\" =~ /^$CHANNEL$/ AND \"pass\" = 'false') AND $timeFilter",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "",
+      "transparent": false,
+      "type": "grafana-piechart-panel",
+      "valueName": "current"
+    },
+    {
       "cacheTimeout": null,
       "colorBackground": false,
       "colorValue": true,
@@ -629,7 +631,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
+      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
       "decimals": 0,
       "format": "locale",
       "gauge": {
@@ -641,8 +643,8 @@
       },
       "gridPos": {
         "h": 3,
-        "w": 5,
-        "x": 5,
+        "w": 4,
+        "x": 0,
         "y": 6
       },
       "id": 9,
@@ -745,11 +747,11 @@
     },
     {
       "columns": [],
-      "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
+      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
       "fontSize": "80%",
       "gridPos": {
-        "h": 20,
-        "w": 10,
+        "h": 8,
+        "w": 24,
         "x": 0,
         "y": 9
       },
@@ -760,8 +762,8 @@
       "scroll": true,
       "showHeader": true,
       "sort": {
-        "col": 0,
-        "desc": true
+        "col": null,
+        "desc": false
       },
       "styles": [
         {
@@ -803,52 +805,36 @@
           "dateFormat": "YYYY-MM-DD HH:mm:ss",
           "decimals": 0,
           "link": false,
+          "linkUrl": "",
           "mappingType": 1,
           "pattern": "pass",
-          "thresholds": [
-            "양품",
-            "불량"
-          ],
-          "type": "string",
-          "unit": "none",
-          "valueMaps": [
+          "preserveFormat": true,
+          "rangeMaps": [
             {
-              "text": "양품",
-              "value": "true"
+              "from": "true",
+              "text": "<i class=\"fa fa-thumbs-down\"></i>",
+              "to": "true"
             },
             {
-              "text": "불량",
-              "value": "false"
+              "from": "false",
+              "text": "<i class=\"fa fa-thumbs-down\"></i>",
+              "to": "false"
             }
-          ]
-        },
-        {
-          "alias": "점검",
-          "colorMode": "value",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.9)",
-            "rgba(50, 172, 45, 0.8)"
           ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 0,
-          "mappingType": 1,
-          "pattern": "ok",
-          "preserveFormat": true,
           "sanitize": true,
           "thresholds": [
-            "0",
-            "1"
+            "true",
+            " false"
           ],
           "type": "string",
-          "unit": "short",
+          "unit": "locale",
           "valueMaps": [
             {
-              "text": "",
+              "text": "<span class=\"btn-secondary\">   정상    <i class=\"fa fa-chevron-down\"></i> </span>",
               "value": "true"
             },
             {
-              "text": "<i class=\"fa fa-thumbs-down\"></i>",
+              "text": "<span class=\"btn-danger\">   불량    <i class=\"fa fa-exclamation-triangle\"></i> </span>",
               "value": "false"
             }
           ]
@@ -889,7 +875,7 @@
           "unit": "short"
         },
         {
-          "alias": "시작시간",
+          "alias": "검사시각",
           "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -986,20 +972,6 @@
                 ],
                 "type": "field"
               }
-            ],
-            [
-              {
-                "params": [
-                  "pass"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [
-                  "ok"
-                ],
-                "type": "alias"
-              }
             ]
           ],
           "tags": [
@@ -1019,6 +991,12 @@
               "key": "channel",
               "operator": "=~",
               "value": "/^$CHANNEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "pass",
+              "operator": "=~",
+              "value": "/^$PASS$/"
             }
           ]
         }
@@ -1030,13 +1008,13 @@
     },
     {
       "columns": [],
-      "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
+      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
       "fontSize": "80%",
       "gridPos": {
-        "h": 20,
-        "w": 14,
-        "x": 10,
-        "y": 9
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 17
       },
       "hideTimeOverride": true,
       "id": 13,
@@ -1056,12 +1034,12 @@
           "type": "date"
         },
         {
-          "alias": "",
-          "colorMode": "value",
+          "alias": "이상",
+          "colorMode": null,
           "colors": [
-            "rgba(245, 54, 54, 0.9)",
+            "rgba(50, 172, 45, 0.97)",
             "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
+            "rgba(245, 54, 54, 0.9)"
           ],
           "dateFormat": "YYYY-MM-DD HH:mm:ss",
           "decimals": 0,
@@ -1077,11 +1055,11 @@
           "unit": "short",
           "valueMaps": [
             {
-              "text": "",
+              "text": "<span class=\"btn-secondary\">   정상    <i class=\"fa fa-chevron-down\"></i> </span>",
               "value": "true"
             },
             {
-              "text": "<i class=\"fa fa-thumbs-down\"></i>",
+              "text": "<span class=\"btn-danger\">   불량    <i class=\"fa fa-exclamation-triangle\"></i> </span>",
               "value": "false"
             }
           ]
@@ -1117,6 +1095,12 @@
                   "model"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [
+                  "모델"
+                ],
+                "type": "alias"
               }
             ],
             [
@@ -1125,6 +1109,12 @@
                   "facility"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [
+                  "검사기"
+                ],
+                "type": "alias"
               }
             ],
             [
@@ -1133,6 +1123,12 @@
                   "channel"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [
+                  "채널"
+                ],
+                "type": "alias"
               }
             ],
             [
@@ -1141,6 +1137,12 @@
                   "iid"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [
+                  "검사항목"
+                ],
+                "type": "alias"
               }
             ],
             [
@@ -1149,6 +1151,12 @@
                   "min"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [
+                  "MIN"
+                ],
+                "type": "alias"
               }
             ],
             [
@@ -1157,6 +1165,12 @@
                   "max"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [
+                  "MAX"
+                ],
+                "type": "alias"
               }
             ],
             [
@@ -1165,6 +1179,12 @@
                   "val"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [
+                  "측정치"
+                ],
+                "type": "alias"
               }
             ],
             [
@@ -1193,6 +1213,12 @@
               "key": "channel",
               "operator": "=~",
               "value": "/^$CHANNEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "pass",
+              "operator": "=~",
+              "value": "/^$PASS$/"
             }
           ]
         }
@@ -1211,9 +1237,8 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
-          "text": "ASPURC15B20",
-          "value": "ASPURC15B20"
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
         "hide": 0,
@@ -1235,7 +1260,6 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -1259,7 +1283,6 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -1281,19 +1304,55 @@
         "useTags": false
       },
       {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "tags": [],
+          "text": "All",
+          "value": "$__all"
+        },
+        "hide": 0,
+        "includeAll": true,
+        "label": "합격",
+        "multi": false,
+        "name": "PASS",
+        "options": [
+          {
+            "$$hashKey": "object:223",
+            "selected": true,
+            "text": "All",
+            "value": "$__all"
+          },
+          {
+            "$$hashKey": "object:224",
+            "selected": false,
+            "text": "true",
+            "value": "true"
+          },
+          {
+            "$$hashKey": "object:225",
+            "selected": false,
+            "text": "false",
+            "value": "false"
+          }
+        ],
+        "query": "true, false",
+        "type": "custom"
+      },
+      {
         "auto": true,
         "auto_count": 30,
         "auto_min": "1s",
         "current": {
-          "text": "10s",
-          "value": "10s"
+          "text": "auto",
+          "value": "$__auto_interval_INTERVAL"
         },
         "hide": 0,
         "label": "집계단위",
         "name": "INTERVAL",
         "options": [
           {
-            "selected": false,
+            "selected": true,
             "text": "auto",
             "value": "$__auto_interval_INTERVAL"
           },
@@ -1303,7 +1362,7 @@
             "value": "1s"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "10s",
             "value": "10s"
           },
@@ -1459,8 +1518,8 @@
     ]
   },
   "time": {
-    "from": "now/d",
-    "to": "now/d"
+    "from": "now-3h",
+    "to": "now"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -1491,5 +1550,5 @@
   "timezone": "",
   "title": "모델별 검사기록",
   "uid": "rAgfpx7iz",
-  "version": 166
+  "version": 37
 }
