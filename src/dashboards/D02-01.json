@@ -2,7 +2,7 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:142",
+        "$$hashKey": "object:266",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -13,10 +13,11 @@
       }
     ]
   },
-  "editable": false,
+  "editable": true,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1526536083482,
+  "id": 7,
+  "iteration": 1526538029298,
   "links": [],
   "panels": [
     {
@@ -27,7 +28,7 @@
         "label": "이상",
         "threshold": "0.01"
       },
-      "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
+      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
       "fontSize": "100%",
       "format": "locale",
       "gridPos": {
@@ -142,7 +143,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
+      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
       "decimals": 0,
       "format": "locale",
       "gauge": {
@@ -255,7 +256,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
+      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
       "decimals": 0,
       "fill": 1,
       "gridPos": {
@@ -504,7 +505,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
+      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
       "decimals": 0,
       "format": "locale",
       "gauge": {
@@ -629,7 +630,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
+      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
       "decimals": 0,
       "format": "locale",
       "gauge": {
@@ -745,7 +746,7 @@
     },
     {
       "columns": [],
-      "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
+      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
       "fontSize": "80%",
       "gridPos": {
         "h": 20,
@@ -1030,7 +1031,7 @@
     },
     {
       "columns": [],
-      "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
+      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
       "fontSize": "80%",
       "gridPos": {
         "h": 20,
@@ -1056,7 +1057,7 @@
           "type": "date"
         },
         {
-          "alias": "",
+          "alias": "이상",
           "colorMode": "value",
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -1117,6 +1118,12 @@
                   "model"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [
+                  "모델"
+                ],
+                "type": "alias"
               }
             ],
             [
@@ -1125,6 +1132,12 @@
                   "facility"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [
+                  "검사기"
+                ],
+                "type": "alias"
               }
             ],
             [
@@ -1133,6 +1146,12 @@
                   "channel"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [
+                  "채널"
+                ],
+                "type": "alias"
               }
             ],
             [
@@ -1141,6 +1160,12 @@
                   "iid"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [
+                  "검사항목"
+                ],
+                "type": "alias"
               }
             ],
             [
@@ -1149,6 +1174,12 @@
                   "min"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [
+                  "MIN"
+                ],
+                "type": "alias"
               }
             ],
             [
@@ -1157,6 +1188,12 @@
                   "max"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [
+                  "MAX"
+                ],
+                "type": "alias"
               }
             ],
             [
@@ -1165,6 +1202,12 @@
                   "val"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [
+                  "측정치"
+                ],
+                "type": "alias"
               }
             ],
             [
@@ -1211,9 +1254,9 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
-          "text": "ASPURC15B20",
-          "value": "ASPURC15B20"
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
         "hide": 0,
@@ -1285,6 +1328,7 @@
         "auto_count": 30,
         "auto_min": "1s",
         "current": {
+          "selected": true,
           "text": "10s",
           "value": "10s"
         },
@@ -1491,5 +1535,5 @@
   "timezone": "",
   "title": "모델별 검사기록",
   "uid": "rAgfpx7iz",
-  "version": 166
+  "version": 168
 }
