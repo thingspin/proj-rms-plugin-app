@@ -20,6 +20,9 @@ const template = require("./partial/templet.html");
 class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
   static template = template;
 
+  dsSrv: any;
+  $rootScope: any;
+
   divID: string;
   initalized: boolean;
   inEditMode: boolean;
@@ -34,20 +37,38 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
   dataJson : any;
 
   panelDefaults = {
-    options: {
-      legend: {
-          show: true,
-          values: false
-      },
-      legendTable: false,
-      traceColors : {}
-    },
+    // options: {
+    //   legend: {
+    //       show: true,
+    //       values: false
+    //   },
+    //   legendTable: false,
+    //   traceColors : {}
+    // },
+
+    businessCategory: [
+      '소모품업체',
+      '장비업체',
+      '금형업체'      
+    ],
+
+    inputlItem: {
+      name: 'Z업체',
+      business_type: '소모품업체',
+      phone: '010-1111-1111',
+      person : '아아아',
+      mail : '111@111.com',
+      memo : '아무말',      
+    }
   };
 
-  constructor($scope, $injector, $http, $location, uiSegmentSrv, annotationsSrv) {
+  constructor($rootScope, $scope, $injector, rsDsSrv) {
     super($scope, $injector);
 
     _.defaults(this.panel, this.panelDefaults);
+
+    this.dsSrv = rsDsSrv;
+    this.$rootScope = $rootScope;
 
     this.divID = 'table-rms-' + this.panel.id;
     this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
@@ -75,19 +96,6 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
 
     this.container = $(t);
   }
-
-  onSave() {
-      // TODO ! - call database inasert/update query.
-
-      let info = this.panel.materialItem;
-      info.id = this.data.length + 1;
-      info.company = info.company.name;
-      info.regdate = new Date('YYYY/MM/DD').toString();
-
-      this.data.push(info);
-      this.container.tabulator("setData", this.data);
-  }
-
 
   // 2018.05.16
   rander() {
@@ -117,7 +125,7 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
     console.log(this.dataRaw);
     Promise.resolve(this.transformer(this.dataRaw));
     this.createTable(this.dataJson);
-  }
+  }  
 
   createTable(dataList) {
     console.log("create table ...");   
@@ -129,16 +137,32 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
 
     if (this.initalized == true) {
       this.container.tabulator("destroy");
-    }
+    }      
+
+
 
     this.container.tabulator({
-      height: 340,
+      //height: 340,
       layout: "fitColumns",
       columns: this.columns,
       rowClick: function(e, row) {
-        console.log(row.getData());
-        console.log(row);
-          alert("Row " + row.getData() + " Clicked!!!!");
+        
+        console.log(row.getData());        
+        
+        // console.log(row.getData().BUSINESS_ID);
+        // console.log(row.getData().BUSINESS_TYPE);  
+        
+
+        //this.inputlItem.business_id = row.getData().BUSINESS_ID;
+
+        // let info = this.inputlItem;
+        // info.business_id = row.getData().BUSINESS_ID;
+        // info.business_type = row.getData().BUSINESS_TYPE;        
+        // this.panel.inputlItem.business_id = row.getData().BUSINESS_ID;
+        // this.panel.inputlItem.business_type = row.getData().BUSINESS_TYPE;
+        
+        // console.log(row);
+        //   alert("Row " + row.getData() + " Clicked!!!!");
       },
     });
 
@@ -184,7 +208,71 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
     }
     this.dataJson = jArray;
   };
+
+  onNew() {
+    // TODO ! - call database inasert/update query.
+    //console.log("New SQL");  
+    let info = this.panel.inputlItem;
+    // console.log(info.name);  
+    // console.log(info.business_type);  
+    // console.log(info.phone);  
+    // console.log(info.person);  
+    // console.log(info.mail);  
+    // console.log(info.memo);  
+
+    let selectId = this.datasource.id;
+    let query = [
+      'insert into t_business(business_type, name, phone, person, mail, memo) values("'
+      + info.business_type + '", "' + info.name + '", "' + info.phone + '", "' + info.person + '", "' +  info.mail + '", "' +  info.memo + '");'
+    ];       
+    console.log(selectId + " " + query);
+
+    this.dsSrv.query(selectId, query).then( result => {
+      this.$scope.inspectionName = "";
+      this.$rootScope.$broadcast('refresh');
+    }).catch( err => {
+      console.error(err);
+    });    
+  };
+
+  onEdit() {    
+
+    // let info = this.panel.inputlItem;
+    // let selectId = this.datasource.id;
+    // let query = [
+    //   'insert into t_business(business_type, name, phone, person, mail, memo) values("'
+    //   + info.business_type + '", "' + info.name + '", "' + info.phone + '", "' + info.person + '", "' +  info.mail + '", "' +  info.memo + '");'
+    // ];       
+    // console.log(selectId + " " + query);
+
+    // this.dsSrv.query(selectId, query).then( result => {
+    //   this.$scope.inspectionName = "";
+    //   this.$rootScope.$broadcast('refresh');
+    // }).catch( err => {
+    //   console.error(err);
+    // });    
+  };
+
+  onDel() {    
+    
+    // let info = this.panel.inputlItem;
+    // let selectId = this.datasource.id;
+    // let query = [
+    //   'insert into t_business(business_type, name, phone, person, mail, memo) values("'
+    //   + info.business_type + '", "' + info.name + '", "' + info.phone + '", "' + info.person + '", "' +  info.mail + '", "' +  info.memo + '");'
+    // ];       
+    // console.log(selectId + " " + query);
+
+    // this.dsSrv.query(selectId, query).then( result => {
+    //   this.$scope.inspectionName = "";
+    //   this.$rootScope.$broadcast('refresh');
+    // }).catch( err => {
+    //   console.error(err);
+    // });    
+  };
 }
+
+
 
 export {
   RmsCompanyListPanelCtrl as PanelCtrl

@@ -2,30 +2,40 @@
         <div class="section gf-form-group">
             <div class="gf-form">
                 <label class="gf-form-label width-5">업체명</label>
-                <input type="text" class="gf-form-input min-width-16 width-16">
-            </div>
+                <input type="text" class="gf-form-input min-width-16 width-16" ng-model="ctrl.panel.inputlItem.name">
+            </div>            
 
             <div class="gf-form">
-                <label class="gf-form-label width-5">담당자</label>
-                <input type="text" class="gf-form-input min-width-16 width-16">
-            </div>
+                <label class="gf-form-label width-5">업종</label>
+                <div class="gf-form-select-wrapper">
+                        <select class="gf-form-input min-width-16 width-16" 
+                            ng-model="ctrl.panel.inputlItem.business_type"
+                            ng-options="f for f in ctrl.panel.businessCategory">
+                        </select>
+                </div>                    
+            </div>            
         </div>
         
         <div class="section gf-form-group">
             <div class="gf-form">
+                <label class="gf-form-label width-5">담당자</label>
+                <input type="text" class="gf-form-input min-width-16 width-16" ng-model="ctrl.panel.inputlItem.person">
+            </div>
+
+            <div class="gf-form">
                 <label class="gf-form-label width-5">연락처</label>
-                <input type="text" class="gf-form-input min-width-16 width-16">
+                <input type="text" class="gf-form-input min-width-16 width-16" ng-model="ctrl.panel.inputlItem.phone">
             </div>
 
             <div class="gf-form">
                 <label class="gf-form-label width-5">이메일</label>
-                <input type="text" class="gf-form-input min-width-16 width-16">
+                <input type="text" class="gf-form-input min-width-16 width-16" ng-model="ctrl.panel.inputlItem.mail">
             </div>
         </div>
         <div class="section gf-form-group">
             <div class="gf-form">
                 <label class="gf-form-label width-5">메모</label>
-                <input type="text" class="gf-form-input min-width-16 width-16">
+                <input type="text" class="gf-form-input min-width-16 width-16" ng-model="ctrl.panel.inputlItem.memo">
             </div>            
             
             <div class="gf-form">
