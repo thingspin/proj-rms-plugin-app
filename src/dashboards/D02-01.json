@@ -6,7 +6,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1526618825847,
+  "iteration": 1526658555314,
   "links": [],
   "panels": [
     {
@@ -18,7 +18,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "datasource": "$DATABASE",
       "decimals": 0,
       "format": "locale",
       "gauge": {
@@ -29,8 +29,8 @@
         "thresholdMarkers": true
       },
       "gridPos": {
-        "h": 3,
-        "w": 10,
+        "h": 4,
+        "w": 12,
         "x": 0,
         "y": 0
       },
@@ -71,10 +71,9 @@
       "tableColumn": "",
       "targets": [
         {
-          "$$hashKey": "object:846",
           "alias": "$col",
           "groupBy": [],
-          "measurement": "/^inspection-*/",
+          "measurement": "/^inspection.summary-*/",
           "orderByTime": "ASC",
           "policy": "default",
           "refId": "A",
@@ -83,7 +82,7 @@
             [
               {
                 "params": [
-                  "ok"
+                  "tuid"
                 ],
                 "type": "field"
               },
@@ -129,161 +128,57 @@
     },
     {
       "aliasColors": {},
-      "bars": true,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "breakPoint": "50%",
+      "cacheTimeout": null,
+      "combine": {
+        "label": "이상",
+        "threshold": "0.01"
+      },
+      "datasource": "$DATABASE",
       "decimals": 0,
-      "fill": 1,
+      "fontSize": "80%",
+      "format": "locale",
       "gridPos": {
-        "h": 9,
-        "w": 14,
-        "x": 10,
+        "h": 10,
+        "w": 12,
+        "x": 12,
         "y": 0
       },
-      "id": 11,
+      "id": 15,
+      "interval": null,
       "legend": {
-        "avg": false,
-        "current": false,
-        "hideEmpty": true,
-        "hideZero": true,
-        "max": true,
-        "min": false,
+        "percentage": true,
         "show": true,
-        "total": true,
         "values": true
       },
-      "lines": true,
-      "linewidth": 1,
+      "legendType": "On graph",
       "links": [],
-      "nullPointMode": "null",
-      "percentage": false,
-      "pointradius": 1,
-      "points": true,
-      "renderer": "flot",
-      "seriesOverrides": [
-        {
-          "alias": "불량수",
-          "color": "#bf1b00",
-          "stack": "A"
-        },
-        {
-          "alias": "양품수",
-          "color": "#1f78c1",
-          "stack": "A"
-        }
-      ],
-      "spaceLength": 10,
-      "stack": true,
-      "steppedLine": false,
+      "maxDataPoints": 3,
+      "nullPointMode": "connected",
+      "pieType": "pie",
+      "strokeWidth": "4",
       "targets": [
         {
-          "$$hashKey": "object:1510",
-          "alias": "$col",
-          "groupBy": [
-            {
-              "params": [
-                "$INTERVAL"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "0"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "/^inspection-*/",
+          "alias": "정상",
+          "groupBy": [],
+          "measurement": "/^inspection.summary-*/",
           "orderByTime": "ASC",
           "policy": "default",
+          "query": "SELECT count(\"ok\") FROM \"inspection\" WHERE (\"model\" =~ /^$MODEL$/ AND \"facility\" =~ /^$FACILITY$/ AND \"channel\" =~ /^$CHANNEL$/ AND \"pass\" = 'true') AND $timeFilter",
+          "rawQuery": false,
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
             [
               {
                 "params": [
-                  "ok"
+                  "tuid"
                 ],
                 "type": "field"
               },
               {
                 "params": [],
                 "type": "count"
-              },
-              {
-                "params": [
-                  "불량수"
-                ],
-                "type": "alias"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "model",
-              "operator": "=~",
-              "value": "/^$MODEL$/"
-            },
-            {
-              "condition": "AND",
-              "key": "facility",
-              "operator": "=~",
-              "value": "/^$FACILITY$/"
-            },
-            {
-              "condition": "AND",
-              "key": "channel",
-              "operator": "=~",
-              "value": "/^$CHANNEL$/"
-            },
-            {
-              "condition": "AND",
-              "key": "pass",
-              "operator": "=",
-              "value": "false"
-            }
-          ]
-        },
-        {
-          "$$hashKey": "object:1511",
-          "alias": "$col",
-          "groupBy": [
-            {
-              "params": [
-                "$INTERVAL"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "0"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "/^inspection-*/",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "ok"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "count"
-              },
-              {
-                "params": [
-                  "양품수"
-                ],
-                "type": "alias"
               }
             ]
           ],
@@ -312,67 +207,62 @@
               "value": "true"
             }
           ]
-        }
-      ],
-      "thresholds": [
-        {
-          "colorMode": "critical",
-          "fill": false,
-          "line": true,
-          "op": "gt",
-          "value": 150,
-          "yaxis": "left"
         },
         {
-          "colorMode": "custom",
-          "fill": false,
-          "line": true,
-          "lineColor": "#1f78c1",
-          "op": "gt",
-          "value": 65,
-          "yaxis": "left"
+          "alias": "불량",
+          "groupBy": [],
+          "measurement": "/^inspection.summary-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT count(\"ok\") FROM \"inspection\" WHERE (\"model\" =~ /^$MODEL$/ AND \"facility\" =~ /^$FACILITY$/ AND \"channel\" =~ /^$CHANNEL$/ AND \"pass\" = 'false') AND $timeFilter",
+          "rawQuery": false,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "tuid"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "facility",
+              "operator": "=~",
+              "value": "/^$FACILITY$/"
+            },
+            {
+              "condition": "AND",
+              "key": "channel",
+              "operator": "=~",
+              "value": "/^$CHANNEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "pass",
+              "operator": "=",
+              "value": "false"
+            }
+          ]
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "$INTERVAL 당 불량/양품 추이",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
+      "title": "집계단위($INTERVAL) 당 불량률",
       "transparent": false,
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 0,
-          "format": "locale",
-          "label": "판정수량",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": 50
-      }
+      "type": "grafana-piechart-panel",
+      "valueName": "current"
     },
     {
       "cacheTimeout": null,
@@ -383,7 +273,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "datasource": "$DATABASE",
       "decimals": 0,
       "format": "locale",
       "gauge": {
@@ -395,9 +285,9 @@
       },
       "gridPos": {
         "h": 3,
-        "w": 4,
+        "w": 12,
         "x": 0,
-        "y": 3
+        "y": 4
       },
       "id": 8,
       "interval": null,
@@ -436,10 +326,9 @@
       "tableColumn": "",
       "targets": [
         {
-          "$$hashKey": "object:936",
           "alias": "$col",
           "groupBy": [],
-          "measurement": "/^inspection-*/",
+          "measurement": "/^inspection.summary-*/",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT count(\"ok\") FROM \"inspection\" WHERE (\"model\" =~ /^$MODEL$/ AND \"facility\" =~ /^$FACILITY$/ AND \"channel\" =~ /^$CHANNEL$/ AND \"pass\" = 'true') AND $timeFilter",
@@ -450,7 +339,7 @@
             [
               {
                 "params": [
-                  "ok"
+                  "tuid"
                 ],
                 "type": "field"
               },
@@ -501,172 +390,6 @@
       "valueName": "current"
     },
     {
-      "aliasColors": {},
-      "breakPoint": "50%",
-      "cacheTimeout": null,
-      "combine": {
-        "label": "이상",
-        "threshold": "0.01"
-      },
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
-      "decimals": 0,
-      "fontSize": "80%",
-      "format": "locale",
-      "gridPos": {
-        "h": 6,
-        "w": 6,
-        "x": 4,
-        "y": 3
-      },
-      "id": 15,
-      "interval": null,
-      "legend": {
-        "percentage": true,
-        "show": true,
-        "values": true
-      },
-      "legendType": "On graph",
-      "links": [],
-      "maxDataPoints": 3,
-      "nullPointMode": "connected",
-      "pieType": "pie",
-      "strokeWidth": "4",
-      "targets": [
-        {
-          "$$hashKey": "object:1138",
-          "alias": "정상",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "/^inspection-*/",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT count(\"ok\") FROM \"inspection\" WHERE (\"model\" =~ /^$MODEL$/ AND \"facility\" =~ /^$FACILITY$/ AND \"channel\" =~ /^$CHANNEL$/ AND \"pass\" = 'true') AND $timeFilter",
-          "rawQuery": false,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "ok"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "count"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "model",
-              "operator": "=~",
-              "value": "/^$MODEL$/"
-            },
-            {
-              "condition": "AND",
-              "key": "facility",
-              "operator": "=~",
-              "value": "/^$FACILITY$/"
-            },
-            {
-              "condition": "AND",
-              "key": "channel",
-              "operator": "=~",
-              "value": "/^$CHANNEL$/"
-            },
-            {
-              "condition": "AND",
-              "key": "pass",
-              "operator": "=",
-              "value": "true"
-            }
-          ]
-        },
-        {
-          "$$hashKey": "object:1139",
-          "alias": "불량",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "/^inspection-*/",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT count(\"ok\") FROM \"inspection\" WHERE (\"model\" =~ /^$MODEL$/ AND \"facility\" =~ /^$FACILITY$/ AND \"channel\" =~ /^$CHANNEL$/ AND \"pass\" = 'false') AND $timeFilter",
-          "rawQuery": false,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "ok"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "count"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "model",
-              "operator": "=~",
-              "value": "/^$MODEL$/"
-            },
-            {
-              "condition": "AND",
-              "key": "facility",
-              "operator": "=~",
-              "value": "/^$FACILITY$/"
-            },
-            {
-              "condition": "AND",
-              "key": "channel",
-              "operator": "=~",
-              "value": "/^$CHANNEL$/"
-            },
-            {
-              "condition": "AND",
-              "key": "pass",
-              "operator": "=",
-              "value": "false"
-            }
-          ]
-        }
-      ],
-      "title": "",
-      "transparent": false,
-      "type": "grafana-piechart-panel",
-      "valueName": "current"
-    },
-    {
       "cacheTimeout": null,
       "colorBackground": false,
       "colorValue": true,
@@ -675,7 +398,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "datasource": "$DATABASE",
       "decimals": 0,
       "format": "locale",
       "gauge": {
@@ -687,9 +410,9 @@
       },
       "gridPos": {
         "h": 3,
-        "w": 4,
+        "w": 12,
         "x": 0,
-        "y": 6
+        "y": 7
       },
       "id": 9,
       "interval": null,
@@ -728,10 +451,9 @@
       "tableColumn": "",
       "targets": [
         {
-          "$$hashKey": "object:1039",
           "alias": "$col",
           "groupBy": [],
-          "measurement": "/^inspection-*/",
+          "measurement": "/^inspection.summary-*/",
           "orderByTime": "ASC",
           "policy": "default",
           "refId": "A",
@@ -740,7 +462,7 @@
             [
               {
                 "params": [
-                  "ok"
+                  "tuid"
                 ],
                 "type": "field"
               },
@@ -792,13 +514,13 @@
     },
     {
       "columns": [],
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "datasource": "$DATABASE",
       "fontSize": "80%",
       "gridPos": {
-        "h": 8,
+        "h": 12,
         "w": 24,
         "x": 0,
-        "y": 9
+        "y": 10
       },
       "hideTimeOverride": false,
       "id": 2,
@@ -959,6 +681,23 @@
             "rgba(237, 129, 40, 0.89)",
             "rgba(50, 172, 45, 0.97)"
           ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "link": true,
+          "mappingType": 1,
+          "pattern": "tuid",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
           "decimals": 2,
           "pattern": "/.*/",
           "thresholds": [],
@@ -968,10 +707,9 @@
       ],
       "targets": [
         {
-          "$$hashKey": "object:1702",
           "alias": "$col",
           "groupBy": [],
-          "measurement": "/^inspection-*/",
+          "measurement": "/^inspection.summary-*/",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT \"ok\", \"model\", \"pass\", \"facility\", \"channel\", \"stime\", \"etime\" FROM \"inspection\" WHERE $timeFilter",
@@ -983,14 +721,6 @@
               {
                 "params": [
                   "model"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "pass"
                 ],
                 "type": "field"
               }
@@ -1014,7 +744,23 @@
             [
               {
                 "params": [
+                  "pass"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
                   "stime"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "etime"
                 ],
                 "type": "field"
               }
@@ -1051,236 +797,28 @@
       "transform": "table",
       "transparent": false,
       "type": "table"
-    },
-    {
-      "columns": [],
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
-      "fontSize": "80%",
-      "gridPos": {
-        "h": 11,
-        "w": 24,
-        "x": 0,
-        "y": 17
-      },
-      "hideTimeOverride": true,
-      "id": 13,
-      "links": [],
-      "pageSize": null,
-      "scroll": true,
-      "showHeader": true,
-      "sort": {
-        "col": 0,
-        "desc": true
-      },
-      "styles": [
-        {
-          "alias": "Time",
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "pattern": "Time",
-          "type": "date"
-        },
-        {
-          "alias": "이상",
-          "colorMode": null,
-          "colors": [
-            "rgba(50, 172, 45, 0.97)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(245, 54, 54, 0.9)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 0,
-          "mappingType": 1,
-          "pattern": "pass",
-          "preserveFormat": true,
-          "sanitize": true,
-          "thresholds": [
-            "true",
-            " false"
-          ],
-          "type": "string",
-          "unit": "short",
-          "valueMaps": [
-            {
-              "text": "<span class=\"btn-secondary\">   정상    <i class=\"fa fa-chevron-down\"></i> </span>",
-              "value": "true"
-            },
-            {
-              "text": "<span class=\"btn-danger\">   불량    <i class=\"fa fa-exclamation-triangle\"></i> </span>",
-              "value": "false"
-            }
-          ]
-        },
-        {
-          "alias": "",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "decimals": 2,
-          "pattern": "/.*/",
-          "thresholds": [],
-          "type": "number",
-          "unit": "short"
-        }
-      ],
-      "targets": [
-        {
-          "$$hashKey": "object:1853",
-          "alias": "$col",
-          "groupBy": [],
-          "measurement": "/^inspection.detail-*/",
-          "orderByTime": "DESC",
-          "policy": "default",
-          "refId": "A",
-          "resultFormat": "table",
-          "select": [
-            [
-              {
-                "params": [
-                  "model"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [
-                  "모델"
-                ],
-                "type": "alias"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "facility"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [
-                  "검사기"
-                ],
-                "type": "alias"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "channel"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [
-                  "채널"
-                ],
-                "type": "alias"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "iid"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [
-                  "검사항목"
-                ],
-                "type": "alias"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "min"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [
-                  "MIN"
-                ],
-                "type": "alias"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "max"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [
-                  "MAX"
-                ],
-                "type": "alias"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "val"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [
-                  "측정치"
-                ],
-                "type": "alias"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "pass"
-                ],
-                "type": "field"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "model",
-              "operator": "=~",
-              "value": "/^$MODEL$/"
-            },
-            {
-              "condition": "AND",
-              "key": "facility",
-              "operator": "=~",
-              "value": "/^$FACILITY$/"
-            },
-            {
-              "condition": "AND",
-              "key": "channel",
-              "operator": "=~",
-              "value": "/^$CHANNEL$/"
-            },
-            {
-              "condition": "AND",
-              "key": "pass",
-              "operator": "=~",
-              "value": "/^$PASS$/"
-            }
-          ]
-        }
-      ],
-      "title": "Details",
-      "transform": "table",
-      "transparent": false,
-      "type": "table"
     }
   ],
+  "refresh": "1s",
   "schemaVersion": 16,
   "style": "light",
   "tags": [],
   "templating": {
     "list": [
+      {
+        "current": {
+          "text": "RMS-CENTER-INFLUXDB(V1.0)",
+          "value": "RMS-CENTER-INFLUXDB(V1.0)"
+        },
+        "hide": 0,
+        "label": "본사/지점 선택",
+        "name": "DATABASE",
+        "options": [],
+        "query": "influxdb",
+        "refresh": 1,
+        "regex": "/^RMS-*/",
+        "type": "datasource"
+      },
       {
         "allValue": null,
         "current": {
@@ -1354,9 +892,8 @@
         "allValue": null,
         "current": {
           "selected": true,
-          "tags": [],
-          "text": "true",
-          "value": "true"
+          "text": "All",
+          "value": "$__all"
         },
         "hide": 0,
         "includeAll": true,
@@ -1365,12 +902,12 @@
         "name": "PASS",
         "options": [
           {
-            "selected": false,
+            "selected": true,
             "text": "All",
             "value": "$__all"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "true",
             "value": "true"
           },
@@ -1469,100 +1006,11 @@
         "query": "1s, 10s, 30s, 1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
         "refresh": 2,
         "type": "interval"
-      },
-      {
-        "allValue": null,
-        "current": {
-          "selected": true,
-          "text": "1000",
-          "value": "1000"
-        },
-        "hide": 2,
-        "includeAll": false,
-        "label": "최대지정",
-        "multi": false,
-        "name": "aMAX",
-        "options": [
-          {
-            "selected": false,
-            "text": "10",
-            "value": "10"
-          },
-          {
-            "selected": false,
-            "text": "50",
-            "value": "50"
-          },
-          {
-            "selected": false,
-            "text": "100",
-            "value": "100"
-          },
-          {
-            "selected": false,
-            "text": "500",
-            "value": "500"
-          },
-          {
-            "selected": true,
-            "text": "1000",
-            "value": "1000"
-          },
-          {
-            "selected": false,
-            "text": "10000",
-            "value": "10000"
-          }
-        ],
-        "query": "10,50,100,500,1000,10000",
-        "type": "custom"
-      },
-      {
-        "allValue": null,
-        "current": {
-          "selected": true,
-          "text": "50",
-          "value": "50"
-        },
-        "hide": 2,
-        "includeAll": false,
-        "label": "최소지정",
-        "multi": false,
-        "name": "aMIN",
-        "options": [
-          {
-            "selected": false,
-            "text": "100",
-            "value": "100"
-          },
-          {
-            "selected": true,
-            "text": "50",
-            "value": "50"
-          },
-          {
-            "selected": false,
-            "text": "10",
-            "value": "10"
-          },
-          {
-            "selected": false,
-            "text": "5",
-            "value": "5"
-          },
-          {
-            "selected": false,
-            "text": "0",
-            "value": "0"
-          }
-        ],
-        "query": "100,50,10,5,0",
-        "type": "custom"
       }
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -1594,5 +1042,5 @@
   "timezone": "",
   "title": "모델별 검사기록",
   "uid": "rAgfpx7iz",
-  "version": 38
+  "version": 75
 }
