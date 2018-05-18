@@ -1,23 +1,12 @@
 {
   "annotations": {
     "list": [
-      {
-        "$$hashKey": "object:145",
-        "builtIn": 1,
-        "datasource": "-- Simulator --",
-        "enable": true,
-        "hide": true,
-        "iconColor": "rgba(0, 211, 255, 1)",
-        "name": "Annotations & Alerts",
-        "type": "dashboard"
-      }
     ]
   },
   "editable": true,
   "gnetId": null,
   "graphTooltip": 1,
-  "id": 7,
-  "iteration": 1526542449823,
+  "iteration": 1526618825847,
   "links": [],
   "panels": [
     {
@@ -82,9 +71,10 @@
       "tableColumn": "",
       "targets": [
         {
+          "$$hashKey": "object:846",
           "alias": "$col",
           "groupBy": [],
-          "measurement": "inspection",
+          "measurement": "/^inspection-*/",
           "orderByTime": "ASC",
           "policy": "default",
           "refId": "A",
@@ -188,6 +178,7 @@
       "steppedLine": false,
       "targets": [
         {
+          "$$hashKey": "object:1510",
           "alias": "$col",
           "groupBy": [
             {
@@ -203,7 +194,7 @@
               "type": "fill"
             }
           ],
-          "measurement": "inspection",
+          "measurement": "/^inspection-*/",
           "orderByTime": "ASC",
           "policy": "default",
           "refId": "A",
@@ -255,6 +246,7 @@
           ]
         },
         {
+          "$$hashKey": "object:1511",
           "alias": "$col",
           "groupBy": [
             {
@@ -270,7 +262,7 @@
               "type": "fill"
             }
           ],
-          "measurement": "inspection",
+          "measurement": "/^inspection-*/",
           "orderByTime": "ASC",
           "policy": "default",
           "refId": "B",
@@ -444,13 +436,14 @@
       "tableColumn": "",
       "targets": [
         {
+          "$$hashKey": "object:936",
           "alias": "$col",
           "groupBy": [],
-          "measurement": "inspection",
+          "measurement": "/^inspection-*/",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT count(\"ok\") FROM \"inspection\" WHERE (\"model\" =~ /^$MODEL$/ AND \"facility\" =~ /^$FACILITY$/ AND \"channel\" =~ /^$CHANNEL$/ AND \"pass\" = 'true') AND $timeFilter",
-          "rawQuery": true,
+          "rawQuery": false,
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -540,6 +533,7 @@
       "strokeWidth": "4",
       "targets": [
         {
+          "$$hashKey": "object:1138",
           "alias": "정상",
           "groupBy": [
             {
@@ -555,30 +549,55 @@
               "type": "fill"
             }
           ],
-          "measurement": "inspection",
+          "measurement": "/^inspection-*/",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT count(\"ok\") FROM \"inspection\" WHERE (\"model\" =~ /^$MODEL$/ AND \"facility\" =~ /^$FACILITY$/ AND \"channel\" =~ /^$CHANNEL$/ AND \"pass\" = 'true') AND $timeFilter",
-          "rawQuery": true,
+          "rawQuery": false,
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
             [
               {
                 "params": [
-                  "value"
+                  "ok"
                 ],
                 "type": "field"
               },
               {
                 "params": [],
-                "type": "mean"
+                "type": "count"
               }
             ]
           ],
-          "tags": []
+          "tags": [
+            {
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "facility",
+              "operator": "=~",
+              "value": "/^$FACILITY$/"
+            },
+            {
+              "condition": "AND",
+              "key": "channel",
+              "operator": "=~",
+              "value": "/^$CHANNEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "pass",
+              "operator": "=",
+              "value": "true"
+            }
+          ]
         },
         {
+          "$$hashKey": "object:1139",
           "alias": "불량",
           "groupBy": [
             {
@@ -594,27 +613,52 @@
               "type": "fill"
             }
           ],
+          "measurement": "/^inspection-*/",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT count(\"ok\") FROM \"inspection\" WHERE (\"model\" =~ /^$MODEL$/ AND \"facility\" =~ /^$FACILITY$/ AND \"channel\" =~ /^$CHANNEL$/ AND \"pass\" = 'false') AND $timeFilter",
-          "rawQuery": true,
+          "rawQuery": false,
           "refId": "B",
           "resultFormat": "time_series",
           "select": [
             [
               {
                 "params": [
-                  "value"
+                  "ok"
                 ],
                 "type": "field"
               },
               {
                 "params": [],
-                "type": "mean"
+                "type": "count"
               }
             ]
           ],
-          "tags": []
+          "tags": [
+            {
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "facility",
+              "operator": "=~",
+              "value": "/^$FACILITY$/"
+            },
+            {
+              "condition": "AND",
+              "key": "channel",
+              "operator": "=~",
+              "value": "/^$CHANNEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "pass",
+              "operator": "=",
+              "value": "false"
+            }
+          ]
         }
       ],
       "title": "",
@@ -684,9 +728,10 @@
       "tableColumn": "",
       "targets": [
         {
+          "$$hashKey": "object:1039",
           "alias": "$col",
           "groupBy": [],
-          "measurement": "inspection",
+          "measurement": "/^inspection-*/",
           "orderByTime": "ASC",
           "policy": "default",
           "refId": "A",
@@ -923,9 +968,10 @@
       ],
       "targets": [
         {
+          "$$hashKey": "object:1702",
           "alias": "$col",
           "groupBy": [],
-          "measurement": "inspection",
+          "measurement": "/^inspection-*/",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT \"ok\", \"model\", \"pass\", \"facility\", \"channel\", \"stime\", \"etime\" FROM \"inspection\" WHERE $timeFilter",
@@ -1081,9 +1127,10 @@
       ],
       "targets": [
         {
+          "$$hashKey": "object:1853",
           "alias": "$col",
           "groupBy": [],
-          "measurement": "inspection.detail",
+          "measurement": "/^inspection.detail-*/",
           "orderByTime": "DESC",
           "policy": "default",
           "refId": "A",
@@ -1308,8 +1355,8 @@
         "current": {
           "selected": true,
           "tags": [],
-          "text": "All",
-          "value": "$__all"
+          "text": "true",
+          "value": "true"
         },
         "hide": 0,
         "includeAll": true,
@@ -1318,19 +1365,16 @@
         "name": "PASS",
         "options": [
           {
-            "$$hashKey": "object:223",
-            "selected": true,
+            "selected": false,
             "text": "All",
             "value": "$__all"
           },
           {
-            "$$hashKey": "object:224",
-            "selected": false,
+            "selected": true,
             "text": "true",
             "value": "true"
           },
           {
-            "$$hashKey": "object:225",
             "selected": false,
             "text": "false",
             "value": "false"
@@ -1550,5 +1594,5 @@
   "timezone": "",
   "title": "모델별 검사기록",
   "uid": "rAgfpx7iz",
-  "version": 37
+  "version": 38
 }
