@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 22.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="레이어_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+	 y="0px" viewBox="0 0 48 48" style="enable-background:new 0 0 48 48;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FFFFFF;}
+	.st1{fill:none;}
+	.st2{clip-path:url(#SVGID_2_);}
+	.st3{clip-path:url(#SVGID_4_);}
+</style>
+<g>
+	<path class="st1" d="M0,0h48v48H0V0z"/>
+	<g>
+		<rect x="30" y="35" class="st0" width="4" height="3"/>
+	</g>
+	<g>
+		<rect x="14" y="35" class="st0" width="4" height="3"/>
+	</g>
+	<g>
+		<g>
+			<rect x="30" y="30" class="st0" width="4" height="3"/>
+		</g>
+		<g>
+			<rect x="14" y="30" class="st0" width="4" height="3"/>
+		</g>
+	</g>
+	<g>
+		<rect x="6" y="38" class="st0" width="36" height="4"/>
+	</g>
+	<g>
+		<path class="st0" d="M40,26c-3.3,0-6-2.7-6-6v-4c0-5.5-4.5-10-10-10s-10,4.5-10,10v4c0,3.3-2.7,6-6,6H6v4h2l0,0
+			c5.5,0,10-4.5,10-10v-4c0-3.3,2.7-6,6-6s6,2.7,6,6v4c0,5.5,4.5,10,10,10h2v-4H40z"/>
+	</g>
+	<g>
+		<polygon class="st0" points="24,21 18,27 22,27 22,28 22,38 26,38 26,28 26,27 30,27 		"/>
+	</g>
+</g>
+</svg>

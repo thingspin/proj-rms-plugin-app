@@ -52,6 +52,7 @@ module.exports = function(grunt) {
             '<%= project.dev %>/**/*.ts',
             '<%= project.dev %>/**/*.html',
             '<%= project.dev %>/**/*.json',
+            '<%= project.dev %>/img/**',
           ],
           tasks: ['webpack:prod'], // !important
           options: {
