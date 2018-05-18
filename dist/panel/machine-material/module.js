@@ -1,4 +1,4 @@
-define(["app/plugins/sdk"], function(__WEBPACK_EXTERNAL_MODULE_grafana_app_plugins_sdk__) { return /******/ (function(modules) { // webpackBootstrap
+define(["app/core/core_module","app/plugins/sdk"], function(__WEBPACK_EXTERNAL_MODULE_grafana_app_core_core_module__, __WEBPACK_EXTERNAL_MODULE_grafana_app_plugins_sdk__) { return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -28401,6 +28401,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var jquery_tabulator_dist_js_tabulator_min__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(jquery_tabulator_dist_js_tabulator_min__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! grafana/app/plugins/sdk */ "grafana/app/plugins/sdk");
 /* harmony import */ var grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _services_remoteSolutionDS__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../services/remoteSolutionDS */ "./services/remoteSolutionDS.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -28411,6 +28412,7 @@ var __extends = (undefined && undefined.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+
 
 
 
@@ -28428,12 +28430,22 @@ var template = __webpack_require__(/*! ./partial/templet.html */ "./panel/machin
 // const options = require("./partial/options.html");
 var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
     __extends(RmsMachineMaterialPanelCtrl, _super);
-    function RmsMachineMaterialPanelCtrl($scope, $injector, $http, $location, uiSegmentSrv, annotationsSrv) {
+    function RmsMachineMaterialPanelCtrl($scope, $rootScope, $injector, $http, $location, uiSegmentSrv, annotationsSrv, rsDsSrv, alertSrv) {
         var _this = _super.call(this, $scope, $injector) || this;
+        _this.$rootScope = $rootScope;
+        _this.rsDsSrv = rsDsSrv;
+        _this.alertSrv = alertSrv;
         _this.dataRaw = [];
         _this.columns = [];
+        _this.business = [];
+        _this.checker = [];
         // _.defaults(this.panel, this.panelDefaults);
         lodash__WEBPACK_IMPORTED_MODULE_0___default.a.defaults(_this.panel);
+        _this.machine = {
+            id: "장비 ID",
+            name: '장비 설명',
+            memo: '메모'
+        };
         _this.divID = 'table-rms-' + _this.panel.id;
         _this.events.on('init-edit-mode', _this.onInitEditMode.bind(_this));
         // this.events.on('render', this.onRender.bind(this)); //dynamic ui process
@@ -28442,13 +28454,25 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
         return _this;
     }
     RmsMachineMaterialPanelCtrl.prototype.onInitialized = function () {
-        console.log("onInitialized");
         this.initalized = false;
     };
     RmsMachineMaterialPanelCtrl.prototype.onInitEditMode = function () {
     };
+    RmsMachineMaterialPanelCtrl.prototype.initQueryData = function () {
+        var _this = this;
+        var selectId = this.datasource.id;
+        var deferred = this.$q.defer();
+        var query = ["select business_id, name, person from t_business where business_type='장비업체'"];
+        this.rsDsSrv.query(selectId, query).then(function (result) {
+            deferred.resolve(result);
+            _this.transDataBusiness(result);
+        }).catch(function (err) {
+            deferred.reject(err);
+            console.log(err);
+        });
+        return deferred.promise;
+    };
     RmsMachineMaterialPanelCtrl.prototype.link = function (scope, elem, attrs, ctrl) {
-        console.log("link");
         var t = elem.find('.thingspin-table')[0];
         t.id = this.divID;
         this.container = jquery__WEBPACK_IMPORTED_MODULE_1___default()(t);
@@ -28462,14 +28486,14 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
         this.render();
     };
     RmsMachineMaterialPanelCtrl.prototype.onDataReceived = function (dataList) {
-        console.log("onDataReceived");
         this.dataRaw = dataList;
-        console.log(this.dataRaw);
         Promise.resolve(this.transformer(this.dataRaw));
         this.createTable(this.dataJson);
+        if (this.mode != 'edit')
+            this.initQueryData();
     };
     RmsMachineMaterialPanelCtrl.prototype.createTable = function (dataList) {
-        console.log("create table ...");
+        var _this = this;
         var tabledata = [
             { id: 1, name: "Oli Bob", age: "12", col: "red", dob: "" },
             { id: 2, name: "Mary May", age: "1", col: "blue", dob: "14/05/1982" },
@@ -28480,20 +28504,24 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
         if (this.initalized == true) {
             this.container.tabulator("destroy");
         }
-        this.container.tabulator({
-            height: 340,
+        this.defTabulatorOpts = {
+            pagination: "local",
+            paginationSize: 10,
+            selectable: 1,
+            fitColumns: true,
             layout: "fitColumns",
-            columns: this.columns,
+            columns: this.columns
+        };
+        var opts = Object.assign({
             rowClick: function (e, row) {
-                console.log(row.getData());
-                console.log(row);
-                alert("Row " + row.getData() + " Clicked!!!!");
+                _this.showCtrlMode('edit');
+                _this.selectRow(row.getData());
+                _this.selectTableRow = row;
+                // this.container.tabulator('deselectRow');
             },
-        });
+        }, this.defTabulatorOpts);
+        this.container.tabulator(opts);
         if (dataList != null) {
-            // this.container.tabulator("setData", dataList);
-            console.log(this.columns);
-            console.log(dataList);
             this.container.tabulator("setData", dataList);
         }
         else {
@@ -28501,6 +28529,45 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
             this.container.tabulator("setData", tabledata);
         }
         this.initalized = true;
+    };
+    RmsMachineMaterialPanelCtrl.prototype.selectRow = function (obj) {
+        this.selectObj = obj;
+        this.machine.id = obj['장비 ID'];
+        this.machine.name = obj['장비 설명'];
+        this.machine.memo = obj['메모'];
+        var cmpStr = obj['업체명'] + " : " + obj['담당자'];
+        var result = this.business.map(function (x) { return x.name; }).indexOf(cmpStr);
+        this.businessSelect = this.business[result];
+    };
+    RmsMachineMaterialPanelCtrl.prototype.clearCtrl = function (mode) {
+        switch (mode) {
+            case 'new':
+                {
+                    this.machine.id = "";
+                    this.machine.name = "";
+                    this.machine.memo = "";
+                    this.businessSelect = null;
+                }
+            case 'edit':
+                {
+                    this.machine.name = "";
+                    this.machine.memo = "";
+                    this.businessSelect = null;
+                }
+        }
+    };
+    RmsMachineMaterialPanelCtrl.prototype.transDataBusiness = function (dataList) {
+        this.business = [];
+        var data = dataList[0];
+        var rows = data.rows;
+        for (var count = 0; count < rows.length; count++) {
+            var item = rows[count];
+            var obj = {
+                name: item[1] + " : " + item[2],
+                id: item[0]
+            };
+            this.business.push(obj);
+        }
     };
     RmsMachineMaterialPanelCtrl.prototype.transformer = function (dataList) {
         this.columns = [];
@@ -28523,6 +28590,9 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
             for (var row_count = 0; row_count < row.length; row_count++) {
                 var item = row[row_count];
                 mapData.set(getColumns[row_count].text, item);
+                if (getColumns[row_count].text == '장비 ID') {
+                    this.checker.push(item);
+                }
             }
             var object = Object();
             mapData.forEach(function (v, k) { object[k] = v; });
@@ -28531,6 +28601,131 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
         this.dataJson = jArray;
     };
     ;
+    RmsMachineMaterialPanelCtrl.prototype.insertChecker = function (value) {
+        if (this.checker.indexOf(value) == -1)
+            return false;
+        else
+            return true;
+    };
+    RmsMachineMaterialPanelCtrl.prototype.addMachineItem = function (businessSelect, id, name, memo) {
+        var _this = this;
+        if (businessSelect == undefined) {
+            this.alertSrv.set("업체를 입력해 주세요", 'error', 5000);
+            return;
+        }
+        else if (id == undefined) {
+            this.alertSrv.set("장비 ID를 입력해 주세요", 'error', 5000);
+            return;
+        }
+        else if (name == undefined) {
+            this.alertSrv.set("장비 이름을 입력해 주세요", 'error', 5000);
+            return;
+        }
+        else {
+            if (!this.insertChecker(id)) {
+                var columns = "(PLANT_ID";
+                var values = "('1000'";
+                columns = columns + ", MACHINE_ID";
+                values = values + ", '" + id + "'";
+                columns = columns + ", MACHINE_NAME";
+                values = values + ", '" + name + "'";
+                columns = columns + ", BUSINESS_ID";
+                values = values + ", " + businessSelect.id;
+                if (memo !== undefined && memo !== null) {
+                    values = values + ",'" + memo + "')";
+                }
+                else {
+                    values = values + ", '')";
+                }
+                columns = columns + ", MEMO)";
+                var selectId = this.datasource.id;
+                var query = [
+                    "insert into t_machine " + columns + " values " + values,
+                ];
+                this.rsDsSrv.query(selectId, query).then(function (result) {
+                    // this.updateInspectionPropertyList(selectId);
+                    _this.alertSrv.set(name + "이(가) 추가되었습니다.", '', 'success', 1000);
+                    _this.refresh();
+                }).catch(function (err) {
+                    _this.alertSrv.set(name + " 추가 실패", err, 'error', 5000);
+                    console.error(err);
+                });
+            }
+            else {
+                this.alertSrv.set(id + "가 같은 장비 ID 가 존재합니다. 다른 것으로 입력해주세요.", 'error', 5000);
+                return;
+            }
+        }
+    };
+    RmsMachineMaterialPanelCtrl.prototype.updateMachineItem = function (businessSelect, id, name, memo) {
+        var _this = this;
+        if (businessSelect == undefined) {
+            this.alertSrv.set("업체를 입력해 주세요", 'error', 5000);
+            return;
+        }
+        else if (id == undefined) {
+            this.alertSrv.set("장비 ID를 입력해 주세요", 'error', 5000);
+            return;
+        }
+        else if (name == undefined) {
+            this.alertSrv.set("장비 이름을 입력해 주세요", 'error', 5000);
+            return;
+        }
+        else {
+            var selectId = this.datasource.id;
+            var query = [
+                "update t_machine set MACHINE_NAME = '" + name + "', BUSINESS_ID = " + businessSelect.id + ", MEMO = '" + memo + "' where MACHINE_ID = '" + id + "'",
+            ];
+            this.rsDsSrv.query(selectId, query).then(function (result) {
+                // this.updateInspectionPropertyList(selectId);
+                _this.alertSrv.set(name + "이(가) 변경 되었습니다.", '', 'success', 1000);
+                _this.refresh();
+            }).catch(function (err) {
+                _this.alertSrv.set(name + " 변경 실패", err, 'error', 5000);
+                console.error(err);
+            });
+        }
+    };
+    RmsMachineMaterialPanelCtrl.prototype.deleteMachineItem = function (value) {
+        var _this = this;
+        this.$rootScope.appEvent('confirm-modal', {
+            title: value + ' 삭제',
+            text: '정말로 지우시겠습니까?',
+            icon: 'fa-trash',
+            yesText: '삭제',
+            onConfirm: function () {
+                var selectId = _this.datasource.id;
+                var query = [
+                    "delete from t_machine where MACHINE_ID = '" + value + "'",
+                ];
+                _this.rsDsSrv.query(selectId, query).then(function (result) {
+                    // this.updateInspectionPropertyList(selectId);
+                    _this.alertSrv.set(name + "이(가) 변경 되었습니다.", '', 'success', 1000);
+                    _this.showCtrlMode('list');
+                    _this.refresh();
+                }).catch(function (err) {
+                    _this.alertSrv.set(name + " 변경 실패", err, 'error', 5000);
+                    console.error(err);
+                });
+            }
+        });
+    };
+    RmsMachineMaterialPanelCtrl.prototype.showCtrlMode = function (mode) {
+        if (mode == 'new') {
+            var selectedRows = this.container.tabulator("getSelectedRows");
+            if (selectedRows != undefined) {
+                this.container.tabulator("deselectRow", selectedRows);
+            }
+            this.machine = {
+                id: '',
+                name: '',
+                memo: ''
+            };
+            this.refresh();
+        }
+        this.mode = mode;
+        this.events.emit('panel-size-changed');
+    };
     RmsMachineMaterialPanelCtrl.template = template;
     return RmsMachineMaterialPanelCtrl;
 }(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_4__["MetricsPanelCtrl"]));
@@ -28546,7 +28741,137 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"editor-row\">\n    <div class=\"thingspin-table\"></div>\n</div>\n    ";
+module.exports = "<div ng-switch on='ctrl.mode'>\n    <button type=\"submit\" class=\"btn btn-primary\" ng-click=\"ctrl.showCtrlMode('new')\">신규 등록</button>\n    <br></br>    \n    <div class=\"editor-row\">\n        <div class=\"thingspin-table\"></div>\n    </div>\n    <br></br>\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new\">\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-5\">장비 ID</label>\n            <input type=\"text\" class=\"gf-form-input width-10 max-width-10\"  data-placement=\"auto\" ng-model=\"ctrl.machine.id\" placeholder=\"장비 ID\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\n            <label class=\"gf-form-label width-5\">장비 이름</label>\n            <input type=\"text\" class=\"gf-form-input width-20 max-width-18\"  data-placement=\"auto\" ng-model=\"ctrl.machine.name\" placeholder=\"장비 이름\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\n            <label class=\"gf-form-label width-5\">업체 선택</label>\n            <select class=\"gf-form-input width-16\" ng-model=\"ctrl.businessSelect\" ng-options=\"opts.name for opts in ctrl.business\" required></select>\n            <label class=\"gf-form-label width-5\">특이사항</label>\n            <input type=\"text\" class=\"gf-form-input width-30 max-width-24\"  data-placement=\"auto\" ng-model=\"ctrl.machine.memo\" placeholder=\"비고\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\n        </div>\n        <div class=\"gf-form\">\n            <button class=\"btn btn-success width-7\" ng-click=\"ctrl.addMachineItem(ctrl.businessSelect, ctrl.machine.id, ctrl.machine.name, ctrl.machine.memo)\">\n                신규 등록\n            </button>\n            &nbsp;&nbsp;\n            <button class=\"btn btn-success width-6\" ng-click=\"ctrl.clearCtrl('new')\">\n                초기화\n            </button>\n        </div>\n    </div>\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"edit\">\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-5\">장비 ID</label>\n            &nbsp;\n            <input type=\"text\" class=\"gf-form-input width-10 max-width-10\"  data-placement=\"auto\" ng-model=\"ctrl.machine.id\" placeholder=\"\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur ng-disabled = 'true'>\n            <label class=\"gf-form-label width-5\">장비 이름</label>\n            <input type=\"text\" class=\"gf-form-input width-20 max-width-18\"  data-placement=\"auto\" ng-model=\"ctrl.machine.name\" placeholder=\"\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\n            <label class=\"gf-form-label width-5\">업체 선택</label>\n            <select class=\"gf-form-input width-16\" ng-model=\"ctrl.businessSelect\" ng-options=\"opts.name for opts in ctrl.business\" required></select>\n            <label class=\"gf-form-label width-5\">특이사항</label>\n            <input type=\"text\" class=\"gf-form-input width-30 max-width-24\"  data-placement=\"auto\" ng-model=\"ctrl.machine.memo\" placeholder=\"\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\n        </div>\n        <div class=\"gf-form\">\n            <button class=\"btn btn-success width-5\" ng-click=\"ctrl.updateMachineItem(ctrl.businessSelect, ctrl.machine.id, ctrl.machine.name, ctrl.machine.memo)\">\n                변경\n            </button>\n            &nbsp;&nbsp;\n            <button class=\"btn btn-success width-5\" ng-click=\"ctrl.deleteMachineItem(ctrl.machine.id)\">\n                삭제\n            </button>\n            &nbsp;&nbsp;\n            <button class=\"btn btn-success width-6\" ng-click=\"ctrl.clearCtrl('edit')\">\n                초기화\n            </button>\n        </div>\n    </div>\n</div>";
+
+/***/ }),
+
+/***/ "./services/remoteSolutionDS.ts":
+/*!**************************************!*\
+  !*** ./services/remoteSolutionDS.ts ***!
+  \**************************************/
+/*! exports provided: RemoteSolutionDSCtrl */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RemoteSolutionDSCtrl", function() { return RemoteSolutionDSCtrl; });
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "../node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var grafana_app_core_core_module__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! grafana/app/core/core_module */ "grafana/app/core/core_module");
+/* harmony import */ var grafana_app_core_core_module__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(grafana_app_core_core_module__WEBPACK_IMPORTED_MODULE_1__);
+
+
+var RemoteSolutionDSCtrl = /** @class */ (function () {
+    function RemoteSolutionDSCtrl($q, backendSrv) {
+        this.$q = $q;
+        this.backendSrv = backendSrv;
+        this.dsReady = false;
+    }
+    RemoteSolutionDSCtrl.prototype.getDatasource = function () {
+        return this.datasources;
+    };
+    // promise
+    RemoteSolutionDSCtrl.prototype.getDatasources = function () {
+        var _this = this;
+        return this.backendSrv.get('/api/datasources').then(function (result) {
+            _this.datasources = lodash__WEBPACK_IMPORTED_MODULE_0___default.a.filter(result, { "type": "mysql" });
+            return _this.datasources;
+        });
+    };
+    RemoteSolutionDSCtrl.prototype.query = function (dsIdx, statement) {
+        var _this = this;
+        if (!this.dsReady) {
+            return this.getDatasources().then(function (res) {
+                if (_this.datasources.length !== 0) {
+                    _this.dsReady = true;
+                }
+                else {
+                    console.error("MariaDB datasource is not defined", res);
+                }
+                return _this.sql(dsIdx, statement);
+            });
+        }
+        else {
+            return this.sql(dsIdx, statement);
+        }
+    };
+    RemoteSolutionDSCtrl.prototype.setQueries = function (selectId, statements) {
+        var queries = [];
+        statements.forEach(function (statement) {
+            queries.push({
+                refId: 'A',
+                intervalMs: 1,
+                maxDataPoints: 1,
+                datasourceId: selectId,
+                rawSql: statement,
+                format: 'table',
+            });
+        });
+        return queries;
+    };
+    RemoteSolutionDSCtrl.prototype.sql = function (selectId, statements) {
+        var _this = this;
+        if (selectId !== undefined && this.dsReady === true) {
+            selectId = parseInt(selectId);
+            return this.backendSrv.datasourceRequest({
+                url: '/api/tsdb/query',
+                method: 'POST',
+                data: {
+                    queries: this.setQueries(selectId, statements),
+                }
+            }).then(function (res) {
+                return res.data.results.A.tables;
+            }).catch(function (err) {
+                if (err.data && err.data.message) {
+                    return _this.$q.reject({ status: "error", message: err.data.message });
+                }
+                else {
+                    return _this.$q.reject({ status: "error", message: err.status });
+                }
+            });
+        }
+        else {
+            return this.$q.reject({ status: "error", message: "datasource is not found" });
+        }
+    };
+    RemoteSolutionDSCtrl.prototype.getTableObj = function (target) {
+        var data = [];
+        target.forEach(function (item, itemIdx) {
+            data[itemIdx] = [];
+            item.rows.forEach(function (row) {
+                var obj = {};
+                row.forEach(function (field, idx) {
+                    obj[item.columns[idx].text] = field;
+                });
+                data[itemIdx].push(obj);
+            });
+        });
+        return data;
+    };
+    RemoteSolutionDSCtrl.prototype.getPluginInfo = function (pluginId) {
+        var _this = this;
+        return this.backendSrv.get('/api/plugins/' + pluginId + '/settings').then(function (app) {
+            return app;
+        }).catch(function (err) {
+            return _this.$q.reject({ status: "error", message: err });
+        });
+    };
+    return RemoteSolutionDSCtrl;
+}());
+
+grafana_app_core_core_module__WEBPACK_IMPORTED_MODULE_1___default.a.service('rsDsSrv', RemoteSolutionDSCtrl);
+
+
+/***/ }),
+
+/***/ "grafana/app/core/core_module":
+/*!***************************************!*\
+  !*** external "app/core/core_module" ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_grafana_app_core_core_module__;
 
 /***/ }),
 

@@ -4,6 +4,8 @@ import 'jquery-ui';
 import 'jquery.tabulator/dist/js/tabulator.min';
 import {MetricsPanelCtrl, loadPluginCss} from  'grafana/app/plugins/sdk';
 
+import '../../services/remoteSolutionDS';
+
 loadPluginCss({
   dark: 'plugins/proj-rms-plugin-app/panel/tabulator-table/css/tabulator.min.css',
   light: 'plugins/proj-rms-plugin-app/panel/tabulator-table/css/tabulator.min.css'
@@ -31,13 +33,27 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
 
   dataRaw = [];
   columns = [];
+  business = [];
+  checker = [];
+  businessSelect : any;
+  machine : any;
   dataJson : any;
+  defTabulatorOpts: object;
+  selectObj: any;
+  selectTableRow : any;
+  mode : any;
 
-  constructor($scope, $injector, $http, $location, uiSegmentSrv, annotationsSrv) {
+  constructor($scope, private $rootScope, $injector, $http, $location, uiSegmentSrv, annotationsSrv, private rsDsSrv, private alertSrv) {
     super($scope, $injector);
 
     // _.defaults(this.panel, this.panelDefaults);
     _.defaults(this.panel);
+
+    this.machine = {
+      id : "장비 ID",
+      name : '장비 설명',
+      memo : '특이사항'
+    }
 
     this.divID = 'table-rms-' + this.panel.id;
     this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
@@ -48,15 +64,27 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
   }
 
   onInitialized() {
-    console.log("onInitialized");
     this.initalized = false;
   }
 
   onInitEditMode() {
   }
 
+  initQueryData() {
+    let selectId = this.datasource.id;
+    let deferred = this.$q.defer();
+    let query = ["select business_id, name, person from t_business where business_type='장비업체'"];
+    this.rsDsSrv.query(selectId, query).then( result => {
+        deferred.resolve(result);
+        this.transDataBusiness(result);
+    }).catch( err => {
+        deferred.reject(err);
+        console.log(err);
+    });
+    return deferred.promise;
+  }
+
   link(scope, elem, attrs, ctrl) {
-    console.log("link");
     let t = elem.find('.thingspin-table')[0];
     t.id = this.divID;
 
@@ -74,16 +102,14 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
   }
 
   onDataReceived(dataList) {
-    console.log("onDataReceived");
     this.dataRaw = dataList;
-    console.log(this.dataRaw);
     Promise.resolve(this.transformer(this.dataRaw));
     this.createTable(this.dataJson);
+    if (this.mode != 'edit')
+      this.initQueryData();
   }
 
   createTable(dataList) {
-    console.log("create table ...");
-
     var tabledata = [
       { id: 1, name: "Oli Bob", age: "12", col: "red", dob: ""},
       { id: 2, name: "Mary May", age: "1", col: "blue", dob: "14/05/1982"},
@@ -91,32 +117,75 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
       { id: 4, name: "Brendon Philips", age: "125", col: "orange", dob: "01/08/1980"},
       { id: 5, name: "Margret Marmajuke", age: "16", col: "yellow", dob: "31/01/1999"},
     ];
-
     if (this.initalized == true) {
       this.container.tabulator("destroy");
     }
-
-    this.container.tabulator({
-      height: 340,
+    this.defTabulatorOpts = {
+      pagination: "local",
+      paginationSize: 10,
+      selectable: 1,
+      fitColumns: true,     
       layout: "fitColumns",
-      columns: this.columns,
-      rowClick: function(e, row) {
-        console.log(row.getData());
-        console.log(row);
-          alert("Row " + row.getData() + " Clicked!!!!");
+      columns: this.columns
+    };
+    let opts = Object.assign({ // deep copy
+      rowClick: (e, row) => { //trigger an alert message when the row is clicked
+          this.showCtrlMode('edit');
+          this.selectRow(row.getData());
+          this.selectTableRow = row;
+          // this.container.tabulator('deselectRow');
       },
-    });
-
+    }, this.defTabulatorOpts);
+    this.container.tabulator(opts);
     if (dataList != null) {
-      // this.container.tabulator("setData", dataList);
-      console.log(this.columns);
-      console.log(dataList);
       this.container.tabulator("setData",dataList);
     } else {
       this.dataTable.setData("setData",tabledata);
       this.container.tabulator("setData", tabledata);
     }
     this.initalized = true;
+  }
+
+  selectRow(obj) {
+    this.selectObj = obj;
+    this.machine.id = obj['장비 ID'];
+    this.machine.name = obj['장비 설명'];
+    this.machine.memo = obj['메모'];
+    var cmpStr = obj['업체명'] + " : " + obj['담당자'];
+    var result = this.business.map(x => x.name).indexOf(cmpStr);
+    this.businessSelect = this.business[result];
+  }
+
+  clearCtrl(mode) {
+    switch (mode) {
+      case 'new' :
+      {
+        this.machine.id = "";
+        this.machine.name = "";
+        this.machine.memo = "";
+        this.businessSelect = null;  
+      }
+      case 'edit' :
+      {
+        this.machine.name = "";
+        this.machine.memo = "";
+        this.businessSelect = null;        
+      }
+    }
+  }
+
+  transDataBusiness(dataList) {
+    this.business = [];
+    var data = dataList[0];
+    var rows = data.rows;
+    for (var count=0; count < rows.length; count++) {
+      var item = rows[count];
+      var obj = {
+        name:item[1] +" : "+ item[2],
+        id:item[0]
+      }
+      this.business.push(obj)
+    }
   }
 
   transformer(dataList) {
@@ -133,8 +202,7 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
         // editor: this.autocompEditor,
       }
       this.columns.push(obj);
-    }
-    
+    }  
     var jArray = new Array;
     var mapData = new Map();
     for (var count=0; count < rows.length; count++) {
@@ -142,6 +210,9 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
       for (var row_count=0; row_count < row.length; row_count++) {
         var item = row[row_count];
         mapData.set(getColumns[row_count].text,item);
+        if (getColumns[row_count].text == '장비 ID') {
+          this.checker.push(item);
+        }
       }
       var object = Object();
       mapData.forEach((v,k)=> {object[k] = v});
@@ -149,6 +220,122 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
     }
     this.dataJson = jArray;
   };
+
+  insertChecker(value) {
+    if(this.checker.indexOf(value) == -1)
+      return false;
+    else 
+      return true;
+  }
+
+  addMachineItem(businessSelect, id, name, memo) {
+    if (businessSelect == undefined) {
+      this.alertSrv.set("업체를 입력해 주세요", 'error', 5000);
+      return;
+    } else if (id == undefined) {
+      this.alertSrv.set("장비 ID를 입력해 주세요", 'error', 5000);
+      return;
+    } else if (name == undefined) {
+      this.alertSrv.set("장비 이름을 입력해 주세요", 'error', 5000);
+      return;
+    } else {
+      if(!this.insertChecker(id)) {
+        let columns = "(PLANT_ID";
+        let values = "('1000'";
+        columns = columns + ", MACHINE_ID";
+        values = values + ", '" + id + "'";
+        columns = columns + ", MACHINE_NAME";
+        values = values + ", '" + name + "'";
+        columns = columns + ", BUSINESS_ID";
+        values = values + ", " + businessSelect.id;
+        if (memo !== undefined && memo !== null )       { values = values + ",'" + memo + "')";} else { values = values + ", '')";}
+        columns = columns + ", MEMO)";
+        let selectId = this.datasource.id;
+
+        let query = [
+          "insert into t_machine " + columns + " values " + values,
+        ];
+        this.rsDsSrv.query(selectId, query).then( result => {
+            // this.updateInspectionPropertyList(selectId);
+            this.alertSrv.set(name + "이(가) 추가되었습니다.", '', 'success', 1000);
+            this.refresh();
+        }).catch( err => {
+            this.alertSrv.set(name + " 추가 실패", err, 'error', 5000);
+            console.error(err);
+        });  
+      } else {
+        this.alertSrv.set(id + "가 같은 장비 ID 가 존재합니다. 다른 것으로 입력해주세요.", 'error', 5000);
+        return;
+      }
+    }
+  }
+
+  updateMachineItem(businessSelect, id, name, memo) {
+    if (businessSelect == undefined) {
+      this.alertSrv.set("업체를 입력해 주세요", 'error', 5000);
+      return;
+    } else if (id == undefined) {
+      this.alertSrv.set("장비 ID를 입력해 주세요", 'error', 5000);
+      return;
+    } else if (name == undefined) {
+      this.alertSrv.set("장비 이름을 입력해 주세요", 'error', 5000);
+      return;
+    } else {      
+      let selectId = this.datasource.id;
+      let query = [
+        "update t_machine set MACHINE_NAME = '" + name + "', BUSINESS_ID = " + businessSelect.id + ", MEMO = '" + memo + "' where MACHINE_ID = '" + id + "'",
+      ];
+      this.rsDsSrv.query(selectId, query).then( result => {
+          // this.updateInspectionPropertyList(selectId);
+          this.alertSrv.set(name + "이(가) 변경 되었습니다.", '', 'success', 1000);
+          this.refresh();
+      }).catch( err => {
+          this.alertSrv.set(name + " 변경 실패", err, 'error', 5000);
+          console.error(err);
+      });  
+    }
+  }
+
+  deleteMachineItem(value) {
+    this.$rootScope.appEvent('confirm-modal', {
+      title: value + ' 삭제',
+      text: '정말로 지우시겠습니까?',
+      icon: 'fa-trash',
+      yesText: '삭제',
+      onConfirm: () => {
+        let selectId = this.datasource.id;
+        let query = [
+          "delete from t_machine where MACHINE_ID = '" + value + "'",
+        ];
+        this.rsDsSrv.query(selectId, query).then( result => {
+            // this.updateInspectionPropertyList(selectId);
+            this.alertSrv.set(name + "이(가) 변경 되었습니다.", '', 'success', 1000);
+            this.showCtrlMode('list');
+            this.refresh();
+        }).catch( err => {
+            this.alertSrv.set(name + " 변경 실패", err, 'error', 5000);
+            console.error(err);
+        });
+      }
+    });
+  }
+
+  showCtrlMode(mode) {
+    if (mode == 'new') {
+      var selectedRows = this.container.tabulator("getSelectedRows");
+      if (selectedRows != undefined) {
+        this.container.tabulator("deselectRow", selectedRows);
+      }
+      this.machine = {
+        id : '',
+        name : '',
+        memo : ''
+      }
+      this.refresh();
+    }
+    this.mode = mode;
+    this.events.emit('panel-size-changed');
+  }
 
   /* dynamic table editor test code added
   autocompEditor = function(cell, onRendered, success, cancel){
