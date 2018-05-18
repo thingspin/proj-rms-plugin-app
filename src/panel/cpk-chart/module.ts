@@ -24,8 +24,9 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
   chart: any;
   mouse: any;
   data: any;
-  series: any[];
+  //series: any[];
   result: any[];
+  limit: any;
 
   constructor($scope, $injector, private $window) {
     super($scope, $injector);
@@ -34,13 +35,14 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
 
     this.chartID = 'chart-rms-cpk-' + this.panel.id;
     this.result = [];
-    this.series = [];
+    //this.series = [];
 
     this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
     this.events.on('render', this.onRender.bind(this));
     this.events.on('panel-size-changed', this.onSizeChanged.bind(this));
     this.events.on('panel-initialized', this.onRender.bind(this));
-    
+    this.events.on('data-received', this.onDataReceived.bind(this));
+    /*
     for (var i = 1; i <= 10000; i++) {
       this.series.push(this.gaussianRandom(1,6));
     }
@@ -53,17 +55,8 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
         "y":this.series[key]
       })
     }
-
-    this.data = {
-      datasets: [
-        {
-          label: "data",
-          //backgroundColor: color(this.$window.chartColors.blue).alpha(0.2).rgbString(),
-          //borderColor: this.$window.chartColors.blue,
-          data: this.result
-        }
-      ]
-    };
+*/
+    
   }
   
   OnInitialized() {
@@ -77,11 +70,73 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
   onInitEditMode() {
   }
 
+  onDataReceived(dataList) {	
+    var datapoints = [];
+    for (let data of dataList) {
+      for (let point of data.datapoints) {
+        if ( point[0] === null || point[0] === 0) continue;
+        datapoints.push(point[0]);
+      }
+      break;
+    }
+    datapoints.sort();
+    var result = _.countBy(datapoints);
+    //result = result.sort();
+    var xmin =+Object.keys(result)[0];
+    var xmax =+Object.keys(result)[0];
+    var ymin =result[Object.keys(result)[0]];
+    var ymax =result[Object.keys(result)[0]];
+
+    for (var key in result) {
+      if ( xmin > +key ) {
+        xmin = +key;
+      }
+      if ( xmax < +key) {
+        xmax = +key;
+      }
+      if ( ymin > result[key] ) {
+        ymin = result[key];
+      }
+      if ( ymax < result[key] ) {
+        ymax = result[key];
+      }
+      this.result.push({
+        "x":+key,
+        "y":result[key]
+      })
+    }
+
+    this.limit = {
+      "xmin": xmin,
+      "xmax": xmax,
+      "ymin": ymin,
+      "ymax": ymax
+    }
+
+    this.data = {
+      datasets: [
+        {
+          label: "data",
+          //backgroundColor: color(this.$window.chartColors.blue).alpha(0.2).rgbString(),
+          //borderColor: this.$window.chartColors.blue,
+          data: this.result
+        }
+      ]
+    };
+    console.log(this.limit);
+    console.log(this.result)
+    //console.log(datapoints);
+    this.OnDraw();
+  }
+
   createChart() {
 
     this.Chart.plugins.register({
       afterDatasetsDraw: function(chart) {
         var ctx = chart.ctx;
+        //console.log(chart.width);
+        //console.log(chart.height)
+        ctx.fillText("CPK : 0.887", chart.width * 0.8 ,chart.height * 0.15);
         chart.data.datasets.forEach(function(dataset, i) {
           var meta = chart.getDatasetMeta(i);
           if (!meta.hidden) {
@@ -90,13 +145,13 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
               ctx.fillStyle = 'rgb(0, 0, 0)';
               var fontSize = 12;
     
-              var dataString = JSON.stringify(dataset.data[index]);
+              //var dataString = JSON.stringify(dataset.data[index]);
     
               ctx.textAlign = 'center';
               ctx.textBaseline = 'middle';
               var padding = 3;
               var position = element.tooltipPosition();
-              ctx.fillText(dataString, position.x, position.y - (fontSize / 2) - padding);
+              ctx.fillText("", position.x, position.y - (fontSize / 2) - padding);
             });
           }
         });
@@ -107,8 +162,11 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
       type: 'line',
       data: this.data,
       options: {
+        legend: {
+          display: false
+        },
         tooltips:{
-          enabled: true
+          enabled: false
         },
         annotation: {
           annotations: [
@@ -121,7 +179,7 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
                 borderDash: [2, 2],
                 borderWidth: 2,
                 
-                value: 2,
+                value: this.limit["xmin"],
 
                 scaleID: 'x-axis-0',
                 label: {
@@ -148,7 +206,7 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
               borderDash: [2, 2],
               borderWidth: 2,
               
-              value: 5,
+              value: this.limit["xmax"],
 
               scaleID: 'x-axis-0',
               label: {
@@ -174,13 +232,16 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
             id:'x-axis-0',
             type: "linear",
             display: true,
+            gridLines:{
+              display:false
+            },
             //autoSkip: true,
            // position: "bottom",
             
             ticks:{
-              min: 1,
-              max: 6,
-              stepSize: 1
+              min: this.limit["xmin"],
+              max: this.limit["xmax"]
+              //stepSize: 
             }
             //type: "linear",
             //position: "bottom"
@@ -190,16 +251,18 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
             id:'y-axis-0',
             type: "linear",
             display: true,
+            gridLines:{
+              display:false
+            },
             //autoSkip: true,
             ticks:{
-              min: 0,
-              max: 10000,
-              stepSize: 500
+              min: this.limit["ymin"],
+              max: this.limit["ymax"]
+              //stepSize: 1
             }
             //position: "left"
           }]    
-        }
-        ,
+        },
         responsive: true,
         title: {
           display: false,
@@ -211,14 +274,11 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
   }
 
   OnDraw() {
-    let chart = this.chart;
     if (!this.context) {
       return;
     }
-
-    if (!chart) {
-      this.createChart();
-    }
+    
+    this.createChart();  
   }
 
   onRender() {

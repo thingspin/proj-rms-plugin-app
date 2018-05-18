@@ -174,6 +174,11 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
     }
   }
 
+  close() {
+    this.showCtrlMode('list');
+    this.refresh();
+  }
+
   transDataBusiness(dataList) {
     this.business = [];
     var data = dataList[0];
