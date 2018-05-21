@@ -104,14 +104,15 @@ export class SettingActionInAdvancePanelCtrl extends MetricsPanelCtrl {
             pagination: "local",
             paginationSize: 20,
             selectable: 1,
-            fitColumns: true,
             responsiveLayout: true,
             layout: "fitColumns", //fit columns to width of table (optional)
             columns: [ //Define Table Columns
                 {title: "검사 구분", field: "IT_NAME"},
                 {title: "검사 항목", field: "IP_NAME" },
                 {title: "검사 대상", field: "JSON_DATA", formatter: (cell, formatterParams) => {
-                    return "click";
+                    let value = cell.getValue();
+                    let retVal = '<div>'+ value.MODELS[0].ID + ' (' + value.MODELS[0].DESC + ')' + '</div>';
+                    return retVal;
                 }, cellClick : (e,cell) => {
                     let value = cell.getValue();
                     this.showSelectedModel(value);
@@ -129,7 +130,10 @@ export class SettingActionInAdvancePanelCtrl extends MetricsPanelCtrl {
                     return retVal;
                 }},
                 {title: "검사 점검내용", field: "DESCRIPTION", formatter: (cell, formatterParams) => {
-                    return "click";
+                    let value = cell.getValue();
+                    let retVal = '<div>'+ '<SPAN><i class="fa fa-info-circle">' + value[0] + ', ... </i></SPAN>' + '</div>';
+
+                    return retVal;
                 }, cellClick : (e,cell) => {
                     let value = cell.getValue();
                     this.showSelectedMemo(value);
@@ -238,6 +242,7 @@ export class SettingActionInAdvancePanelCtrl extends MetricsPanelCtrl {
 
                     list.push({ name: row.NAME, ticked: ticked, data: row, });
                 });
+
                 this.IP_LIST = list;
             }
 
@@ -318,6 +323,7 @@ export class SettingActionInAdvancePanelCtrl extends MetricsPanelCtrl {
 
                     list.push({ name: row.MODEL_ID, maker: "(" + row.DESCRIPTION + ")", ticked: ticked, data: row, });
                 });
+
                 this.modelList = list;
             }
         }).catch( err => {
@@ -430,83 +436,118 @@ export class SettingActionInAdvancePanelCtrl extends MetricsPanelCtrl {
 
     addAIA(it, ip, perceptionCond, selectedActions, applyModels) {
         // check input data
-        if (ip === undefined || ip === null) {
+        if (it === undefined || it === null || it.length === 0) {
+            this.alertSrv.set("등록 실패", "검사종류 선택이 필요합니다.", '알림', 5000);
             return;
-        } else if (perceptionCond === undefined || perceptionCond === null) {
+        } else if (ip === undefined || ip === null || ip.length === 0) {
+            this.alertSrv.set("등록 실패", "검사항목 선택이 필요합니다.", '알림', 5000);
+            return;
+        } else if (perceptionCond === undefined || perceptionCond === null || perceptionCond.length === 0) {
+            this.alertSrv.set("등록 실패", "감시 조건 선택이 필요합니다.", '알림', 5000);
             return;
         } else if (selectedActions === undefined || selectedActions === null || selectedActions.length === 0) {
+            this.alertSrv.set("등록 실패", "사전 조치 항목 선택이 필요합니다.", '알림', 5000);
             return;
         } else if (applyModels === undefined || applyModels === null || applyModels.length === 0) {
+            this.alertSrv.set("등록 실패", "적용 모델을 선택하세요.", '알림', 5000);
             return;
         }
 
         var jData = this.getJsonData(it, ip, perceptionCond, selectedActions, applyModels);
 
-        // insert data
-        let columns = "( IT_IDX, IP_IDX, JSON_DATA, DESCRIPTION )";
-        let values = "(" +
-            it[0].data.IDX + ", " +
-            ip[0].data.IDX + ", " +
-            "'" + JSON.stringify(jData) + "', " +
-            "'" + JSON.stringify(this.memo) + "'";
-        values = values + " )";
+        this.$rootScope.appEvent('confirm-modal', {
+            title: '확인',
+            text: '정말 등록 하시겠습니까?',
+            icon: 'fa-save',
+            yesText: '등록',
+            onConfirm: () => {
+                let columns = "( IT_IDX, IP_IDX, JSON_DATA, DESCRIPTION )";
+                let values = "(" +
+                    it[0].data.IDX + ", " +
+                    ip[0].data.IDX + ", " +
+                    "'" + JSON.stringify(jData) + "', " +
+                    "'" + JSON.stringify(this.memo) + "'";
+                values = values + " )";
 
-        let selectId = this.datasource.id;
-        let query = [
-            "insert into t_action_in_advance " + columns + " values " + values,
-        ];
-        this.rsDsSrv.query(selectId, query).then( result => {
-            this.getAIA(it[0].data.IDX, ip[0].data.IDX).then( (res) => {
-                let data = this.rsDsSrv.getTableObj(res);
-                if (data.length === 1 && data[0].length === 1) {
-                    let topic = 'ACTINADV/' + data[0][0].ID;
-                    this.rsMqttSrv.publishMessage(topic, JSON.stringify(jData), this.mqttdefaultOpts);
-                }
-            });
+                let selectId = this.datasource.id;
+                let query = [
+                    "insert into t_action_in_advance " + columns + " values " + values,
+                ];
 
-            this.setMode = 'list';
-            // this.updateAIA(selectId);
-            this.refresh();
+                this.rsDsSrv.query(selectId, query).then( result => {
+
+                    this.getAIA(it[0].data.IDX, ip[0].data.IDX).then( (res) => {
+                        let data = this.rsDsSrv.getTableObj(res);
+                        if (data.length === 1 && data[0].length === 1) {
+                            let topic = 'ACTINADV/' + data[0][0].ID;
+                            this.rsMqttSrv.publishMessage(topic, JSON.stringify(jData), this.mqttdefaultOpts);
+                        }
+                    });
+
+                    this.setMode = 'list';
+                    // this.updateAIA(selectId);
+                    this.refresh();
+                }).catch( err => {
+                    this.alertSrv.set("등록 실패", err, '오류', 5000);
+                });
+            }
         });
     }
+
     editAIA(it, ip, perceptionCond, selectedActions, applyModels) {
         // check input data
-        if (ip === undefined || ip === null) {
+        if (it === undefined || it === null || it.length === 0) {
+            this.alertSrv.set("등록 실패", "검사종류 선택이 필요합니다.", '알림', 5000);
             return;
-        } else if (perceptionCond === undefined || perceptionCond === null) {
+        } else if (ip === undefined || ip === null || ip.length === 0) {
+            this.alertSrv.set("등록 실패", "검사항목 선택이 필요합니다.", '알림', 5000);
+            return;
+        } else if (perceptionCond === undefined || perceptionCond === null || perceptionCond.length === 0) {
+            this.alertSrv.set("등록 실패", "감시 조건 선택이 필요합니다.", '알림', 5000);
             return;
         } else if (selectedActions === undefined || selectedActions === null || selectedActions.length === 0) {
+            this.alertSrv.set("등록 실패", "사전 조치 항목 선택이 필요합니다.", '알림', 5000);
             return;
         } else if (applyModels === undefined || applyModels === null || applyModels.length === 0) {
+            this.alertSrv.set("등록 실패", "적용 모델을 선택하세요.", '알림', 5000);
             return;
         }
 
         var jData = this.getJsonData(it, ip, perceptionCond, selectedActions, applyModels);
 
-        // insert data
-        let updateData = "IT_IDX = " + it[0].data.IDX
-            + ", IP_IDX=" + ip[0].data.IDX
-            + ", JSON_DATA= '" + JSON.stringify(jData) + "'"
-            + ", DESCRIPTION= '" + JSON.stringify(this.memo) + "'";
+        this.$rootScope.appEvent('confirm-modal', {
+            title: '확인',
+            text: '정말 수정 하시겠습니까?',
+            icon: 'fa-save',
+            yesText: '수정',
+            onConfirm: () => {
+                // insert data
+                let updateData = "IT_IDX = " + it[0].data.IDX
+                    + ", IP_IDX=" + ip[0].data.IDX
+                    + ", JSON_DATA= '" + JSON.stringify(jData) + "'"
+                    + ", DESCRIPTION= '" + JSON.stringify(this.memo) + "'";
 
-        let selectId = this.datasource.id;
-        let query = [
-            "update t_action_in_advance set " + updateData + " where ID=" + this.selectObj.ID,
-        ];
-        this.rsDsSrv.query(selectId, query).then( result => {
-            this.getAIA(it[0].data.IDX, ip[0].data.IDX).then( (res) => {
-                let data = this.rsDsSrv.getTableObj(res);
-                if (data.length === 1 && data[0].length === 1) {
-                    let topic = 'ACTINADV/' + data[0][0].ID;
-                    this.rsMqttSrv.publishMessage(topic, JSON.stringify(jData), this.mqttdefaultOpts);
-                }
-            });
+                let selectId = this.datasource.id;
+                let query = [
+                    "update t_action_in_advance set " + updateData + " where ID=" + this.selectObj.ID,
+                ];
+                this.rsDsSrv.query(selectId, query).then( result => {
+                    this.getAIA(it[0].data.IDX, ip[0].data.IDX).then( (res) => {
+                        let data = this.rsDsSrv.getTableObj(res);
+                        if (data.length === 1 && data[0].length === 1) {
+                            let topic = 'ACTINADV/' + data[0][0].ID;
+                            this.rsMqttSrv.publishMessage(topic, JSON.stringify(jData), this.mqttdefaultOpts);
+                        }
+                    });
 
-            this.setMode = 'list';
-            // this.updateAIA(selectId);
-            this.refresh();
+                    this.setMode = 'list';
+                    // this.updateAIA(selectId);
+                    this.refresh();
+                });
+            }
         });
     }
+
     deleteAIA() {
         let item = this.selectObj;
         this.$rootScope.appEvent('confirm-modal', {
