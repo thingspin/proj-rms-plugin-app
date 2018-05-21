@@ -29244,12 +29244,7 @@ var InspectionPropertyPanelCtrl = /** @class */ (function (_super) {
                 if (data.length === 1 && data[0].length === 1) {
                     var topic = 'INSPPROP/' + data[0][0].IDX;
                     var obj = data[0][0];
-                    var messageObj = {
-                        "NAME": obj.NAME,
-                        "DESCRIPTION": obj.DESCRIPTION,
-                        "TYPE": obj.IP_TYPE
-                    };
-                    _this.rsMqttSrv.publishMessage(topic, JSON.stringify(messageObj), _this.mqttdefaultOpts);
+                    _this.rsMqttSrv.publishMessage(topic, JSON.stringify(Object.assign(obj)), _this.mqttdefaultOpts);
                 }
             });
             _this.setMode('list');
@@ -29301,15 +29296,17 @@ var InspectionPropertyPanelCtrl = /** @class */ (function (_super) {
             + obj.IDX);
         this.rsDsSrv.query(selectId, query).then(function (result) {
             var topic = 'INSPPROP/' + obj.IDX;
-            var messageObj = {
-                "NAME": obj.NAME,
-                "DESCRIPTION": obj.DESCRIPTION,
-                "TYPE": obj.IP_TYPE
-            };
-            _this.rsMqttSrv.publishMessage(topic, JSON.stringify(messageObj), _this.mqttdefaultOpts);
+            var allQ = [];
+            allQ.push("SELECT * FROM t_inspection_property where IDX = " + obj.IDX);
+            _this.rsDsSrv.query(selectId, allQ).then(function (result) {
+                var data = _this.rsDsSrv.getTableObj(result)[0][0];
+                if (data !== null && data !== undefined) {
+                    _this.rsMqttSrv.publishMessage(topic, JSON.stringify(Object.assign(data)), _this.mqttdefaultOpts);
+                }
+            });
             _this.setMode('list');
             // this.updateInspectionPropertyList(selectId);
-            _this.alertSrv.set(name + "이(가) 수정되었습니다.", '', 'success', 1000);
+            _this.alertSrv.set(obj.NAME + "이(가) 수정되었습니다.", '', 'success', 1000);
         }).catch(function (err) {
             _this.alertSrv.set(obj.NAME + " 수정 실패", err, 'error', 5000);
             console.error(err);

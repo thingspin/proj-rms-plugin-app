@@ -190,12 +190,7 @@ export class InspectionPropertyPanelCtrl  extends MetricsPanelCtrl  {
                 if (data.length === 1 && data[0].length === 1) {
                     let topic = 'INSPPROP/' + data[0][0].IDX;
                     let obj = data[0][0];
-                    let messageObj = {
-                        "NAME": obj.NAME,
-                        "DESCRIPTION": obj.DESCRIPTION,
-                        "TYPE": obj.IP_TYPE
-                    };
-                    this.rsMqttSrv.publishMessage(topic, JSON.stringify(messageObj), this.mqttdefaultOpts);
+                    this.rsMqttSrv.publishMessage(topic, JSON.stringify(Object.assign(obj)), this.mqttdefaultOpts);
                 }
             });
             this.setMode('list');
@@ -249,16 +244,19 @@ export class InspectionPropertyPanelCtrl  extends MetricsPanelCtrl  {
 
         this.rsDsSrv.query(selectId, query).then( result => {
             let topic = 'INSPPROP/' + obj.IDX;
-            let messageObj = {
-                "NAME": obj.NAME,
-                "DESCRIPTION": obj.DESCRIPTION,
-                "TYPE": obj.IP_TYPE
-            };
-            this.rsMqttSrv.publishMessage(topic, JSON.stringify(messageObj), this.mqttdefaultOpts);
+
+            let allQ = [];
+            allQ.push("SELECT * FROM t_inspection_property where IDX = " + obj.IDX);
+            this.rsDsSrv.query(selectId, allQ).then( result => {
+                let data = this.rsDsSrv.getTableObj(result)[0][0];
+                if(data !== null && data !== undefined) {
+                    this.rsMqttSrv.publishMessage(topic, JSON.stringify(Object.assign(data)), this.mqttdefaultOpts);
+                }
+            });
 
             this.setMode('list');
             // this.updateInspectionPropertyList(selectId);
-            this.alertSrv.set(name + "이(가) 수정되었습니다.", '', 'success', 1000);
+            this.alertSrv.set(obj.NAME + "이(가) 수정되었습니다.", '', 'success', 1000);
         }).catch( err => {
             this.alertSrv.set(obj.NAME + " 수정 실패", err, 'error', 5000);
             console.error(err);
