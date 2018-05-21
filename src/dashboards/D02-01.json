@@ -2,7 +2,7 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:142",
+        "$$hashKey": "object:250",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -13,11 +13,30 @@
       }
     ]
   },
-  "editable": true,
+  "editable": false,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1526886307831,
-  "links": [],
+  "iteration": 1526905933022,
+  "links": [
+    {
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "설비 불량 현황"
+      ],
+      "type": "dashboards"
+    },
+    {
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "CPK 불량 검출 현황"
+      ],
+      "type": "dashboards"
+    }
+  ],
   "panels": [
     {
       "cacheTimeout": null,
@@ -63,7 +82,7 @@
       "nullText": null,
       "postfix": "",
       "postfixFontSize": "50%",
-      "prefix": "생산",
+      "prefix": "검사",
       "prefixFontSize": "50%",
       "rangeMaps": [
         {
@@ -841,13 +860,13 @@
   "schemaVersion": 16,
   "style": "light",
   "tags": [
-    "모델별검사기록"
+    "모델별검사기록",
+    "모델별 검사기록"
   ],
   "templating": {
     "list": [
       {
         "current": {
-          "selected": false,
           "text": "RMS-CENTER-INFLUXDB(V1.0)",
           "value": "RMS-CENTER-INFLUXDB(V1.0)"
         },
@@ -863,9 +882,8 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
-          "text": "All",
-          "value": "$__all"
+          "text": "AMPSRH29T41",
+          "value": "AMPSRH29T41"
         },
         "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
         "hide": 0,
@@ -887,7 +905,6 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -895,7 +912,7 @@
         "hide": 0,
         "includeAll": true,
         "label": "검사기",
-        "multi": false,
+        "multi": true,
         "name": "FACILITY",
         "options": [],
         "query": "show tag values from /inspection/ with key=facility",
@@ -911,7 +928,6 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -919,7 +935,7 @@
         "hide": 0,
         "includeAll": true,
         "label": "채널",
-        "multi": false,
+        "multi": true,
         "name": "CHANNEL",
         "options": [],
         "query": "show tag values from /inspection/ with key=channel",
@@ -935,14 +951,13 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
           "text": "All",
           "value": "$__all"
         },
         "hide": 0,
         "includeAll": true,
         "label": "합격",
-        "multi": false,
+        "multi": true,
         "name": "PASS",
         "options": [
           {
@@ -969,7 +984,6 @@
         "auto_count": 30,
         "auto_min": "1s",
         "current": {
-          "selected": true,
           "text": "auto",
           "value": "$__auto_interval_INTERVAL"
         },
@@ -1055,7 +1069,7 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -1087,5 +1101,5 @@
   "timezone": "",
   "title": "모델별 검사기록",
   "uid": "rAgfpx7iz",
-  "version": 102
+  "version": 111
 }

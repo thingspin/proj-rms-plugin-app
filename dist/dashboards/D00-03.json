@@ -1,34 +1,1304 @@
 {
   "annotations": {
-    "list": []
+    "list": [
+      {
+        "$$hashKey": "object:139",
+        "builtIn": 1,
+        "datasource": "-- Simulator --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "limit": 100,
+        "name": "Annotations & Alerts",
+        "showIn": 0,
+        "type": "dashboard"
+      },
+      {
+        "$$hashKey": "object:140",
+        "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+        "enable": false,
+        "hide": false,
+        "iconColor": "#ea6460",
+        "limit": 100,
+        "name": "연속불량 알림 표시",
+        "query": "SELECT \"model\", \"inm\", \"iid\", \"facility\", \"channel\" FROM /^alram.continuous.failures.detail-*/ WHERE $timeFilter",
+        "showIn": 0,
+        "tags": [],
+        "tagsColumn": "facility, channel, inm",
+        "textColumn": "inm",
+        "type": "tags"
+      }
+    ]
   },
-  "editable": true,
+  "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "links": [],
-  "panels": [],
+  "iteration": 1526914937110,
+  "links": [
+    {
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "CPK 불량 검출 현황"
+      ],
+      "type": "dashboards"
+    },
+    {
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "모델별 검사기록"
+      ],
+      "type": "dashboards"
+    }
+  ],
+  "panels": [
+    {
+      "alert": {
+        "conditions": [
+          {
+            "evaluator": {
+              "params": [
+                9
+              ],
+              "type": "gt"
+            },
+            "operator": {
+              "type": "and"
+            },
+            "query": {
+              "params": [
+                "B",
+                "10s",
+                "now"
+              ]
+            },
+            "reducer": {
+              "params": [],
+              "type": "last"
+            },
+            "type": "query"
+          },
+          {
+            "evaluator": {
+              "params": [
+                20
+              ],
+              "type": "gt"
+            },
+            "operator": {
+              "type": "and"
+            },
+            "query": {
+              "params": [
+                "C",
+                "10s",
+                "now"
+              ]
+            },
+            "reducer": {
+              "params": [],
+              "type": "avg"
+            },
+            "type": "query"
+          }
+        ],
+        "executionErrorState": "alerting",
+        "frequency": "60s",
+        "handler": 1,
+        "name": "설비 연속불량 검출 알림",
+        "noDataState": "no_data",
+        "notifications": []
+      },
+      "aliasColors": {
+        "cpk": "#052b51"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "fill": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 20,
+        "x": 0,
+        "y": 0
+      },
+      "id": 6,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 4,
+      "points": false,
+      "renderer": "flot",
+      "repeat": null,
+      "seriesOverrides": [
+        {
+          "alias": "/^COUNT/",
+          "bars": true,
+          "lines": false,
+          "stack": "A"
+        },
+        {
+          "alias": "/^CPK/",
+          "yaxis": 2
+        },
+        {
+          "alias": "/CUML/",
+          "bars": false,
+          "dashes": true,
+          "fill": 1,
+          "linewidth": 4
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "$col($tag_facility:$tag_channel )",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "facility"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "channel"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "previous"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": true,
+          "measurement": "/alram.continuous.failures.detail-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "cpk"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "CPK"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "facility",
+              "operator": "=~",
+              "value": "/^$FACILITY$/"
+            },
+            {
+              "condition": "AND",
+              "key": "channel",
+              "operator": "=~",
+              "value": "/^$CHANNEL$/"
+            }
+          ]
+        },
+        {
+          "alias": "$col($tag_facility:$tag_channel )",
+          "groupBy": [
+            {
+              "params": [
+                "1m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "facility"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "channel"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "previous"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "/alram.continuous.failures.detail-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "cpk"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              },
+              {
+                "params": [
+                  "COUNT"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "facility",
+              "operator": "=~",
+              "value": "/^$FACILITY$/"
+            },
+            {
+              "condition": "AND",
+              "key": "channel",
+              "operator": "=~",
+              "value": "/^$CHANNEL$/"
+            }
+          ]
+        },
+        {
+          "alias": "$col",
+          "groupBy": [
+            {
+              "params": [
+                "10m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "previous"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "/alram.continuous.failures.detail-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "cpk"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "CUML"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "facility",
+              "operator": "=~",
+              "value": "/^$FACILITY$/"
+            },
+            {
+              "condition": "AND",
+              "key": "channel",
+              "operator": "=~",
+              "value": "/^$CHANNEL$/"
+            }
+          ]
+        }
+      ],
+      "thresholds": [
+        {
+          "colorMode": "critical",
+          "fill": true,
+          "line": true,
+          "op": "gt",
+          "value": 9
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "설비 연속불량 검출 알림",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 0,
+          "format": "locale",
+          "label": "분당 검출수",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "decimals": 2,
+          "format": "locale",
+          "label": "CPK",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 20,
+        "y": 0
+      },
+      "id": 10,
+      "limit": 10,
+      "links": [],
+      "onlyAlertsOnDashboard": true,
+      "show": "current",
+      "sortOrder": 1,
+      "stateFilter": [
+        "alerting"
+      ],
+      "title": "알람 목록",
+      "transparent": false,
+      "type": "alertlist"
+    },
+    {
+      "columns": [],
+      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "fontSize": "80%",
+      "gridPos": {
+        "h": 12,
+        "w": 8,
+        "x": 0,
+        "y": 7
+      },
+      "id": 4,
+      "links": [],
+      "minSpan": 4,
+      "pageSize": null,
+      "repeat": "FACILITY",
+      "repeatDirection": "h",
+      "scopedVars": {
+        "FACILITY": {
+          "selected": false,
+          "text": "SOOSKIM01",
+          "value": "SOOSKIM01"
+        }
+      },
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "date"
+        },
+        {
+          "alias": "검사항목",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "link": true,
+          "linkTargetBlank": false,
+          "linkTooltip": "($__cell_2:$__cell)($__cell_5) ($__cell_3:$__cell_4)",
+          "linkUrl": "/d/yFLCxZ4ik?var-INSPPROP=$__cell_2&var-FACILITY=$__cell_3&var-CHANNEL=$__cell_4&&var-MODEL=$__cell_5",
+          "mappingType": 1,
+          "pattern": "inm",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "iid",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "검사기",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "facility",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "채널",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "channel",
+          "sanitize": false,
+          "thresholds": [
+            "1",
+            "3"
+          ],
+          "type": "string",
+          "unit": "locale"
+        },
+        {
+          "alias": "모델",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "model",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "tuid",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "alias": "$col",
+          "groupBy": [],
+          "measurement": "/^alram.continuous.failures.detail-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"inm\", \"iid\", \"facility\", \"channel\", \"model\", \"tuid\", \"min\", \"max\", \"val\" FROM /^alram*/ WHERE $timeFilter",
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "inm"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "iid"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "facility"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "channel"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "model"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "tuid"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "min"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "max"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "val"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "facility",
+              "operator": "=~",
+              "value": "/^$FACILITY$/"
+            },
+            {
+              "condition": "AND",
+              "key": "channel",
+              "operator": "=~",
+              "value": "/^$CHANNEL$/"
+            }
+          ]
+        }
+      ],
+      "title": "검사기 ($FACILITY : $CHANNEL)에서의 연속불량 검출 이력",
+      "transform": "timeseries_to_columns",
+      "type": "table"
+    },
+    {
+      "columns": [],
+      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "fontSize": "80%",
+      "gridPos": {
+        "h": 12,
+        "w": 8,
+        "x": 8,
+        "y": 7
+      },
+      "id": 11,
+      "links": [],
+      "minSpan": 4,
+      "pageSize": null,
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1526914937110,
+      "repeatPanelId": 4,
+      "scopedVars": {
+        "FACILITY": {
+          "selected": false,
+          "text": "SOOSKIM02",
+          "value": "SOOSKIM02"
+        }
+      },
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "date"
+        },
+        {
+          "alias": "검사항목",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "link": true,
+          "linkTargetBlank": false,
+          "linkTooltip": "($__cell_2:$__cell)($__cell_5) ($__cell_3:$__cell_4)",
+          "linkUrl": "/d/yFLCxZ4ik?var-INSPPROP=$__cell_2&var-FACILITY=$__cell_3&var-CHANNEL=$__cell_4&&var-MODEL=$__cell_5",
+          "mappingType": 1,
+          "pattern": "inm",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "iid",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "검사기",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "facility",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "채널",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "channel",
+          "sanitize": false,
+          "thresholds": [
+            "1",
+            "3"
+          ],
+          "type": "string",
+          "unit": "locale"
+        },
+        {
+          "alias": "모델",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "model",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "tuid",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "alias": "$col",
+          "groupBy": [],
+          "measurement": "/^alram.continuous.failures.detail-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"inm\", \"iid\", \"facility\", \"channel\", \"model\", \"tuid\", \"min\", \"max\", \"val\" FROM /^alram*/ WHERE $timeFilter",
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "inm"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "iid"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "facility"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "channel"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "model"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "tuid"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "min"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "max"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "val"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "facility",
+              "operator": "=~",
+              "value": "/^$FACILITY$/"
+            },
+            {
+              "condition": "AND",
+              "key": "channel",
+              "operator": "=~",
+              "value": "/^$CHANNEL$/"
+            }
+          ]
+        }
+      ],
+      "title": "검사기 ($FACILITY : $CHANNEL)에서의 연속불량 검출 이력",
+      "transform": "timeseries_to_columns",
+      "type": "table"
+    },
+    {
+      "columns": [],
+      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "fontSize": "80%",
+      "gridPos": {
+        "h": 12,
+        "w": 8,
+        "x": 16,
+        "y": 7
+      },
+      "id": 12,
+      "links": [],
+      "minSpan": 4,
+      "pageSize": null,
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1526914937110,
+      "repeatPanelId": 4,
+      "scopedVars": {
+        "FACILITY": {
+          "selected": false,
+          "text": "SOOSKIM03",
+          "value": "SOOSKIM03"
+        }
+      },
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "date"
+        },
+        {
+          "alias": "검사항목",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "link": true,
+          "linkTargetBlank": false,
+          "linkTooltip": "($__cell_2:$__cell)($__cell_5) ($__cell_3:$__cell_4)",
+          "linkUrl": "/d/yFLCxZ4ik?var-INSPPROP=$__cell_2&var-FACILITY=$__cell_3&var-CHANNEL=$__cell_4&&var-MODEL=$__cell_5",
+          "mappingType": 1,
+          "pattern": "inm",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "iid",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "검사기",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "facility",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "채널",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "channel",
+          "sanitize": false,
+          "thresholds": [
+            "1",
+            "3"
+          ],
+          "type": "string",
+          "unit": "locale"
+        },
+        {
+          "alias": "모델",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "model",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "tuid",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "alias": "$col",
+          "groupBy": [],
+          "measurement": "/^alram.continuous.failures.detail-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"inm\", \"iid\", \"facility\", \"channel\", \"model\", \"tuid\", \"min\", \"max\", \"val\" FROM /^alram*/ WHERE $timeFilter",
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "inm"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "iid"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "facility"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "channel"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "model"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "tuid"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "min"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "max"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "val"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "facility",
+              "operator": "=~",
+              "value": "/^$FACILITY$/"
+            },
+            {
+              "condition": "AND",
+              "key": "channel",
+              "operator": "=~",
+              "value": "/^$CHANNEL$/"
+            }
+          ]
+        }
+      ],
+      "title": "검사기 ($FACILITY : $CHANNEL)에서의 연속불량 검출 이력",
+      "transform": "timeseries_to_columns",
+      "type": "table"
+    }
+  ],
+  "refresh": "1s",
   "schemaVersion": 16,
   "style": "dark",
-  "tags": [],
+  "tags": [
+    "설비 불량 현황"
+  ],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "current": {
+          "selected": true,
+          "text": "RMS-CENTER-INFLUXDB(V1.0)",
+          "value": "RMS-CENTER-INFLUXDB(V1.0)"
+        },
+        "hide": 0,
+        "label": "분사/지점 선택",
+        "name": "DATABASE",
+        "options": [],
+        "query": "influxdb",
+        "refresh": 1,
+        "regex": "/^RMS-*/",
+        "type": "datasource"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "검사기",
+        "multi": true,
+        "name": "FACILITY",
+        "options": [],
+        "query": "show tag values from /inspection/ with key=facility",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "채널",
+        "multi": true,
+        "name": "CHANNEL",
+        "options": [],
+        "query": "show tag values from /inspection/ with key=channel",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
     "refresh_intervals": [
+      "1s",
       "5s",
-      "10s",
-      "30s",
-      "1m",
-      "5m",
-      "15m",
-      "30m",
-      "1h",
-      "2h",
-      "1d"
+      "10s"
     ],
     "time_options": [
       "24h",
@@ -38,5 +1308,6 @@
   },
   "timezone": "",
   "title": "설비 불량 현황",
-  "version": 4
+  "uid": "iXsJMQniz",
+  "version": 100
 }

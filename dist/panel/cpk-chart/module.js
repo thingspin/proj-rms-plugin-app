@@ -17396,137 +17396,137 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
         this.OnDraw();
     };
     RmsCPKAnalyticsPanelCtrl.prototype.createChart = function () {
-        this.Chart.plugins.register({
-            afterDatasetsDraw: function (chart) {
-                var ctx = chart.ctx;
-                //console.log(chart.width);
-                //console.log(chart.height)
-                ctx.fillText("CPK : 0.887", chart.width * 0.8, chart.height * 0.15);
-                chart.data.datasets.forEach(function (dataset, i) {
-                    var meta = chart.getDatasetMeta(i);
-                    if (!meta.hidden) {
-                        meta.data.forEach(function (element, index) {
-                            ctx.fillStyle = 'rgb(0, 0, 0)';
-                            var fontSize = 12;
-                            //var dataString = JSON.stringify(dataset.data[index]);
-                            ctx.textAlign = 'center';
-                            ctx.textBaseline = 'middle';
-                            var padding = 3;
-                            var position = element.tooltipPosition();
-                            ctx.fillText("", position.x, position.y - (fontSize / 2) - padding);
-                        });
-                    }
-                });
-            }
-        });
-        if (this.chart) {
-            delete this.chart;
-        }
-        this.chart = new this.Chart(this.context, {
-            type: 'line',
-            data: this.data,
-            options: {
-                legend: {
-                    display: false
-                },
-                tooltips: {
-                    enabled: false
-                },
-                annotation: {
-                    annotations: [
-                        {
-                            type: 'line',
-                            id: 'a-line-1',
-                            mode: 'virtical',
-                            borderColor: 'red',
-                            borderDash: [2, 2],
-                            borderWidth: 2,
-                            value: this.limit["xmin"],
-                            scaleID: 'x-axis-0',
-                            label: {
-                                backgroundColor: 'rgba(255,0,0,0.8)',
-                                fontSize: 12,
-                                fontStyle: "bold",
-                                fontColor: "#fff",
-                                xPadding: 6,
-                                yPadding: 6,
-                                cornerRadius: 6,
-                                position: "center",
-                                xAdjust: 0,
-                                yAdjust: 0,
-                                enabled: true,
-                                content: "LSL"
-                            }
-                        },
-                        {
-                            type: 'line',
-                            id: 'a-line-2',
-                            mode: 'virtical',
-                            borderColor: 'red',
-                            borderDash: [2, 2],
-                            borderWidth: 2,
-                            value: this.limit["xmax"],
-                            scaleID: 'x-axis-0',
-                            label: {
-                                backgroundColor: 'rgba(0,0,255,0.8)',
-                                fontSize: 12,
-                                fontStyle: "bold",
-                                fontColor: "#fff",
-                                xPadding: 6,
-                                yPadding: 6,
-                                cornerRadius: 6,
-                                position: "center",
-                                xAdjust: 0,
-                                yAdjust: 0,
-                                enabled: true,
-                                content: "USL"
-                            }
+        if (this.initalized === false) {
+            this.initalized = true;
+            this.Chart.plugins.register({
+                afterDatasetsDraw: function (chart) {
+                    var ctx = chart.ctx;
+                    //console.log(chart.width);
+                    //console.log(chart.height)
+                    ctx.fillText("CPK : 0.887", chart.width * 0.8, chart.height * 0.15);
+                    chart.data.datasets.forEach(function (dataset, i) {
+                        var meta = chart.getDatasetMeta(i);
+                        if (!meta.hidden) {
+                            meta.data.forEach(function (element, index) {
+                                ctx.fillStyle = 'rgb(0, 0, 0)';
+                                var fontSize = 12;
+                                //var dataString = JSON.stringify(dataset.data[index]);
+                                ctx.textAlign = 'center';
+                                ctx.textBaseline = 'middle';
+                                var padding = 3;
+                                var position = element.tooltipPosition();
+                                ctx.fillText("", position.x, position.y - (fontSize / 2) - padding);
+                            });
                         }
-                    ],
-                    drawTime: "afterDatasetsDraw"
-                },
-                scales: {
-                    xAxes: [{
-                            id: 'x-axis-0',
-                            type: "linear",
-                            display: true,
-                            gridLines: {
-                                display: false
+                    });
+                }
+            });
+            this.chart = new this.Chart(this.context, {
+                type: 'line',
+                data: this.data,
+                options: {
+                    legend: {
+                        display: false
+                    },
+                    tooltips: {
+                        enabled: false
+                    },
+                    annotation: {
+                        annotations: [
+                            {
+                                type: 'line',
+                                id: 'a-line-1',
+                                mode: 'virtical',
+                                borderColor: 'red',
+                                borderDash: [2, 2],
+                                borderWidth: 2,
+                                value: this.limit["xmin"],
+                                scaleID: 'x-axis-0',
+                                label: {
+                                    backgroundColor: 'rgba(255,0,0,0.8)',
+                                    fontSize: 12,
+                                    fontStyle: "bold",
+                                    fontColor: "#fff",
+                                    xPadding: 6,
+                                    yPadding: 6,
+                                    cornerRadius: 6,
+                                    position: "center",
+                                    xAdjust: 0,
+                                    yAdjust: 0,
+                                    enabled: true,
+                                    content: "LSL"
+                                }
                             },
-                            //autoSkip: true,
-                            // position: "bottom",
-                            ticks: {
-                                min: this.limit["xmin"],
-                                max: this.limit["xmax"]
-                                //stepSize: 
+                            {
+                                type: 'line',
+                                id: 'a-line-2',
+                                mode: 'virtical',
+                                borderColor: 'red',
+                                borderDash: [2, 2],
+                                borderWidth: 2,
+                                value: this.limit["xmax"],
+                                scaleID: 'x-axis-0',
+                                label: {
+                                    backgroundColor: 'rgba(0,0,255,0.8)',
+                                    fontSize: 12,
+                                    fontStyle: "bold",
+                                    fontColor: "#fff",
+                                    xPadding: 6,
+                                    yPadding: 6,
+                                    cornerRadius: 6,
+                                    position: "center",
+                                    xAdjust: 0,
+                                    yAdjust: 0,
+                                    enabled: true,
+                                    content: "USL"
+                                }
                             }
-                            //type: "linear",
-                            //position: "bottom"
-                        }],
-                    yAxes: [{
-                            id: 'y-axis-0',
-                            type: "linear",
-                            display: true,
-                            gridLines: {
-                                display: false
-                            },
-                            //autoSkip: true,
-                            ticks: {
-                                min: this.limit["ymin"],
-                                max: this.limit["ymax"]
-                                //stepSize: 1
-                            }
-                            //position: "left"
-                        }]
-                },
-                responsive: true,
-                title: {
-                    display: false,
-                    text: 'CPK for MODEL'
-                },
-                maintainAspectRatio: false
-            }
-        });
+                        ],
+                        drawTime: "afterDatasetsDraw"
+                    },
+                    scales: {
+                        xAxes: [{
+                                id: 'x-axis-0',
+                                type: "linear",
+                                display: true,
+                                gridLines: {
+                                    display: false
+                                },
+                                //autoSkip: true,
+                                // position: "bottom",
+                                ticks: {
+                                    min: this.limit["xmin"],
+                                    max: this.limit["xmax"]
+                                    //stepSize: 
+                                }
+                                //type: "linear",
+                                //position: "bottom"
+                            }],
+                        yAxes: [{
+                                id: 'y-axis-0',
+                                type: "linear",
+                                display: true,
+                                gridLines: {
+                                    display: false
+                                },
+                                //autoSkip: true,
+                                ticks: {
+                                    min: this.limit["ymin"],
+                                    max: this.limit["ymax"]
+                                    //stepSize: 1
+                                }
+                                //position: "left"
+                            }]
+                    },
+                    responsive: true,
+                    title: {
+                        display: false,
+                        text: 'CPK for MODEL'
+                    },
+                    maintainAspectRatio: false
+                }
+            });
+        }
     };
     RmsCPKAnalyticsPanelCtrl.prototype.OnDraw = function () {
         if (!this.context) {

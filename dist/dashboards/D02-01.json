@@ -2,7 +2,7 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:293",
+        "$$hashKey": "object:250",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -13,11 +13,30 @@
       }
     ]
   },
-  "editable": true,
+  "editable": false,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1526662104638,
-  "links": [],
+  "iteration": 1526905933022,
+  "links": [
+    {
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "설비 불량 현황"
+      ],
+      "type": "dashboards"
+    },
+    {
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "CPK 불량 검출 현황"
+      ],
+      "type": "dashboards"
+    }
+  ],
   "panels": [
     {
       "cacheTimeout": null,
@@ -63,7 +82,7 @@
       "nullText": null,
       "postfix": "",
       "postfixFontSize": "50%",
-      "prefix": "생산",
+      "prefix": "검사",
       "prefixFontSize": "50%",
       "rangeMaps": [
         {
@@ -702,7 +721,23 @@
           "preserveFormat": false,
           "sanitize": true,
           "thresholds": [],
-          "type": "string",
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "",
+          "thresholds": [],
+          "type": "number",
           "unit": "short"
         },
         {
@@ -825,14 +860,15 @@
   "schemaVersion": 16,
   "style": "light",
   "tags": [
-    "모델별검사기록"
+    "모델별검사기록",
+    "모델별 검사기록"
   ],
   "templating": {
     "list": [
       {
         "current": {
-          "text": "RMS-BRANCH-INFLUXDB(V1.0)",
-          "value": "RMS-BRANCH-INFLUXDB(V1.0)"
+          "text": "RMS-CENTER-INFLUXDB(V1.0)",
+          "value": "RMS-CENTER-INFLUXDB(V1.0)"
         },
         "hide": 0,
         "label": "본사/지점 선택",
@@ -846,8 +882,8 @@
       {
         "allValue": null,
         "current": {
-          "text": "All",
-          "value": "$__all"
+          "text": "AMPSRH29T41",
+          "value": "AMPSRH29T41"
         },
         "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
         "hide": 0,
@@ -869,14 +905,14 @@
       {
         "allValue": null,
         "current": {
-          "text": "SOOSKIM02",
-          "value": "SOOSKIM02"
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
         "hide": 0,
         "includeAll": true,
         "label": "검사기",
-        "multi": false,
+        "multi": true,
         "name": "FACILITY",
         "options": [],
         "query": "show tag values from /inspection/ with key=facility",
@@ -899,7 +935,7 @@
         "hide": 0,
         "includeAll": true,
         "label": "채널",
-        "multi": false,
+        "multi": true,
         "name": "CHANNEL",
         "options": [],
         "query": "show tag values from /inspection/ with key=channel",
@@ -915,15 +951,13 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
-          "tags": [],
           "text": "All",
           "value": "$__all"
         },
         "hide": 0,
         "includeAll": true,
         "label": "합격",
-        "multi": false,
+        "multi": true,
         "name": "PASS",
         "options": [
           {
@@ -1035,7 +1069,7 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -1067,5 +1101,5 @@
   "timezone": "",
   "title": "모델별 검사기록",
   "uid": "rAgfpx7iz",
-  "version": 95
+  "version": 111
 }

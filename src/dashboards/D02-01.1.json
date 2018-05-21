@@ -2,7 +2,7 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:148",
+        "$$hashKey": "object:151",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -13,10 +13,10 @@
       }
     ]
   },
-  "editable": true,
+  "editable": false,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1526885973231,
+  "iteration": 1526906004057,
   "links": [
     {
       "icon": "external link",
@@ -34,7 +34,7 @@
       "datasource": "$DATABASE",
       "fontSize": "80%",
       "gridPos": {
-        "h": 4,
+        "h": 3,
         "w": 24,
         "x": 0,
         "y": 0
@@ -322,14 +322,514 @@
       "type": "table"
     },
     {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "#299c46",
+        "rgba(237, 129, 40, 0.89)",
+        "#d44a3a"
+      ],
+      "datasource": "$DATABASE",
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 2,
+        "x": 0,
+        "y": 3
+      },
+      "id": 19,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false
+      },
+      "tableColumn": "count",
+      "targets": [
+        {
+          "alias": "$col",
+          "groupBy": [],
+          "measurement": "/^inspection.detail-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "inm"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "facility",
+              "operator": "=~",
+              "value": "/^$FACILITY$/"
+            },
+            {
+              "condition": "AND",
+              "key": "channel",
+              "operator": "=~",
+              "value": "/^$CHANNEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "tuid",
+              "operator": "=~",
+              "value": "/^$TUID$/"
+            },
+            {
+              "condition": "AND",
+              "key": "pass",
+              "operator": "=",
+              "value": "false"
+            }
+          ]
+        }
+      ],
+      "thresholds": "",
+      "title": "불량요소 수",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "avg"
+    },
+    {
       "columns": [],
       "datasource": "$DATABASE",
       "fontSize": "80%",
       "gridPos": {
-        "h": 25,
-        "w": 24,
+        "h": 23,
+        "w": 22,
+        "x": 2,
+        "y": 3
+      },
+      "hideTimeOverride": false,
+      "id": 17,
+      "links": [],
+      "pageSize": 30,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": null,
+        "desc": false
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "date"
+        },
+        {
+          "alias": "모델",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "link": true,
+          "linkTooltip": "$__cell_1",
+          "linkUrl": "/dashboard/db/modelbyeol-geomsagirog?var-MODEL=$__cell_1&var-FACILITY=All&var-CHANNEL=All",
+          "mappingType": 1,
+          "pattern": "model",
+          "preserveFormat": false,
+          "sanitize": true,
+          "thresholds": [],
+          "type": "string",
+          "unit": "short",
+          "valueMaps": []
+        },
+        {
+          "alias": "양불",
+          "colorMode": null,
+          "colors": [
+            "rgba(50, 172, 45, 0.97)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(245, 54, 54, 0.9)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "link": false,
+          "linkUrl": "",
+          "mappingType": 1,
+          "pattern": "pass",
+          "preserveFormat": true,
+          "rangeMaps": [
+            {
+              "from": "true",
+              "text": "<i class=\"fa fa-thumbs-down\"></i>",
+              "to": "true"
+            },
+            {
+              "from": "false",
+              "text": "<i class=\"fa fa-thumbs-down\"></i>",
+              "to": "false"
+            }
+          ],
+          "sanitize": true,
+          "thresholds": [
+            "true",
+            " false"
+          ],
+          "type": "string",
+          "unit": "locale",
+          "valueMaps": [
+            {
+              "text": "<span class=\"btn-secondary\">   정상    <i class=\"fa fa-chevron-down\"></i> </span>",
+              "value": "true"
+            },
+            {
+              "text": "<span class=\"btn-danger\">   불량    <i class=\"fa fa-exclamation-triangle\"></i> </span>",
+              "value": "false"
+            }
+          ]
+        },
+        {
+          "alias": "검사장비",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "link": true,
+          "linkTooltip": "$__cell",
+          "linkUrl": "/dashboard/db/modelbyeol-geomsagirog?var-FACILITY=$__cell&var-CHANNEL=All",
+          "mappingType": 1,
+          "pattern": "facility",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "채널",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "channel",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "검사시각",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "stime",
+          "thresholds": [],
+          "type": "date",
+          "unit": "short"
+        },
+        {
+          "alias": "종료시간",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "etime",
+          "thresholds": [],
+          "type": "date",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "link": true,
+          "mappingType": 1,
+          "pattern": "tuid",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "최소",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "min",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "최대",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "max",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "측정치",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "val",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        },
+        {
+          "alias": "검사항목",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "inm",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "alias": "$col",
+          "groupBy": [],
+          "measurement": "/^inspection.detail-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"model\", \"facility\", \"channel\", \"pass\", \"min\", \"max\", \"val\" FROM /^inspection.detail-*/ WHERE (\"model\" =~ /^$MODEL$/ AND \"facility\" =~ /^$FACILITY$/ AND \"channel\" =~ /^$CHANNEL$/ AND \"pass\" =~ /^$PASS$/ AND \"tuid\" =~ /^$TUID$/) AND $timeFilter",
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "model"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "facility"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "channel"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "inm"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "val"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "pass"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "min"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "max"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "facility",
+              "operator": "=~",
+              "value": "/^$FACILITY$/"
+            },
+            {
+              "condition": "AND",
+              "key": "channel",
+              "operator": "=~",
+              "value": "/^$CHANNEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "pass",
+              "operator": "=~",
+              "value": "/^$PASS$/"
+            },
+            {
+              "condition": "AND",
+              "key": "tuid",
+              "operator": "=~",
+              "value": "/^$TUID$/"
+            }
+          ]
+        }
+      ],
+      "title": "불량 요소",
+      "transform": "table",
+      "transparent": false,
+      "type": "table"
+    },
+    {
+      "columns": [],
+      "datasource": "$DATABASE",
+      "fontSize": "80%",
+      "gridPos": {
+        "h": 11,
+        "w": 2,
         "x": 0,
-        "y": 4
+        "y": 6
       },
       "hideTimeOverride": false,
       "id": 16,
@@ -346,7 +846,7 @@
           "alias": "Time",
           "dateFormat": "YYYY-MM-DD HH:mm:ss",
           "pattern": "Time",
-          "type": "date"
+          "type": "hidden"
         },
         {
           "alias": "모델",
@@ -585,7 +1085,7 @@
           "measurement": "/^inspection.detail-*/",
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT \"model\", \"facility\", \"channel\", \"pass\", \"min\", \"max\", \"val\" FROM /^inspection.detail-*/ WHERE (\"model\" =~ /^$MODEL$/ AND \"facility\" =~ /^$FACILITY$/ AND \"channel\" =~ /^$CHANNEL$/ AND \"pass\" =~ /^$PASS$/ AND \"tuid\" =~ /^$TUID$/) AND $timeFilter",
+          "query": "SELECT \"inm\" FROM /^inspection.detail-*/ WHERE (\"model\" =~ /^$MODEL$/ AND \"facility\" =~ /^$FACILITY$/ AND \"channel\" =~ /^$CHANNEL$/ AND \"pass\" = 'false' AND \"tuid\" =~ /^$TUID$/) AND $timeFilter",
           "rawQuery": false,
           "refId": "A",
           "resultFormat": "table",
@@ -594,46 +1094,6 @@
               {
                 "params": [
                   "inm"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "min"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "max"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "val"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "pass"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "cpk"
                 ],
                 "type": "field"
               }
@@ -660,8 +1120,8 @@
             {
               "condition": "AND",
               "key": "pass",
-              "operator": "=~",
-              "value": "/^$PASS$/"
+              "operator": "=",
+              "value": "false"
             },
             {
               "condition": "AND",
@@ -672,7 +1132,7 @@
           ]
         }
       ],
-      "title": "DETAIL : $TUID",
+      "title": "불량 요소",
       "transform": "table",
       "transparent": false,
       "type": "table"
@@ -685,8 +1145,8 @@
     "list": [
       {
         "current": {
-          "text": "RMS-BRANCH-INFLUXDB(V1.0)",
-          "value": "RMS-BRANCH-INFLUXDB(V1.0)"
+          "text": "RMS-CENTER-INFLUXDB(V1.0)",
+          "value": "RMS-CENTER-INFLUXDB(V1.0)"
         },
         "hide": 0,
         "label": "본사/지점 선택",
@@ -700,9 +1160,9 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
-          "text": "AMPURB89D20",
-          "value": "AMPURB89D20"
+          "selected": true,
+          "text": "AMPSRH29T41",
+          "value": "AMPSRH29T41"
         },
         "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
         "hide": 2,
@@ -724,9 +1184,9 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
-          "text": "SOOSKIM01",
-          "value": "SOOSKIM01"
+          "selected": true,
+          "text": "SOOSKIM02",
+          "value": "SOOSKIM02"
         },
         "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
         "hide": 2,
@@ -748,9 +1208,9 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
-          "text": "1",
-          "value": "1"
+          "selected": true,
+          "text": "4",
+          "value": "4"
         },
         "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
         "hide": 2,
@@ -889,8 +1349,8 @@
       },
       {
         "current": {
-          "text": "335f3893.bcabe8",
-          "value": "335f3893.bcabe8"
+          "text": "bf6dd78e.a315a8",
+          "value": "bf6dd78e.a315a8"
         },
         "hide": 2,
         "label": "상세항목",
@@ -931,5 +1391,5 @@
   "timezone": "",
   "title": "모델별 검사기록 (상세)",
   "uid": "7cy0t97mz",
-  "version": 35
+  "version": 46
 }

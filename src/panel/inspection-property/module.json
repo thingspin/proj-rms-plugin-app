@@ -1,19 +1,274 @@
 {
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Simulator --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
   "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
   "links": [],
   "panels": [
     {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 6,
+      "panels": [
+        {
+          "columns": [],
+          "datasource": "REMOTESOLUTIONS(V1.0)",
+          "fontSize": "80%",
+          "gridPos": {
+            "h": 22,
+            "w": 24,
+            "x": 0,
+            "y": 1
+          },
+          "id": 4,
+          "links": [],
+          "pageSize": null,
+          "repeat": null,
+          "scroll": true,
+          "showHeader": true,
+          "sort": {
+            "col": 0,
+            "desc": false
+          },
+          "styles": [
+            {
+              "alias": "Time",
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "pattern": "Time",
+              "type": "date"
+            },
+            {
+              "alias": "아이디",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 0,
+              "mappingType": 1,
+              "pattern": "IDX",
+              "thresholds": [],
+              "type": "number",
+              "unit": "locale"
+            },
+            {
+              "alias": "검사항목",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "NAME",
+              "thresholds": [],
+              "type": "string",
+              "unit": "short"
+            },
+            {
+              "alias": "검사유형",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 0,
+              "mappingType": 1,
+              "pattern": "IP_TYPE",
+              "thresholds": [],
+              "type": "string",
+              "unit": "short",
+              "valueMaps": [
+                {
+                  "text": "기능검사",
+                  "value": "1"
+                },
+                {
+                  "text": "육안검사",
+                  "value": "2"
+                }
+              ]
+            },
+            {
+              "alias": "최소값(기본)",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "DEFAULT_MIN",
+              "thresholds": [],
+              "type": "number",
+              "unit": "locale"
+            },
+            {
+              "alias": "최대값(기본)",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "DEFAULT_MAX",
+              "thresholds": [],
+              "type": "number",
+              "unit": "short"
+            },
+            {
+              "alias": "cpk.LSL",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "DEFAULT_CPK_MIN",
+              "thresholds": [],
+              "type": "number",
+              "unit": "locale"
+            },
+            {
+              "alias": "cpk.USL",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "DEFAULT_CPK_MAX",
+              "thresholds": [],
+              "type": "number",
+              "unit": "short"
+            },
+            {
+              "alias": "설명",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "DESCRIPTION",
+              "thresholds": [],
+              "type": "number",
+              "unit": "short"
+            },
+            {
+              "alias": "등록일",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "REGDATE",
+              "thresholds": [],
+              "type": "date",
+              "unit": "short"
+            },
+            {
+              "alias": "",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "decimals": 2,
+              "mappingType": 2,
+              "pattern": "/.*/",
+              "preserveFormat": false,
+              "rangeMaps": [],
+              "sanitize": false,
+              "thresholds": [],
+              "type": "string",
+              "unit": "short"
+            }
+          ],
+          "targets": [
+            {
+              "alias": "",
+              "format": "table",
+              "rawSql": "SELECT * from t_inspection_property WHERE IDX <> 0 order by IDX ASC;",
+              "refId": "A"
+            }
+          ],
+          "title": "DETAILS",
+          "transform": "table",
+          "type": "table"
+        }
+      ],
+      "repeat": null,
+      "title": "전체 목록 보기",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 8,
+      "panels": [],
+      "repeat": null,
+      "title": "검사항목 / 불량 항목 입력",
+      "type": "row"
+    },
+    {
       "datasource": "REMOTESOLUTIONS(V1.0)",
       "gridPos": {
         "h": 21,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 2
       },
       "id": 2,
       "links": [],
+      "repeat": null,
       "targets": [
         {
           "alias": "",
@@ -30,251 +285,13 @@
       ],
       "title": "",
       "type": "rms-inspection-property"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 21
-      },
-      "id": 6,
-      "panels": [],
-      "repeat": null,
-      "title": "Details Table",
-      "type": "row"
-    },
-    {
-      "columns": [],
-      "datasource": "REMOTESOLUTIONS(V1.0)",
-      "fontSize": "100%",
-      "gridPos": {
-        "h": 31,
-        "w": 24,
-        "x": 0,
-        "y": 22
-      },
-      "id": 4,
-      "links": [],
-      "pageSize": null,
-      "repeat": null,
-      "scroll": true,
-      "showHeader": true,
-      "sort": {
-        "col": 0,
-        "desc": false
-      },
-      "styles": [
-        {
-          "$$hashKey": "object:206",
-          "alias": "Time",
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "pattern": "Time",
-          "type": "date"
-        },
-        {
-          "$$hashKey": "object:223",
-          "alias": "아이디",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 0,
-          "mappingType": 1,
-          "pattern": "IDX",
-          "thresholds": [],
-          "type": "number",
-          "unit": "locale"
-        },
-        {
-          "$$hashKey": "object:255",
-          "alias": "검사항목",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "NAME",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        },
-        {
-          "$$hashKey": "object:295",
-          "alias": "검사유형",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 0,
-          "mappingType": 1,
-          "pattern": "IP_TYPE",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short",
-          "valueMaps": [
-            {
-              "$$hashKey": "object:345",
-              "text": "기능검사",
-              "value": "1"
-            },
-            {
-              "$$hashKey": "object:347",
-              "text": "육안검사",
-              "value": "2"
-            }
-          ]
-        },
-        {
-          "$$hashKey": "object:366",
-          "alias": "최소값(기본)",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "DEFAULT_MIN",
-          "thresholds": [],
-          "type": "number",
-          "unit": "locale"
-        },
-        {
-          "$$hashKey": "object:379",
-          "alias": "최대값(기본)",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "DEFAULT_MAX",
-          "thresholds": [],
-          "type": "number",
-          "unit": "short"
-        },
-        {
-          "$$hashKey": "object:392",
-          "alias": "cpk.LSL",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "DEFAULT_CPK_MIN",
-          "thresholds": [],
-          "type": "number",
-          "unit": "locale"
-        },
-        {
-          "$$hashKey": "object:405",
-          "alias": "cpk.USL",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "DEFAULT_CPK_MAX",
-          "thresholds": [],
-          "type": "number",
-          "unit": "short"
-        },
-        {
-          "$$hashKey": "object:418",
-          "alias": "설명",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "DESCRIPTION",
-          "thresholds": [],
-          "type": "number",
-          "unit": "short"
-        },
-        {
-          "$$hashKey": "object:431",
-          "alias": "등록일",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "REGDATE",
-          "thresholds": [],
-          "type": "date",
-          "unit": "short"
-        },
-        {
-          "$$hashKey": "object:207",
-          "alias": "",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "decimals": 2,
-          "mappingType": 2,
-          "pattern": "/.*/",
-          "preserveFormat": false,
-          "rangeMaps": [],
-          "sanitize": false,
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        }
-      ],
-      "targets": [
-        {
-          "$$hashKey": "object:182",
-          "alias": "",
-          "format": "table",
-          "rawSql": "SELECT * from t_inspection_property order by IDX ASC;",
-          "refId": "A"
-        }
-      ],
-      "title": "DETAILS",
-      "transform": "table",
-      "type": "table"
     }
   ],
   "schemaVersion": 16,
   "style": "dark",
-  "tags": [],
+  "tags": [
+    "검사항목 / 불량유형"
+  ],
   "templating": {
     "list": []
   },
@@ -301,5 +318,6 @@
   },
   "timezone": "",
   "title": "검사항목 / 불량유형",
-   "version": 6
+  "uid": "AikbGQ7mz",
+  "version": 26
 }

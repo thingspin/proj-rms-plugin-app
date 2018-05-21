@@ -1,0 +1,1377 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "$$hashKey": "object:142",
+        "builtIn": 1,
+        "datasource": "-- Simulator --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      },
+      {
+        "$$hashKey": "object:143",
+        "datasource": "$DATABASE",
+        "enable": false,
+        "hide": false,
+        "iconColor": "rgba(255, 96, 96, 1)",
+        "name": "검출시각",
+        "query": "SELECT \"model\", \"inm\",  \"facility\", \"channel\" FROM /^alram.cpk.detail-*/ WHERE \"facility\" =~ /^$FACILITY$/ AND  \"channel\" =~ /^$CHANNEL$/  AND  \"model\" =~ /^$MODEL$/  AND  $timeFilter limit 1000",
+        "showIn": 0,
+        "tagsColumn": "facility, channel, inm",
+        "textColumn": "inm"
+      }
+    ]
+  },
+  "editable": false,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "iteration": 1526912920727,
+  "links": [
+    {
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "설비 불량 현황"
+      ],
+      "type": "dashboards"
+    },
+    {
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "모델별 검사기록"
+      ],
+      "type": "dashboards"
+    }
+  ],
+  "panels": [
+    {
+      "aliasColors": {
+        "cpk": "#052b51"
+      },
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "$DATABASE",
+      "decimals": 0,
+      "fill": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 6,
+        "x": 0,
+        "y": 0
+      },
+      "id": 9,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": false,
+        "hideEmpty": true,
+        "hideZero": true,
+        "max": false,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "sideWidth": 150,
+        "total": true,
+        "values": true
+      },
+      "lines": false,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 4,
+      "points": false,
+      "renderer": "flot",
+      "repeat": null,
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "$$hashKey": "object:2481",
+          "alias": "$tag_facility",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "facility"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "limit": "2000",
+          "measurement": "/^alram.cpk.detail-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "cpk"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              },
+              {
+                "params": [
+                  "Test"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "facility",
+              "operator": "=~",
+              "value": "/^$FACILITY$/"
+            },
+            {
+              "condition": "AND",
+              "key": "channel",
+              "operator": "=~",
+              "value": "/^$CHANNEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "검사기별 CPK 불량 검출 수",
+      "tooltip": {
+        "shared": false,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "series",
+        "name": null,
+        "show": true,
+        "values": [
+          "total"
+        ]
+      },
+      "yaxes": [
+        {
+          "decimals": 0,
+          "format": "locale",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "decimals": 0,
+          "format": "locale",
+          "label": "검출수",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "cpk": "#052b51"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "$DATABASE",
+      "fill": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 18,
+        "x": 6,
+        "y": 0
+      },
+      "id": 6,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "connected",
+      "percentage": false,
+      "pointradius": 4,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [
+        {
+          "$$hashKey": "object:706",
+          "alias": "COUNT",
+          "bars": true,
+          "lines": false,
+          "points": false
+        },
+        {
+          "$$hashKey": "object:707",
+          "alias": "CPK",
+          "yaxis": 2
+        },
+        {
+          "$$hashKey": "object:708",
+          "alias": "CUML",
+          "bars": false,
+          "dashes": true,
+          "fill": 1,
+          "lines": true,
+          "linewidth": 5
+        }
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "$$hashKey": "object:375",
+          "alias": "$col",
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            }
+          ],
+          "limit": "",
+          "measurement": "/^alram.cpk.detail-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "",
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "cpk"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "CPK"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "facility",
+              "operator": "=~",
+              "value": "/^$FACILITY$/"
+            },
+            {
+              "condition": "AND",
+              "key": "channel",
+              "operator": "=~",
+              "value": "/^$CHANNEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            }
+          ]
+        },
+        {
+          "$$hashKey": "object:376",
+          "alias": "$col",
+          "groupBy": [
+            {
+              "params": [
+                "10m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "/^alram.cpk.detail-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "cpk"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              },
+              {
+                "params": [
+                  "COUNT"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "facility",
+              "operator": "=~",
+              "value": "/^$FACILITY$/"
+            },
+            {
+              "condition": "AND",
+              "key": "channel",
+              "operator": "=~",
+              "value": "/^$CHANNEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            }
+          ]
+        },
+        {
+          "$$hashKey": "object:377",
+          "alias": "$col",
+          "groupBy": [
+            {
+              "params": [
+                "10m"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "/^alram.cpk.detail-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "cpk"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              },
+              {
+                "params": [],
+                "type": "cumulative_sum"
+              },
+              {
+                "params": [
+                  "CUML"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "facility",
+              "operator": "=~",
+              "value": "/^$FACILITY$/"
+            },
+            {
+              "condition": "AND",
+              "key": "channel",
+              "operator": "=~",
+              "value": "/^$CHANNEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "CPK 불량 검출 량",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 2,
+          "format": "locale",
+          "label": "",
+          "logBase": 1,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "decimals": 0,
+          "format": "locale",
+          "label": "검출수",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "columns": [],
+      "datasource": "$DATABASE",
+      "fontSize": "80%",
+      "gridPos": {
+        "h": 11,
+        "w": 8,
+        "x": 0,
+        "y": 7
+      },
+      "id": 4,
+      "links": [],
+      "minSpan": 4,
+      "pageSize": 10,
+      "repeat": "FACILITY",
+      "repeatDirection": "h",
+      "scopedVars": {
+        "FACILITY": {
+          "selected": false,
+          "text": "SOOSKIM01",
+          "value": "SOOSKIM01"
+        }
+      },
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 4,
+        "desc": false
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "dateFormat": "MM/DD HH:mm",
+          "pattern": "Time",
+          "type": "date"
+        },
+        {
+          "alias": "검사항목",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "link": true,
+          "linkTargetBlank": false,
+          "linkTooltip": "검사항목:$__cell: 검사기:$__cell_4:$__cell_5 모델:$__cell_3",
+          "linkUrl": "/d/yFLCxZ4ik?var-INSPPROP=$__cell&var-FACILITY=$__cell_4&var-CHANNEL=$__cell_5&&var-MODEL=$__cell_3",
+          "mappingType": 1,
+          "pattern": "inm",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "iid",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "검사기",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "facility",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "채널",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "channel",
+          "sanitize": false,
+          "thresholds": [
+            "1",
+            "3"
+          ],
+          "type": "string",
+          "unit": "locale"
+        },
+        {
+          "alias": "모델",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "model",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "tuid",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "alias": "$col",
+          "groupBy": [],
+          "limit": "2000",
+          "measurement": "/^alram.cpk.detail-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"iid\", \"inm\", \"model\", \"facility\", \"channel\", \"cpk\", \"val\" FROM /^alram.cpk.detail-*/ WHERE (\"facility\" =~ /^$FACILITY$/ AND \"channel\" =~ /^$CHANNEL$/ AND \"model\" =~ /^$MODEL$/) AND $timeFilter LIMIT 2000",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "iid"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "inm"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "model"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "facility"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "channel"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "cpk"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "val"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "facility",
+              "operator": "=~",
+              "value": "/^$FACILITY$/"
+            },
+            {
+              "condition": "AND",
+              "key": "channel",
+              "operator": "=~",
+              "value": "/^$CHANNEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            }
+          ]
+        }
+      ],
+      "title": "검사기 ($FACILITY)에서의 CPK 위배 검출 이력",
+      "transform": "timeseries_to_columns",
+      "type": "table"
+    },
+    {
+      "columns": [],
+      "datasource": "$DATABASE",
+      "fontSize": "80%",
+      "gridPos": {
+        "h": 11,
+        "w": 8,
+        "x": 8,
+        "y": 7
+      },
+      "id": 10,
+      "links": [],
+      "minSpan": 4,
+      "pageSize": 10,
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1526912920727,
+      "repeatPanelId": 4,
+      "scopedVars": {
+        "FACILITY": {
+          "selected": false,
+          "text": "SOOSKIM02",
+          "value": "SOOSKIM02"
+        }
+      },
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 4,
+        "desc": false
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "dateFormat": "MM/DD HH:mm",
+          "pattern": "Time",
+          "type": "date"
+        },
+        {
+          "alias": "검사항목",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "link": true,
+          "linkTargetBlank": false,
+          "linkTooltip": "검사항목:$__cell: 검사기:$__cell_4:$__cell_5 모델:$__cell_3",
+          "linkUrl": "/d/yFLCxZ4ik?var-INSPPROP=$__cell&var-FACILITY=$__cell_4&var-CHANNEL=$__cell_5&&var-MODEL=$__cell_3",
+          "mappingType": 1,
+          "pattern": "inm",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "iid",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "검사기",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "facility",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "채널",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "channel",
+          "sanitize": false,
+          "thresholds": [
+            "1",
+            "3"
+          ],
+          "type": "string",
+          "unit": "locale"
+        },
+        {
+          "alias": "모델",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "model",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "tuid",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "alias": "$col",
+          "groupBy": [],
+          "limit": "2000",
+          "measurement": "/^alram.cpk.detail-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"iid\", \"inm\", \"model\", \"facility\", \"channel\", \"cpk\", \"val\" FROM /^alram.cpk.detail-*/ WHERE (\"facility\" =~ /^$FACILITY$/ AND \"channel\" =~ /^$CHANNEL$/ AND \"model\" =~ /^$MODEL$/) AND $timeFilter LIMIT 2000",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "iid"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "inm"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "model"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "facility"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "channel"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "cpk"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "val"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "facility",
+              "operator": "=~",
+              "value": "/^$FACILITY$/"
+            },
+            {
+              "condition": "AND",
+              "key": "channel",
+              "operator": "=~",
+              "value": "/^$CHANNEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            }
+          ]
+        }
+      ],
+      "title": "검사기 ($FACILITY)에서의 CPK 위배 검출 이력",
+      "transform": "timeseries_to_columns",
+      "type": "table"
+    },
+    {
+      "columns": [],
+      "datasource": "$DATABASE",
+      "fontSize": "80%",
+      "gridPos": {
+        "h": 11,
+        "w": 8,
+        "x": 16,
+        "y": 7
+      },
+      "id": 11,
+      "links": [],
+      "minSpan": 4,
+      "pageSize": 10,
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1526912920727,
+      "repeatPanelId": 4,
+      "scopedVars": {
+        "FACILITY": {
+          "selected": false,
+          "text": "SOOSKIM03",
+          "value": "SOOSKIM03"
+        }
+      },
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 4,
+        "desc": false
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "dateFormat": "MM/DD HH:mm",
+          "pattern": "Time",
+          "type": "date"
+        },
+        {
+          "alias": "검사항목",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "link": true,
+          "linkTargetBlank": false,
+          "linkTooltip": "검사항목:$__cell: 검사기:$__cell_4:$__cell_5 모델:$__cell_3",
+          "linkUrl": "/d/yFLCxZ4ik?var-INSPPROP=$__cell&var-FACILITY=$__cell_4&var-CHANNEL=$__cell_5&&var-MODEL=$__cell_3",
+          "mappingType": 1,
+          "pattern": "inm",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "iid",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "검사기",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "facility",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "채널",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "channel",
+          "sanitize": false,
+          "thresholds": [
+            "1",
+            "3"
+          ],
+          "type": "string",
+          "unit": "locale"
+        },
+        {
+          "alias": "모델",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "model",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "tuid",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "alias": "$col",
+          "groupBy": [],
+          "limit": "2000",
+          "measurement": "/^alram.cpk.detail-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"iid\", \"inm\", \"model\", \"facility\", \"channel\", \"cpk\", \"val\" FROM /^alram.cpk.detail-*/ WHERE (\"facility\" =~ /^$FACILITY$/ AND \"channel\" =~ /^$CHANNEL$/ AND \"model\" =~ /^$MODEL$/) AND $timeFilter LIMIT 2000",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "iid"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "inm"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "model"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "facility"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "channel"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "cpk"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "val"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "facility",
+              "operator": "=~",
+              "value": "/^$FACILITY$/"
+            },
+            {
+              "condition": "AND",
+              "key": "channel",
+              "operator": "=~",
+              "value": "/^$CHANNEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            }
+          ]
+        }
+      ],
+      "title": "검사기 ($FACILITY)에서의 CPK 위배 검출 이력",
+      "transform": "timeseries_to_columns",
+      "type": "table"
+    }
+  ],
+  "refresh": "5m",
+  "schemaVersion": 16,
+  "style": "dark",
+  "tags": [
+    "CPK 불량 검출 현황"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "RMS-CENTER-INFLUXDB(V1.0)",
+          "value": "RMS-CENTER-INFLUXDB(V1.0)"
+        },
+        "hide": 0,
+        "label": "본사/지점 선택",
+        "name": "DATABASE",
+        "options": [],
+        "query": "influxdb",
+        "refresh": 1,
+        "regex": "/^RMS-*/",
+        "type": "datasource"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "검사기",
+        "multi": true,
+        "name": "FACILITY",
+        "options": [],
+        "query": "show tag values from /inspection/ with key=facility",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "채널",
+        "multi": true,
+        "name": "CHANNEL",
+        "options": [],
+        "query": "show tag values from /inspection/ with key=channel",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "모델",
+        "multi": true,
+        "name": "MODEL",
+        "options": [],
+        "query": "SHOW TAG VALUES FROM /^inspection.summary-*/ WITH KEY=model",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now-3h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5m",
+      " 10m",
+      " 30m",
+      " 1h",
+      " 3h",
+      " 6h",
+      " 12h",
+      " 1d"
+    ],
+    "time_options": [
+      "24h",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "",
+  "title": "CPK 불량 검출 현황",
+  "uid": "TPC1lW4mk",
+  "version": 47
+}

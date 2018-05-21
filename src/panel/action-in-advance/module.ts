@@ -228,7 +228,7 @@ export class SettingActionInAdvancePanelCtrl extends MetricsPanelCtrl {
     }
 
     updateIPList(id) {
-        let query = [ "select * from t_inspection_property"];
+        let query = [ "select * from t_inspection_property WHERE IDX <> 0"];
         this.rsDsSrv.query(id, query).then( result => {
             let data = this.rsDsSrv.getTableObj(result);
             if (data.length !== 0) {

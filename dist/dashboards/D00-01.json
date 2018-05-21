@@ -2,7 +2,7 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:142",
+        "$$hashKey": "object:148",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -16,8 +16,18 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1526674169847,
-  "links": [],
+  "iteration": 1526905206052,
+  "links": [
+    {
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "CPK 불량 검출 현황"
+      ],
+      "type": "dashboards"
+    }
+  ],
   "panels": [
     {
       "cacheTimeout": null,
@@ -118,6 +128,7 @@
       "links": [],
       "targets": [
         {
+          "alias": "$col",
           "groupBy": [
             {
               "params": [
@@ -143,7 +154,7 @@
             [
               {
                 "params": [
-                  "val"
+                  "cpk"
                 ],
                 "type": "field"
               },
@@ -153,7 +164,43 @@
               },
               {
                 "params": [
-                  "val"
+                  "CPK"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "lsl"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "LSL"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "usl"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "USL"
                 ],
                 "type": "alias"
               }
@@ -161,12 +208,6 @@
           ],
           "tags": [
             {
-              "key": "model",
-              "operator": "=~",
-              "value": "/^$MODEL$/"
-            },
-            {
-              "condition": "AND",
               "key": "facility",
               "operator": "=~",
               "value": "/^$FACILITY$/"
@@ -182,6 +223,12 @@
               "key": "iid",
               "operator": "=~",
               "value": "/^$INSPPROP$/"
+            },
+            {
+              "condition": "AND",
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
             }
           ]
         }
@@ -291,7 +338,7 @@
       "thresholds": [],
       "timeFrom": null,
       "timeShift": null,
-      "title": "",
+      "title": "측정값 분포도",
       "tooltip": {
         "shared": false,
         "sort": 0,
@@ -601,9 +648,10 @@
         "notifications": []
       },
       "aliasColors": {
-        "A-series": "#052b51"
+        "A-series": "#052b51",
+        "L/Current": "#052b51"
       },
-      "bars": true,
+      "bars": false,
       "dashLength": 10,
       "dashes": false,
       "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
@@ -617,23 +665,23 @@
       "hideTimeOverride": true,
       "id": 10,
       "legend": {
-        "alignAsTable": true,
+        "alignAsTable": false,
         "avg": true,
         "current": false,
         "max": true,
         "min": true,
-        "rightSide": true,
+        "rightSide": false,
         "show": true,
         "total": false,
         "values": true
       },
-      "lines": false,
-      "linewidth": 2,
+      "lines": true,
+      "linewidth": 1,
       "links": [],
       "minSpan": 3,
-      "nullPointMode": "connected",
+      "nullPointMode": "null",
       "percentage": false,
-      "pointradius": 5,
+      "pointradius": 1,
       "points": false,
       "renderer": "flot",
       "repeat": "INSPPC",
@@ -651,19 +699,19 @@
       "steppedLine": false,
       "targets": [
         {
-          "alias": "$col",
+          "alias": "$col ($tag_facility:CH$tag_channel)",
           "groupBy": [
             {
               "params": [
-                "$__interval"
+                "facility"
               ],
-              "type": "time"
+              "type": "tag"
             },
             {
               "params": [
-                "null"
+                "channel"
               ],
-              "type": "fill"
+              "type": "tag"
             }
           ],
           "measurement": "/^inspection.detail-*/",
@@ -675,13 +723,9 @@
             [
               {
                 "params": [
-                  "val"
+                  "cpk"
                 ],
                 "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
               },
               {
                 "params": [
@@ -736,7 +780,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Trend of $INSPPROP_NAME at $FACILITY CH$CHANNEL",
+      "title": "CPK Trend of $INSPPROP_NAME at $FACILITY CH$CHANNEL",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -775,7 +819,7 @@
       }
     }
   ],
-  "refresh": false,
+  "refresh": "5s",
   "schemaVersion": 16,
   "style": "light",
   "tags": [
@@ -786,8 +830,8 @@
       {
         "allValue": null,
         "current": {
-          "text": "RF/Current",
-          "value": "RF/Current"
+          "text": "IR/Current",
+          "value": "IR/Current"
         },
         "datasource": "REMOTESOLUTIONS(V1.0)",
         "hide": 0,
@@ -796,7 +840,7 @@
         "multi": false,
         "name": "INSPPROP_NAME",
         "options": [],
-        "query": "SELECT NAME FROM t_inspection_property",
+        "query": "SELECT NAME FROM t_inspection_property WHERE IDX <> 0;",
         "refresh": 1,
         "regex": "",
         "sort": 0,
@@ -809,8 +853,8 @@
       {
         "allValue": null,
         "current": {
-          "text": "3",
-          "value": "3"
+          "text": "2",
+          "value": "2"
         },
         "datasource": "REMOTESOLUTIONS(V1.0)",
         "hide": 2,
@@ -821,29 +865,6 @@
         "options": [],
         "query": "SELECT IDX FROM t_inspection_property WHERE NAME IN (\"$INSPPROP_NAME\")",
         "refresh": 1,
-        "regex": "",
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": null,
-        "current": {
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
-        "hide": 0,
-        "includeAll": true,
-        "label": "모델",
-        "multi": false,
-        "name": "MODEL",
-        "options": [],
-        "query": "show tag values from /inspection/ with key=model",
-        "refresh": 2,
         "regex": "",
         "sort": 0,
         "tagValuesQuery": "",
@@ -889,6 +910,29 @@
         "name": "CHANNEL",
         "options": [],
         "query": "show tag values from /inspection/ with key=channel",
+        "refresh": 2,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "모델",
+        "multi": false,
+        "name": "MODEL",
+        "options": [],
+        "query": "show tag values from /inspection/ with key=model",
         "refresh": 2,
         "regex": "",
         "sort": 0,
@@ -988,7 +1032,7 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {
@@ -1021,5 +1065,5 @@
   "timezone": "",
   "title": "CPK 현황",
   "uid": "fxyJMQniz",
-  "version": 48
+  "version": 67
 }
