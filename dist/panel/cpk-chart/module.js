@@ -17298,32 +17298,33 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
         _this.Chart = _this.$window.Chart;
         _this.chartID = 'chart-rms-cpk-' + _this.panel.id;
         _this.result = [];
-        _this.series = [];
+        //this.series = [];
+        _this.limit = {
+            "xmin": -1.0,
+            "xmax": +1.0,
+            "ymin": -1.0,
+            "ymax": +1.0
+        };
         _this.events.on('init-edit-mode', _this.onInitEditMode.bind(_this));
         _this.events.on('render', _this.onRender.bind(_this));
         _this.events.on('panel-size-changed', _this.onSizeChanged.bind(_this));
         _this.events.on('panel-initialized', _this.onRender.bind(_this));
-        for (var i = 1; i <= 10000; i++) {
-            _this.series.push(_this.gaussianRandom(1, 6));
-        }
-        _this.series = lodash__WEBPACK_IMPORTED_MODULE_0___default.a.countBy(_this.series);
-        for (var key in _this.series) {
-            _this.result.push({
-                "x": key,
-                "y": _this.series[key]
-            });
-        }
-        _this.data = {
-            datasets: [
-                {
-                    label: "data",
-                    //backgroundColor: color(this.$window.chartColors.blue).alpha(0.2).rgbString(),
-                    //borderColor: this.$window.chartColors.blue,
-                    data: _this.result
-                }
-            ]
-        };
+        _this.events.on('data-received', _this.onDataReceived.bind(_this));
         return _this;
+        /*
+        for (var i = 1; i <= 10000; i++) {
+          this.series.push(this.gaussianRandom(1,6));
+        }
+    
+        this.series = _.countBy(this.series)
+    
+        for (var key in this.series) {
+          this.result.push({
+            "x":key,
+            "y":this.series[key]
+          })
+        }
+    */
     }
     RmsCPKAnalyticsPanelCtrl.prototype.OnInitialized = function () {
         this.OnDraw();
@@ -17333,33 +17334,103 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
     };
     RmsCPKAnalyticsPanelCtrl.prototype.onInitEditMode = function () {
     };
+    RmsCPKAnalyticsPanelCtrl.prototype.onDataReceived = function (dataList) {
+        if (dataList == null) {
+            return;
+        }
+        var datapoints = [];
+        for (var _i = 0, dataList_1 = dataList; _i < dataList_1.length; _i++) {
+            var data = dataList_1[_i];
+            for (var _a = 0, _b = data.datapoints; _a < _b.length; _a++) {
+                var point = _b[_a];
+                if (point[0] === null || point[0] === 0)
+                    continue;
+                datapoints.push(point[0]);
+            }
+            break;
+        }
+        datapoints.sort();
+        var result = lodash__WEBPACK_IMPORTED_MODULE_0___default.a.countBy(datapoints);
+        //result = result.sort();
+        var xmin = +Object.keys(result)[0];
+        var xmax = +Object.keys(result)[0];
+        var ymin = result[Object.keys(result)[0]];
+        var ymax = result[Object.keys(result)[0]];
+        for (var key in result) {
+            if (xmin > +key) {
+                xmin = +key;
+            }
+            if (xmax < +key) {
+                xmax = +key;
+            }
+            if (ymin > result[key]) {
+                ymin = result[key];
+            }
+            if (ymax < result[key]) {
+                ymax = result[key];
+            }
+            this.result.push({
+                "x": +key,
+                "y": result[key]
+            });
+        }
+        this.limit = {
+            "xmin": xmin,
+            "xmax": xmax,
+            "ymin": ymin,
+            "ymax": ymax
+        };
+        this.data = {
+            datasets: [
+                {
+                    label: "data",
+                    //backgroundColor: color(this.$window.chartColors.blue).alpha(0.2).rgbString(),
+                    //borderColor: this.$window.chartColors.blue,
+                    data: this.result
+                }
+            ]
+        };
+        console.log(this.limit);
+        console.log(this.result);
+        //console.log(datapoints);
+        this.OnDraw();
+    };
     RmsCPKAnalyticsPanelCtrl.prototype.createChart = function () {
         this.Chart.plugins.register({
             afterDatasetsDraw: function (chart) {
                 var ctx = chart.ctx;
+                //console.log(chart.width);
+                //console.log(chart.height)
+                ctx.fillText("CPK : 0.887", chart.width * 0.8, chart.height * 0.15);
                 chart.data.datasets.forEach(function (dataset, i) {
                     var meta = chart.getDatasetMeta(i);
                     if (!meta.hidden) {
                         meta.data.forEach(function (element, index) {
                             ctx.fillStyle = 'rgb(0, 0, 0)';
                             var fontSize = 12;
-                            var dataString = JSON.stringify(dataset.data[index]);
+                            //var dataString = JSON.stringify(dataset.data[index]);
                             ctx.textAlign = 'center';
                             ctx.textBaseline = 'middle';
                             var padding = 3;
                             var position = element.tooltipPosition();
-                            ctx.fillText(dataString, position.x, position.y - (fontSize / 2) - padding);
+                            ctx.fillText("", position.x, position.y - (fontSize / 2) - padding);
                         });
                     }
                 });
             }
         });
+        if (this.chart) {
+            delete this.chart;
+        }
         this.chart = new this.Chart(this.context, {
             type: 'line',
             data: this.data,
             options: {
+                legend: {
+                    display: false
+                },
                 tooltips: {
-                    enabled: true
+                    enabled: false
                 },
                 annotation: {
                     annotations: [
@@ -17370,7 +17441,7 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
                             borderColor: 'red',
                             borderDash: [2, 2],
                             borderWidth: 2,
-                            value: 2,
+                            value: this.limit["xmin"],
                             scaleID: 'x-axis-0',
                             label: {
                                 backgroundColor: 'rgba(255,0,0,0.8)',
@@ -17394,7 +17465,7 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
                             borderColor: 'red',
                             borderDash: [2, 2],
                             borderWidth: 2,
-                            value: 5,
+                            value: this.limit["xmax"],
                             scaleID: 'x-axis-0',
                             label: {
                                 backgroundColor: 'rgba(0,0,255,0.8)',
@@ -17419,12 +17490,15 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
                             id: 'x-axis-0',
                             type: "linear",
                             display: true,
+                            gridLines: {
+                                display: false
+                            },
                             //autoSkip: true,
                             // position: "bottom",
                             ticks: {
-                                min: 1,
-                                max: 6,
-                                stepSize: 1
+                                min: this.limit["xmin"],
+                                max: this.limit["xmax"]
+                                //stepSize: 
                             }
                             //type: "linear",
                             //position: "bottom"
@@ -17433,11 +17507,14 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
                             id: 'y-axis-0',
                             type: "linear",
                             display: true,
+                            gridLines: {
+                                display: false
+                            },
                             //autoSkip: true,
                             ticks: {
-                                min: 0,
-                                max: 10000,
-                                stepSize: 500
+                                min: this.limit["ymin"],
+                                max: this.limit["ymax"]
+                                //stepSize: 1
                             }
                             //position: "left"
                         }]
@@ -17445,20 +17522,17 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
                 responsive: true,
                 title: {
                     display: false,
-                    text: 'CPK for MODEL ABC0001 (or INSPECTION ITEM - L/Current)'
+                    text: 'CPK for MODEL'
                 },
                 maintainAspectRatio: false
             }
         });
     };
     RmsCPKAnalyticsPanelCtrl.prototype.OnDraw = function () {
-        var chart = this.chart;
         if (!this.context) {
             return;
         }
-        if (!chart) {
-            this.createChart();
-        }
+        this.createChart();
     };
     RmsCPKAnalyticsPanelCtrl.prototype.onRender = function () {
         if (this.context) {

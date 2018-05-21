@@ -36,6 +36,12 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
     this.chartID = 'chart-rms-cpk-' + this.panel.id;
     this.result = [];
     //this.series = [];
+    this.limit = {
+      "xmin": -1.0,
+      "xmax": +1.0,
+      "ymin": -1.0,
+      "ymax": +1.0
+    }
 
     this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
     this.events.on('render', this.onRender.bind(this));
@@ -70,7 +76,12 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
   onInitEditMode() {
   }
 
-  onDataReceived(dataList) {	
+  onDataReceived(dataList) {
+
+    if(dataList == null) {
+      return;
+    }
+
     var datapoints = [];
     for (let data of dataList) {
       for (let point of data.datapoints) {
@@ -82,10 +93,10 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
     datapoints.sort();
     var result = _.countBy(datapoints);
     //result = result.sort();
-    var xmin =+Object.keys(result)[0];
-    var xmax =+Object.keys(result)[0];
-    var ymin =result[Object.keys(result)[0]];
-    var ymax =result[Object.keys(result)[0]];
+    var xmin =+ Object.keys(result)[0];
+    var xmax =+ Object.keys(result)[0];
+    var ymin = result[Object.keys(result)[0]];
+    var ymax = result[Object.keys(result)[0]];
 
     for (var key in result) {
       if ( xmin > +key ) {
@@ -158,6 +169,9 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
       }
     });
 
+    if(this.chart) {
+      delete this.chart;
+    }
     this.chart = new this.Chart(this.context, {
       type: 'line',
       data: this.data,
@@ -266,7 +280,7 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
         responsive: true,
         title: {
           display: false,
-          text: 'CPK for MODEL ABC0001 (or INSPECTION ITEM - L/Current)'
+          text: 'CPK for MODEL'
         },
         maintainAspectRatio: false
       }

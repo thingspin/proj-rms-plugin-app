@@ -31,6 +31,7 @@
   "includes": [
     {"type": "menu", "name": "분석", "mainMenu": true,  "slug": "cpk-hyeonhwang", "img":"img/thignspin_ic_48dp_white-02.svg", "menuID": 0},
     {"type": "dashboard", "name": "CPK 현황", "path": "dashboards/D00-01.json", "AddToNav": true, "menuID": 0, "ico":"fa fa-industry"},
+    {"type": "dashboard", "name": "CPK 현황 (모델별)", "path": "dashboards/D00-01.1.json", "AddToNav": false, "menuID": 0, "ico":"fa fa-industry"},
     {"type": "dashboard", "name": "불량 현황", "path": "dashboards/D00-02.json", "AddToNav": true, "menuID": 0, "ico":"fa fa-industry"},
     {"type": "dashboard", "name": "설비 불량 현황", "path": "dashboards/D00-03.json", "AddToNav": true, "menuID": 0, "ico":"fa fa-industry"},
 
@@ -43,6 +44,7 @@
     {"type": "dashboard", "name": "검사항목 / 불량유형", "path": "panel/inspection-property/module.json", "defaultNav": true, "addToNav": true, "menuID": 2, "ico":"fa fa-industry"},
     {"type": "dashboard", "name": "사전조치 설정", "path": "panel/action-in-advance/module.json", "defaultNav": true, "addToNav": true, "menuID": 2, "ico":"fa fa-industry"},
     {"type": "dashboard", "name": "모델별 검사기록", "path": "dashboards/D02-01.json", "AddToNav": true, "menuID": 2, "ico":"fa fa-industry"},
+    {"type": "dashboard", "name": "모델별 검사기록 (상세)", "path": "dashboards/D02-01.1.json", "AddToNav": false, "menuID": 2, "ico":"fa fa-industry"},
 
     {"type": "menu", "name": "설비 현황", "mainMenu": true, "slug": "somopum-deungrog", "img":"img/thignspin_ic_48dp_white-06.svg", "menuID": 3},
     {"type": "dashboard", "name": "소모품 등록", "path": "dashboards/D03-01.json", "AddToNav": true, "menuID": 3, "ico":"fa fa-industry"},
