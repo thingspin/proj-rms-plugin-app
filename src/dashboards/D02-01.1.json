@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1526662038732,
+  "iteration": 1526885973231,
   "links": [
     {
       "icon": "external link",
@@ -629,6 +629,14 @@
                 ],
                 "type": "field"
               }
+            ],
+            [
+              {
+                "params": [
+                  "cpk"
+                ],
+                "type": "field"
+              }
             ]
           ],
           "tags": [
@@ -693,8 +701,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "AMPSRB70A20",
-          "value": "AMPSRB70A20"
+          "text": "AMPURB89D20",
+          "value": "AMPURB89D20"
         },
         "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
         "hide": 2,
@@ -716,9 +724,9 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
-          "text": "SOOSKIM02",
-          "value": "SOOSKIM02"
+          "selected": false,
+          "text": "SOOSKIM01",
+          "value": "SOOSKIM01"
         },
         "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
         "hide": 2,
@@ -741,8 +749,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "2",
-          "value": "2"
+          "text": "1",
+          "value": "1"
         },
         "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
         "hide": 2,
@@ -881,8 +889,8 @@
       },
       {
         "current": {
-          "text": "7ad5e424.8e1d3c",
-          "value": "7ad5e424.8e1d3c"
+          "text": "335f3893.bcabe8",
+          "value": "335f3893.bcabe8"
         },
         "hide": 2,
         "label": "상세항목",
@@ -923,5 +931,5 @@
   "timezone": "",
   "title": "모델별 검사기록 (상세)",
   "uid": "7cy0t97mz",
-  "version": 30
+  "version": 35
 }

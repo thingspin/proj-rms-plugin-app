@@ -2,7 +2,7 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:293",
+        "$$hashKey": "object:142",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1526662104638,
+  "iteration": 1526886307831,
   "links": [],
   "panels": [
     {
@@ -702,7 +702,23 @@
           "preserveFormat": false,
           "sanitize": true,
           "thresholds": [],
-          "type": "string",
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "",
+          "thresholds": [],
+          "type": "number",
           "unit": "short"
         },
         {
@@ -831,8 +847,9 @@
     "list": [
       {
         "current": {
-          "text": "RMS-BRANCH-INFLUXDB(V1.0)",
-          "value": "RMS-BRANCH-INFLUXDB(V1.0)"
+          "selected": false,
+          "text": "RMS-CENTER-INFLUXDB(V1.0)",
+          "value": "RMS-CENTER-INFLUXDB(V1.0)"
         },
         "hide": 0,
         "label": "본사/지점 선택",
@@ -846,6 +863,7 @@
       {
         "allValue": null,
         "current": {
+          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -869,8 +887,9 @@
       {
         "allValue": null,
         "current": {
-          "text": "SOOSKIM02",
-          "value": "SOOSKIM02"
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
         "hide": 0,
@@ -892,6 +911,7 @@
       {
         "allValue": null,
         "current": {
+          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -916,7 +936,6 @@
         "allValue": null,
         "current": {
           "selected": true,
-          "tags": [],
           "text": "All",
           "value": "$__all"
         },
@@ -950,6 +969,7 @@
         "auto_count": 30,
         "auto_min": "1s",
         "current": {
+          "selected": true,
           "text": "auto",
           "value": "$__auto_interval_INTERVAL"
         },
@@ -1067,5 +1087,5 @@
   "timezone": "",
   "title": "모델별 검사기록",
   "uid": "rAgfpx7iz",
-  "version": 95
+  "version": 102
 }
