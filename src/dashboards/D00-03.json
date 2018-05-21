@@ -30,10 +30,10 @@
       }
     ]
   },
-  "editable": false,
+  "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1526915878931,
+  "iteration": 1526918892166,
   "links": [
     {
       "icon": "external link",
@@ -429,26 +429,389 @@
       "show": "current",
       "sortOrder": 1,
       "stateFilter": [
-        "alerting"
+        "alerting",
+        "ok",
+        "paused",
+        "no_data",
+        "execution_error"
       ],
       "title": "알람 목록",
       "transparent": false,
       "type": "alertlist"
     },
     {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 7
+      },
+      "id": 20,
+      "panels": [],
+      "title": "검사기별 연속불량",
+      "type": "row"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#299c46",
+        "rgba(237, 129, 40, 0.89)",
+        "#d44a3a"
+      ],
+      "datasource": "$DATABASE",
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": true,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 8,
+        "x": 0,
+        "y": 8
+      },
+      "id": 22,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "minSpan": 4,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": "FACILITY",
+      "repeatDirection": "h",
+      "scopedVars": {
+        "FACILITY": {
+          "selected": false,
+          "text": "SOOSKIM01",
+          "value": "SOOSKIM01"
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": true,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": true
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "alias": "CNT",
+          "groupBy": [],
+          "measurement": "/^alram.continuous.failures.detail-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "cpk"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "facility",
+              "operator": "=~",
+              "value": "/^$FACILITY$/"
+            }
+          ]
+        }
+      ],
+      "thresholds": "30,60",
+      "title": "$FACILITY",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "avg"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#299c46",
+        "rgba(237, 129, 40, 0.89)",
+        "#d44a3a"
+      ],
+      "datasource": "$DATABASE",
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": true,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 8,
+        "x": 8,
+        "y": 8
+      },
+      "id": 23,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "minSpan": 4,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1526918892166,
+      "repeatPanelId": 22,
+      "scopedVars": {
+        "FACILITY": {
+          "selected": false,
+          "text": "SOOSKIM02",
+          "value": "SOOSKIM02"
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": true,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": true
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "alias": "CNT",
+          "groupBy": [],
+          "measurement": "/^alram.continuous.failures.detail-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "cpk"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "facility",
+              "operator": "=~",
+              "value": "/^$FACILITY$/"
+            }
+          ]
+        }
+      ],
+      "thresholds": "30,60",
+      "title": "$FACILITY",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "avg"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#299c46",
+        "rgba(237, 129, 40, 0.89)",
+        "#d44a3a"
+      ],
+      "datasource": "$DATABASE",
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": true,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 8,
+        "x": 16,
+        "y": 8
+      },
+      "id": 24,
+      "interval": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "minSpan": 4,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "repeat": null,
+      "repeatDirection": "h",
+      "repeatIteration": 1526918892166,
+      "repeatPanelId": 22,
+      "scopedVars": {
+        "FACILITY": {
+          "selected": false,
+          "text": "SOOSKIM03",
+          "value": "SOOSKIM03"
+        }
+      },
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": true,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": true
+      },
+      "tableColumn": "",
+      "targets": [
+        {
+          "alias": "CNT",
+          "groupBy": [],
+          "measurement": "/^alram.continuous.failures.detail-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "cpk"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "facility",
+              "operator": "=~",
+              "value": "/^$FACILITY$/"
+            }
+          ]
+        }
+      ],
+      "thresholds": "30,60",
+      "title": "$FACILITY",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "N/A",
+          "value": "null"
+        }
+      ],
+      "valueName": "avg"
+    },
+    {
       "columns": [],
       "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
       "fontSize": "80%",
       "gridPos": {
-        "h": 12,
+        "h": 10,
         "w": 8,
         "x": 0,
-        "y": 7
+        "y": 13
       },
       "id": 4,
       "links": [],
       "minSpan": 4,
-      "pageSize": null,
+      "pageSize": 10,
       "repeat": "FACILITY",
       "repeatDirection": "h",
       "scopedVars": {
@@ -467,7 +830,7 @@
       "styles": [
         {
           "alias": "Time",
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "dateFormat": "MM/DD HH:mm",
           "pattern": "Time",
           "type": "date"
         },
@@ -699,18 +1062,18 @@
       "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
       "fontSize": "80%",
       "gridPos": {
-        "h": 12,
+        "h": 10,
         "w": 8,
         "x": 8,
-        "y": 7
+        "y": 13
       },
-      "id": 17,
+      "id": 25,
       "links": [],
       "minSpan": 4,
-      "pageSize": null,
+      "pageSize": 10,
       "repeat": null,
       "repeatDirection": "h",
-      "repeatIteration": 1526915878931,
+      "repeatIteration": 1526918892166,
       "repeatPanelId": 4,
       "scopedVars": {
         "FACILITY": {
@@ -728,7 +1091,7 @@
       "styles": [
         {
           "alias": "Time",
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "dateFormat": "MM/DD HH:mm",
           "pattern": "Time",
           "type": "date"
         },
@@ -960,18 +1323,18 @@
       "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
       "fontSize": "80%",
       "gridPos": {
-        "h": 12,
+        "h": 10,
         "w": 8,
         "x": 16,
-        "y": 7
+        "y": 13
       },
-      "id": 18,
+      "id": 26,
       "links": [],
       "minSpan": 4,
-      "pageSize": null,
+      "pageSize": 10,
       "repeat": null,
       "repeatDirection": "h",
-      "repeatIteration": 1526915878931,
+      "repeatIteration": 1526918892166,
       "repeatPanelId": 4,
       "scopedVars": {
         "FACILITY": {
@@ -989,7 +1352,7 @@
       "styles": [
         {
           "alias": "Time",
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "dateFormat": "MM/DD HH:mm",
           "pattern": "Time",
           "type": "date"
         },
@@ -1222,7 +1585,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 19
+        "y": 23
       },
       "id": 14,
       "panels": [
@@ -1272,7 +1635,7 @@
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 20
+            "y": 24
           },
           "id": 16,
           "legend": {
@@ -1334,6 +1697,12 @@
                   {
                     "params": [],
                     "type": "cumulative_sum"
+                  },
+                  {
+                    "params": [
+                      "A"
+                    ],
+                    "type": "alias"
                   }
                 ]
               ],
@@ -1405,6 +1774,7 @@
     "list": [
       {
         "current": {
+          "selected": true,
           "text": "RMS-CENTER-INFLUXDB(V1.0)",
           "value": "RMS-CENTER-INFLUXDB(V1.0)"
         },
@@ -1420,6 +1790,7 @@
       {
         "allValue": null,
         "current": {
+          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -1443,6 +1814,7 @@
       {
         "allValue": null,
         "current": {
+          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -1484,5 +1856,5 @@
   "timezone": "",
   "title": "설비 불량 현황",
   "uid": "iXsJMQniz",
-  "version": 106
+  "version": 116
 }
