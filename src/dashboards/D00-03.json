@@ -33,7 +33,7 @@
   "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1526914937110,
+  "iteration": 1526915878931,
   "links": [
     {
       "icon": "external link",
@@ -704,13 +704,13 @@
         "x": 8,
         "y": 7
       },
-      "id": 11,
+      "id": 17,
       "links": [],
       "minSpan": 4,
       "pageSize": null,
       "repeat": null,
       "repeatDirection": "h",
-      "repeatIteration": 1526914937110,
+      "repeatIteration": 1526915878931,
       "repeatPanelId": 4,
       "scopedVars": {
         "FACILITY": {
@@ -965,13 +965,13 @@
         "x": 16,
         "y": 7
       },
-      "id": 12,
+      "id": 18,
       "links": [],
       "minSpan": 4,
       "pageSize": null,
       "repeat": null,
       "repeatDirection": "h",
-      "repeatIteration": 1526914937110,
+      "repeatIteration": 1526915878931,
       "repeatPanelId": 4,
       "scopedVars": {
         "FACILITY": {
@@ -1215,6 +1215,184 @@
       "title": "검사기 ($FACILITY : $CHANNEL)에서의 연속불량 검출 이력",
       "transform": "timeseries_to_columns",
       "type": "table"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 19
+      },
+      "id": 14,
+      "panels": [
+        {
+          "alert": {
+            "conditions": [
+              {
+                "evaluator": {
+                  "params": [
+                    4
+                  ],
+                  "type": "gt"
+                },
+                "operator": {
+                  "type": "and"
+                },
+                "query": {
+                  "params": [
+                    "A",
+                    "10m",
+                    "now"
+                  ]
+                },
+                "reducer": {
+                  "params": [],
+                  "type": "sum"
+                },
+                "type": "query"
+              }
+            ],
+            "executionErrorState": "alerting",
+            "frequency": "5s",
+            "handler": 1,
+            "name": "(알람) 연속불량 검출 수",
+            "noDataState": "no_data",
+            "notifications": []
+          },
+          "aliasColors": {
+            "COUNT": "#052b51"
+          },
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+          "fill": 1,
+          "gridPos": {
+            "h": 7,
+            "w": 24,
+            "x": 0,
+            "y": 20
+          },
+          "id": 16,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "repeat": null,
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "COUNT",
+              "groupBy": [
+                {
+                  "params": [
+                    "10m"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "0"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "measurement": "/^alram.continuous.failures.detail-*/",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "cpk"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "count"
+                  },
+                  {
+                    "params": [],
+                    "type": "cumulative_sum"
+                  }
+                ]
+              ],
+              "tags": []
+            }
+          ],
+          "thresholds": [
+            {
+              "colorMode": "critical",
+              "fill": true,
+              "line": true,
+              "op": "gt",
+              "value": 4
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "(알람) 연속불량 검출 수",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 0,
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        }
+      ],
+      "repeat": null,
+      "title": "알람",
+      "type": "row"
     }
   ],
   "refresh": "1s",
@@ -1227,7 +1405,6 @@
     "list": [
       {
         "current": {
-          "selected": true,
           "text": "RMS-CENTER-INFLUXDB(V1.0)",
           "value": "RMS-CENTER-INFLUXDB(V1.0)"
         },
@@ -1243,7 +1420,6 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -1267,7 +1443,6 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -1291,7 +1466,7 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now/d",
     "to": "now"
   },
   "timepicker": {
@@ -1309,5 +1484,5 @@
   "timezone": "",
   "title": "설비 불량 현황",
   "uid": "iXsJMQniz",
-  "version": 100
+  "version": 106
 }
