@@ -2,7 +2,7 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:144",
+        "$$hashKey": "object:1447",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1526897525682,
+  "iteration": 1526916954004,
   "links": [
     {
       "icon": "external link",
@@ -371,6 +371,7 @@
         {
           "alias": "$col",
           "groupBy": [],
+          "limit": "2000",
           "measurement": "/^inspection.detail-*/",
           "orderByTime": "ASC",
           "policy": "default",
@@ -442,6 +443,14 @@
                 ],
                 "type": "field"
               }
+            ],
+            [
+              {
+                "params": [
+                  "inm"
+                ],
+                "type": "field"
+              }
             ]
           ],
           "tags": [
@@ -458,15 +467,15 @@
             },
             {
               "condition": "AND",
-              "key": "iid",
-              "operator": "=~",
-              "value": "/^$INSPPROP$/"
-            },
-            {
-              "condition": "AND",
               "key": "model",
               "operator": "=~",
               "value": "/^$MODEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "iid",
+              "operator": "=~",
+              "value": "/^$INSPPROP$/"
             }
           ]
         }
@@ -501,30 +510,7 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
-          "text": "12",
-          "value": "12"
-        },
-        "datasource": "$DATABASE",
-        "hide": 2,
-        "includeAll": false,
-        "label": null,
-        "multi": false,
-        "name": "INSPPROP",
-        "options": [],
-        "query": "show tag values from /inspection.detail-*/ with key=iid",
-        "refresh": 1,
-        "regex": "",
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": null,
-        "current": {
+          "tags": [],
           "text": "IR KEY",
           "value": "IR KEY"
         },
@@ -535,7 +521,7 @@
         "multi": false,
         "name": "INSPPROP_NAME",
         "options": [],
-        "query": "SELECT NAME FROM t_inspection_property WHERE IDX = $INSPPROP",
+        "query": "SELECT NAME FROM t_inspection_property WHERE IDX <> 0;",
         "refresh": 1,
         "regex": "",
         "sort": 0,
@@ -548,9 +534,31 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
-          "text": "SOOSKIM02",
-          "value": "SOOSKIM02"
+          "text": "12",
+          "value": "12"
+        },
+        "datasource": "REMOTESOLUTIONS(V1.0)",
+        "hide": 2,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "INSPPROP",
+        "options": [],
+        "query": "SELECT IDX FROM t_inspection_property WHERE NAME IN (\"$INSPPROP_NAME\");",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
         "hide": 0,
@@ -572,9 +580,8 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
-          "text": "2",
-          "value": "2"
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
         "hide": 0,
@@ -596,9 +603,8 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
-          "text": "ASPSRB45U22",
-          "value": "ASPSRB45U22"
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
         "hide": 0,
@@ -643,5 +649,5 @@
   "timezone": "",
   "title": "검사항목별 검사기록 (상세)",
   "uid": "yFLCxZ4ik",
-  "version": 20
+  "version": 29
 }
