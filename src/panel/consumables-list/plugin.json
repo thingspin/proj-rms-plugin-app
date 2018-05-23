@@ -1,0 +1,13 @@
+{
+  "type": "panel",
+  "name": "(RMS)Consumables List",
+  "id": "rms-consumables-list",
+
+  "info": {
+    "description": "Asset management : Company",
+    "author": {
+      "name": "jiwoong@thingspin.io",
+      "url": "http://thingspin.io"
+    }
+  }
+}
