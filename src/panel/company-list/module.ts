@@ -21,6 +21,7 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
   static template = template;
 
   dsSrv: any;
+  alertSrv: any;
   $rootScope: any;
   $scope: any;
 
@@ -64,7 +65,7 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
     }
   };
 
-  constructor($rootScope, $scope, $injector, rsDsSrv) {
+  constructor($rootScope, $scope, $injector, rsDsSrv, alertSrv) {
     super($scope, $injector);
 
     _.defaults(this.panel, this.panelDefaults);
@@ -72,6 +73,7 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
     this.panel.inputlItem.business_id = -1;
 
     this.dsSrv = rsDsSrv;
+    this.alertSrv = alertSrv;
     this.$rootScope = $rootScope;
     this.$scope = $scope;
 
@@ -213,64 +215,95 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
   };
 
   onNew() {
-    // TODO ! - call database inasert/update query.
-    //console.log("New SQL");  
 
-    // var check = false;
-    // {
-    //   let info = this.panel.inputlItem;        
-    //   let selectId = this.datasource.id;
+    let info = this.panel.inputlItem; 
 
-    //   let query = [
-    //     'select  into t_business(business_type, name, phone, person, mail, memo) values("'
-    //     + info.business_type + '", "' + info.name + '", "' + info.phone + '", "' + info.person + '", "' +  info.mail + '", "' +  info.memo + '");'
-    //   ];       
-    //   //console.log(selectId + " " + query);
+    // console.log(info.name);
+    // console.log(info.person);
+    // console.log(info.mail);
+    // console.log(info.phone);
 
-    //   this.dsSrv.query(selectId, query).then( result => {
-    //     this.$scope.inspectionName = "";
-    //     this.panel.inputlItem.business_id = -1;
-    //     this.$rootScope.$broadcast('refresh');
-    //   }).catch( err => {
-    //     console.error(err);
-    //   });   
-    // }
-
-
-    this.$rootScope.appEvent('confirm-modal', {
-      title: '등록',
-      text: '정말로 등록 하시겠습니까?',
-      //icon: 'fa-trash',
-      //yesText: '삭제',
-      onConfirm: () => {
-
-        let info = this.panel.inputlItem;        
-        // console.log(info.name);  
-        // console.log(info.business_type);  
-        // console.log(info.phone);  
-        // console.log(info.person);  
-        // console.log(info.mail);  
-        // console.log(info.memo);  
-
-        let selectId = this.datasource.id;
-        let query = [
-          'insert into t_business(business_type, name, phone, person, mail, memo) values("'
-          + info.business_type + '", "' + info.name + '", "' + info.phone + '", "' + info.person + '", "' +  info.mail + '", "' +  info.memo + '");'
-        ];       
-        //console.log(selectId + " " + query);
-
-        this.dsSrv.query(selectId, query).then( result => {
-          this.$scope.inspectionName = "";
-          this.panel.inputlItem.business_id = -1;
-          this.$rootScope.$broadcast('refresh');
-        }).catch( err => {
-          console.error(err);
-        });    
-
-        console.log("select business_id: " + this.panel.inputlItem.business_id);
-
-      }
-    });    
+    if (info.name == "" 
+      || info.person == ""
+      || info.mail == ""
+      || info.phone == "" ) {
+      this.alertSrv.set("입력 정보를 확인해 주세요", 'error', 5000);
+    }
+    else
+    {
+      this.$rootScope.appEvent('confirm-modal', {
+        title: '등록',
+        text: '정말로 등록 하시겠습니까?',
+        //icon: 'fa-trash',
+        //yesText: '삭제',
+        onConfirm: () => {
+            
+          let selectId = this.datasource.id;
+          let query1 = [
+            'select * from t_business where business_type="' 
+            + info.business_type + '" and name="' + info.name + '" and person="' + info.person + '";'
+          ];     
+  
+          //console.log(selectId + " " + query);
+          this.dsSrv.query(selectId, query1).then( result => {
+            var data = result[0];
+            //console.log("data rows: " + data.rows.length);  
+            if(data.rows.length == 0)
+            {
+  
+              let query2 = [
+                'insert into t_business(business_type, name, phone, person, mail, memo) values("'
+                + info.business_type + '", "' + info.name + '", "' + info.phone + '", "' + info.person + '", "' +  info.mail + '", "' +  info.memo + '");'
+              ]; 
+  
+              this.dsSrv.query(selectId, query2).then( result => {            
+                this.panel.inputlItem.business_id = -1;
+                this.$rootScope.$broadcast('refresh');
+              }).catch( err => {
+                console.error(err);
+              }); 
+            } 
+            else
+            {
+              this.alertSrv.set("이미 등록 되어있습니다.", 'error', 5000);
+            }
+  
+          }).catch( err => {
+            console.error(err);
+          });  
+  
+          // {
+          //   let query = [
+          //     'insert into t_business(business_type, name, phone, person, mail, memo) values("'
+          //     + info.business_type + '", "' + info.name + '", "' + info.phone + '", "' + info.person + '", "' +  info.mail + '", "' +  info.memo + '");'
+          //   ];       
+    
+          //   // let query = [
+          //   //   'insert into t_business(business_type, name, phone, person, mail, memo) select "'
+          //   //   + info.business_type + '", "' 
+          //   //   + info.name + '", "' 
+          //   //   + info.phone + '", "' 
+          //   //   + info.person + '", "' 
+          //   //   +  info.mail + '", "' 
+          //   //   +  info.memo + '" from dual where not exists(select * from t_business where business_type="'
+          //   //                                               + info.business_type + '" and name="'
+          //   //                                               + info.name + '" and person="'
+          //   //                                               + info.person + '")'
+          //   // ];       
+    
+          //   console.log(selectId + " " + query);
+    
+          //   this.dsSrv.query(selectId, query).then( result => {            
+          //     this.panel.inputlItem.business_id = -1;
+          //     this.$rootScope.$broadcast('refresh');
+          //   }).catch( err => {
+          //     console.error(err);
+          //   });   
+          // }
+          //console.log("select business_id: " + this.panel.inputlItem.business_id);
+        }
+      });
+    }        
   };
 
   onEdit() {    
@@ -299,7 +332,6 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
           console.log(selectId + " " + query);
     
           this.dsSrv.query(selectId, query).then( result => {
-            this.$scope.inspectionName = "";
             this.panel.inputlItem.business_id = -1;
             this.$rootScope.$broadcast('refresh');
           }).catch( err => {
@@ -311,7 +343,7 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
 
     }
     else{
-      alert("Row select please...");
+      this.alertSrv.set("테이블의 Row를 선택해 주세요", 'error', 5000);
     }    
 
   };
@@ -335,7 +367,6 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
           console.log(selectId + " " + query);
 
           this.dsSrv.query(selectId, query).then( result => {
-            this.$scope.inspectionName = "";
             this.panel.inputlItem.business_id = -1;
             this.$rootScope.$broadcast('refresh');
           }).catch( err => {
@@ -345,7 +376,7 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
       });
     }
     else{
-      alert("Row select please...");
+      this.alertSrv.set("테이블의 Row를 선택해 주세요", 'error', 5000);
     }
   };
 }
