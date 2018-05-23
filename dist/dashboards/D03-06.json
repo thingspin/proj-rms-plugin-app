@@ -2,7 +2,7 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:280",
+        "$$hashKey": "object:133",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -13,16 +13,16 @@
       }
     ]
   },
-  "editable": true,
+  "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1526536234033,
+  "iteration": 1527067243901,
   "links": [],
   "panels": [
     {
       "columns": [],
       "datasource": "REMOTESOLUTIONS(V1.0)",
-      "fontSize": "100%",
+      "fontSize": "80%",
       "gridPos": {
         "h": 17,
         "w": 24,
@@ -55,6 +55,9 @@
           ],
           "dateFormat": "YYYY-MM-DD HH:mm:ss",
           "decimals": 2,
+          "link": true,
+          "linkTooltip": "$__cell_0 검사기록 조회",
+          "linkUrl": "/d/rAgfpx7iz?var-MODEL=$__cell_0&var-FACILITY=All&var-CHANNEL=All",
           "mappingType": 1,
           "pattern": "REGDATE",
           "thresholds": [],
@@ -76,6 +79,25 @@
           "linkUrl": "/d/rAgfpx7iz?var-MODEL=$__cell_0&var-FACILITY=All&var-CHANNEL=All",
           "mappingType": 1,
           "pattern": "MODEL",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "link": true,
+          "linkTooltip": "$__cell_0 검사기록 조회",
+          "linkUrl": "/d/rAgfpx7iz?var-MODEL=$__cell_0&var-FACILITY=All&var-CHANNEL=All",
+          "mappingType": 1,
+          "pattern": "DESCRIPTION",
           "thresholds": [],
           "type": "string",
           "unit": "short"
@@ -160,7 +182,7 @@
         "multi": true,
         "name": "MODEL",
         "options": [],
-        "query": "select MODEL_ID from t_model",
+        "query": "select MODEL_ID from t_model WHERE MODEL_ID <> \"*\"",
         "refresh": 1,
         "regex": "",
         "sort": 0,
@@ -204,5 +226,5 @@
   "timezone": "",
   "title": "제품 모델 정보",
   "uid": "z_4Bcy7ik",
-  "version": 13
+  "version": 18
 }
