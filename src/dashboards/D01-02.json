@@ -1,6 +1,15 @@
 {
   "annotations": {
     "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Simulator --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
     ]
   },
   "editable": true,
@@ -11,24 +20,9 @@
     {
       "datasource": null,
       "gridPos": {
-        "h": 6,
-        "w": 10,
+        "h": 12,
+        "w": 24,
         "x": 0,
-        "y": 0
-      },
-      "id": 4,
-      "targets": [
-        {}
-      ],
-      "title": "",
-      "type": "rms-plugin-app-p002"
-    },
-    {
-      "datasource": null,
-      "gridPos": {
-        "h": 6,
-        "w": 14,
-        "x": 10,
         "y": 0
       },
       "id": 10,
@@ -43,21 +37,6 @@
       "title": "",
       "transparent": false,
       "type": "rms-monitor-factory"
-    },
-    {
-      "datasource": null,
-      "gridPos": {
-        "h": 9,
-        "w": 24,
-        "x": 0,
-        "y": 6
-      },
-      "id": 6,
-      "targets": [
-        {}
-      ],
-      "title": "",
-      "type": "rms-plugin-app-p002"
     }
   ],
   "schemaVersion": 16,
@@ -98,5 +77,6 @@
   },
   "timezone": "",
   "title": "설비 감시",
-  "version": 6
+  "uid": "TtgBtb7mz",
+  "version": 37
 }
