@@ -2,7 +2,7 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:148",
+        "$$hashKey": "object:150",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1526905206052,
+  "iteration": 1527060965014,
   "links": [
     {
       "icon": "external link",
@@ -48,8 +48,8 @@
         "thresholdMarkers": true
       },
       "gridPos": {
-        "h": 3,
-        "w": 7,
+        "h": 6,
+        "w": 3,
         "x": 0,
         "y": 0
       },
@@ -103,18 +103,144 @@
       "valueName": "avg"
     },
     {
-      "content": "검사항목: $INSPPROP_NAME [ID:$INSPPROP] <BR/>\n검사기: $FACILITY<BR/>\n채널: $CHANNEL<BR/>",
+      "aliasColors": {},
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "fill": 1,
       "gridPos": {
-        "h": 3,
-        "w": 5,
-        "x": 7,
+        "h": 6,
+        "w": 9,
+        "x": 3,
         "y": 0
       },
-      "id": 8,
+      "id": 6,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": false,
+        "total": false,
+        "values": false
+      },
+      "lines": false,
+      "linewidth": 1,
       "links": [],
-      "mode": "html",
-      "title": "",
-      "type": "text"
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "/^inspection.detail-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"val\") AS \"val\" FROM /^inspection.detail-*/ WHERE (\"model\" =~ /^$MODEL$/ AND \"facility\" =~ /^$FACILITY$/ AND \"channel\" =~ /^$CHANNEL$/ AND \"iid\" =~ /^$INSPPROP_ID$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": false,
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "val"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "iid",
+              "operator": "=~",
+              "value": "/^$INSPPROP$/"
+            },
+            {
+              "condition": "AND",
+              "key": "facility",
+              "operator": "=~",
+              "value": "/^$FACILITY$/"
+            },
+            {
+              "condition": "AND",
+              "key": "channel",
+              "operator": "=~",
+              "value": "/^$CHANNEL$/"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "측정값 분포도",
+      "tooltip": {
+        "shared": false,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "histogram",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 2,
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
@@ -138,7 +264,7 @@
             },
             {
               "params": [
-                "null"
+                "none"
               ],
               "type": "fill"
             }
@@ -237,146 +363,6 @@
       "type": "rms-plugin-app-cpk-01"
     },
     {
-      "aliasColors": {},
-      "bars": true,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
-      "fill": 1,
-      "gridPos": {
-        "h": 7,
-        "w": 12,
-        "x": 0,
-        "y": 3
-      },
-      "id": 6,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": false,
-        "total": false,
-        "values": false
-      },
-      "lines": false,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "percentage": false,
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "/^inspection.detail-*/",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT mean(\"val\") AS \"val\" FROM /^inspection.detail-*/ WHERE (\"model\" =~ /^$MODEL$/ AND \"facility\" =~ /^$FACILITY$/ AND \"channel\" =~ /^$CHANNEL$/ AND \"iid\" =~ /^$INSPPROP_ID$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": false,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "val"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "model",
-              "operator": "=~",
-              "value": "/^$MODEL$/"
-            },
-            {
-              "condition": "AND",
-              "key": "iid",
-              "operator": "=~",
-              "value": "/^$INSPPROP$/"
-            },
-            {
-              "condition": "AND",
-              "key": "facility",
-              "operator": "=~",
-              "value": "/^$FACILITY$/"
-            },
-            {
-              "condition": "AND",
-              "key": "channel",
-              "operator": "=~",
-              "value": "/^$CHANNEL$/"
-            }
-          ]
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "측정값 분포도",
-      "tooltip": {
-        "shared": false,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "histogram",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 2,
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
       "aliasColors": {
         "A-series": "#052b51"
       },
@@ -386,10 +372,10 @@
       "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
       "fill": 0,
       "gridPos": {
-        "h": 6,
+        "h": 10,
         "w": 12,
         "x": 0,
-        "y": 10
+        "y": 6
       },
       "hideTimeOverride": true,
       "id": 11,
@@ -437,7 +423,7 @@
             },
             {
               "params": [
-                "null"
+                "none"
               ],
               "type": "fill"
             }
@@ -613,64 +599,36 @@
       }
     },
     {
-      "alert": {
-        "conditions": [
-          {
-            "evaluator": {
-              "params": [
-                -2.5,
-                2.5
-              ],
-              "type": "outside_range"
-            },
-            "operator": {
-              "type": "and"
-            },
-            "query": {
-              "params": [
-                "D",
-                "5m",
-                "now"
-              ]
-            },
-            "reducer": {
-              "params": [],
-              "type": "avg"
-            },
-            "type": "query"
-          }
-        ],
-        "executionErrorState": "alerting",
-        "frequency": "60s",
-        "handler": 1,
-        "name": "알림",
-        "noDataState": "no_data",
-        "notifications": []
-      },
       "aliasColors": {
-        "A-series": "#052b51",
-        "L/Current": "#052b51"
+        "lsl": "#bf1b00",
+        "ucl": "#2f575e",
+        "uls": "#0a437c",
+        "usl": "#890f02",
+        "xaverage": "#bf1b00",
+        "xbar": "#f2c96d"
       },
       "bars": false,
       "dashLength": 10,
       "dashes": false,
       "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "decimals": 2,
+      "enableScript": true,
       "fill": 0,
       "gridPos": {
-        "h": 8,
+        "h": 5,
         "w": 24,
         "x": 0,
         "y": 16
       },
-      "hideTimeOverride": true,
-      "id": 10,
+      "id": 17,
+      "kernel": "python",
       "legend": {
-        "alignAsTable": false,
+        "alignAsTable": true,
         "avg": true,
-        "current": false,
+        "current": true,
         "max": true,
         "min": true,
-        "rightSide": false,
+        "rightSide": true,
         "show": true,
         "total": false,
         "values": true
@@ -678,20 +636,24 @@
       "lines": true,
       "linewidth": 1,
       "links": [],
-      "minSpan": 3,
       "nullPointMode": "null",
       "percentage": false,
-      "pointradius": 1,
+      "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "repeat": "INSPPC",
-      "repeatDirection": "v",
+      "scripts": "import scipy\nimport math\n\nx = [xbar]\nn = len(x)\n\nmax = [rmax]\nmin = [rmin]\n\nr = []\nfor i in  range(len(max)):\n    r.append(max[i]-min[i])\n\n# 표본 평균\nxaverage = scipy.mean(x) \n\n#범위평균\nraverage = scipy.mean(r)\n\n#D2\n#d2 = 3.4873 + 0.0250141 * n - 0.00009823 * n * n\nd2 = 4.498\n#A2\na2 = 3/(d2*math.sqrt(n))\n\n#관리상한선\nucl =  xaverage + a2 * raverage\nlcl = xaverage - a2 * raverage\n \nucl_list = [ucl] * len(x)\nlcl_list = [lcl] * len(x)\nxaverage_list = [xaverage] * len(x)\nd2 = [d2]*len(x)\n\nv = {\"xbar\":x,\"lcl\":lcl_list ,\"ucl\":ucl_list,\"xaverage\":xaverage_list}\nimport json\nprint(json.dumps(v))",
       "seriesOverrides": [
         {
-          "alias": "MAX",
-          "bars": false,
-          "fill": 7,
-          "lines": true
+          "alias": "xaverage",
+          "dashes": true
+        },
+        {
+          "alias": "lcl",
+          "linewidth": 3
+        },
+        {
+          "alias": "ucl",
+          "linewidth": 3
         }
       ],
       "spaceLength": 10,
@@ -699,37 +661,79 @@
       "steppedLine": false,
       "targets": [
         {
-          "alias": "$col ($tag_facility:CH$tag_channel)",
+          "alias": "$col",
           "groupBy": [
             {
               "params": [
-                "facility"
+                "1s"
               ],
-              "type": "tag"
+              "type": "time"
             },
             {
               "params": [
-                "channel"
+                "none"
               ],
-              "type": "tag"
+              "type": "fill"
             }
           ],
           "measurement": "/^inspection.detail-*/",
           "orderByTime": "ASC",
           "policy": "default",
-          "refId": "D",
+          "query": "SELECT mean(\"IR2\") AS \"xbar\" FROM \"tblTrend-2018.01\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": false,
+          "refId": "A",
           "resultFormat": "time_series",
           "select": [
             [
               {
                 "params": [
-                  "cpk"
+                  "val"
                 ],
                 "type": "field"
               },
               {
+                "params": [],
+                "type": "mean"
+              },
+              {
                 "params": [
-                  "$INSPPROP_NAME"
+                  "xbar"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "val"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "max"
+              },
+              {
+                "params": [
+                  "rmax"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "val"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "min"
+              },
+              {
+                "params": [
+                  "rmin"
                 ],
                 "type": "alias"
               }
@@ -737,9 +741,9 @@
           ],
           "tags": [
             {
-              "key": "model",
+              "key": "iid",
               "operator": "=~",
-              "value": "/^$MODEL$/"
+              "value": "/^$INSPPROP$/"
             },
             {
               "condition": "AND",
@@ -755,32 +759,17 @@
             },
             {
               "condition": "AND",
-              "key": "iid",
+              "key": "model",
               "operator": "=~",
-              "value": "/^$INSPPROP$/"
+              "value": "/^$MODEL$/"
             }
           ]
         }
       ],
-      "thresholds": [
-        {
-          "colorMode": "critical",
-          "fill": true,
-          "line": true,
-          "op": "lt",
-          "value": -2.5
-        },
-        {
-          "colorMode": "critical",
-          "fill": true,
-          "line": true,
-          "op": "gt",
-          "value": 2.5
-        }
-      ],
+      "thresholds": [],
       "timeFrom": null,
       "timeShift": null,
-      "title": "CPK Trend of $INSPPROP_NAME at $FACILITY CH$CHANNEL",
+      "title": "Xbar Chart",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -796,9 +785,193 @@
       },
       "yaxes": [
         {
-          "decimals": 1,
           "format": "locale",
-          "label": "Mesaurement",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "locale",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {
+        "raverage": "#e24d42",
+        "ucl": "#3f2b5b"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "decimals": 2,
+      "enableScript": true,
+      "fill": 1,
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 21
+      },
+      "id": 15,
+      "kernel": "python",
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
+        "rightSide": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "scripts": "import scipy\n\nmax = [rmax]\nmin = [rmin]\nn = len(max)\n\nr = []\nfor i in  range(len(max)):\n    r.append(max[i]-min[i])\n\n#범위평균\nraverage = scipy.mean(r)\n\nd4 = 1.541\n\n# 하한선\nucl = d4 * raverage\nlcl = 0\n\nucl_list = [ucl] * n\nlcl_list = [lcl] * n\nraverage_list = [raverage] * n\n\nv = {\"R\":r,\"lcl\":lcl_list ,\"ucl\":ucl_list,\"average\":raverage_list }\nimport json\nprint(json.dumps(v))",
+      "seriesOverrides": [
+        {
+          "alias": "raverage",
+          "dashes": true
+        },
+        {
+          "alias": "lcl",
+          "linewidth": 3
+        },
+        {
+          "alias": "ucl",
+          "linewidth": 3
+        },
+        {}
+      ],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "$col",
+          "groupBy": [
+            {
+              "params": [
+                "1s"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "none"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "/^inspection.detail-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "val"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "max"
+              },
+              {
+                "params": [
+                  "rmax"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "val"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "min"
+              },
+              {
+                "params": [
+                  "rmin"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "iid",
+              "operator": "=~",
+              "value": "/^$INSPPROP$/"
+            },
+            {
+              "condition": "AND",
+              "key": "facility",
+              "operator": "=~",
+              "value": "/^$FACILITY$/"
+            },
+            {
+              "condition": "AND",
+              "key": "channel",
+              "operator": "=~",
+              "value": "/^$CHANNEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            }
+          ]
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "R Chart",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
           "logBase": 1,
           "max": null,
           "min": null,
@@ -810,7 +983,7 @@
           "logBase": 1,
           "max": null,
           "min": null,
-          "show": false
+          "show": true
         }
       ],
       "yaxis": {
@@ -819,7 +992,6 @@
       }
     }
   ],
-  "refresh": "5s",
   "schemaVersion": 16,
   "style": "light",
   "tags": [
@@ -830,8 +1002,9 @@
       {
         "allValue": null,
         "current": {
-          "text": "IR/Current",
-          "value": "IR/Current"
+          "selected": true,
+          "text": "L/Current",
+          "value": "L/Current"
         },
         "datasource": "REMOTESOLUTIONS(V1.0)",
         "hide": 0,
@@ -853,8 +1026,9 @@
       {
         "allValue": null,
         "current": {
-          "text": "2",
-          "value": "2"
+          "selected": true,
+          "text": "1",
+          "value": "1"
         },
         "datasource": "REMOTESOLUTIONS(V1.0)",
         "hide": 2,
@@ -876,6 +1050,7 @@
       {
         "allValue": null,
         "current": {
+          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -899,6 +1074,7 @@
       {
         "allValue": null,
         "current": {
+          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -922,6 +1098,7 @@
       {
         "allValue": null,
         "current": {
+          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -947,6 +1124,7 @@
         "auto_count": 30,
         "auto_min": "1s",
         "current": {
+          "selected": true,
           "text": "auto",
           "value": "$__auto_interval_INTERVAL"
         },
@@ -1065,5 +1243,5 @@
   "timezone": "",
   "title": "CPK 현황",
   "uid": "fxyJMQniz",
-  "version": 67
+  "version": 92
 }
