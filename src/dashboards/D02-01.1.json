@@ -2,7 +2,7 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:151",
+        "$$hashKey": "object:156",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -16,7 +16,7 @@
   "editable": false,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1526906004057,
+  "iteration": 1527070335688,
   "links": [
     {
       "icon": "external link",
@@ -382,6 +382,7 @@
       "tableColumn": "count",
       "targets": [
         {
+          "$$hashKey": "object:426",
           "alias": "$col",
           "groupBy": [],
           "measurement": "/^inspection.detail-*/",
@@ -393,7 +394,7 @@
             [
               {
                 "params": [
-                  "inm"
+                  "tuid"
                 ],
                 "type": "field"
               },
@@ -708,6 +709,7 @@
       ],
       "targets": [
         {
+          "$$hashKey": "object:216",
           "alias": "$col",
           "groupBy": [],
           "measurement": "/^inspection.detail-*/",
@@ -843,12 +845,14 @@
       },
       "styles": [
         {
+          "$$hashKey": "object:685",
           "alias": "Time",
           "dateFormat": "YYYY-MM-DD HH:mm:ss",
           "pattern": "Time",
           "type": "hidden"
         },
         {
+          "$$hashKey": "object:686",
           "alias": "모델",
           "colorMode": null,
           "colors": [
@@ -871,6 +875,7 @@
           "valueMaps": []
         },
         {
+          "$$hashKey": "object:687",
           "alias": "양불",
           "colorMode": null,
           "colors": [
@@ -916,6 +921,7 @@
           ]
         },
         {
+          "$$hashKey": "object:688",
           "alias": "검사장비",
           "colorMode": null,
           "colors": [
@@ -935,6 +941,7 @@
           "unit": "short"
         },
         {
+          "$$hashKey": "object:689",
           "alias": "채널",
           "colorMode": null,
           "colors": [
@@ -951,6 +958,7 @@
           "unit": "short"
         },
         {
+          "$$hashKey": "object:690",
           "alias": "검사시각",
           "colorMode": null,
           "colors": [
@@ -967,6 +975,7 @@
           "unit": "short"
         },
         {
+          "$$hashKey": "object:691",
           "alias": "종료시간",
           "colorMode": null,
           "colors": [
@@ -983,6 +992,7 @@
           "unit": "short"
         },
         {
+          "$$hashKey": "object:692",
           "alias": "",
           "colorMode": null,
           "colors": [
@@ -1000,6 +1010,7 @@
           "unit": "short"
         },
         {
+          "$$hashKey": "object:693",
           "alias": "최소",
           "colorMode": null,
           "colors": [
@@ -1016,6 +1027,7 @@
           "unit": "short"
         },
         {
+          "$$hashKey": "object:694",
           "alias": "최대",
           "colorMode": null,
           "colors": [
@@ -1032,6 +1044,7 @@
           "unit": "short"
         },
         {
+          "$$hashKey": "object:695",
           "alias": "측정치",
           "colorMode": null,
           "colors": [
@@ -1045,9 +1058,10 @@
           "pattern": "val",
           "thresholds": [],
           "type": "number",
-          "unit": "short"
+          "unit": "locale"
         },
         {
+          "$$hashKey": "object:696",
           "alias": "검사항목",
           "colorMode": null,
           "colors": [
@@ -1064,6 +1078,7 @@
           "unit": "short"
         },
         {
+          "$$hashKey": "object:697",
           "alias": "",
           "colorMode": null,
           "colors": [
@@ -1080,6 +1095,7 @@
       ],
       "targets": [
         {
+          "$$hashKey": "object:572",
           "alias": "$col",
           "groupBy": [],
           "measurement": "/^inspection.detail-*/",
@@ -1094,6 +1110,14 @@
               {
                 "params": [
                   "inm"
+                ],
+                "type": "field"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "val"
                 ],
                 "type": "field"
               }
@@ -1160,7 +1184,6 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
           "text": "AMPSRH29T41",
           "value": "AMPSRH29T41"
         },
@@ -1184,9 +1207,8 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
-          "text": "SOOSKIM02",
-          "value": "SOOSKIM02"
+          "text": "SOOSKIM03",
+          "value": "SOOSKIM03"
         },
         "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
         "hide": 2,
@@ -1208,7 +1230,6 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
           "text": "4",
           "value": "4"
         },
@@ -1349,8 +1370,8 @@
       },
       {
         "current": {
-          "text": "bf6dd78e.a315a8",
-          "value": "bf6dd78e.a315a8"
+          "text": "4b4041db.c8c69",
+          "value": "4b4041db.c8c69"
         },
         "hide": 2,
         "label": "상세항목",
@@ -1391,5 +1412,5 @@
   "timezone": "",
   "title": "모델별 검사기록 (상세)",
   "uid": "7cy0t97mz",
-  "version": 46
+  "version": 3
 }
