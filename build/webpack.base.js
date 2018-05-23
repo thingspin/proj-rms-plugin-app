@@ -20,7 +20,8 @@ module.exports = {
       'panel/inspection-property/module.js' : './panel/inspection-property/module.ts',
       'panel/machine-material/module.js' : './panel/machine-material/module.ts',
 	    'panel/company-list/module.js' : './panel/company-list/module.ts',
-	    'panel/mold-list/module.js' : './panel/mold-list/module.ts'
+      'panel/mold-list/module.js' : './panel/mold-list/module.ts',
+      'panel/consumables-list/module.js' : './panel/consumables-list/module.ts'
   },
   output: {
     path: resolve('dist'),

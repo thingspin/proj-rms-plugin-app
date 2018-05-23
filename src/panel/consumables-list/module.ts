@@ -19,7 +19,7 @@ loadPluginCss({
 const template = require("./partial/templet.html");
 // const options = require("./partial/options.html");
 
-class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
+class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
   static template = template;
 
   divID: string;
@@ -36,12 +36,14 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
   business = [];
   checker = [];
   businessSelect : any;
-  machine : any;
+  comsumable : any;
+  selectItem : any;
   dataJson : any;
   defTabulatorOpts: object;
   selectObj: any;
   selectTableRow : any;
   mode : any;
+  tableName : string;
 
   constructor($scope, private $rootScope, $injector, $http, $location, uiSegmentSrv, annotationsSrv, private rsDsSrv, private alertSrv) {
     super($scope, $injector);
@@ -49,11 +51,16 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
     // _.defaults(this.panel, this.panelDefaults);
     _.defaults(this.panel);
 
-    this.machine = {
-      id : "장비 ID",
-      name : '장비 설명',
+    this.comsumable = {
+      name : "품목",
+      standard : '규격',
+      cycle_count : '안전수량',
+      count : '재고수량',
+      count_time_count : '교체주기',
+      count_time : '교체주기 시간',
       memo : '특이사항'
     }
+    this.tableName = "t_consumables";
 
     this.divID = 'table-rms-' + this.panel.id;
     this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
@@ -73,7 +80,21 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
   initQueryData() {
     let selectId = this.datasource.id;
     let deferred = this.$q.defer();
-    let query = ["select business_id, name, person from t_business where business_type='장비업체'"];
+    let query = ["select business_id, name, person from t_business where business_type='소모품업체'"];
+    this.rsDsSrv.query(selectId, query).then( result => {
+        deferred.resolve(result);
+        this.transDataBusiness(result);
+    }).catch( err => {
+        deferred.reject(err);
+        console.log(err);
+    });
+    return deferred.promise;
+  }
+
+  subTableQueryData() {
+    let selectId = this.datasource.id;
+    let deferred = this.$q.defer();
+    let query = ["select OPERATION_DATE as '날짜', SR_TYPE as '타입', SR_COUNT as '내역', MEMO as '특이사항' from t_shipper_receiver where "];
     this.rsDsSrv.query(selectId, query).then( result => {
         deferred.resolve(result);
         this.transDataBusiness(result);
@@ -148,9 +169,16 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
 
   selectRow(obj) {
     this.selectObj = obj;
-    this.machine.id = obj['장비 ID'];
-    this.machine.name = obj['장비 설명'];
-    this.machine.memo = obj['메모'];
+    this.comsumable.id = obj['장비 ID'];
+    this.comsumable.name = obj['장비 설명'];
+    this.comsumable.memo = obj['메모'];
+    this.comsumable.name = obj['품목'];
+    this.comsumable.standard = obj['규격'];
+    this.comsumable.cycle_count = obj['안전수량'];
+    this.comsumable.count = obj['재고수량'];
+    this.comsumable.count_time_count = obj['교체주기'];
+    this.comsumable.count_time = obj['교체주기 시간'];
+    this.comsumable.memo = obj['특이사항'];
     var cmpStr = obj['업체명'] + " : " + obj['담당자'];
     var result = this.business.map(x => x.name).indexOf(cmpStr);
     this.businessSelect = this.business[result];
@@ -160,16 +188,23 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
     switch (mode) {
       case 'new' :
       {
-        this.machine.id = "";
-        this.machine.name = "";
-        this.machine.memo = "";
-        this.businessSelect = null;  
+        this.comsumable.name = "",
+        this.comsumable.standard = "",
+        this.comsumable.cycle_count = "",
+        this.comsumable.count = "",
+        this.comsumable.count_time_count = "",
+        this.comsumable.count_time = "",
+        this.comsumable.memo = ""
       }
       case 'edit' :
       {
-        this.machine.name = "";
-        this.machine.memo = "";
-        this.businessSelect = null;        
+        this.comsumable.name = "",
+        this.comsumable.standard = "",
+        this.comsumable.cycle_count = "",
+        this.comsumable.count = "",
+        this.comsumable.count_time_count = "",
+        this.comsumable.count_time = "",
+        this.comsumable.memo = ""
       }
     }
   }
@@ -177,6 +212,10 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
   close() {
     this.showCtrlMode('list');
     this.refresh();
+  }
+
+  transDataInput(dataList) {
+    console.log(dataList);
   }
 
   transDataBusiness(dataList) {
@@ -203,7 +242,7 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
       var obj = {
         title: column,
         field: column,
-        align: "center",
+        align: "left",
         // editor: this.autocompEditor,
       }
       this.columns.push(obj);
@@ -215,7 +254,7 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
       for (var row_count=0; row_count < row.length; row_count++) {
         var item = row[row_count];
         mapData.set(getColumns[row_count].text,item);
-        if (getColumns[row_count].text == '장비 ID') {
+        if (getColumns[row_count].text == '규격') {
           this.checker.push(item);
         }
       }
@@ -233,63 +272,73 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
       return true;
   }
 
-  addMachineItem(businessSelect, id, name, memo) {
-    if (businessSelect == undefined) {
-      this.alertSrv.set("업체를 입력해 주세요", 'error', 5000);
+  addConsumableItem(businessSelect, name, standard, count, cycle_count, count_time_count, count_time, memo) {
+    if (name == undefined) {
+      this.alertSrv.set("품목을 입력해 주세요", 'error', 5000);
       return;
-    } else if (id == undefined) {
-      this.alertSrv.set("장비 ID를 입력해 주세요", 'error', 5000);
+    } else if (standard == undefined) {
+      this.alertSrv.set("규격을 입력해 주세요", 'error', 5000);
       return;
-    } else if (name == undefined) {
-      this.alertSrv.set("장비 이름을 입력해 주세요", 'error', 5000);
+    } else if (count == undefined) {
+      this.alertSrv.set("재고수량을 입력해 주세요", 'error', 5000);
       return;
     } else {
-      if(!this.insertChecker(id)) {
+      if(!this.insertChecker(standard)) {
         let columns = "(PLANT_ID";
         let values = "('1000'";
-        columns = columns + ", MACHINE_ID";
-        values = values + ", '" + id + "'";
-        columns = columns + ", MACHINE_NAME";
-        values = values + ", '" + name + "'";
         columns = columns + ", BUSINESS_ID";
         values = values + ", " + businessSelect.id;
-        if (memo !== undefined && memo !== null )       { values = values + ",'" + memo + "')";} else { values = values + ", '')";}
+        columns = columns + ", CONSUMABLES_NAME";
+        values = values + ", '" + name + "'";
+        columns = columns + ", CONSUMABLES_STANDARD";
+        values = values + ", '" + standard + "'";
+        columns = columns + ", COUNT";
+        values = values + ", " + count;
+        if (cycle_count.length !== 0){
+          columns = columns + ", CYCLE_COUNT";
+          values = values + ", " + cycle_count;
+        }
+        if (count_time_count.length !== 0){
+          columns = columns + ", CYCLE_TIME_COUNT";
+          values = values + ", " + count_time_count;
+        }
+        if (memo !== undefined && memo !== null )       { values = values + ", '" + memo + "')";} else { values = values + ", '')";}
         columns = columns + ", MEMO)";
         let selectId = this.datasource.id;
 
         let query = [
-          "insert into t_machine " + columns + " values " + values,
+          "insert into " + this.tableName + " " + columns + " values " + values,
         ];
+        console.log(query);
         this.rsDsSrv.query(selectId, query).then( result => {
             // this.updateInspectionPropertyList(selectId);
             this.alertSrv.set(name + "이(가) 추가되었습니다.", '', 'success', 1000);
+            // this.addSubData(name, standard);
             this.refresh();
         }).catch( err => {
             this.alertSrv.set(name + " 추가 실패", err, 'error', 5000);
             console.error(err);
         });  
       } else {
-        this.alertSrv.set(id + "가 같은 장비 ID 가 존재합니다. 다른 것으로 입력해주세요.", 'error', 5000);
+        this.alertSrv.set(name + "가 같은 규격이 존재합니다. 다른 것으로 입력해주세요.", 'error', 5000);
         return;
       }
     }
   }
 
-  updateMachineItem(businessSelect, id, name, memo) {
-    if (businessSelect == undefined) {
-      this.alertSrv.set("업체를 입력해 주세요", 'error', 5000);
+  updateConsumableItem(businessSelect, name, standard,count, cycle_count, count_time_count, count_time, memo) {
+    if (name == undefined) {
+      this.alertSrv.set("품목을 입력해 주세요", 'error', 5000);
       return;
-    } else if (id == undefined) {
-      this.alertSrv.set("장비 ID를 입력해 주세요", 'error', 5000);
-      return;
-    } else if (name == undefined) {
-      this.alertSrv.set("장비 이름을 입력해 주세요", 'error', 5000);
+    } else if (count == undefined) {
+      this.alertSrv.set("재고수량을 입력해 주세요", 'error', 5000);
       return;
     } else {      
       let selectId = this.datasource.id;
       let query = [
-        "update t_machine set MACHINE_NAME = '" + name + "', BUSINESS_ID = " + businessSelect.id + ", MEMO = '" + memo + "' where MACHINE_ID = '" + id + "'",
+        "update " + this.tableName + " set BUSINESS_ID = " + businessSelect.id + ", COUNT = " + count + ", CYCLE_COUNT = " + cycle_count + ", MEMO = '" + memo + "' where CONSUMABLES_STANDARD = '" + standard + "' and CONSUMABLES_NAME = '" + name + "';",
       ];
+      console.log(query);
       this.rsDsSrv.query(selectId, query).then( result => {
           // this.updateInspectionPropertyList(selectId);
           this.alertSrv.set(name + "이(가) 변경 되었습니다.", '', 'success', 1000);
@@ -301,20 +350,20 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
     }
   }
 
-  deleteMachineItem(value) {
+  deleteConsumableItem(name, standard) {
     this.$rootScope.appEvent('confirm-modal', {
-      title: value + ' 삭제',
+      title: name + " " + standard + ' 삭제',
       text: '정말로 지우시겠습니까?',
       icon: 'fa-trash',
       yesText: '삭제',
       onConfirm: () => {
         let selectId = this.datasource.id;
         let query = [
-          "delete from t_machine where MACHINE_ID = '" + value + "'",
+          "delete from " + this.tableName + " where CONSUMABLES_STANDARD = '" + standard + "' and CONSUMABLES_NAME = '" + name + "'",
         ];
         this.rsDsSrv.query(selectId, query).then( result => {
             // this.updateInspectionPropertyList(selectId);
-            this.alertSrv.set(name + "이(가) 삭제 되었습니다.", '', 'success', 1000);
+            this.alertSrv.set(name + " " + standard + "이(가) 삭제 되었습니다.", '', 'success', 1000);
             this.showCtrlMode('list');
             this.refresh();
         }).catch( err => {
@@ -331,9 +380,13 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
       if (selectedRows != undefined) {
         this.container.tabulator("deselectRow", selectedRows);
       }
-      this.machine = {
-        id : '',
-        name : '',
+      this.comsumable = {
+        name : "",
+        standard : '',
+        cycle_count : '',
+        count : '',
+        count_time_count : '',
+        count_time : '',
         memo : ''
       }
       this.refresh();
@@ -392,5 +445,5 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
 }
 
 export {
-  RmsMachineMaterialPanelCtrl as PanelCtrl
+  RmsConsumablesPanelCtrl as PanelCtrl
 };

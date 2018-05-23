@@ -1,0 +1,92 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Simulator --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }      
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "links": [],
+  "panels": [
+    {
+      "companies": [
+        {
+          "$$hashKey": "object:114",
+          "code": "0000",
+          "name": "한컴MDS"
+        },
+        {
+          "$$hashKey": "object:115",
+          "code": "0001",
+          "name": "리모트솔루션"
+        },
+        {
+          "$$hashKey": "object:116",
+          "code": "0002",
+          "name": "삼성전자"
+        }
+      ],
+      "datasource": "REMOTESOLUTIONS(V1.0)",
+      "gridPos": {
+        "h": 17,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "links": [],
+      "options": {
+        "legend": {
+          "show": true,
+          "values": false
+        },
+        "legendTable": false,
+        "traceColors": {}
+      },
+      "targets": [
+        {
+          "alias": "",
+          "format": "table",
+          "rawSql": "SELECT A.CONSUMABLES_NAME as '품목', A.CONSUMABLES_STANDARD as '규격', B.NAME as '업체명', B.PERSON as '담당자', A.CYCLE_COUNT as '안전수량', A.COUNT as '재고수량', A.CYCLE_TIME_COUNT as '교체주기', A.MEMO as '특이사항' FROM t_consumables as A left join t_business as B on (A.BUSINESS_ID = B.BUSINESS_ID) where (BUSINESS_TYPE='소모품업체');",
+          "refId": "A"
+        }
+      ],
+      "title": "",
+      "type": "rms-consumables-list"
+    }
+  ],
+  "schemaVersion": 16,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "hidden": true,
+    "refresh_intervals": [
+      "1d"
+    ],
+    "time_options": [
+      "1h",
+      "24h",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "",
+  "title": "소모품 관리",
+  "version": 17
+}

@@ -51,6 +51,7 @@
 
     {"type": "menu", "name": "설비 현황", "mainMenu": true, "slug": "somopum-deungrog", "img":"img/thignspin_ic_48dp_white-06.svg", "menuID": 3},
     {"type": "dashboard", "name": "소모품 등록", "path": "dashboards/D03-01.json", "AddToNav": true, "menuID": 3, "ico":"fa fa-industry"},
+    {"type": "dashboard", "name": "소모품 관리", "path": "dashboards/D03-01.1.json", "AddToNav": true, "menuID": 3, "ico":"fa fa-industry"},
     {"type": "dashboard", "name": "장비별 소모품 등록", "path": "dashboards/D03-02.json", "AddToNav": true, "menuID": 3, "ico":"fa fa-industry"},
     {"type": "dashboard", "name": "업체 리스트", "path": "dashboards/D03-03.json", "AddToNav": true, "menuID": 3, "ico":"fa fa-industry"},
     {"type": "dashboard", "name": "금형 리스트", "path": "dashboards/D03-04.json", "AddToNav": true, "menuID": 3, "ico":"fa fa-industry"},
