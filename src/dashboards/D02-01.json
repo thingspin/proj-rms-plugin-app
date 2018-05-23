@@ -2,7 +2,7 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:250",
+        "$$hashKey": "object:156",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -13,12 +13,13 @@
       }
     ]
   },
-  "editable": false,
+  "editable": true,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1526905933022,
+  "iteration": 1527081665734,
   "links": [
     {
+      "$$hashKey": "object:345",
       "icon": "external link",
       "includeVars": true,
       "keepTime": true,
@@ -28,11 +29,12 @@
       "type": "dashboards"
     },
     {
+      "$$hashKey": "object:346",
       "icon": "external link",
       "includeVars": true,
       "keepTime": true,
       "tags": [
-        "CPK 불량 검출 현황"
+        "CPK 이탈 감시"
       ],
       "type": "dashboards"
     }
@@ -882,8 +884,8 @@
       {
         "allValue": null,
         "current": {
-          "text": "AMPSRH29T41",
-          "value": "AMPSRH29T41"
+          "text": "RC79A01-R",
+          "value": "RC79A01-R"
         },
         "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
         "hide": 0,
@@ -1069,8 +1071,8 @@
     ]
   },
   "time": {
-    "from": "now-30m",
-    "to": "now"
+    "from": "now/d",
+    "to": "now/d"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -1101,5 +1103,5 @@
   "timezone": "",
   "title": "모델별 검사기록",
   "uid": "rAgfpx7iz",
-  "version": 111
+  "version": 6
 }

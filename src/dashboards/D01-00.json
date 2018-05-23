@@ -2,6 +2,7 @@
   "annotations": {
     "list": [
       {
+        "$$hashKey": "object:140",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -12,167 +13,39 @@
       }
     ]
   },
-  "editable": false,
+  "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": null,
-  "links": [],
+  "iteration": 1527078773433,
+  "links": [
+    {
+      "icon": "external link",
+      "keepTime": true,
+      "tags": [
+        "제품 모델 정보"
+      ],
+      "type": "dashboards"
+    },
+    {
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "생산 현황"
+      ],
+      "type": "dashboards"
+    }
+  ],
   "panels": [
     {
-      "aliasColors": {},
-      "bars": true,
-      "dashLength": 10,
-      "dashes": false,
+      "columns": [],
       "datasource": "REMOTESOLUTIONS(V1.0)",
-      "decimals": 0,
-      "fill": 1,
+      "fontSize": "80%",
       "gridPos": {
-        "h": 7,
-        "w": 24,
+        "h": 19,
+        "w": 5,
         "x": 0,
         "y": 0
-      },
-      "id": 6,
-      "legend": {
-        "alignAsTable": true,
-        "avg": false,
-        "current": true,
-        "hideEmpty": true,
-        "hideZero": true,
-        "max": false,
-        "min": false,
-        "rightSide": true,
-        "show": true,
-        "sideWidth": 200,
-        "total": false,
-        "values": true
-      },
-      "lines": false,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null as zero",
-      "percentage": false,
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "repeat": null,
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "alias": "",
-          "format": "time_series",
-          "rawSql": "SELECT\n  UNIX_TIMESTAMP(PLAN_DATE) as time_sec,\n  AMOUNT as value,\n  MODEL_ID as metric\nFROM t_product_plan\nWHERE $__timeFilter(PLAN_DATE)\nORDER BY PLAN_DATE ASC\n",
-          "refId": "A"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "PRODUCTION PLAN",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 0,
-          "format": "none",
-          "label": "VOLUM",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": true,
-        "alignLevel": null
-      }
-    },
-    {
-      "columns": [],
-      "datasource": "REMOTESOLUTIONS(V1.0)",
-      "fontSize": "100%",
-      "gridPos": {
-        "h": 10,
-        "w": 13,
-        "x": 0,
-        "y": 7
-      },
-      "id": 4,
-      "links": [],
-      "pageSize": null,
-      "repeat": null,
-      "scroll": true,
-      "showHeader": true,
-      "sort": {
-        "col": 0,
-        "desc": false
-      },
-      "styles": [
-        {
-          "alias": "Time",
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "pattern": "Time",
-          "type": "date"
-        },
-        {
-          "alias": "",
-          "colorMode": null,
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "decimals": 2,
-          "pattern": "/.*/",
-          "thresholds": [],
-          "type": "number",
-          "unit": "short"
-        }
-      ],
-      "targets": [
-        {
-          "alias": "",
-          "format": "table",
-          "rawSql": "SELECT MODEL_ID AS MODEL, DESCRIPTION FROM t_model ORDER BY MODEL ASC;",
-          "refId": "A"
-        }
-      ],
-      "title": "PRODUCT MODELS",
-      "transform": "table",
-      "transparent": false,
-      "type": "table"
-    },
-    {
-      "columns": [],
-      "datasource": "REMOTESOLUTIONS(V1.0)",
-      "fontSize": "100%",
-      "gridPos": {
-        "h": 10,
-        "w": 11,
-        "x": 13,
-        "y": 7
       },
       "id": 2,
       "links": [],
@@ -188,7 +61,7 @@
         {
           "alias": "Time",
           "dateFormat": "YYYY/MM/DD",
-          "pattern": "DATE",
+          "pattern": "DUEDATE",
           "type": "date"
         },
         {
@@ -208,7 +81,23 @@
             "5000"
           ],
           "type": "number",
-          "unit": "none"
+          "unit": "locale"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
         },
         {
           "alias": "",
@@ -222,32 +111,154 @@
           "pattern": "/.*/",
           "thresholds": [],
           "type": "number",
-          "unit": "short"
+          "unit": "locale"
         }
       ],
       "targets": [
         {
           "alias": "",
           "format": "table",
-          "rawSql": "SELECT PLAN_DATE AS DATE, MODEL_ID AS MODEL, AMOUNT FROM t_product_plan;",
+          "rawSql": "SELECT \n  MODEL_ID AS MODEL,\n  MIN(PLAN_DATE) AS DUEDATE, \n  SUM(AMOUNT) \nFROM t_product_plan\nWHERE\n  $__timeFilter(PLAN_DATE) AND\n  MODEL_ID IN ($MODEL)\nGROUP BY MODEL_ID\nORDER BY MODEL_ID ASC, PLAN_DATE ASC\n",
           "refId": "A"
         }
       ],
-      "title": "PRODUCTION PLAN",
+      "title": "시간별 생산 계획",
       "transform": "table",
       "type": "table"
+    },
+    {
+      "aliasColors": {},
+      "bars": true,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "REMOTESOLUTIONS(V1.0)",
+      "decimals": 0,
+      "fill": 1,
+      "gridPos": {
+        "h": 19,
+        "w": 19,
+        "x": 5,
+        "y": 0
+      },
+      "id": 6,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "hideEmpty": true,
+        "hideZero": true,
+        "max": false,
+        "min": false,
+        "rightSide": true,
+        "show": true,
+        "sideWidth": 200,
+        "sort": "current",
+        "sortDesc": true,
+        "total": true,
+        "values": true
+      },
+      "lines": false,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null as zero",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "repeat": null,
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": true,
+      "steppedLine": false,
+      "targets": [
+        {
+          "alias": "",
+          "format": "time_series",
+          "rawSql": "SELECT\n  UNIX_TIMESTAMP(PLAN_DATE) as time_sec,\n  SUM(AMOUNT) as value,\n  MODEL_ID as metric\nFROM t_product_plan\nWHERE \n  $__timeFilter(PLAN_DATE) \n  AND MODEL_ID IN ($MODEL)\nGROUP BY MODEL_ID\nORDER BY value DESC\n",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "모델별 생산 계획",
+      "tooltip": {
+        "shared": false,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "series",
+        "name": null,
+        "show": true,
+        "values": [
+          "total"
+        ]
+      },
+      "yaxes": [
+        {
+          "decimals": 0,
+          "format": "locale",
+          "label": "VOLUM",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": true,
+        "alignLevel": null
+      }
     }
   ],
   "refresh": false,
   "schemaVersion": 16,
   "style": "dark",
-  "tags": [],
+  "tags": [
+    "생산 계획"
+  ],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "allValue": "",
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "REMOTESOLUTIONS(V1.0)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "모델 검색",
+        "multi": true,
+        "name": "MODEL",
+        "options": [],
+        "query": "SELECT MODEL_ID FROM t_model WHERE MODEL_ID <> \"*\";",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
   },
   "time": {
-    "from": "now/w",
-    "to": "now/w"
+    "from": "now-7d",
+    "to": "now"
   },
   "timepicker": {
     "hidden": false,
@@ -268,5 +279,6 @@
   },
   "timezone": "",
   "title": "생산 계획",
-  "version": 2
+  "uid": "4LJ_qN4ik",
+  "version": 39
 }
