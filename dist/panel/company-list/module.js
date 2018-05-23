@@ -28428,7 +28428,7 @@ var template = __webpack_require__(/*! ./partial/templet.html */ "./panel/compan
 //const options = require("./partial/options.html");
 var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
     __extends(RmsCompanyListPanelCtrl, _super);
-    function RmsCompanyListPanelCtrl($rootScope, $scope, $injector, rsDsSrv) {
+    function RmsCompanyListPanelCtrl($rootScope, $scope, $injector, rsDsSrv, alertSrv) {
         var _this = _super.call(this, $scope, $injector) || this;
         _this.dataRaw = [];
         _this.columns = [];
@@ -28459,6 +28459,7 @@ var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
         lodash__WEBPACK_IMPORTED_MODULE_0___default.a.defaults(_this.panel, _this.panelDefaults);
         _this.panel.inputlItem.business_id = -1;
         _this.dsSrv = rsDsSrv;
+        _this.alertSrv = alertSrv;
         _this.$rootScope = $rootScope;
         _this.$scope = $scope;
         _this.divID = 'table-rms-' + _this.panel.id;
@@ -28578,55 +28579,81 @@ var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
     };
     ;
     RmsCompanyListPanelCtrl.prototype.onNew = function () {
-        // TODO ! - call database inasert/update query.
-        //console.log("New SQL");  
         var _this = this;
-        // var check = false;
-        // {
-        //   let info = this.panel.inputlItem;        
-        //   let selectId = this.datasource.id;
-        //   let query = [
-        //     'select  into t_business(business_type, name, phone, person, mail, memo) values("'
-        //     + info.business_type + '", "' + info.name + '", "' + info.phone + '", "' + info.person + '", "' +  info.mail + '", "' +  info.memo + '");'
-        //   ];       
-        //   //console.log(selectId + " " + query);
-        //   this.dsSrv.query(selectId, query).then( result => {
-        //     this.$scope.inspectionName = "";
-        //     this.panel.inputlItem.business_id = -1;
-        //     this.$rootScope.$broadcast('refresh');
-        //   }).catch( err => {
-        //     console.error(err);
-        //   });   
-        // }
-        this.$rootScope.appEvent('confirm-modal', {
-            title: '등록',
-            text: '정말로 등록 하시겠습니까?',
-            //icon: 'fa-trash',
-            //yesText: '삭제',
-            onConfirm: function () {
-                var info = _this.panel.inputlItem;
-                // console.log(info.name);  
-                // console.log(info.business_type);  
-                // console.log(info.phone);  
-                // console.log(info.person);  
-                // console.log(info.mail);  
-                // console.log(info.memo);  
-                var selectId = _this.datasource.id;
-                var query = [
-                    'insert into t_business(business_type, name, phone, person, mail, memo) values("'
-                        + info.business_type + '", "' + info.name + '", "' + info.phone + '", "' + info.person + '", "' + info.mail + '", "' + info.memo + '");'
-                ];
-                //console.log(selectId + " " + query);
-                _this.dsSrv.query(selectId, query).then(function (result) {
-                    _this.$scope.inspectionName = "";
-                    _this.panel.inputlItem.business_id = -1;
-                    _this.$rootScope.$broadcast('refresh');
-                }).catch(function (err) {
-                    console.error(err);
-                });
-                console.log("select business_id: " + _this.panel.inputlItem.business_id);
-            }
-        });
+        var info = this.panel.inputlItem;
+        // console.log(info.name);
+        // console.log(info.person);
+        // console.log(info.mail);
+        // console.log(info.phone);
+        if (info.name == ""
+            || info.person == ""
+            || info.mail == ""
+            || info.phone == "") {
+            this.alertSrv.set("입력 정보를 확인해 주세요", 'error', 5000);
+        }
+        else {
+            this.$rootScope.appEvent('confirm-modal', {
+                title: '등록',
+                text: '정말로 등록 하시겠습니까?',
+                //icon: 'fa-trash',
+                //yesText: '삭제',
+                onConfirm: function () {
+                    var selectId = _this.datasource.id;
+                    var query1 = [
+                        'select * from t_business where business_type="'
+                            + info.business_type + '" and name="' + info.name + '" and person="' + info.person + '";'
+                    ];
+                    //console.log(selectId + " " + query);
+                    _this.dsSrv.query(selectId, query1).then(function (result) {
+                        var data = result[0];
+                        //console.log("data rows: " + data.rows.length);  
+                        if (data.rows.length == 0) {
+                            var query2 = [
+                                'insert into t_business(business_type, name, phone, person, mail, memo) values("'
+                                    + info.business_type + '", "' + info.name + '", "' + info.phone + '", "' + info.person + '", "' + info.mail + '", "' + info.memo + '");'
+                            ];
+                            _this.dsSrv.query(selectId, query2).then(function (result) {
+                                _this.panel.inputlItem.business_id = -1;
+                                _this.$rootScope.$broadcast('refresh');
+                            }).catch(function (err) {
+                                console.error(err);
+                            });
+                        }
+                        else {
+                            _this.alertSrv.set("이미 등록 되어있습니다.", 'error', 5000);
+                        }
+                    }).catch(function (err) {
+                        console.error(err);
+                    });
+                    // {
+                    //   let query = [
+                    //     'insert into t_business(business_type, name, phone, person, mail, memo) values("'
+                    //     + info.business_type + '", "' + info.name + '", "' + info.phone + '", "' + info.person + '", "' +  info.mail + '", "' +  info.memo + '");'
+                    //   ];       
+                    //   // let query = [
+                    //   //   'insert into t_business(business_type, name, phone, person, mail, memo) select "'
+                    //   //   + info.business_type + '", "' 
+                    //   //   + info.name + '", "' 
+                    //   //   + info.phone + '", "' 
+                    //   //   + info.person + '", "' 
+                    //   //   +  info.mail + '", "' 
+                    //   //   +  info.memo + '" from dual where not exists(select * from t_business where business_type="'
+                    //   //                                               + info.business_type + '" and name="'
+                    //   //                                               + info.name + '" and person="'
+                    //   //                                               + info.person + '")'
+                    //   // ];       
+                    //   console.log(selectId + " " + query);
+                    //   this.dsSrv.query(selectId, query).then( result => {            
+                    //     this.panel.inputlItem.business_id = -1;
+                    //     this.$rootScope.$broadcast('refresh');
+                    //   }).catch( err => {
+                    //     console.error(err);
+                    //   });   
+                    // }
+                    //console.log("select business_id: " + this.panel.inputlItem.business_id);
+                }
+            });
+        }
     };
     ;
     RmsCompanyListPanelCtrl.prototype.onEdit = function () {
@@ -28651,7 +28678,6 @@ var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
                     ];
                     console.log(selectId + " " + query);
                     _this.dsSrv.query(selectId, query).then(function (result) {
-                        _this.$scope.inspectionName = "";
                         _this.panel.inputlItem.business_id = -1;
                         _this.$rootScope.$broadcast('refresh');
                     }).catch(function (err) {
@@ -28661,7 +28687,7 @@ var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
             });
         }
         else {
-            alert("Row select please...");
+            this.alertSrv.set("테이블의 Row를 선택해 주세요", 'error', 5000);
         }
     };
     ;
@@ -28681,7 +28707,6 @@ var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
                     ];
                     console.log(selectId + " " + query);
                     _this.dsSrv.query(selectId, query).then(function (result) {
-                        _this.$scope.inspectionName = "";
                         _this.panel.inputlItem.business_id = -1;
                         _this.$rootScope.$broadcast('refresh');
                     }).catch(function (err) {
@@ -28691,7 +28716,7 @@ var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
             });
         }
         else {
-            alert("Row select please...");
+            this.alertSrv.set("테이블의 Row를 선택해 주세요", 'error', 5000);
         }
     };
     ;
@@ -28710,7 +28735,7 @@ var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"editor-row\">\r\n        <div class=\"section gf-form-group\">\r\n            <div class=\"gf-form\">\r\n                <label class=\"gf-form-label width-5\">업체명</label>\r\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.name\">\r\n            </div>            \r\n\r\n            <div class=\"gf-form\">\r\n                <label class=\"gf-form-label width-5\">업종</label>\r\n                <div class=\"gf-form-select-wrapper\">\r\n                        <select class=\"gf-form-input min-width-16 width-16\" \r\n                            ng-model=\"ctrl.panel.inputlItem.business_type\"\r\n                            ng-options=\"f for f in ctrl.panel.businessCategory\">\r\n                        </select>\r\n                </div>                    \r\n            </div>            \r\n        </div>\r\n        \r\n        <div class=\"section gf-form-group\">\r\n            <div class=\"gf-form\">\r\n                <label class=\"gf-form-label width-5\">담당자</label>\r\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.person\">\r\n            </div>\r\n\r\n            <div class=\"gf-form\">\r\n                <label class=\"gf-form-label width-5\">연락처</label>\r\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.phone\">\r\n            </div>\r\n\r\n            <div class=\"gf-form\">\r\n                <label class=\"gf-form-label width-5\">이메일</label>\r\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.mail\">\r\n            </div>\r\n        </div>\r\n        <div class=\"section gf-form-group\">\r\n            <div class=\"gf-form\">\r\n                <label class=\"gf-form-label width-5\">메모</label>\r\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.memo\">\r\n            </div>            \r\n            \r\n            <div class=\"gf-form\">\r\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onNew()\">\r\n                    등록\r\n                </button>\r\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onEdit()\">\r\n                    수정\r\n                </button>\r\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onDel()\">\r\n                    삭제\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    \r\n    <div class=\"editor-row\">\r\n        <div class=\"thingspin-table\"></div>\r\n    </div>\r\n    ";
+module.exports = "<div class=\"editor-row\">\n        <div class=\"section gf-form-group\">\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-5\">업체명</label>\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.name\">\n            </div>            \n\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-5\">업종</label>\n                <div class=\"gf-form-select-wrapper\">\n                        <select class=\"gf-form-input min-width-16 width-16\" \n                            ng-model=\"ctrl.panel.inputlItem.business_type\"\n                            ng-options=\"f for f in ctrl.panel.businessCategory\">\n                        </select>\n                </div>                    \n            </div>            \n        </div>\n        \n        <div class=\"section gf-form-group\">\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-5\">담당자</label>\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.person\">\n            </div>\n\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-5\">연락처</label>\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.phone\">\n            </div>\n\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-5\">이메일</label>\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.mail\">\n            </div>\n        </div>\n        <div class=\"section gf-form-group\">\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-5\">메모</label>\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.memo\">\n            </div>            \n            \n            <div class=\"gf-form\">\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onNew()\">\n                    등록\n                </button>\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onEdit()\">\n                    수정\n                </button>\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onDel()\">\n                    삭제\n                </button>\n            </div>\n        </div>\n    </div>\n    \n    <div class=\"editor-row\">\n        <div class=\"thingspin-table\"></div>\n    </div>\n    ";
 
 /***/ }),
 
