@@ -2,7 +2,7 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:143",
+        "$$hashKey": "object:145",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -16,7 +16,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1527094528592,
+  "id": 3,
+  "iteration": 1527159788702,
   "links": [
     {
       "icon": "external link",
@@ -39,6 +40,191 @@
   ],
   "panels": [
     {
+      "datasource": "-- Mixed --",
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 8,
+      "links": [],
+      "targets": [
+        {
+          "$$hashKey": "object:218",
+          "alias": "",
+          "datasource": "REMOTESOLUTIONS(V1.0)",
+          "format": "table",
+          "rawSql": "SELECT \n  UNIX_TIMESTAMP(PLAN_DATE) as time_sec,\n  PLAN_DATE as '날짜',\n  MODEL_ID AS '모델',\n  SUM(AMOUNT) AS '생산계획'\nFROM t_product_plan\nWHERE\n  $__timeFilter(PLAN_DATE) AND\n  MODEL_ID IN ($MODEL)\nGROUP BY MODEL_ID\nORDER BY PLAN_DATE DESC",
+          "refId": "A"
+        },
+        {
+          "$$hashKey": "object:219",
+          "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+          "groupBy": [
+            {
+              "params": [
+                "1d,-9h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "model"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "/^inspection.summary-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "B",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "tuid"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              },
+              {
+                "params": [
+                  "실적수량"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            }
+          ]
+        },
+        {
+          "$$hashKey": "object:220",
+          "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+          "groupBy": [
+            {
+              "params": [
+                "1d,-9h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "model"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "/^inspection.summary-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "C",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "tuid"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              },
+              {
+                "params": [
+                  "양품"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "pass",
+              "operator": "=",
+              "value": "true"
+            }
+          ]
+        },
+        {
+          "$$hashKey": "object:221",
+          "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+          "groupBy": [
+            {
+              "params": [
+                "1d,-9h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "model"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "/^inspection.summary-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "D",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "tuid"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              },
+              {
+                "params": [
+                  "불량"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "pass",
+              "operator": "=",
+              "value": "false"
+            }
+          ]
+        }
+      ],
+      "title": "모델별 생산 수량",
+      "type": "rms-plant-plan-table"
+    },
+    {
       "columns": [],
       "datasource": "-- Mixed --",
       "fontSize": "80%",
@@ -46,7 +232,7 @@
         "h": 16,
         "w": 8,
         "x": 0,
-        "y": 0
+        "y": 8
       },
       "id": 2,
       "links": [],
@@ -385,7 +571,7 @@
         "h": 7,
         "w": 16,
         "x": 8,
-        "y": 0
+        "y": 8
       },
       "id": 4,
       "legend": {
@@ -480,7 +666,7 @@
         "h": 9,
         "w": 16,
         "x": 8,
-        "y": 7
+        "y": 15
       },
       "id": 5,
       "legend": {
@@ -611,7 +797,7 @@
         "h": 13,
         "w": 24,
         "x": 0,
-        "y": 16
+        "y": 24
       },
       "id": 6,
       "legend": {
@@ -851,7 +1037,6 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -907,5 +1092,5 @@
   "timezone": "",
   "title": "생산 현황",
   "uid": "cU1lqH4mz",
-  "version": 102
+  "version": 4
 }
