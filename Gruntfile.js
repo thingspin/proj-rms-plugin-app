@@ -54,12 +54,7 @@ module.exports = function(grunt) {
             '<%= project.dev %>/**/*.json',
             '<%= project.dev %>/img/**',
           ],
-          tasks: ['webpack:prod'], // !important
-          options: {
-            livereload: true,
-            reload: true,
-            debounceDelay: 250,
-          }
+          tasks: ['webpack:dev'], // !important
         },
       }
     });

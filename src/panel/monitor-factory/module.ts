@@ -13,11 +13,9 @@ loadPluginCss({
   light: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.light.css'
 });
 
-const template = require("./partial/templet.html");
-
 class RmsMonitorFactoryPanelCtrl extends MetricsPanelCtrl {
-  static template = template;
-  
+  static template = require("./partial/template.html");
+
   divID: string;
   svgID: string;
   container: any;
@@ -39,7 +37,7 @@ class RmsMonitorFactoryPanelCtrl extends MetricsPanelCtrl {
     this.events.on('render', this.onRender.bind(this));
     this.events.on('panel-initialized', this.onInitialized.bind(this));
   }
-  
+
   setContainer(container) {
     this.container = container;
   }
@@ -59,12 +57,9 @@ class RmsMonitorFactoryPanelCtrl extends MetricsPanelCtrl {
       node[0].id = this.divID;
       ctrl.setContainer(node);
 
-      Snap.load("public/plugins/proj-rms-plugin-app/img/rms-fatory-kr.svg", onSVGLoaded) ;
-      
-      function onSVGLoaded(data) { 
+      Snap.load("public/plugins/proj-rms-plugin-app/img/rms-fatory-kr.svg", (data) => {
         $(data.node).appendTo('#'+ctrl.divID);
-      }
-
+      }) ;
   }
 }
 

@@ -41,6 +41,7 @@
     {"type": "dashboard", "name": "연속 불량 감시", "path": "dashboards/D00-03.json", "AddToNav": true, "menuID": 1, "ico":"fa fa-industry"},
     {"type": "dashboard", "name": "CPK 이탈 감시", "path": "dashboards/D00-03.2.json", "AddToNav": true, "menuID": 1, "ico":"fa fa-industry"},
     {"type": "dashboard", "name": "설비 감시", "path": "dashboards/D01-02.json", "AddToNav": true, "menuID": 1, "ico":"fa fa-industry"},
+    {"type": "dashboard", "name": "설비 불량 현황", "path": "panel/monitor-facility-defect/module.json", "AddToNav": true, "menuID": 1, "ico":"fa fa-industry"},
 
     {"type": "menu", "name": "자산 현황", "mainMenu": true, "slug": "somopum-deungrog", "img":"img/thignspin_ic_48dp_white-06.svg", "menuID": 2},
     {"type": "dashboard", "name": "소모품 등록", "path": "dashboards/D03-01.json", "AddToNav": true, "menuID": 2, "ico":"fa fa-industry"},

@@ -1,0 +1,13 @@
+{
+  "type": "panel",
+  "name": "(RMS) 설비 불량 현황",
+  "id": "rms-monitor-facility-defect",
+
+  "info": {
+    "description": "Monitoring : Facility Defect",
+    "author": {
+      "name": "whitesky0109@thingspin.io",
+      "url": "http://thingspin.io"
+    }
+  }
+}
