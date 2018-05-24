@@ -27687,31 +27687,34 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    RmsMonitorFacilityDefectPanelCtrl.prototype.onInitialized = function () {
+    RmsMonitorFacilityDefectPanelCtrl.prototype.init = function () {
         var _this = this;
         var node = this.$element.find('#' + this.divID);
         if (node.length === 0) {
             console.error("cannot find element id '#" + this.divID + "'");
             return;
         }
-        this.divID = node[0].id + "-" + this.panel.id;
-        node[0].id = this.divID;
         this.Container = node;
-        snapsvg_dist_snap_svg_min_js__WEBPACK_IMPORTED_MODULE_2__["load"](this.svgImgPath, function (data) {
+        this.loadSVG(this.svgImgPath).then(function (data) {
             jquery__WEBPACK_IMPORTED_MODULE_1___default()(data.node).appendTo('#' + _this.divID);
         });
+    };
+    RmsMonitorFacilityDefectPanelCtrl.prototype.loadSVG = function (path) {
+        return new Promise(function (resolve, reject) {
+            snapsvg_dist_snap_svg_min_js__WEBPACK_IMPORTED_MODULE_2__["load"](path, resolve);
+        });
+    };
+    RmsMonitorFacilityDefectPanelCtrl.prototype.onInitialized = function () {
     };
     RmsMonitorFacilityDefectPanelCtrl.prototype.onInitEditMode = function () { };
     RmsMonitorFacilityDefectPanelCtrl.prototype.onRender = function () { };
     RmsMonitorFacilityDefectPanelCtrl.prototype.onDataReceived = function (results) {
         var canUseDs = true;
         results.every(function (item, idx) {
-            var result = true;
             if (item.target === "A-series") {
                 canUseDs = false;
-                result = false;
             }
-            return result;
+            return canUseDs;
         });
         if (canUseDs) {
             var viewData = this.getViewData(results);
@@ -27732,10 +27735,14 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
                 // counting total & failed count
                 if (obj.pass !== undefined) {
                     switch (obj.pass) {
+                        case "TRUE":
+                        case "True":
                         case "true":
                             res[obj.facility].total = (res[obj.facility].total === undefined) ? 0 :
                                 res[obj.facility].total + obj.count;
                             break;
+                        case "FALSE":
+                        case "False":
                         case "false":
                             res[obj.facility].failed = (res[obj.facility].failed === undefined) ? 0 :
                                 res[obj.facility].failed + obj.count;
@@ -27753,16 +27760,36 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
         return res;
     };
     RmsMonitorFacilityDefectPanelCtrl.prototype.showData = function (viewData) {
-        var mainIdx = 0;
+        var _this = this;
+        var mainIdx;
+        mainIdx = 0;
         var _loop_1 = function (title) {
+            var titleDOM = this_1.Container.find("#title #title" + (mainIdx + 1));
+            titleDOM.html(title);
             var DOMs = this_1.Container.find("#modeling2-text > g");
             var $targetDOM = jquery__WEBPACK_IMPORTED_MODULE_1___default()(DOMs[mainIdx]);
-            var totalTextDOM = $targetDOM.find("> text");
-            totalTextDOM.html(viewData[title].total + "/" + viewData[title].failed);
-            var channelTextDOM = $targetDOM.find("g text");
-            channelTextDOM.each(function (idx, DOM) {
-                var $DOM = jquery__WEBPACK_IMPORTED_MODULE_1___default()(DOM);
-                $DOM.html(viewData[title].channels[idx + 1].failed);
+            $targetDOM.find("> text").html(viewData[title].total + "/" + viewData[title].failed);
+            $targetDOM.find("g text").each(function (idx, DOM) {
+                var chInfo = viewData[title].channels[idx + 1];
+                jquery__WEBPACK_IMPORTED_MODULE_1___default()(DOM).html(chInfo.failed);
+                var redNode = _this.Container.find("#modeling2-" + (mainIdx + 1) + "-light" + (idx + 1) + "-red");
+                var pinkNode = _this.Container.find("#modeling2-" + (mainIdx + 1) + "-light" + (idx + 1) + "-pink");
+                var lightNode = _this.Container.find("#modeling2-" + (mainIdx + 1) + "-light" + (idx + 1));
+                if (chInfo.hasOwnProperty('CNF') && chInfo.CNF !== 0) {
+                    redNode.show();
+                    pinkNode.hide();
+                    lightNode.hide();
+                }
+                else if (chInfo.hasOwnProperty('failed') && chInfo.failed !== 0) {
+                    redNode.hide();
+                    pinkNode.show();
+                    lightNode.hide();
+                }
+                else {
+                    redNode.hide();
+                    pinkNode.hide();
+                    lightNode.show();
+                }
             });
             mainIdx++;
         };
@@ -27787,7 +27814,7 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"rms-app-monitor-facility-defect\" width='100%'></div>";
+module.exports = "<div  ng-init=\"ctrl.init()\" id=\"rms-app-monitor-facility-defect\" class=\"rms-app-monitor-facility-defect\"></div>";
 
 /***/ }),
 

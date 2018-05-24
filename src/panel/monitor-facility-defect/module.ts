@@ -34,21 +34,27 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
     this.events.on('render', this.onRender.bind(this));
     this.events.on('data-received', this.onDataReceived.bind(this));
   }
-
-  onInitialized() {
+  init() {
     let node: any = this.$element.find('#' + this.divID);
     if (node.length === 0) {
       console.error("cannot find element id '#" + this.divID + "'");
       return;
     }
 
-    this.divID = node[0].id + "-" + this.panel.id;
-    node[0].id = this.divID;
     this.Container = node;
 
-    Snap.load(this.svgImgPath, (data) => {
+    this.loadSVG(this.svgImgPath).then( (data: any) => {
       $(data.node).appendTo('#' + this.divID);
-    }) ;
+    });
+  }
+
+  loadSVG(path) {
+    return new Promise((resolve,reject) => {
+      Snap.load(path, resolve);
+    });
+  }
+
+  onInitialized() {
   }
 
   onInitEditMode() { }
@@ -59,12 +65,10 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
     let canUseDs: Boolean = true;
 
     results.every( (item: any,idx: number): Boolean => {
-      let result: Boolean = true;
       if (item.target === "A-series") {
         canUseDs = false;
-        result = false;
       }
-      return result;
+      return canUseDs;
     });
 
     if (canUseDs) {
@@ -90,11 +94,15 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
         // counting total & failed count
         if (obj.pass !== undefined) {
           switch (obj.pass) {
+            case "TRUE":
+            case "True":
             case "true":
               res[obj.facility].total = (res[obj.facility].total === undefined) ? 0 :
                 res[obj.facility].total + obj.count;
               break;
-            case "false":
+              case "FALSE":
+              case "False":
+              case "false":
               res[obj.facility].failed = (res[obj.facility].failed === undefined) ? 0 :
                 res[obj.facility].failed + obj.count;
 
@@ -113,19 +121,37 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
   }
 
   showData(viewData) {
-    let mainIdx = 0;
+    let mainIdx: number;
 
+    mainIdx = 0;
     for (let title in viewData) {
-      let DOMs = this.Container.find("#modeling2-text > g");
-      let $targetDOM = $(DOMs[mainIdx]);
+      let titleDOM = this.Container.find("#title #title" + (mainIdx+1) );
+      titleDOM.html(title);
 
-      let totalTextDOM = $targetDOM.find("> text");
-      totalTextDOM.html(viewData[title].total + "/" + viewData[title].failed);
+      let DOMs: any = this.Container.find("#modeling2-text > g");
+      let $targetDOM: any = $(DOMs[mainIdx]);
 
-      let channelTextDOM = $targetDOM.find("g text");
-      channelTextDOM.each((idx, DOM) => {
-        let $DOM = $(DOM);
-        $DOM.html(viewData[title].channels[idx+1].failed);
+      $targetDOM.find("> text").html(viewData[title].total + "/" + viewData[title].failed);
+      $targetDOM.find("g text").each((idx: number, DOM: any) => {
+        let chInfo = viewData[title].channels[idx+1];
+        $(DOM).html(chInfo.failed);
+        let redNode = this.Container.find("#modeling2-" + (mainIdx+1) + "-light" + (idx+1) + "-red");
+        let pinkNode = this.Container.find("#modeling2-" + (mainIdx+1) + "-light" + (idx+1) + "-pink");
+        let lightNode = this.Container.find("#modeling2-" + (mainIdx+1) + "-light" + (idx+1) );
+
+        if (chInfo.hasOwnProperty('CNF') && chInfo.CNF !== 0) {
+          redNode.show();
+          pinkNode.hide();
+          lightNode.hide();
+        } else if (chInfo.hasOwnProperty('failed') && chInfo.failed !== 0) {
+          redNode.hide();
+          pinkNode.show();
+          lightNode.hide();
+        } else {
+          redNode.hide();
+          pinkNode.hide();
+          lightNode.show();
+        }
       });
       mainIdx++;
     }
