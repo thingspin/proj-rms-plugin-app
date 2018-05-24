@@ -27678,12 +27678,17 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
         _this.events.on('panel-initialized', _this.onInitialized.bind(_this));
         _this.events.on('init-edit-mode', _this.onInitEditMode.bind(_this));
         _this.events.on('render', _this.onRender.bind(_this));
-        _this.events.on('data-received', _this.onDataReceived.bind(_this));
         return _this;
     }
     Object.defineProperty(RmsMonitorFacilityDefectPanelCtrl.prototype, "Container", {
         get: function () { return this.container; },
         set: function (container) { this.container = container; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(RmsMonitorFacilityDefectPanelCtrl.prototype, "Svg", {
+        get: function () { return this.svg; },
+        set: function (svg) { this.svg = svg; },
         enumerable: true,
         configurable: true
     });
@@ -27695,8 +27700,10 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
             return;
         }
         this.Container = node;
-        this.loadSVG(this.svgImgPath).then(function (data) {
-            jquery__WEBPACK_IMPORTED_MODULE_1___default()(data.node).appendTo('#' + _this.divID);
+        this.Svg = null;
+        this.loadSVG(this.svgImgPath).then(function (svg) {
+            _this.Container.append(svg.node);
+            _this.events.on('data-received', _this.onDataReceived.bind(_this));
         });
     };
     RmsMonitorFacilityDefectPanelCtrl.prototype.loadSVG = function (path) {
@@ -27722,6 +27729,9 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
         }
     };
     RmsMonitorFacilityDefectPanelCtrl.prototype.getViewData = function (results) {
+        if (this.Svg === null) {
+            this.Svg = snapsvg_dist_snap_svg_min_js__WEBPACK_IMPORTED_MODULE_2__("#" + this.divID + " svg");
+        }
         var data = this.rsDsSrv.getTableObj(results);
         var res = {};
         data.forEach(function (arr) {
@@ -27764,17 +27774,18 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
         var mainIdx;
         mainIdx = 0;
         var _loop_1 = function (title) {
-            var titleDOM = this_1.Container.find("#title #title" + (mainIdx + 1));
-            titleDOM.html(title);
-            var DOMs = this_1.Container.find("#modeling2-text > g");
-            var $targetDOM = jquery__WEBPACK_IMPORTED_MODULE_1___default()(DOMs[mainIdx]);
-            $targetDOM.find("> text").html(viewData[title].total + "/" + viewData[title].failed);
-            $targetDOM.find("g text").each(function (idx, DOM) {
+            var titleDOM = this_1.Svg.select("#title #title" + (mainIdx + 1));
+            titleDOM.attr({ text: title });
+            var DOMs = this_1.Svg.selectAll("#modeling2-text > g");
+            var targetDOM = DOMs[mainIdx];
+            targetDOM.select("text").attr({ text: (viewData[title].total + "/" + viewData[title].failed) });
+            jquery__WEBPACK_IMPORTED_MODULE_1___default()(targetDOM.node).find("g text").each(function (idx, DOM) {
                 var chInfo = viewData[title].channels[idx + 1];
-                jquery__WEBPACK_IMPORTED_MODULE_1___default()(DOM).html(chInfo.failed);
-                var redNode = _this.Container.find("#modeling2-" + (mainIdx + 1) + "-light" + (idx + 1) + "-red");
-                var pinkNode = _this.Container.find("#modeling2-" + (mainIdx + 1) + "-light" + (idx + 1) + "-pink");
-                var lightNode = _this.Container.find("#modeling2-" + (mainIdx + 1) + "-light" + (idx + 1));
+                jquery__WEBPACK_IMPORTED_MODULE_1___default()(DOM).text(chInfo.failed);
+                var $svg = jquery__WEBPACK_IMPORTED_MODULE_1___default()(_this.Svg.node);
+                var redNode = $svg.find("#modeling2-" + (mainIdx + 1) + "-light" + (idx + 1) + "-red");
+                var pinkNode = $svg.find("#modeling2-" + (mainIdx + 1) + "-light" + (idx + 1) + "-pink");
+                var lightNode = $svg.find("#modeling2-" + (mainIdx + 1) + "-light" + (idx + 1));
                 if (chInfo.hasOwnProperty('CNF') && chInfo.CNF !== 0) {
                     redNode.show();
                     pinkNode.hide();

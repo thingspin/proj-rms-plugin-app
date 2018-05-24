@@ -115,7 +115,6 @@
         "type": "rms-monitor-facility-defect"
       }
     ],
-    "refresh": "1s",
     "schemaVersion": 16,
     "style": "dark",
     "tags": [],

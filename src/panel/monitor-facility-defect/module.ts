@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import $ from 'jquery';
+import $ from "jquery";
 import * as Snap from "snapsvg/dist/snap.svg-min.js";
 
 import '../../services/remoteSolutionDS';
@@ -19,6 +19,9 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
   container: any;
   set Container(container: any) { this.container = container; }
   get Container() {return this.container;}
+  svg: any;
+  set Svg(svg: any) { this.svg = svg; }
+  get Svg() {return this.svg; }
 
   constructor($scope, $injector, private $element, private rsDsSrv) {
     super($scope, $injector);
@@ -32,7 +35,6 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
     this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
 
     this.events.on('render', this.onRender.bind(this));
-    this.events.on('data-received', this.onDataReceived.bind(this));
   }
   init() {
     let node: any = this.$element.find('#' + this.divID);
@@ -42,9 +44,12 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
     }
 
     this.Container = node;
+    this.Svg = null;
 
-    this.loadSVG(this.svgImgPath).then( (data: any) => {
-      $(data.node).appendTo('#' + this.divID);
+    this.loadSVG(this.svgImgPath).then( (svg: any) => {
+      this.Container.append(svg.node);
+
+      this.events.on('data-received', this.onDataReceived.bind(this));
     });
   }
 
@@ -79,6 +84,10 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
   }
 
   getViewData(results: any): Object {
+    if (this.Svg === null) {
+      this.Svg = Snap("#" + this.divID + " svg");
+    }
+
     let data: Object[] = this.rsDsSrv.getTableObj(results);
 
     let res: Object = {};
@@ -125,19 +134,20 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
 
     mainIdx = 0;
     for (let title in viewData) {
-      let titleDOM = this.Container.find("#title #title" + (mainIdx+1) );
-      titleDOM.html(title);
+      let titleDOM = this.Svg.select("#title #title" + (mainIdx+1) );
+      titleDOM.attr({text: title });
 
-      let DOMs: any = this.Container.find("#modeling2-text > g");
-      let $targetDOM: any = $(DOMs[mainIdx]);
+      let DOMs: any = this.Svg.selectAll("#modeling2-text > g");
+      let targetDOM: any = DOMs[mainIdx];
 
-      $targetDOM.find("> text").html(viewData[title].total + "/" + viewData[title].failed);
-      $targetDOM.find("g text").each((idx: number, DOM: any) => {
+      targetDOM.select("text").attr({text: (viewData[title].total + "/" + viewData[title].failed) });
+      $(targetDOM.node).find("g text").each((idx: number, DOM: any) => {
         let chInfo = viewData[title].channels[idx+1];
-        $(DOM).html(chInfo.failed);
-        let redNode = this.Container.find("#modeling2-" + (mainIdx+1) + "-light" + (idx+1) + "-red");
-        let pinkNode = this.Container.find("#modeling2-" + (mainIdx+1) + "-light" + (idx+1) + "-pink");
-        let lightNode = this.Container.find("#modeling2-" + (mainIdx+1) + "-light" + (idx+1) );
+        $(DOM).text(chInfo.failed);
+        let $svg = $(this.Svg.node);
+        let redNode = $svg.find("#modeling2-" + (mainIdx+1) + "-light" + (idx+1) + "-red");
+        let pinkNode = $svg.find("#modeling2-" + (mainIdx+1) + "-light" + (idx+1) + "-pink");
+        let lightNode = $svg.find("#modeling2-" + (mainIdx+1) + "-light" + (idx+1) );
 
         if (chInfo.hasOwnProperty('CNF') && chInfo.CNF !== 0) {
           redNode.show();
