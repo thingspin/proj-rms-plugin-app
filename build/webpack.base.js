@@ -21,7 +21,8 @@ module.exports = {
       'panel/machine-material/module.js' : './panel/machine-material/module.ts',
 	    'panel/company-list/module.js' : './panel/company-list/module.ts',
       'panel/mold-list/module.js' : './panel/mold-list/module.ts',
-      'panel/consumables-list/module.js' : './panel/consumables-list/module.ts'
+      'panel/consumables-list/module.js' : './panel/consumables-list/module.ts',
+      'panel/monitor-facility-defect/module.js' : './panel/monitor-facility-defect/module.ts'
   },
   output: {
     path: resolve('dist'),
@@ -46,6 +47,7 @@ module.exports = {
       { from: '**/*.json' },
       { from: 'img/**' },
       { from: '**/*.css' },
+      { from: '**/*.svg' },
     ]),
   ],
   resolve: {
