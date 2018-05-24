@@ -2,7 +2,7 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:142",
+        "$$hashKey": "object:151",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -12,7 +12,7 @@
         "type": "dashboard"
       },
       {
-        "$$hashKey": "object:143",
+        "$$hashKey": "object:152",
         "datasource": "$DATABASE",
         "enable": false,
         "hide": false,
@@ -28,7 +28,7 @@
   "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1526912920727,
+  "iteration": 1527171421553,
   "links": [
     {
       "icon": "external link",
@@ -96,7 +96,6 @@
       "steppedLine": false,
       "targets": [
         {
-          "$$hashKey": "object:2481",
           "alias": "$tag_facility",
           "groupBy": [
             {
@@ -246,19 +245,16 @@
       "renderer": "flot",
       "seriesOverrides": [
         {
-          "$$hashKey": "object:706",
           "alias": "COUNT",
           "bars": true,
           "lines": false,
           "points": false
         },
         {
-          "$$hashKey": "object:707",
           "alias": "CPK",
           "yaxis": 2
         },
         {
-          "$$hashKey": "object:708",
           "alias": "CUML",
           "bars": false,
           "dashes": true,
@@ -272,7 +268,6 @@
       "steppedLine": false,
       "targets": [
         {
-          "$$hashKey": "object:375",
           "alias": "$col",
           "groupBy": [
             {
@@ -331,7 +326,6 @@
           ]
         },
         {
-          "$$hashKey": "object:376",
           "alias": "$col",
           "groupBy": [
             {
@@ -393,7 +387,6 @@
           ]
         },
         {
-          "$$hashKey": "object:377",
           "alias": "$col",
           "groupBy": [
             {
@@ -550,7 +543,7 @@
           "link": true,
           "linkTargetBlank": false,
           "linkTooltip": "검사항목:$__cell: 검사기:$__cell_4:$__cell_5 모델:$__cell_3",
-          "linkUrl": "/d/yFLCxZ4ik?var-INSPPROP=$__cell&var-FACILITY=$__cell_4&var-CHANNEL=$__cell_5&&var-MODEL=$__cell_3",
+          "linkUrl": "/d/yFLCxZ4ik?var-INSPPROP_NAME=$__cell&var-FACILITY=$__cell_4&var-CHANNEL=$__cell_5&&var-MODEL=$__cell_3",
           "mappingType": 1,
           "pattern": "inm",
           "thresholds": [],
@@ -767,7 +760,7 @@
       "pageSize": 10,
       "repeat": null,
       "repeatDirection": "h",
-      "repeatIteration": 1526912920727,
+      "repeatIteration": 1527171421553,
       "repeatPanelId": 4,
       "scopedVars": {
         "FACILITY": {
@@ -802,7 +795,7 @@
           "link": true,
           "linkTargetBlank": false,
           "linkTooltip": "검사항목:$__cell: 검사기:$__cell_4:$__cell_5 모델:$__cell_3",
-          "linkUrl": "/d/yFLCxZ4ik?var-INSPPROP=$__cell&var-FACILITY=$__cell_4&var-CHANNEL=$__cell_5&&var-MODEL=$__cell_3",
+          "linkUrl": "/d/yFLCxZ4ik?var-INSPPROP_NAME=$__cell&var-FACILITY=$__cell_4&var-CHANNEL=$__cell_5&&var-MODEL=$__cell_3",
           "mappingType": 1,
           "pattern": "inm",
           "thresholds": [],
@@ -1019,7 +1012,7 @@
       "pageSize": 10,
       "repeat": null,
       "repeatDirection": "h",
-      "repeatIteration": 1526912920727,
+      "repeatIteration": 1527171421553,
       "repeatPanelId": 4,
       "scopedVars": {
         "FACILITY": {
@@ -1054,7 +1047,7 @@
           "link": true,
           "linkTargetBlank": false,
           "linkTooltip": "검사항목:$__cell: 검사기:$__cell_4:$__cell_5 모델:$__cell_3",
-          "linkUrl": "/d/yFLCxZ4ik?var-INSPPROP=$__cell&var-FACILITY=$__cell_4&var-CHANNEL=$__cell_5&&var-MODEL=$__cell_3",
+          "linkUrl": "/d/yFLCxZ4ik?var-INSPPROP_NAME=$__cell&var-FACILITY=$__cell_4&var-CHANNEL=$__cell_5&&var-MODEL=$__cell_3",
           "mappingType": 1,
           "pattern": "inm",
           "thresholds": [],
@@ -1260,7 +1253,8 @@
   "schemaVersion": 16,
   "style": "dark",
   "tags": [
-    "CPK 불량 검출 현황"
+    "CPK 불량 검출 현황",
+    "CPK 이탈 감시"
   ],
   "templating": {
     "list": [
@@ -1373,5 +1367,5 @@
   "timezone": "",
   "title": "CPK 이탈 감시",
   "uid": "TPC1lW4mk",
-  "version": 47
+  "version": 5
 }
