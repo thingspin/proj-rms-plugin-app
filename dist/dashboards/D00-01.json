@@ -2,7 +2,7 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:150",
+        "$$hashKey": "object:172",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1527060965014,
+  "iteration": 1527097243174,
   "links": [
     {
       "icon": "external link",
@@ -1003,8 +1003,8 @@
         "allValue": null,
         "current": {
           "selected": true,
-          "text": "L/Current",
-          "value": "L/Current"
+          "text": "IR/Current",
+          "value": "IR/Current"
         },
         "datasource": "REMOTESOLUTIONS(V1.0)",
         "hide": 0,
@@ -1013,7 +1013,7 @@
         "multi": false,
         "name": "INSPPROP_NAME",
         "options": [],
-        "query": "SELECT NAME FROM t_inspection_property WHERE IDX <> 0;",
+        "query": "SELECT NAME FROM t_inspection_property WHERE IDX <> 0 AND IP_TYPE = 1;",
         "refresh": 1,
         "regex": "",
         "sort": 0,
@@ -1027,8 +1027,8 @@
         "allValue": null,
         "current": {
           "selected": true,
-          "text": "1",
-          "value": "1"
+          "text": "2",
+          "value": "2"
         },
         "datasource": "REMOTESOLUTIONS(V1.0)",
         "hide": 2,
@@ -1037,7 +1037,7 @@
         "multi": false,
         "name": "INSPPROP",
         "options": [],
-        "query": "SELECT IDX FROM t_inspection_property WHERE NAME IN (\"$INSPPROP_NAME\")",
+        "query": "SELECT IDX FROM t_inspection_property WHERE NAME IN (\"$INSPPROP_NAME\") AND IDX <> 0;",
         "refresh": 1,
         "regex": "",
         "sort": 0,
@@ -1050,7 +1050,6 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -1074,7 +1073,6 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -1098,7 +1096,6 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -1124,7 +1121,6 @@
         "auto_count": 30,
         "auto_min": "1s",
         "current": {
-          "selected": true,
           "text": "auto",
           "value": "$__auto_interval_INTERVAL"
         },
@@ -1242,6 +1238,6 @@
   },
   "timezone": "",
   "title": "CPK 현황",
-  "uid": "fxyJMQniz",
-  "version": 92
+  "uid": "N36atb7mk",
+  "version": 77
 }

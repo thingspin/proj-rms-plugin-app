@@ -13,7 +13,7 @@
   "devDependencies": {
     "@types/d3": "^5.0.0",
     "@types/grafana": "git+https://git@github.com/CorpGlory/types-grafana.git",
-    "@types/node": "^10.1.0",
+    "@types/node": "^10.1.2",
     "angular": "~1.7.0",
     "copy-webpack-plugin": "^4.5.1",
     "css-loader": "~0.28.11",
@@ -30,19 +30,19 @@
     "ts-loader": "^4.2.0",
     "typescript": "^2.8.3",
     "webpack": "^4.8.3",
-    "webpack-cli": "^2.1.2"
+    "webpack-cli": "^2.1.4"
   },
   "dependencies": {
-    "mqtt": "^2.18.0",
     "chart.js": "^2.7.2",
+    "chartjs-plugin-annotation": "^0.5.7",
+    "d3": "^5.4.0",
+    "handsontable": "^3.0.0",
     "jquery": "^3.2.1",
+    "jquery-ui": "^1.12.1",
+    "jquery.tabulator": "^3.5.2",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
-    "jquery-ui": "^1.12.1",
-    "jquery.tabulator": "^3.5.1",
-    "d3": "^5.4.0",
-    "snapsvg": "^0.5.1",
-    "chartjs-plugin-annotation": "^0.5.7",
-    "handsontable": "~2.0.0"
+    "mqtt": "^2.18.0",
+    "snapsvg": "^0.5.1"
   }
 }

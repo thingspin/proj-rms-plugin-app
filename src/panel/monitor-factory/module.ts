@@ -1,16 +1,12 @@
 import _ from 'lodash';
 import $ from 'jquery';
 import 'jquery-ui';
+import 'jquery.tabulator/dist/css/tabulator.min.css';
 import 'jquery.tabulator/dist/js/tabulator.min';
 //import * as d3 from "d3";
 import * as Snap from "snapsvg/dist/snap.svg-min.js";
 
 import {MetricsPanelCtrl, loadPluginCss} from  'grafana/app/plugins/sdk';
-
-loadPluginCss({
-  dark: 'plugins/proj-rms-plugin-app/panel/monitor-factory/css/tabulator.min.css',
-  light: 'plugins/proj-rms-plugin-app/panel/monitor-factory/css/tabulator.min.css'
-});
 
 loadPluginCss({
   dark: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.dark.css',
