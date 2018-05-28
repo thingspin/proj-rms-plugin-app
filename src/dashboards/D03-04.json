@@ -19,8 +19,7 @@
         "y": 0
       },
       "id": 2,
-      "inputlItem": {
-        "business_id": -1,
+      "inputlItem": {        
         "business_name": null,
         "change_date": "",
         "memo": "",
