@@ -29139,8 +29139,6 @@ var RmsMoldListPanelCtrl = /** @class */ (function (_super) {
             'select name from t_business where business_type="금형업체"'
         ];
         this.dsSrv.query(selectId, query1).then(function (result) {
-            //this.panel.inputlItem.business_id = -1;
-            //this.$rootScope.$broadcast('refresh');
             var data = result[0];
             //console.log("data rows: " + data.rows.length);  
             //console.log(data);  
@@ -29161,7 +29159,6 @@ var RmsMoldListPanelCtrl = /** @class */ (function (_super) {
                 row.select();
                 g_root.panel.inputlItem.mold_id = row.getData().MOLD_ID;
                 //g_root.panel.inputlItem.plant_id = row.getData().PLANT_ID;
-                //g_root.panel.inputlItem.business_id = row.getData().BUSINESS_ID;
                 g_root.panel.inputlItem.business_name = row.getData().NAME;
                 g_root.panel.inputlItem.mold_name = row.getData().MOLD_NAME;
                 g_root.panel.inputlItem.change_date = new Date(row.getData().CHANGE_DATE);
@@ -29298,6 +29295,84 @@ var RmsMoldListPanelCtrl = /** @class */ (function (_super) {
         // this.data.push(info);
         // this.container.tabulator("setData", this.data);
     };
+    ;
+    RmsMoldListPanelCtrl.prototype.onEdit = function () {
+        var _this = this;
+        var info = this.panel.inputlItem;
+        console.log(info);
+        if (info.mold_id != -1) {
+            this.$rootScope.appEvent('confirm-modal', {
+                title: '수정',
+                text: '정말로 수정 하시겠습니까?',
+                //icon: 'fa-trash',
+                //yesText: '삭제',
+                onConfirm: function () {
+                    var selectId = _this.datasource.id;
+                    var query1 = [
+                        'select business_id from t_business where name="'
+                            + info.business_name + '" and business_type="금형업체"'
+                    ];
+                    _this.dsSrv.query(selectId, query1).then(function (result) {
+                        var data = result[0];
+                        var business_id = data.rows[0][0];
+                        var tmpDate = new Date(info.change_date);
+                        var strDate = tmpDate.getFullYear() + '/' + (tmpDate.getMonth() + 1) + '/' + tmpDate.getDate();
+                        var query2 = [
+                            'update t_mold set ' +
+                                'business_id="' + business_id + '", ' +
+                                'mold_name="' + info.mold_name + '", ' +
+                                'change_date="' + strDate + '", ' +
+                                'change_period="' + info.period + '", ' +
+                                'use_count="' + info.use_count + '", ' +
+                                'memo="' + info.memo + '" where mold_id=' + info.mold_id
+                        ];
+                        console.log(selectId + " " + query2);
+                        _this.dsSrv.query(selectId, query2).then(function (result) {
+                            _this.panel.inputlItem.mold_id = -1;
+                            _this.$rootScope.$broadcast('refresh');
+                        }).catch(function (err) {
+                            console.error(err);
+                        });
+                    }).catch(function (err) {
+                        console.error(err);
+                    });
+                }
+            });
+        }
+        else {
+            this.alertSrv.set("테이블의 Row를 선택해 주세요", 'error', 5000);
+        }
+    };
+    ;
+    RmsMoldListPanelCtrl.prototype.onDel = function () {
+        var _this = this;
+        var info = this.panel.inputlItem;
+        if (info.mold_id != -1) {
+            this.$rootScope.appEvent('confirm-modal', {
+                title: '삭제',
+                text: '정말로 삭제 하시겠습니까?',
+                icon: 'fa-trash',
+                //yesText: '삭제',
+                onConfirm: function () {
+                    var selectId = _this.datasource.id;
+                    var query = [
+                        'delete from t_mold where mold_id=' + info.mold_id
+                    ];
+                    console.log(selectId + " " + query);
+                    _this.dsSrv.query(selectId, query).then(function (result) {
+                        _this.panel.inputlItem.mold_id = -1;
+                        _this.$rootScope.$broadcast('refresh');
+                    }).catch(function (err) {
+                        console.error(err);
+                    });
+                }
+            });
+        }
+        else {
+            this.alertSrv.set("테이블의 Row를 선택해 주세요", 'error', 5000);
+        }
+    };
+    ;
     RmsMoldListPanelCtrl.template = template;
     return RmsMoldListPanelCtrl;
 }(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_5__["MetricsPanelCtrl"]));

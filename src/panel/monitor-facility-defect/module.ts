@@ -5,7 +5,7 @@ import * as Snap from "snapsvg/dist/snap.svg-min.js";
 import '../../services/remoteSolutionDS';
 
 import {MetricsPanelCtrl, loadPluginCss} from  'grafana/app/plugins/sdk';
-// import {TweenMax, Power2, TimelineLite} from "gsap/TweenMax";
+import {Power0, TimelineMax} from "gsap/TweenMax";
 
 loadPluginCss({
   dark: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.dark.css',
@@ -37,7 +37,7 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
       options: { }
     });
 
-    this.Svg = null;
+    this.Svg = this.RecvData = null;
 
     this.events.on('panel-initialized', this.onInitialized.bind(this));
     this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
@@ -54,7 +54,7 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
 
     this.loadSVG(this.svgImgPath).then( (svg: any) => {
       if (this.Svg === null) {
-        let node = this.Container.append(svg.node);
+        const node = this.Container.append(svg.node);
         this.Svg = Snap(node.find("> svg")[0]);
         this.events.on('data-received', this.onDataReceived.bind(this));
 
@@ -82,11 +82,18 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
         const idTemplate = "#modeling2-" + (mainIdx+1) + "-light" + (idx+1);
         const $svg = $(this.Svg.node);
 
+        let redDom = $svg.find(idTemplate + "-red");
+        let greenDom = $svg.find(idTemplate + "-green");
+        let yellowDom = $svg.find(idTemplate + "-yellow");
+        redDom.hide();
+        greenDom.hide();
+        yellowDom.hide();
+
         obj.$nodes.push({
           text: $(DOM),
-          red: $svg.find(idTemplate + "-red"),
-          green: $svg.find(idTemplate + "-green"),
-          yellow: $svg.find(idTemplate + "-yellow"),
+          red: { dom: redDom, },
+          green: { dom: greenDom, },
+          yellow: { dom: yellowDom, },
         });
       });
       result.push(obj);
@@ -116,14 +123,13 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
     if (canUseDs) {
       let viewData: Object = this.getViewData(results);
 
-      this.showData(viewData);
-      this.RecvData = viewData;
+      this.RecvData = this.showData(viewData);
     }
   }
 
   getViewData(results: any): Object {
 
-    let data: Object[] = this.rsDsSrv.getTableObj(results);
+    const data: Object[] = this.rsDsSrv.getTableObj(results);
 
     let res: Object = {};
     data.forEach( (arr: Object[]) => {
@@ -168,31 +174,52 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
     let mainIdx: number;
 
     mainIdx = 0;
-    for (let title in viewData) {
-      let svgDOM_MAP: any = this.SvgDomMap[mainIdx];
+    for (const title in viewData) {
+      const svgDOM_MAP: any = this.SvgDomMap[mainIdx];
 
       svgDOM_MAP.snapTitle.attr({text: title });
       svgDOM_MAP.snapTotal.attr({text: (viewData[title].total + "/" + viewData[title].failed) });
 
       $.each(viewData[title].channels, (index: string, chInfo: any) => {
-        let chDOM = svgDOM_MAP.$nodes[parseInt(index)-1];
+        const chDOM = svgDOM_MAP.$nodes[parseInt(index)-1];
         chDOM.text.text(chInfo.failed);
+
+        let chColor: String;
         if (chInfo.hasOwnProperty('CNF') && chInfo.CNF !== 0) {
-          chDOM.red.show();
-          chDOM.yellow.hide();
-          chDOM.green.hide();
+          chColor = "red";
         } else if (chInfo.hasOwnProperty('failed') && chInfo.failed !== 0) {
-          chDOM.red.hide();
-          chDOM.yellow.show();
-          chDOM.green.hide();
+          chColor = "yellow";
         } else {
-          chDOM.red.hide();
-          chDOM.yellow.hide();
-          chDOM.green.show();
+          chColor = "green";
+        }
+        if (this.RecvData !== null && this.RecvData[title].channels[index] === undefined) {
+          chColor = "none";
+        }
+        viewData[title].channels[index].color = chColor;
+
+        let changed: Boolean;
+        if ( this.RecvData !== null && this.RecvData[title].channels[index] !== undefined) {
+          changed = (chColor !== this.RecvData[title].channels[index].color) ? true : false;
+        } else {
+          changed = true;
+        }
+
+        if (changed) {
+          ["red","green","yellow"].forEach( color => {
+            if (color === chColor) {
+              let animation = new TimelineMax({ repeat: 1, yoyo: true, });
+              animation.set(chDOM[color].dom[0], { opacity: 1, }).to(chDOM[color].dom[0], 0.5, { opacity: 0, ease: Power0.easeNone });
+              animation.play();
+              chDOM[color].dom.show();
+            } else {
+              chDOM[color].dom.hide();
+            }
+          });
         }
       });
       mainIdx++;
     }
+    return viewData;
   }
 
   link(scope, elem, attrs, ctrl) { }
