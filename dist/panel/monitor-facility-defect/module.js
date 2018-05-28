@@ -36039,18 +36039,44 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
         _this.rsDsSrv = rsDsSrv;
         _this.divID = "rms-app-monitor-facility-defect";
         _this.svgImgPath = "public/plugins/proj-rms-plugin-app/panel/monitor-facility-defect/img/main.svg";
+        _this._titleIdxMap = [];
+        _this.recvData = null;
         lodash__WEBPACK_IMPORTED_MODULE_0___default.a.defaults(_this.panel, {
             options: {}
         });
-        _this.Svg = _this.RecvData = null;
+        _this.Svg = null;
         _this.events.on('panel-initialized', _this.onInitialized.bind(_this));
         _this.events.on('init-edit-mode', _this.onInitEditMode.bind(_this));
         _this.events.on('render', _this.onRender.bind(_this));
         return _this;
     }
+    Object.defineProperty(RmsMonitorFacilityDefectPanelCtrl.prototype, "titleIdxMap", {
+        get: function () { return this._titleIdxMap; },
+        set: function (titleIdxMap) { this._titleIdxMap = titleIdxMap; },
+        enumerable: true,
+        configurable: true
+    });
+    RmsMonitorFacilityDefectPanelCtrl.prototype.getTitleIdx = function (title) {
+        var index = null;
+        this.titleIdxMap.every(function (id, idx) {
+            if (title === id) {
+                index = idx;
+                return false;
+            }
+            return true;
+        });
+        return index;
+    };
     Object.defineProperty(RmsMonitorFacilityDefectPanelCtrl.prototype, "RecvData", {
         get: function () { return this.recvData; },
-        set: function (recvData) { this.recvData = recvData; },
+        set: function (recvData) {
+            if (this.recvData === undefined || this.recvData === null) {
+                this.recvData = recvData;
+            }
+            else {
+                this.recvData = Object.assign({}, this.recvData, recvData);
+            }
+        },
         enumerable: true,
         configurable: true
     });
@@ -36072,7 +36098,7 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    RmsMonitorFacilityDefectPanelCtrl.prototype.init = function () {
+    RmsMonitorFacilityDefectPanelCtrl.prototype.custom_init = function () {
         var _this = this;
         var node = this.$element.find('#' + this.divID);
         if (node.length === 0) {
@@ -36138,6 +36164,7 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
         });
         if (canUseDs) {
             var viewData = this.getViewData(results);
+            console.log(viewData);
             this.RecvData = this.showData(viewData);
         }
     };
@@ -36158,13 +36185,15 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
                         case "TRUE":
                         case "True":
                         case "true":
-                            res[obj.facility].total = (res[obj.facility].total === undefined) ? 0 :
+                            res[obj.facility].total = (res[obj.facility].total === undefined) ? obj.count :
                                 res[obj.facility].total + obj.count;
                             break;
                         case "FALSE":
                         case "False":
                         case "false":
-                            res[obj.facility].failed = (res[obj.facility].failed === undefined) ? 0 :
+                            res[obj.facility].total = (res[obj.facility].total === undefined) ? obj.count :
+                                res[obj.facility].total + obj.count;
+                            res[obj.facility].failed = (res[obj.facility].failed === undefined) ? obj.count :
                                 res[obj.facility].failed + obj.count;
                             res[obj.facility].channels[obj.channel] = { failed: obj.count, };
                             break;
@@ -36181,32 +36210,46 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
     };
     RmsMonitorFacilityDefectPanelCtrl.prototype.showData = function (viewData) {
         var _this = this;
-        var mainIdx;
-        mainIdx = 0;
         var _loop_1 = function (title) {
+            var mainIdx = this_1.getTitleIdx(title);
+            if (mainIdx === null) {
+                mainIdx = this_1.titleIdxMap.push(title) - 1;
+            }
             var svgDOM_MAP = this_1.SvgDomMap[mainIdx];
             svgDOM_MAP.snapTitle.attr({ text: title });
-            svgDOM_MAP.snapTotal.attr({ text: (viewData[title].total + "/" + viewData[title].failed) });
-            jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(viewData[title].channels, function (index, chInfo) {
-                var chDOM = svgDOM_MAP.$nodes[parseInt(index) - 1];
-                chDOM.text.text(chInfo.failed);
+            svgDOM_MAP.snapTotal.attr({ text: (viewData[title].total + "/" + (viewData[title].failed === undefined ? 0 : viewData[title].failed)) });
+            var changed;
+            [1, 2, 3, 4].forEach(function (chIdx) {
+                var index = String(chIdx);
+                var chInfo = viewData[title].channels[index];
+                var chDOM = svgDOM_MAP.$nodes[chIdx - 1];
                 var chColor;
-                if (chInfo.hasOwnProperty('CNF') && chInfo.CNF !== 0) {
-                    chColor = "red";
-                }
-                else if (chInfo.hasOwnProperty('failed') && chInfo.failed !== 0) {
-                    chColor = "yellow";
+                if (chInfo === undefined) {
+                    chDOM.text.text(0);
+                    chColor = "green";
+                    viewData[title].channels[index] = {};
+                    viewData[title].channels[index].color = chColor;
                 }
                 else {
-                    chColor = "green";
+                    chDOM.text.text(chInfo.failed);
+                    if (chInfo.hasOwnProperty('CNF') && chInfo.CNF !== 0) {
+                        chColor = "red";
+                    }
+                    else if (chInfo.hasOwnProperty('failed') && chInfo.failed !== 0) {
+                        chColor = "yellow";
+                    }
+                    else {
+                        chColor = "green";
+                    }
+                    viewData[title].channels[index].color = chColor;
                 }
-                if (_this.RecvData !== null && _this.RecvData[title].channels[index] === undefined) {
-                    chColor = "none";
-                }
-                viewData[title].channels[index].color = chColor;
-                var changed;
-                if (_this.RecvData !== null && _this.RecvData[title].channels[index] !== undefined) {
-                    changed = (chColor !== _this.RecvData[title].channels[index].color) ? true : false;
+                if (_this.RecvData !== null && _this.RecvData[title] !== undefined) {
+                    if (_this.RecvData[title].channels[index] === undefined) {
+                        changed = true;
+                    }
+                    else {
+                        changed = (chColor !== _this.RecvData[title].channels[index].color) ? true : false;
+                    }
                 }
                 else {
                     changed = true;
@@ -36214,6 +36257,11 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
                 if (changed) {
                     ["red", "green", "yellow"].forEach(function (color) {
                         if (color === chColor) {
+                            if (chInfo !== undefined) {
+                                if (color === "green" && chInfo.failed !== 0) {
+                                    console.log(viewData);
+                                }
+                            }
                             var animation = new gsap_TweenMax__WEBPACK_IMPORTED_MODULE_5__["TimelineMax"]({ repeat: 1, yoyo: true, });
                             animation.set(chDOM[color].dom[0], { opacity: 1, }).to(chDOM[color].dom[0], 0.5, { opacity: 0, ease: gsap_TweenMax__WEBPACK_IMPORTED_MODULE_5__["Power0"].easeNone });
                             animation.play();
@@ -36249,7 +36297,7 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div ng-init=\"ctrl.init()\" id=\"rms-app-monitor-facility-defect\" class=\"rms-app-monitor-facility-defect\"></div>";
+module.exports = "<div ng-init=\"ctrl.custom_init()\" id=\"rms-app-monitor-facility-defect\" class=\"rms-app-monitor-facility-defect\"></div>";
 
 /***/ }),
 

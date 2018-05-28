@@ -17,8 +17,28 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
   divID: String = "rms-app-monitor-facility-defect";
   svgImgPath: String = "public/plugins/proj-rms-plugin-app/panel/monitor-facility-defect/img/main.svg";
 
-  private recvData: any;
-  set RecvData(recvData: any) { this.recvData = recvData;}
+  private _titleIdxMap = [];
+  set titleIdxMap(titleIdxMap) { this._titleIdxMap = titleIdxMap;}
+  get titleIdxMap() {return this._titleIdxMap;}
+  private getTitleIdx(title) {
+    let index = null;
+    this.titleIdxMap.every((id: String, idx: number) => {
+      if (title === id) {
+        index = idx;
+        return false;
+      }
+      return true;
+    });
+    return index;
+  }
+  private recvData: any = null;
+  set RecvData(recvData: any) {
+    if (this.recvData === undefined || this.recvData === null ) {
+      this.recvData = recvData;
+    }else {
+      this.recvData = Object.assign({}, this.recvData, recvData);
+    }
+  }
   get RecvData() { return this.recvData;}
   private container: any;
   set Container(container: any) { this.container = container; }
@@ -36,15 +56,14 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
     _.defaults(this.panel, {
       options: { }
     });
-
-    this.Svg = this.RecvData = null;
+    this.Svg = null;
 
     this.events.on('panel-initialized', this.onInitialized.bind(this));
     this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
     this.events.on('render', this.onRender.bind(this));
   }
 
-  init() {
+  custom_init() {
     let node: any = this.$element.find('#' + this.divID);
     if (node.length === 0) {
       console.error("cannot find element id '#" + this.divID + "'");
@@ -98,7 +117,6 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
       });
       result.push(obj);
     });
-
     return result;
   }
 
@@ -122,7 +140,7 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
 
     if (canUseDs) {
       let viewData: Object = this.getViewData(results);
-
+      console.log(viewData);
       this.RecvData = this.showData(viewData);
     }
   }
@@ -147,13 +165,15 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
             case "TRUE":
             case "True":
             case "true":
-              res[obj.facility].total = (res[obj.facility].total === undefined) ? 0 :
+              res[obj.facility].total = (res[obj.facility].total === undefined) ? obj.count :
                 res[obj.facility].total + obj.count;
               break;
             case "FALSE":
             case "False":
             case "false":
-              res[obj.facility].failed = (res[obj.facility].failed === undefined) ? 0 :
+              res[obj.facility].total = (res[obj.facility].total === undefined) ? obj.count :
+                res[obj.facility].total + obj.count;
+              res[obj.facility].failed = (res[obj.facility].failed === undefined) ? obj.count :
                 res[obj.facility].failed + obj.count;
 
               res[obj.facility].channels[obj.channel] = { failed: obj.count, };
@@ -171,35 +191,46 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
   }
 
   showData(viewData) {
-    let mainIdx: number;
-
-    mainIdx = 0;
     for (const title in viewData) {
+      let mainIdx: number = this.getTitleIdx(title);
+      if (mainIdx === null) {
+        mainIdx = this.titleIdxMap.push(title) - 1;
+      }
       const svgDOM_MAP: any = this.SvgDomMap[mainIdx];
 
       svgDOM_MAP.snapTitle.attr({text: title });
-      svgDOM_MAP.snapTotal.attr({text: (viewData[title].total + "/" + viewData[title].failed) });
+      svgDOM_MAP.snapTotal.attr({text: (viewData[title].total + "/" + (viewData[title].failed === undefined ? 0 : viewData[title].failed) )});
+      let changed: Boolean;
 
-      $.each(viewData[title].channels, (index: string, chInfo: any) => {
-        const chDOM = svgDOM_MAP.$nodes[parseInt(index)-1];
-        chDOM.text.text(chInfo.failed);
-
+      [1,2,3,4].forEach((chIdx) => {
+        const index: string = String(chIdx);
+        const chInfo = viewData[title].channels[index];
+        const chDOM = svgDOM_MAP.$nodes[chIdx-1];
         let chColor: String;
-        if (chInfo.hasOwnProperty('CNF') && chInfo.CNF !== 0) {
-          chColor = "red";
-        } else if (chInfo.hasOwnProperty('failed') && chInfo.failed !== 0) {
-          chColor = "yellow";
-        } else {
+        if (chInfo === undefined) {
+          chDOM.text.text(0);
           chColor = "green";
-        }
-        if (this.RecvData !== null && this.RecvData[title].channels[index] === undefined) {
-          chColor = "none";
-        }
-        viewData[title].channels[index].color = chColor;
+          viewData[title].channels[index] = {};
+          viewData[title].channels[index].color = chColor;
+        } else  {
+          chDOM.text.text(chInfo.failed);
 
-        let changed: Boolean;
-        if ( this.RecvData !== null && this.RecvData[title].channels[index] !== undefined) {
-          changed = (chColor !== this.RecvData[title].channels[index].color) ? true : false;
+          if (chInfo.hasOwnProperty('CNF') && chInfo.CNF !== 0) {
+            chColor = "red";
+          } else if (chInfo.hasOwnProperty('failed') && chInfo.failed !== 0) {
+            chColor = "yellow";
+          } else {
+            chColor = "green";
+          }
+          viewData[title].channels[index].color = chColor;
+        }
+
+        if ( this.RecvData !== null && this.RecvData[title] !== undefined) {
+          if (this.RecvData[title].channels[index] === undefined) {
+            changed = true;
+          } else {
+            changed = (chColor !== this.RecvData[title].channels[index].color) ? true : false;
+          }
         } else {
           changed = true;
         }
@@ -207,6 +238,11 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
         if (changed) {
           ["red","green","yellow"].forEach( color => {
             if (color === chColor) {
+              if (chInfo !== undefined) {
+                if (color === "green" && chInfo.failed !== 0) {
+                  console.log(viewData);
+                }
+              }
               let animation = new TimelineMax({ repeat: 1, yoyo: true, });
               animation.set(chDOM[color].dom[0], { opacity: 1, }).to(chDOM[color].dom[0], 0.5, { opacity: 0, ease: Power0.easeNone });
               animation.play();
