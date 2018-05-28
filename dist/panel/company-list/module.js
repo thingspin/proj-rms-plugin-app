@@ -29074,12 +29074,12 @@ var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
             ],
             inputlItem: {
                 business_id: -1,
-                name: 'Z업체',
-                business_type: '소모품업체',
-                phone: '010-1111-1111',
-                person: '아아아',
-                mail: '111@111.com',
-                memo: '아무말',
+                name: '',
+                business_type: '',
+                phone: '',
+                person: '',
+                mail: '',
+                memo: '',
             }
         };
         lodash__WEBPACK_IMPORTED_MODULE_0___default.a.defaults(_this.panel, _this.panelDefaults);
@@ -29136,10 +29136,10 @@ var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
     };
     RmsCompanyListPanelCtrl.prototype.createTable = function (dataList) {
         //console.log("create table ...");   
-        var tabledata = [
-            { id: 1, name: 'A업체', phone: '010-1234-1234', person: '아무개', mail: 'email1@mda.com', memo: '' },
-            { id: 2, name: 'B업체', phone: '010-1234-1234', person: '아무개', mail: 'email1@mda.com', memo: '' },
-        ];
+        // var tabledata = [
+        //   { id: 1, name: 'A업체', phone: '010-1234-1234', person: '아무개', mail: 'email1@mda.com',  memo: ''}, 
+        //   { id: 2, name: 'B업체', phone: '010-1234-1234', person: '아무개', mail: 'email1@mda.com',  memo: ''},     
+        // ];
         if (this.initalized == true) {
             this.container.tabulator("destroy");
         }
@@ -29170,8 +29170,8 @@ var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
             this.container.tabulator("setData", dataList);
         }
         else {
-            this.dataTable.setData("setData", tabledata);
-            this.container.tabulator("setData", tabledata);
+            // this.dataTable.setData("setData",tabledata);
+            // this.container.tabulator("setData", tabledata);
         }
         this.initalized = true;
     };

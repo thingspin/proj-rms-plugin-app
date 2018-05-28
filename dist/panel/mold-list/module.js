@@ -29054,18 +29054,44 @@ var template = __webpack_require__(/*! ./partial/templet.html */ "./panel/mold-l
 //const options = require("./partial/options.html");
 var RmsMoldListPanelCtrl = /** @class */ (function (_super) {
     __extends(RmsMoldListPanelCtrl, _super);
-    function RmsMoldListPanelCtrl($scope, $injector, $http, $location, uiSegmentSrv, annotationsSrv) {
+    function RmsMoldListPanelCtrl($rootScope, $scope, $injector, rsDsSrv, alertSrv) {
         var _this = _super.call(this, $scope, $injector) || this;
         _this.dataRaw = [];
         _this.columns = [];
-        // _.defaults(this.panel, this.panelDefaults);
-        lodash__WEBPACK_IMPORTED_MODULE_0___default.a.defaults(_this.panel);
+        _this.panelDefaults = {
+            // options: {
+            //   legend: {
+            //       show: true,
+            //       values: false
+            //   },
+            //   legendTable: false,
+            //   traceColors : {}
+            // },
+            businessCategory: [],
+            inputlItem: {
+                mold_id: -1,
+                plant_id: -1,
+                business_name: '',
+                mold_name: '',
+                change_date: '',
+                period: '',
+                use_count: '',
+                memo: '',
+            }
+        };
+        lodash__WEBPACK_IMPORTED_MODULE_0___default.a.defaults(_this.panel, _this.panelDefaults);
+        _this.panel.inputlItem.change_date = new Date();
+        _this.dsSrv = rsDsSrv;
+        _this.alertSrv = alertSrv;
+        _this.$rootScope = $rootScope;
+        _this.$scope = $scope;
         _this.divID = 'table-rms-' + _this.panel.id;
         _this.events.on('init-edit-mode', _this.onInitEditMode.bind(_this));
         // this.events.on('render', this.onRender.bind(this)); //dynamic ui process
         _this.events.on('data-received', _this.onDataReceived.bind(_this));
         _this.events.on('data-error', _this.onDataError.bind(_this));
         return _this;
+        //this.events.on('panel-initialized', this.onInitialized.bind(this));
     }
     RmsMoldListPanelCtrl.prototype.onInitialized = function () {
         console.log("onInitialized");
@@ -29095,25 +29121,69 @@ var RmsMoldListPanelCtrl = /** @class */ (function (_super) {
         this.createTable(this.dataJson);
     };
     RmsMoldListPanelCtrl.prototype.createTable = function (dataList) {
+        var _this = this;
         console.log("create table ...");
-        var tabledata = [
-            { id: 1, mold_name: "A모델", change_date: "2018/05/15", change_period: "10000", use_count: "10000", memo: '' },
-            { id: 2, mold_name: "B모델", change_date: "2018/05/15", change_period: "10000", use_count: "10000", memo: '' },
-            { id: 3, mold_name: "C모델", change_date: "2018/05/15", change_period: "10000", use_count: "10000", memo: '' },
-            { id: 4, mold_name: "D모델", change_date: "2018/05/15", change_period: "10000", use_count: "10000", memo: '' },
-            { id: 5, mold_name: "E모델", change_date: "2018/05/15", change_period: "10000", use_count: "10000", memo: '' }
-        ];
+        // var tabledata = [
+        //   { id: 1, mold_name: "A모델", change_date: "2018/05/15", change_period: "10000", use_count: "10000",  memo: ''},
+        //   { id: 2, mold_name: "B모델", change_date: "2018/05/15", change_period: "10000", use_count: "10000",  memo: ''},
+        //   { id: 3, mold_name: "C모델", change_date: "2018/05/15", change_period: "10000", use_count: "10000",  memo: ''},
+        //   { id: 4, mold_name: "D모델", change_date: "2018/05/15", change_period: "10000", use_count: "10000",  memo: ''},
+        //   { id: 5, mold_name: "E모델", change_date: "2018/05/15", change_period: "10000", use_count: "10000",  memo: ''}
+        // ];
         if (this.initalized == true) {
             this.container.tabulator("destroy");
         }
+        this.panel.businessCategory.length = 0;
+        var selectId = this.datasource.id;
+        var query1 = [
+            'select name from t_business where business_type="금형업체"'
+        ];
+        this.dsSrv.query(selectId, query1).then(function (result) {
+            //this.panel.inputlItem.business_id = -1;
+            //this.$rootScope.$broadcast('refresh');
+            var data = result[0];
+            //console.log("data rows: " + data.rows.length);  
+            //console.log(data);  
+            for (var i = 0; i < data.rows.length; i++) {
+                //var obj = {name:data.rows[i]};
+                _this.panel.businessCategory.push(data.rows[i][0]);
+            }
+        }).catch(function (err) {
+            console.error(err);
+        });
+        var g_root = this;
         this.container.tabulator({
-            height: 340,
+            //height: 340,
+            selectable: 1,
             layout: "fitColumns",
             columns: this.columns,
             rowClick: function (e, row) {
-                console.log(row.getData());
-                console.log(row);
-                alert("Row " + row.getData() + " Clicked!!!!");
+                row.select();
+                g_root.panel.inputlItem.mold_id = row.getData().MOLD_ID;
+                //g_root.panel.inputlItem.plant_id = row.getData().PLANT_ID;
+                //g_root.panel.inputlItem.business_id = row.getData().BUSINESS_ID;
+                g_root.panel.inputlItem.business_name = row.getData().NAME;
+                g_root.panel.inputlItem.mold_name = row.getData().MOLD_NAME;
+                g_root.panel.inputlItem.change_date = new Date(row.getData().CHANGE_DATE);
+                g_root.panel.inputlItem.period = row.getData().CHANGE_PERIOD;
+                g_root.panel.inputlItem.use_count = row.getData().USE_COUNT;
+                g_root.panel.inputlItem.memo = row.getData().MEMO;
+                // let query2 = [
+                //   'select name from t_business where business_id=' + row.getData().BUSINESS_ID
+                // ]; 
+                // g_root.dsSrv.query(selectId, query2).then( result => {                      
+                //   var data = result[0];      
+                //   g_root.panel.inputlItem.business_name = data.rows[0][0];
+                //   // console.log("data rows: " + data.rows.length);  
+                //   //console.log(data.rows[0]);  
+                //   //console.log("111 " + g_root.panel.inputlItem.business_name);
+                //   //console.log(g_root.panel.businessCategory);
+                //   //var index = g_root.panel.businessCategory.indexOf(data.rows[0][0]);
+                //   //console.log(index);            
+                // }).catch( err => {
+                //   console.error(err);
+                // });             
+                g_root.events.emit('panel-size-changed');
             },
         });
         if (dataList != null) {
@@ -29123,8 +29193,8 @@ var RmsMoldListPanelCtrl = /** @class */ (function (_super) {
             this.container.tabulator("setData", dataList);
         }
         else {
-            this.dataTable.setData("setData", tabledata);
-            this.container.tabulator("setData", tabledata);
+            // this.dataTable.setData("setData",tabledata);
+            // this.container.tabulator("setData", tabledata);
         }
         this.initalized = true;
     };
@@ -29157,8 +29227,70 @@ var RmsMoldListPanelCtrl = /** @class */ (function (_super) {
         this.dataJson = jArray;
     };
     ;
-    RmsMoldListPanelCtrl.prototype.onSave = function () {
-        // TODO ! - call database inasert/update query.
+    RmsMoldListPanelCtrl.prototype.onNew = function () {
+        var _this = this;
+        var info = this.panel.inputlItem;
+        console.log(info);
+        if (info.business_name == null
+            || info.mold_name == ""
+            || info.period == ""
+            || info.use_count == "") {
+            this.alertSrv.set("입력 정보를 확인해 주세요", 'error', 5000);
+        }
+        else {
+            this.$rootScope.appEvent('confirm-modal', {
+                title: '등록',
+                text: '정말로 등록 하시겠습니까?',
+                //icon: 'fa-trash',
+                //yesText: '삭제',
+                onConfirm: function () {
+                    var selectId = _this.datasource.id;
+                    var query1 = [
+                        'select * from t_mold where mold_name="' + info.mold_name + '";'
+                    ];
+                    _this.dsSrv.query(selectId, query1).then(function (result) {
+                        var data = result[0];
+                        //console.log("data rows: " + data.rows.length);  
+                        if (data.rows.length == 0) {
+                            var query2 = [
+                                'select business_id from t_business where name="'
+                                    + info.business_name + '" and business_type="금형업체"'
+                            ];
+                            _this.dsSrv.query(selectId, query2).then(function (result) {
+                                var data = result[0];
+                                var business_id = data.rows[0][0];
+                                var tmpDate = new Date(info.change_date);
+                                var strDate = tmpDate.getFullYear() + '/' + (tmpDate.getMonth() + 1) + '/' + tmpDate.getDate();
+                                var query3 = [
+                                    'insert into t_mold(plant_id, business_id, mold_name, change_date, change_period, use_count, memo) values(1000, '
+                                        + business_id + ', "' + info.mold_name + '","'
+                                        + strDate + '", "' + info.period + '", "'
+                                        + info.use_count + '", "' + info.memo + '");'
+                                ];
+                                console.log(query3);
+                                _this.dsSrv.query(selectId, query3).then(function (result) {
+                                    _this.panel.inputlItem.mold_id = -1;
+                                    _this.$rootScope.$broadcast('refresh');
+                                }).catch(function (err) {
+                                    console.error(err);
+                                });
+                            }).catch(function (err) {
+                                console.error(err);
+                            });
+                        }
+                        else {
+                            _this.alertSrv.set("이미 등록 되어있습니다.", 'error', 5000);
+                        }
+                    }).catch(function (err) {
+                        console.error(err);
+                    });
+                }
+            });
+        }
+        // var day = new Date(this.panel.inputlItem.change_date);
+        // console.log("select CHANGE_DATE1: " + this.panel.inputlItem.change_date);
+        // console.log("select CHANGE_DATE2: " 
+        // + day.getFullYear() + '/' + (day.getMonth()+1) + '/' + day.getDate());
         // let info = this.panel.materialItem;
         // info.id = this.data.length + 1;
         // info.company = info.company.name;
@@ -29181,7 +29313,7 @@ var RmsMoldListPanelCtrl = /** @class */ (function (_super) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"editor-row\">\n        <div class=\"section gf-form-group\">\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-6\">모델명</label>\n                <input type=\"text\" class=\"gf-form-input min-width-15 width-15\">\n            </div>\n\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-6\">교체일</label>\n                <input type=\"text\" class=\"gf-form-input min-width-15 width-15\">\n            </div>\n        </div>\n        \n        <div class=\"section gf-form-group\">\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-6\">사용횟수</label>\n                <input type=\"text\" class=\"gf-form-input min-width-15 width-15\">\n            </div>\n\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-6\">교체주기</label>\n                <input type=\"text\" class=\"gf-form-input min-width-15 width-15\">\n            </div>\n        </div>\n        <div class=\"section gf-form-group\">\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-6\">메모</label>\n                <input type=\"text\" class=\"gf-form-input min-width-15 width-15\">\n            </div>            \n            \n            <div class=\"gf-form\">\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onNew()\">\n                    등록\n                </button>\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onEdit()\">\n                    수정\n                </button>\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onDel()\">\n                    삭제\n                </button>\n            </div>\n        </div>\n    </div>\n    \n    <div class=\"editor-row\">\n        <div class=\"thingspin-table\"></div>\n    </div>\n    ";
+module.exports = "<div class=\"editor-row\">\n        <div class=\"section gf-form-group\">\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-6\">모델명</label>\n                <input type=\"text\" class=\"gf-form-input min-width-15 width-15\" ng-model=\"ctrl.panel.inputlItem.mold_name\">\n            </div>\n\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-6\">업체명</label>\n                <div class=\"gf-form-select-wrapper\">\n                        <select class=\"gf-form-input min-width-15 width-15\" \n                            ng-model=\"ctrl.panel.inputlItem.business_name\"\n                            ng-options=\"f for f in ctrl.panel.businessCategory\">\n                        </select>\n                </div>                    \n            </div>             \n        </div>\n        \n        <div class=\"section gf-form-group\">\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-6\">사용횟수</label>\n                <input type=\"text\" class=\"gf-form-input min-width-15 width-15\" ng-model=\"ctrl.panel.inputlItem.use_count\">\n            </div>\n\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-6\">교체주기</label>\n                <input type=\"text\" class=\"gf-form-input min-width-15 width-15\" ng-model=\"ctrl.panel.inputlItem.period\">\n            </div>\n\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-6\">교체일</label>\n                <input type=\"date\" class=\"gf-form-input min-width-15 width-15\" ng-model=\"ctrl.panel.inputlItem.change_date\">\n            </div>\n        </div>\n\n        <div class=\"section gf-form-group\">\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-6\">메모</label>\n                <input type=\"text\" class=\"gf-form-input min-width-15 width-15\" ng-model=\"ctrl.panel.inputlItem.memo\">\n            </div>            \n            \n            <div class=\"gf-form\">\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onNew()\">\n                    등록\n                </button>\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onEdit()\">\n                    수정\n                </button>\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onDel()\">\n                    삭제\n                </button>\n            </div>\n        </div>\n    </div>\n    \n    <div class=\"editor-row\">\n        <div class=\"thingspin-table\"></div>\n    </div>\n    ";
 
 /***/ }),
 

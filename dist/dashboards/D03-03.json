@@ -16,19 +16,20 @@
       ],
       "datasource": "REMOTESOLUTIONS(V1.0)",
       "gridPos": {
-        "h": 14,
-        "w": 17,
+        "h": 13,
+        "w": 24,
         "x": 0,
         "y": 0
       },
       "id": 2,
       "inputlItem": {
+        "business_id": -1,
         "business_type": "소모품업체",
-        "mail": "111@111.com",
-        "memo": "아무말",
-        "name": "Z업체",
-        "person": "아아아",
-        "phone": "010-1111-1111"
+        "mail": "",
+        "memo": "",
+        "name": "",
+        "person": "",
+        "phone": ""
       },
       "targets": [
         {
@@ -39,7 +40,7 @@
           "refId": "A"
         }
       ],
-      "title": "Panel Title",
+      "title": "",
       "type": "company-list"
     }
   ],
