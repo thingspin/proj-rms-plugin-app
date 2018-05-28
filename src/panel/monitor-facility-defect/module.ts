@@ -5,6 +5,7 @@ import * as Snap from "snapsvg/dist/snap.svg-min.js";
 import '../../services/remoteSolutionDS';
 
 import {MetricsPanelCtrl, loadPluginCss} from  'grafana/app/plugins/sdk';
+// import {TweenMax, Power2, TimelineLite} from "gsap/TweenMax";
 
 loadPluginCss({
   dark: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.dark.css',
@@ -16,40 +17,49 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
   divID: String = "rms-app-monitor-facility-defect";
   svgImgPath: String = "public/plugins/proj-rms-plugin-app/panel/monitor-facility-defect/img/main.svg";
 
-  container: any;
+  private recvData: any;
+  set RecvData(recvData: any) { this.recvData = recvData;}
+  get RecvData() { return this.recvData;}
+  private container: any;
   set Container(container: any) { this.container = container; }
   get Container() {return this.container;}
-  svg: any;
+  private svg: any;
   set Svg(svg: any) { this.svg = svg; }
   get Svg() {return this.svg; }
+  private svgDomMap: Object;
+  set SvgDomMap(svgDomMap: any) { this.svgDomMap = svgDomMap; }
+  get SvgDomMap() { return this.svgDomMap;}
 
   constructor($scope, $injector, private $element, private rsDsSrv) {
     super($scope, $injector);
 
     _.defaults(this.panel, {
-      options: {
-      }
+      options: { }
     });
+
+    this.Svg = null;
 
     this.events.on('panel-initialized', this.onInitialized.bind(this));
     this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
-
     this.events.on('render', this.onRender.bind(this));
   }
+
   init() {
     let node: any = this.$element.find('#' + this.divID);
     if (node.length === 0) {
       console.error("cannot find element id '#" + this.divID + "'");
       return;
     }
-
     this.Container = node;
-    this.Svg = null;
 
     this.loadSVG(this.svgImgPath).then( (svg: any) => {
-      this.Container.append(svg.node);
+      if (this.Svg === null) {
+        let node = this.Container.append(svg.node);
+        this.Svg = Snap(node.find("> svg")[0]);
+        this.events.on('data-received', this.onDataReceived.bind(this));
 
-      this.events.on('data-received', this.onDataReceived.bind(this));
+        this.SvgDomMap = this.initSvgDOM();
+      }
     });
   }
 
@@ -59,12 +69,39 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
     });
   }
 
+  initSvgDOM(): Object {
+    let result = [];
+    this.Svg.selectAll("#modeling2-text > g").items.forEach((DOM: any, mainIdx: number) => {
+      let obj = {
+        snapTitle: this.Svg.select("#title #title" + (mainIdx+1) ),
+        snapTotal: DOM.select("text"),
+        $nodes: [],
+      };
+
+      $(DOM.node).find("g text").each((idx: number, DOM: any) => {
+        const idTemplate = "#modeling2-" + (mainIdx+1) + "-light" + (idx+1);
+        const $svg = $(this.Svg.node);
+
+        obj.$nodes.push({
+          text: $(DOM),
+          red: $svg.find(idTemplate + "-red"),
+          green: $svg.find(idTemplate + "-green"),
+          yellow: $svg.find(idTemplate + "-yellow"),
+        });
+      });
+      result.push(obj);
+    });
+
+    return result;
+  }
+
   onInitialized() {
   }
 
   onInitEditMode() { }
 
-  onRender() { }
+  onRender() {
+  }
 
   onDataReceived(results: any) {
     let canUseDs: Boolean = true;
@@ -80,13 +117,11 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
       let viewData: Object = this.getViewData(results);
 
       this.showData(viewData);
+      this.RecvData = viewData;
     }
   }
 
   getViewData(results: any): Object {
-    if (this.Svg === null) {
-      this.Svg = Snap("#" + this.divID + " svg");
-    }
 
     let data: Object[] = this.rsDsSrv.getTableObj(results);
 
@@ -109,9 +144,9 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
               res[obj.facility].total = (res[obj.facility].total === undefined) ? 0 :
                 res[obj.facility].total + obj.count;
               break;
-              case "FALSE":
-              case "False":
-              case "false":
+            case "FALSE":
+            case "False":
+            case "false":
               res[obj.facility].failed = (res[obj.facility].failed === undefined) ? 0 :
                 res[obj.facility].failed + obj.count;
 
@@ -134,33 +169,26 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
 
     mainIdx = 0;
     for (let title in viewData) {
-      let titleDOM = this.Svg.select("#title #title" + (mainIdx+1) );
-      titleDOM.attr({text: title });
+      let svgDOM_MAP: any = this.SvgDomMap[mainIdx];
 
-      let DOMs: any = this.Svg.selectAll("#modeling2-text > g");
-      let targetDOM: any = DOMs[mainIdx];
+      svgDOM_MAP.snapTitle.attr({text: title });
+      svgDOM_MAP.snapTotal.attr({text: (viewData[title].total + "/" + viewData[title].failed) });
 
-      targetDOM.select("text").attr({text: (viewData[title].total + "/" + viewData[title].failed) });
-      $(targetDOM.node).find("g text").each((idx: number, DOM: any) => {
-        let chInfo = viewData[title].channels[idx+1];
-        $(DOM).text(chInfo.failed);
-        let $svg = $(this.Svg.node);
-        let redNode = $svg.find("#modeling2-" + (mainIdx+1) + "-light" + (idx+1) + "-red");
-        let pinkNode = $svg.find("#modeling2-" + (mainIdx+1) + "-light" + (idx+1) + "-pink");
-        let lightNode = $svg.find("#modeling2-" + (mainIdx+1) + "-light" + (idx+1) );
-
+      $.each(viewData[title].channels, (index: string, chInfo: any) => {
+        let chDOM = svgDOM_MAP.$nodes[parseInt(index)-1];
+        chDOM.text.text(chInfo.failed);
         if (chInfo.hasOwnProperty('CNF') && chInfo.CNF !== 0) {
-          redNode.show();
-          pinkNode.hide();
-          lightNode.hide();
+          chDOM.red.show();
+          chDOM.yellow.hide();
+          chDOM.green.hide();
         } else if (chInfo.hasOwnProperty('failed') && chInfo.failed !== 0) {
-          redNode.hide();
-          pinkNode.show();
-          lightNode.hide();
+          chDOM.red.hide();
+          chDOM.yellow.show();
+          chDOM.green.hide();
         } else {
-          redNode.hide();
-          pinkNode.hide();
-          lightNode.show();
+          chDOM.red.hide();
+          chDOM.yellow.hide();
+          chDOM.green.show();
         }
       });
       mainIdx++;

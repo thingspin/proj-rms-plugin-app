@@ -27660,6 +27660,7 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 
 
+// import {TweenMax, Power2, TimelineLite} from "gsap/TweenMax";
 Object(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_4__["loadPluginCss"])({
     dark: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.dark.css',
     light: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.light.css'
@@ -27675,11 +27676,18 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
         lodash__WEBPACK_IMPORTED_MODULE_0___default.a.defaults(_this.panel, {
             options: {}
         });
+        _this.Svg = null;
         _this.events.on('panel-initialized', _this.onInitialized.bind(_this));
         _this.events.on('init-edit-mode', _this.onInitEditMode.bind(_this));
         _this.events.on('render', _this.onRender.bind(_this));
         return _this;
     }
+    Object.defineProperty(RmsMonitorFacilityDefectPanelCtrl.prototype, "RecvData", {
+        get: function () { return this.recvData; },
+        set: function (recvData) { this.recvData = recvData; },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(RmsMonitorFacilityDefectPanelCtrl.prototype, "Container", {
         get: function () { return this.container; },
         set: function (container) { this.container = container; },
@@ -27692,6 +27700,12 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(RmsMonitorFacilityDefectPanelCtrl.prototype, "SvgDomMap", {
+        get: function () { return this.svgDomMap; },
+        set: function (svgDomMap) { this.svgDomMap = svgDomMap; },
+        enumerable: true,
+        configurable: true
+    });
     RmsMonitorFacilityDefectPanelCtrl.prototype.init = function () {
         var _this = this;
         var node = this.$element.find('#' + this.divID);
@@ -27700,10 +27714,13 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
             return;
         }
         this.Container = node;
-        this.Svg = null;
         this.loadSVG(this.svgImgPath).then(function (svg) {
-            _this.Container.append(svg.node);
-            _this.events.on('data-received', _this.onDataReceived.bind(_this));
+            if (_this.Svg === null) {
+                var node_1 = _this.Container.append(svg.node);
+                _this.Svg = snapsvg_dist_snap_svg_min_js__WEBPACK_IMPORTED_MODULE_2__(node_1.find("> svg")[0]);
+                _this.events.on('data-received', _this.onDataReceived.bind(_this));
+                _this.SvgDomMap = _this.initSvgDOM();
+            }
         });
     };
     RmsMonitorFacilityDefectPanelCtrl.prototype.loadSVG = function (path) {
@@ -27711,10 +27728,34 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
             snapsvg_dist_snap_svg_min_js__WEBPACK_IMPORTED_MODULE_2__["load"](path, resolve);
         });
     };
+    RmsMonitorFacilityDefectPanelCtrl.prototype.initSvgDOM = function () {
+        var _this = this;
+        var result = [];
+        this.Svg.selectAll("#modeling2-text > g").items.forEach(function (DOM, mainIdx) {
+            var obj = {
+                snapTitle: _this.Svg.select("#title #title" + (mainIdx + 1)),
+                snapTotal: DOM.select("text"),
+                $nodes: [],
+            };
+            jquery__WEBPACK_IMPORTED_MODULE_1___default()(DOM.node).find("g text").each(function (idx, DOM) {
+                var idTemplate = "#modeling2-" + (mainIdx + 1) + "-light" + (idx + 1);
+                var $svg = jquery__WEBPACK_IMPORTED_MODULE_1___default()(_this.Svg.node);
+                obj.$nodes.push({
+                    text: jquery__WEBPACK_IMPORTED_MODULE_1___default()(DOM),
+                    red: $svg.find(idTemplate + "-red"),
+                    green: $svg.find(idTemplate + "-green"),
+                    yellow: $svg.find(idTemplate + "-yellow"),
+                });
+            });
+            result.push(obj);
+        });
+        return result;
+    };
     RmsMonitorFacilityDefectPanelCtrl.prototype.onInitialized = function () {
     };
     RmsMonitorFacilityDefectPanelCtrl.prototype.onInitEditMode = function () { };
-    RmsMonitorFacilityDefectPanelCtrl.prototype.onRender = function () { };
+    RmsMonitorFacilityDefectPanelCtrl.prototype.onRender = function () {
+    };
     RmsMonitorFacilityDefectPanelCtrl.prototype.onDataReceived = function (results) {
         var canUseDs = true;
         results.every(function (item, idx) {
@@ -27726,12 +27767,10 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
         if (canUseDs) {
             var viewData = this.getViewData(results);
             this.showData(viewData);
+            this.RecvData = viewData;
         }
     };
     RmsMonitorFacilityDefectPanelCtrl.prototype.getViewData = function (results) {
-        if (this.Svg === null) {
-            this.Svg = snapsvg_dist_snap_svg_min_js__WEBPACK_IMPORTED_MODULE_2__("#" + this.divID + " svg");
-        }
         var data = this.rsDsSrv.getTableObj(results);
         var res = {};
         data.forEach(function (arr) {
@@ -27770,36 +27809,29 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
         return res;
     };
     RmsMonitorFacilityDefectPanelCtrl.prototype.showData = function (viewData) {
-        var _this = this;
         var mainIdx;
         mainIdx = 0;
         var _loop_1 = function (title) {
-            var titleDOM = this_1.Svg.select("#title #title" + (mainIdx + 1));
-            titleDOM.attr({ text: title });
-            var DOMs = this_1.Svg.selectAll("#modeling2-text > g");
-            var targetDOM = DOMs[mainIdx];
-            targetDOM.select("text").attr({ text: (viewData[title].total + "/" + viewData[title].failed) });
-            jquery__WEBPACK_IMPORTED_MODULE_1___default()(targetDOM.node).find("g text").each(function (idx, DOM) {
-                var chInfo = viewData[title].channels[idx + 1];
-                jquery__WEBPACK_IMPORTED_MODULE_1___default()(DOM).text(chInfo.failed);
-                var $svg = jquery__WEBPACK_IMPORTED_MODULE_1___default()(_this.Svg.node);
-                var redNode = $svg.find("#modeling2-" + (mainIdx + 1) + "-light" + (idx + 1) + "-red");
-                var pinkNode = $svg.find("#modeling2-" + (mainIdx + 1) + "-light" + (idx + 1) + "-pink");
-                var lightNode = $svg.find("#modeling2-" + (mainIdx + 1) + "-light" + (idx + 1));
+            var svgDOM_MAP = this_1.SvgDomMap[mainIdx];
+            svgDOM_MAP.snapTitle.attr({ text: title });
+            svgDOM_MAP.snapTotal.attr({ text: (viewData[title].total + "/" + viewData[title].failed) });
+            jquery__WEBPACK_IMPORTED_MODULE_1___default.a.each(viewData[title].channels, function (index, chInfo) {
+                var chDOM = svgDOM_MAP.$nodes[parseInt(index) - 1];
+                chDOM.text.text(chInfo.failed);
                 if (chInfo.hasOwnProperty('CNF') && chInfo.CNF !== 0) {
-                    redNode.show();
-                    pinkNode.hide();
-                    lightNode.hide();
+                    chDOM.red.show();
+                    chDOM.yellow.hide();
+                    chDOM.green.hide();
                 }
                 else if (chInfo.hasOwnProperty('failed') && chInfo.failed !== 0) {
-                    redNode.hide();
-                    pinkNode.show();
-                    lightNode.hide();
+                    chDOM.red.hide();
+                    chDOM.yellow.show();
+                    chDOM.green.hide();
                 }
                 else {
-                    redNode.hide();
-                    pinkNode.hide();
-                    lightNode.show();
+                    chDOM.red.hide();
+                    chDOM.yellow.hide();
+                    chDOM.green.show();
                 }
             });
             mainIdx++;
@@ -27825,7 +27857,7 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div  ng-init=\"ctrl.init()\" id=\"rms-app-monitor-facility-defect\" class=\"rms-app-monitor-facility-defect\"></div>";
+module.exports = "<div ng-init=\"ctrl.init()\" id=\"rms-app-monitor-facility-defect\" class=\"rms-app-monitor-facility-defect\"></div>";
 
 /***/ }),
 
