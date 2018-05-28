@@ -7,7 +7,41 @@
   "gnetId": null,
   "graphTooltip": 1,
   "links": [],
-  "panels": [],
+  "panels": [
+    {
+      "businessCategory": [
+      ],
+      "datasource": "REMOTESOLUTIONS(V1.0)",
+      "gridPos": {
+        "h": 13,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "inputlItem": {
+        "business_id": -1,
+        "business_name": null,
+        "change_date": "",
+        "memo": "",
+        "mold_id": -1,
+        "mold_name": "",
+        "period": "",
+        "plant_id": "1000",
+        "use_count": ""
+      },
+      "targets": [
+        {
+          "alias": "",
+          "format": "table",
+          "rawSql": "SELECT MOLD_ID, NAME, MOLD_NAME, CHANGE_DATE, CHANGE_PERIOD, USE_COUNT, b.MEMO FROM t_business as a, t_mold as b where a.business_id = b.business_id;\n",
+          "refId": "A"
+        }
+      ],
+      "title": "",
+      "type": "mold-list"
+    }
+  ],
   "schemaVersion": 16,
   "style": "light",
   "tags": [],
@@ -34,5 +68,5 @@
   },
   "timezone": "",
   "title": "금형 리스트",
-  "version": 6
+  "version": 7
 }
