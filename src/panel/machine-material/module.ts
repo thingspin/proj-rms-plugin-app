@@ -139,14 +139,16 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
       this.dataTable.setData("setData",tabledata);
       this.container.tabulator("setData", tabledata);
     }
+    this.container.tabulator("hideColumn","장비 ID");
     this.initalized = true;
   }
 
   selectRow(obj) {
+    console.log(obj);
     this.selectObj = obj;
     this.machine.id = obj['장비 ID'];
-    this.machine.name = obj['장비 설명'];
-    this.machine.memo = obj['메모'];
+    this.machine.name = obj['장비 이름'];
+    this.machine.memo = obj['특이사항'];
     var cmpStr = obj['업체명'] + " : " + obj['담당자'];
     var result = this.business.map(x => x.name).indexOf(cmpStr);
     this.businessSelect = this.business[result];
@@ -191,6 +193,7 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
 
   transformer(dataList) {
     this.columns = [];
+    this.checker = [];
     var data = dataList[0];
     var rows = data.rows;
     var getColumns = data.columns;
@@ -206,14 +209,16 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
     }  
     var jArray = new Array;
     var mapData = new Map();
+
     for (var count=0; count < rows.length; count++) {
       var row = rows[count];
       for (var row_count=0; row_count < row.length; row_count++) {
         var item = row[row_count];
-        mapData.set(getColumns[row_count].text,item);
-        if (getColumns[row_count].text == '장비 ID') {
+        if (getColumns[row_count].text == '장비 이름') {
           this.checker.push(item);
         }
+        mapData.set(getColumns[row_count].text,item);
+
       }
       var object = Object();
       mapData.forEach((v,k)=> {object[k] = v});
@@ -229,22 +234,17 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
       return true;
   }
 
-  addMachineItem(businessSelect, id, name, memo) {
+  addMachineItem(businessSelect, name, memo) {
     if (businessSelect == undefined) {
       this.alertSrv.set("업체를 입력해 주세요", 'error', 5000);
-      return;
-    } else if (id == undefined) {
-      this.alertSrv.set("장비 ID를 입력해 주세요", 'error', 5000);
       return;
     } else if (name == undefined) {
       this.alertSrv.set("장비 이름을 입력해 주세요", 'error', 5000);
       return;
     } else {
-      if(!this.insertChecker(id)) {
+      if(!this.insertChecker(name)) {
         let columns = "(PLANT_ID";
         let values = "('1000'";
-        columns = columns + ", MACHINE_ID";
-        values = values + ", '" + id + "'";
         columns = columns + ", MACHINE_NAME";
         values = values + ", '" + name + "'";
         columns = columns + ", BUSINESS_ID";
@@ -265,26 +265,25 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
             console.error(err);
         });  
       } else {
-        this.alertSrv.set(id + "가 같은 장비 ID 가 존재합니다. 다른 것으로 입력해주세요.", 'error', 5000);
+        this.alertSrv.set(name + "가 같은 장비 이름이 존재합니다. 다른 것으로 입력해주세요.", 'error', 5000);
         return;
       }
     }
   }
 
-  updateMachineItem(businessSelect, id, name, memo) {
+  updateMachineItem(businessSelect, name, memo) {
     if (businessSelect == undefined) {
       this.alertSrv.set("업체를 입력해 주세요", 'error', 5000);
-      return;
-    } else if (id == undefined) {
-      this.alertSrv.set("장비 ID를 입력해 주세요", 'error', 5000);
       return;
     } else if (name == undefined) {
       this.alertSrv.set("장비 이름을 입력해 주세요", 'error', 5000);
       return;
-    } else {      
+    } else {
       let selectId = this.datasource.id;
+      if (memo === undefined)
+        memo = "";
       let query = [
-        "update t_machine set MACHINE_NAME = '" + name + "', BUSINESS_ID = " + businessSelect.id + ", MEMO = '" + memo + "' where MACHINE_ID = '" + id + "'",
+        "update t_machine set MACHINE_NAME = '" + name + "', BUSINESS_ID = " + businessSelect.id + ", MEMO = '" + memo + "' where MACHINE_ID = '" + this.machine.id + "'",
       ];
       this.rsDsSrv.query(selectId, query).then( result => {
           // this.updateInspectionPropertyList(selectId);
@@ -306,7 +305,7 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
       onConfirm: () => {
         let selectId = this.datasource.id;
         let query = [
-          "delete from t_machine where MACHINE_ID = '" + value + "'",
+          "delete from t_machine where MACHINE_NAME = '" + value + "'",
         ];
         this.rsDsSrv.query(selectId, query).then( result => {
             // this.updateInspectionPropertyList(selectId);
