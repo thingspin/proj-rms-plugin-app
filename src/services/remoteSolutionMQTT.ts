@@ -2,10 +2,11 @@ import coreModule from 'grafana/app/core/core_module';
 import * as mqtt from 'mqtt/dist/mqtt.min';
 
 export class RemoteSolutionMQTTCtrl {
-    _host: string;
+    private _host: string;
     set host(host: string) { this._host = host; }
     get host() { return this._host; }
-    _subscribe: string;
+
+    private _subscribe: string;
     set subscribe(subscribe: string) {
         if (this.client !== undefined ) {
             if (this._subscribe !== undefined ) {
@@ -18,7 +19,8 @@ export class RemoteSolutionMQTTCtrl {
         this._subscribe = subscribe;
     }
     get subscribe() { return this._subscribe; }
-    _connect: any;
+
+    private _connect: any;
     set client(client: any) { this._connect = client; }
     get client() { return this._connect;}
 

@@ -42,9 +42,9 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
   set container(container: any) { this._container = container; }
   get container() {return this._container;}
 
-  private svg: any = null;
-  set Svg(svg: any) { this.svg = svg; }
-  get Svg() {return this.svg; }
+  private _svg: any = null;
+  set svg(svg: any) { this._svg = svg; }
+  get svg() {return this._svg; }
 
   private _svgDomMap: Object;
   set svgDomMap(svgDomMap: any) { this._svgDomMap = svgDomMap; }
@@ -58,7 +58,7 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
   set timeSrv(timeSrv: any) { this._timeSrv = timeSrv; }
   get timeSrv() { return this._timeSrv; }
 
-  private _animations: any[] = [];
+  private _animations: Object = {};
   set animations(animation: any) { this._animations = animation; }
   get animations() { return this._animations; }
 
@@ -75,14 +75,6 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
     this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
     this.events.on('render', this.onRender.bind(this));
     this.events.on('on-RMFDPC-clicked', this.onClicked.bind(this));
-
-    const urlPath = "/";
-    const mqttWsUrl = "ws://" + this.$location.host() + ":" + this.$location.port() + "/api/plugin-proxy/" + this.appId + urlPath;
-    this.rsMqttSrv.connect(mqttWsUrl);
-    this.rsMqttSrv.subscribe = '+/THINGSPIN/EMERGENCY/ALERT';
-    // this.rsMqttSrv.subscribe = '#';
-    this.rsMqttSrv.recvMessage(this.onMqttRecv.bind(this));
-
   }
 
   loadSVG(path) {
@@ -100,28 +92,34 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
     this.container = node;
 
     this.loadSVG(this.svgImgPath).then( (svg: any) => {
-      if (this.Svg === null) {
+      if (this.svg === null) {
         const node = this.container.append(svg.node);
 
-        this.Svg = Snap(node.find("> svg")[0]);
+        this.svg = Snap(node.find("> svg")[0]);
 
         this.svgDomMap = this.initSvgDOM();
         this.animations = this.initAnimation();
 
         this.events.on('data-received', this.onDataReceived.bind(this));
+
+        const urlPath = "/";
+        const baseUrl = "ws://" + this.$location.host() + ":" + this.$location.port() + "/api/plugin-proxy/" + this.appId;
+        this.rsMqttSrv.connect(baseUrl + urlPath);
+        this.rsMqttSrv.subscribe = '+/THINGSPIN/EMERGENCY/+';
+        this.rsMqttSrv.recvMessage(this.onMqttRecv.bind(this));
       }
     });
   }
 
 
   initSvgDOM(): Object {
-    const $svg = $(this.Svg.node);
+    const $svg = $(this.svg.node);
 
     let result = [];
-    this.Svg.selectAll("#modeling2-text > g").items.forEach((DOM: any, mainIdx: number) => {
+    this.svg.selectAll("#modeling2-text > g").items.forEach((DOM: any, mainIdx: number) => {
       const baseDomId = "#modeling2-" + (mainIdx+1);
       let obj = {
-        snapTitle: this.Svg.select("#title #title" + (mainIdx+1) ),
+        snapTitle: this.svg.select("#title #title" + (mainIdx+1) ),
         snapTotal: DOM.select("text"),
         $nodes: [],
       };
@@ -163,38 +161,37 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
   }
 
   initAnimation() {
-    let results: any[] = [];
     // set Process Animation DOM
-    const $svg = $(this.Svg.node);
-    const tl = new TimelineLite({ onComplete: function() { this.restart(); }, });
+    const $svg = $(this.svg.node);
+    const lineAnimation = new TimelineLite({ onComplete: function() { this.restart(); }, });
 
     [
       $svg.find("#arrow1"), $svg.find("#arrow2"), $svg.find("#arrow3"),
       $svg.find("#arrow4"), $svg.find("#arrow5"), $svg.find("#arrow6"),
       $svg.find("#arrow7"), $svg.find("#arrow8"), $svg.find("#arrow9"),
     ].forEach( (DOM: any, idx: Number, arr: Object[]) => {
-      arr.forEach((subDOM: any, subIdx: Number) => { tl.set(subDOM[0], { opacity: (subIdx === idx) ? 1 : 0, }); });
-      tl.to(DOM[0], 0, {opacity: 0}, "+=0.4");
+      arr.forEach((subDOM: any, subIdx: Number) => { lineAnimation.set(subDOM[0], { opacity: (subIdx === idx) ? 1 : 0, }); });
+      lineAnimation.to(DOM[0], 0, {opacity: 0}, "+=0.4");
     });
-    results.push(tl);
 
-    return results;
+    return {
+      LINESTOP: lineAnimation,
+    };
   }
 
   onClicked(evtData: any) {
     const range = this.timeSrv.timeRange();
     const {idx, subIdx} = evtData;
+    const channelId = String(subIdx+1);
+    // const data = this.RecvData[title];
+    // const {color} = data.channels[channelId];
 
     let title = this.titleIdxMap[idx];
     if (title === undefined || title === null ) {
       title = "All";
     }
 
-    // const data = this.RecvData[title];
-    const channelId = String(subIdx+1);
-    // const {color} = data.channels[channelId];
-
-    let varList = {
+    this.$location.path("/d/rAgfpx7iz/modelbyeol-geomsagirog").search({
       "var-DATABASE": "RMS-CENTER-INFLUXDB(V1.0)",
       "var-MODEL": "All",
       "var-FACILITY": title,
@@ -203,8 +200,7 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
       "var-INTERVAL": "$__auto_interval_INTERVAL",
       "from": range.raw.from,
       "to": range.raw.to,
-    };
-    this.$location.path("/d/rAgfpx7iz/modelbyeol-geomsagirog").search(varList);
+    });
   }
 
   onInitialized() { }
@@ -280,7 +276,6 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
 
       snapTitle.attr({text: title });
       snapTotal.attr({text: (viewData[title].total + "/" + (viewData[title].failed === undefined ? 0 : viewData[title].failed) )});
-      let changed: Boolean;
 
       [1,2,3,4].forEach((chIdx) => {
         const index: string = String(chIdx);
@@ -305,6 +300,7 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
           viewData[title].channels[index].color = chColor;
         }
 
+        let changed: Boolean;
         if ( this.recvData !== null && this.recvData[title] !== undefined) {
           if (this.recvData[title].channels[index] === undefined) {
             changed = true;
@@ -333,8 +329,17 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
     return viewData;
   }
 
-  onMqttRecv(topic: string, data: any) {
-    console.log(topic, data);
+  onMqttRecv(topic: string, bin: any) {
+    // const msg = bin.toString();
+    // const {fields, tags} = JSON.parse(msg);
+    const topics = topic.split("/");
+    const command = topics[topics.length-1];
+
+    const animation = this.animations[command];
+    if (animation !== undefined) {
+      animation.stop();
+      // console.log(topic, fields, tags);
+    }
   }
 
   link(scope, elem, attrs, ctrl) { }

@@ -36058,8 +36058,8 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
         _this.appId = "proj-rms-plugin-app";
         _this._titleIdxMap = [];
         _this._recvData = null;
-        _this.svg = null;
-        _this._animations = [];
+        _this._svg = null;
+        _this._animations = {};
         _this.timeSrv = timeSrv;
         lodash__WEBPACK_IMPORTED_MODULE_0___default.a.defaults(_this.panel, {
             options: {}
@@ -36068,12 +36068,6 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
         _this.events.on('init-edit-mode', _this.onInitEditMode.bind(_this));
         _this.events.on('render', _this.onRender.bind(_this));
         _this.events.on('on-RMFDPC-clicked', _this.onClicked.bind(_this));
-        var urlPath = "/";
-        var mqttWsUrl = "ws://" + _this.$location.host() + ":" + _this.$location.port() + "/api/plugin-proxy/" + _this.appId + urlPath;
-        _this.rsMqttSrv.connect(mqttWsUrl);
-        _this.rsMqttSrv.subscribe = '+/THINGSPIN/EMERGENCY/ALERT';
-        // this.rsMqttSrv.subscribe = '#';
-        _this.rsMqttSrv.recvMessage(_this.onMqttRecv.bind(_this));
         return _this;
     }
     Object.defineProperty(RmsMonitorFacilityDefectPanelCtrl.prototype, "titleIdxMap", {
@@ -36106,9 +36100,9 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(RmsMonitorFacilityDefectPanelCtrl.prototype, "Svg", {
-        get: function () { return this.svg; },
-        set: function (svg) { this.svg = svg; },
+    Object.defineProperty(RmsMonitorFacilityDefectPanelCtrl.prototype, "svg", {
+        get: function () { return this._svg; },
+        set: function (svg) { this._svg = svg; },
         enumerable: true,
         configurable: true
     });
@@ -36150,23 +36144,28 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
         }
         this.container = node;
         this.loadSVG(this.svgImgPath).then(function (svg) {
-            if (_this.Svg === null) {
+            if (_this.svg === null) {
                 var node_1 = _this.container.append(svg.node);
-                _this.Svg = snapsvg_dist_snap_svg_min_js__WEBPACK_IMPORTED_MODULE_2__(node_1.find("> svg")[0]);
+                _this.svg = snapsvg_dist_snap_svg_min_js__WEBPACK_IMPORTED_MODULE_2__(node_1.find("> svg")[0]);
                 _this.svgDomMap = _this.initSvgDOM();
                 _this.animations = _this.initAnimation();
                 _this.events.on('data-received', _this.onDataReceived.bind(_this));
+                var urlPath = "/";
+                var baseUrl = "ws://" + _this.$location.host() + ":" + _this.$location.port() + "/api/plugin-proxy/" + _this.appId;
+                _this.rsMqttSrv.connect(baseUrl + urlPath);
+                _this.rsMqttSrv.subscribe = '+/THINGSPIN/EMERGENCY/+';
+                _this.rsMqttSrv.recvMessage(_this.onMqttRecv.bind(_this));
             }
         });
     };
     RmsMonitorFacilityDefectPanelCtrl.prototype.initSvgDOM = function () {
         var _this = this;
-        var $svg = jquery__WEBPACK_IMPORTED_MODULE_1___default()(this.Svg.node);
+        var $svg = jquery__WEBPACK_IMPORTED_MODULE_1___default()(this.svg.node);
         var result = [];
-        this.Svg.selectAll("#modeling2-text > g").items.forEach(function (DOM, mainIdx) {
+        this.svg.selectAll("#modeling2-text > g").items.forEach(function (DOM, mainIdx) {
             var baseDomId = "#modeling2-" + (mainIdx + 1);
             var obj = {
-                snapTitle: _this.Svg.select("#title #title" + (mainIdx + 1)),
+                snapTitle: _this.svg.select("#title #title" + (mainIdx + 1)),
                 snapTotal: DOM.select("text"),
                 $nodes: [],
             };
@@ -36200,32 +36199,32 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
         return result;
     };
     RmsMonitorFacilityDefectPanelCtrl.prototype.initAnimation = function () {
-        var results = [];
         // set Process Animation DOM
-        var $svg = jquery__WEBPACK_IMPORTED_MODULE_1___default()(this.Svg.node);
-        var tl = new gsap_TweenMax__WEBPACK_IMPORTED_MODULE_6__["TimelineLite"]({ onComplete: function () { this.restart(); }, });
+        var $svg = jquery__WEBPACK_IMPORTED_MODULE_1___default()(this.svg.node);
+        var lineAnimation = new gsap_TweenMax__WEBPACK_IMPORTED_MODULE_6__["TimelineLite"]({ onComplete: function () { this.restart(); }, });
         [
             $svg.find("#arrow1"), $svg.find("#arrow2"), $svg.find("#arrow3"),
             $svg.find("#arrow4"), $svg.find("#arrow5"), $svg.find("#arrow6"),
             $svg.find("#arrow7"), $svg.find("#arrow8"), $svg.find("#arrow9"),
         ].forEach(function (DOM, idx, arr) {
-            arr.forEach(function (subDOM, subIdx) { tl.set(subDOM[0], { opacity: (subIdx === idx) ? 1 : 0, }); });
-            tl.to(DOM[0], 0, { opacity: 0 }, "+=0.4");
+            arr.forEach(function (subDOM, subIdx) { lineAnimation.set(subDOM[0], { opacity: (subIdx === idx) ? 1 : 0, }); });
+            lineAnimation.to(DOM[0], 0, { opacity: 0 }, "+=0.4");
         });
-        results.push(tl);
-        return results;
+        return {
+            LINESTOP: lineAnimation,
+        };
     };
     RmsMonitorFacilityDefectPanelCtrl.prototype.onClicked = function (evtData) {
         var range = this.timeSrv.timeRange();
         var idx = evtData.idx, subIdx = evtData.subIdx;
+        var channelId = String(subIdx + 1);
+        // const data = this.RecvData[title];
+        // const {color} = data.channels[channelId];
         var title = this.titleIdxMap[idx];
         if (title === undefined || title === null) {
             title = "All";
         }
-        // const data = this.RecvData[title];
-        var channelId = String(subIdx + 1);
-        // const {color} = data.channels[channelId];
-        var varList = {
+        this.$location.path("/d/rAgfpx7iz/modelbyeol-geomsagirog").search({
             "var-DATABASE": "RMS-CENTER-INFLUXDB(V1.0)",
             "var-MODEL": "All",
             "var-FACILITY": title,
@@ -36234,8 +36233,7 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
             "var-INTERVAL": "$__auto_interval_INTERVAL",
             "from": range.raw.from,
             "to": range.raw.to,
-        };
-        this.$location.path("/d/rAgfpx7iz/modelbyeol-geomsagirog").search(varList);
+        });
     };
     RmsMonitorFacilityDefectPanelCtrl.prototype.onInitialized = function () { };
     RmsMonitorFacilityDefectPanelCtrl.prototype.onInitEditMode = function () { };
@@ -36302,7 +36300,6 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
             var _a = this_1.svgDomMap[mainIdx], snapTitle = _a.snapTitle, snapTotal = _a.snapTotal, $nodes = _a.$nodes;
             snapTitle.attr({ text: title });
             snapTotal.attr({ text: (viewData[title].total + "/" + (viewData[title].failed === undefined ? 0 : viewData[title].failed)) });
-            var changed;
             [1, 2, 3, 4].forEach(function (chIdx) {
                 var index = String(chIdx);
                 var chInfo = viewData[title].channels[index];
@@ -36327,6 +36324,7 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
                     }
                     viewData[title].channels[index].color = chColor;
                 }
+                var changed;
                 if (_this.recvData !== null && _this.recvData[title] !== undefined) {
                     if (_this.recvData[title].channels[index] === undefined) {
                         changed = true;
@@ -36360,8 +36358,16 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
         }
         return viewData;
     };
-    RmsMonitorFacilityDefectPanelCtrl.prototype.onMqttRecv = function (topic, data) {
-        console.log(topic, data);
+    RmsMonitorFacilityDefectPanelCtrl.prototype.onMqttRecv = function (topic, bin) {
+        // const msg = bin.toString();
+        // const {fields, tags} = JSON.parse(msg);
+        var topics = topic.split("/");
+        var command = topics[topics.length - 1];
+        var animation = this.animations[command];
+        if (animation !== undefined) {
+            animation.stop();
+            // console.log(topic, fields, tags);
+        }
     };
     RmsMonitorFacilityDefectPanelCtrl.prototype.link = function (scope, elem, attrs, ctrl) { };
     RmsMonitorFacilityDefectPanelCtrl.template = __webpack_require__(/*! ./partial/template.html */ "./panel/monitor-facility-defect/partial/template.html");
