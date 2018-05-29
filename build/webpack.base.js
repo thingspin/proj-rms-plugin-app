@@ -23,7 +23,8 @@ module.exports = {
       'panel/mold-list/module.js' : './panel/mold-list/module.ts',
       'panel/consumables-list/module.js' : './panel/consumables-list/module.ts',
       'panel/monitor-facility-defect/module.js' : './panel/monitor-facility-defect/module.ts',
-      'panel/plantplan-table/module.js' : './panel/plantplan-table/module.ts'
+      'panel/plantplan-table/module.js' : './panel/plantplan-table/module.ts',
+      'panel/machine-consumables-reg/module.js' : './panel/machine-consumables-reg/module.ts',
   },
   output: {
     path: resolve('dist'),
