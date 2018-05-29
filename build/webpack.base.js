@@ -25,6 +25,7 @@ module.exports = {
       'panel/monitor-facility-defect/module.js' : './panel/monitor-facility-defect/module.ts',
       'panel/plantplan-table/module.js' : './panel/plantplan-table/module.ts',
       'panel/machine-consumables-reg/module.js' : './panel/machine-consumables-reg/module.ts',
+      'panel/productstate-bar-chart/module.js' : './panel/productstate-bar-chart/module.ts',
   },
   output: {
     path: resolve('dist'),
