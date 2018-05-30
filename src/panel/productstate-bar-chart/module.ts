@@ -55,6 +55,8 @@ class RmsProductStateBarChartPanelCtrl extends MetricsPanelCtrl {
         // this.removeData(this.chart);
         // this.addData(this.chart, inputData);
       }
+    } else if(inputData === null) {
+      this.chart.clear();    
     } else {
       if (this.chart == null) {
         this.chart = new Chart(this.context, {
@@ -119,7 +121,12 @@ class RmsProductStateBarChartPanelCtrl extends MetricsPanelCtrl {
   onDataReceived(dataList) {
     console.log(this);
     console.log(dataList);
-    Promise.resolve(this.transformerData(dataList));
+    if (dataList.length === 0) 
+      this.createChart(null);
+    else {
+      if (dataList[0].rows !== undefined)
+      Promise.resolve(this.transformerData(dataList));
+    }      
   }
 
   link(scope, elem, attrs, ctrl) {
