@@ -5,7 +5,7 @@ import * as Chart from 'chart.js/dist/Chart.min';
 
 const template = require("./templet.html");
 
-class RmsProductStateBarChartPanelCtrl extends MetricsPanelCtrl {
+class RmsInspectionStateBarChartPanelCtrl extends MetricsPanelCtrl {
   static template = template;
 
   chartID: string;
@@ -18,11 +18,69 @@ class RmsProductStateBarChartPanelCtrl extends MetricsPanelCtrl {
   mouse: any;
   labels = [];
   device = [];
+  inspection = [];
   data = [];
   dataSet = [];
   dataMap = new Map();
   barChartData: any;
-  COLOR = ['#4dc9f6','#f67019','#f53794','#537bc4','#acc236','#166a8f','#00a950','#58595b','#8549ba'];
+  colors = [
+    '#7EB26D',
+    '#EAB839',
+    '#6ED0E0',
+    '#EF843C',
+    '#E24D42',
+    '#1F78C1',
+    '#BA43A9',
+    '#705DA0',
+    '#508642',
+    '#CCA300',
+    '#447EBC',
+    '#C15C17',
+    '#890F02',
+    '#0A437C',
+    '#6D1F62',
+    '#584477',
+    '#B7DBAB',
+    '#F4D598',
+    '#70DBED',
+    '#F9BA8F',
+    '#F29191',
+    '#82B5D8',
+    '#E5A8E2',
+    '#AEA2E0',
+    '#629E51',
+    '#E5AC0E',
+    '#64B0C8',
+    '#E0752D',
+    '#BF1B00',
+    '#0A50A1',
+    '#962D82',
+    '#614D93',
+    '#9AC48A',
+    '#F2C96D',
+    '#65C5DB',
+    '#F9934E',
+    '#EA6460',
+    '#5195CE',
+    '#D683CE',
+    '#806EB7',
+    '#3F6833',
+    '#967302',
+    '#2F575E',
+    '#99440A',
+    '#58140C',
+    '#052B51',
+    '#511749',
+    '#3F2B5B',
+    '#E0F9D7',
+    '#FCEACA',
+    '#CFFAFF',
+    '#F9E2D2',
+    '#FCE2DE',
+    '#BADFF4',
+    '#F9D9F9',
+    '#DEDAF7',
+  ];
 
   constructor($scope, $injector) {
     super($scope, $injector);
@@ -141,6 +199,7 @@ class RmsProductStateBarChartPanelCtrl extends MetricsPanelCtrl {
     this.labels = [];
     this.device = [];
     this.data = [];
+    this.inspection = [];
     this.dataSet = [];    
     this.barChartData = {};
 
@@ -166,6 +225,12 @@ class RmsProductStateBarChartPanelCtrl extends MetricsPanelCtrl {
           break;
           case 3:
           {
+            if (this.inspection.indexOf(item) === -1)
+              this.inspection.push(item);
+          }
+          break;
+          case 4:
+          {
             this.data.push(item);
           }
           break;
@@ -175,23 +240,25 @@ class RmsProductStateBarChartPanelCtrl extends MetricsPanelCtrl {
       }
     }
 
-    var dataRange = this.labels.length;
+    var dataRange = this.inspection.length;
     var map = new Map();
-    for (var i=0;i< this.labels.length;i++) {
+    for (var i=0;i< this.inspection.length;i++) {
       var deviceData = [];
       var obj = {
-        label : this.labels[i],
-        backgroundColor: this.COLOR[i],
+        label : this.inspection[i],
+        backgroundColor: this.colors[i],
         data: deviceData
       };
-      map.set(this.labels[i], obj);
+      map.set(this.inspection[i], obj);
     }
 
     for (var data_count = 0;data_count < this.data.length; data_count++) {
       var item = this.data[data_count];
-      var list = map.get(this.labels[data_count%dataRange]);
-      list.data.push(item);
-      map.set(this.labels[data_count%dataRange],list);
+      var list = map.get(this.inspection[data_count%dataRange]);
+      if (list !== undefined) {
+        list.data.push(item);
+        map.set(this.inspection[data_count%dataRange],list);
+      }
     }
     
     var dataset = Array.from(map.values());
@@ -206,5 +273,5 @@ class RmsProductStateBarChartPanelCtrl extends MetricsPanelCtrl {
 }
 
 export {
-  RmsProductStateBarChartPanelCtrl as PanelCtrl
+  RmsInspectionStateBarChartPanelCtrl as PanelCtrl
 };
