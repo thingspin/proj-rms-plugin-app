@@ -7,8 +7,6 @@
     <br></br>
     <div class="section gf-form-group" ng-show='1' ng-switch-when="new">
         <div class="gf-form">
-            <label class="gf-form-label width-5">장비 ID</label>
-            <input type="text" class="gf-form-input width-10 max-width-10"  data-placement="auto" ng-model="ctrl.machine.id" placeholder="장비 ID" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
             <label class="gf-form-label width-7">장비 이름</label>
             <input type="text" class="gf-form-input width-20 max-width-16"  data-placement="auto" ng-model="ctrl.machine.name" placeholder="장비 이름" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
             <label class="gf-form-label width-7">업체 선택</label>
@@ -17,7 +15,7 @@
             <input type="text" class="gf-form-input width-20 max-width-24"  data-placement="auto" ng-model="ctrl.machine.memo" placeholder="비고" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
         </div>
         <div class="gf-form">
-            <button class="btn btn-success width-7" ng-click="ctrl.addMachineItem(ctrl.businessSelect, ctrl.machine.id, ctrl.machine.name, ctrl.machine.memo)">
+            <button class="btn btn-success width-7" ng-click="ctrl.addMachineItem(ctrl.businessSelect, ctrl.machine.name, ctrl.machine.memo)">
                 신규 등록
             </button>
             &nbsp;&nbsp;
@@ -28,9 +26,6 @@
     </div>
     <div class="section gf-form-group" ng-show='1' ng-switch-when="edit">
         <div class="gf-form">
-            <label class="gf-form-label width-5">장비 ID</label>
-            &nbsp;
-            <input type="text" class="gf-form-input width-10 max-width-10"  data-placement="auto" ng-model="ctrl.machine.id" placeholder="" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur ng-disabled = 'true'>
             <label class="gf-form-label width-7">장비 이름</label>
             <input type="text" class="gf-form-input width-20 max-width-16"  data-placement="auto" ng-model="ctrl.machine.name" placeholder="" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
             <label class="gf-form-label width-7">업체 선택</label>
@@ -39,11 +34,11 @@
             <input type="text" class="gf-form-input width-20 max-width-24"  data-placement="auto" ng-model="ctrl.machine.memo" placeholder="" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
         </div>
         <div class="gf-form">
-            <button class="btn btn-success width-5" ng-click="ctrl.updateMachineItem(ctrl.businessSelect, ctrl.machine.id, ctrl.machine.name, ctrl.machine.memo)">
+            <button class="btn btn-success width-5" ng-click="ctrl.updateMachineItem(ctrl.businessSelect, ctrl.machine.name, ctrl.machine.memo)">
                 변경
             </button>
             &nbsp;&nbsp;
-            <button class="btn btn-success width-5" ng-click="ctrl.deleteMachineItem(ctrl.machine.id)">
+            <button class="btn btn-success width-5" ng-click="ctrl.deleteMachineItem(ctrl.machine.name)">
                 삭제
             </button>
             &nbsp;&nbsp;
