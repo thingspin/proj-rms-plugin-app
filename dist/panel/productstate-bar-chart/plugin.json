@@ -1,0 +1,13 @@
+{
+  "type": "panel",
+  "name": "(RMS) Product State Bar Chart",
+  "id": "rms-product-state-bar",
+
+  "info": {
+    "description": "Product State Bar Chart with chart.js",
+    "author": {
+      "name": "jiwoong@thingspin.io",
+      "url": "http://thingspin.io"
+    }
+  }
+}
