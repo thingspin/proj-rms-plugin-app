@@ -2,7 +2,7 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:156",
+        "$$hashKey": "object:11123",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -16,10 +16,9 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1527081665734,
+  "iteration": 1527644832022,
   "links": [
     {
-      "$$hashKey": "object:345",
       "icon": "external link",
       "includeVars": true,
       "keepTime": true,
@@ -29,7 +28,6 @@
       "type": "dashboards"
     },
     {
-      "$$hashKey": "object:346",
       "icon": "external link",
       "includeVars": true,
       "keepTime": true,
@@ -869,6 +867,7 @@
     "list": [
       {
         "current": {
+          "selected": true,
           "text": "RMS-CENTER-INFLUXDB(V1.0)",
           "value": "RMS-CENTER-INFLUXDB(V1.0)"
         },
@@ -884,8 +883,9 @@
       {
         "allValue": null,
         "current": {
-          "text": "RC79A01-R",
-          "value": "RC79A01-R"
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
         "hide": 0,
@@ -907,6 +907,7 @@
       {
         "allValue": null,
         "current": {
+          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -930,6 +931,7 @@
       {
         "allValue": null,
         "current": {
+          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -1103,5 +1105,5 @@
   "timezone": "",
   "title": "모델별 검사기록",
   "uid": "rAgfpx7iz",
-  "version": 6
+  "version": 132
 }

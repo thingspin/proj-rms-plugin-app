@@ -1,4 +1,4 @@
-define(["app/plugins/sdk"], function(__WEBPACK_EXTERNAL_MODULE_grafana_app_plugins_sdk__) { return /******/ (function(modules) { // webpackBootstrap
+define(["app/core/utils/ticks","app/plugins/sdk"], function(__WEBPACK_EXTERNAL_MODULE_grafana_app_core_utils_ticks__, __WEBPACK_EXTERNAL_MODULE_grafana_app_plugins_sdk__) { return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -17253,6 +17253,119 @@ module.exports = function(module) {
 
 /***/ }),
 
+/***/ "./panel/cpk-chart/histogram.ts":
+/*!**************************************!*\
+  !*** ./panel/cpk-chart/histogram.ts ***!
+  \**************************************/
+/*! exports provided: getSeriesValues, convertValuesToHistogram, convertToHistogramData */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getSeriesValues", function() { return getSeriesValues; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "convertValuesToHistogram", function() { return convertValuesToHistogram; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "convertToHistogramData", function() { return convertToHistogramData; });
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "../node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var grafana_app_core_utils_ticks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! grafana/app/core/utils/ticks */ "grafana/app/core/utils/ticks");
+/* harmony import */ var grafana_app_core_utils_ticks__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(grafana_app_core_utils_ticks__WEBPACK_IMPORTED_MODULE_1__);
+
+
+//import TimeSeries from 'grafana/app/core/time_series2';
+//var getCurvePoints = require("cardinal-spline-js").getCurvePoints;
+/**
+ * Convert series into array of series values.
+ * @param data Array of series
+ */
+function getSeriesValues(dataList) {
+    var VALUE_INDEX = 0;
+    var values = [];
+    // Count histogam stats
+    for (var i = 0; i < dataList.length; i++) {
+        var series = dataList[i];
+        var datapoints = series.datapoints;
+        for (var j = 0; j < datapoints.length; j++) {
+            if (datapoints[j][VALUE_INDEX] !== null) {
+                values.push(datapoints[j][VALUE_INDEX]);
+            }
+        }
+    }
+    return values;
+}
+/**
+ * Convert array of values into timeseries-like histogram:
+ * [[val_1, count_1], [val_2, count_2], ..., [val_n, count_n]]
+ * @param values
+ * @param bucketSize
+ */
+function convertValuesToHistogram(values, bucketSize, min, max) {
+    var histogram = {};
+    var minBound = getBucketBound(min, bucketSize);
+    var maxBound = getBucketBound(max, bucketSize);
+    var bound = minBound;
+    var n = 0;
+    while (bound <= maxBound) {
+        histogram[bound] = 0;
+        bound = minBound + bucketSize * n;
+        n++;
+    }
+    for (var i = 0; i < values.length; i++) {
+        var bound_1 = getBucketBound(values[i], bucketSize);
+        histogram[bound_1] = histogram[bound_1] + 1;
+    }
+    //let list = [];
+    var histogam_series = lodash__WEBPACK_IMPORTED_MODULE_0___default.a.map(histogram, function (count, bound) {
+        //list.push(Number(bound));
+        //list.push(count);  
+        return { "x": Number(bound), "y": count };
+        //return Number(bound),count;
+    });
+    //console.log(histogam_series);
+    /*
+    //console.log("=============");
+    //console.log(list);
+    console.log(getCurvePoints(list,1,5,true));
+    list = getCurvePoints(list,0.5,25,false);
+    let list2 = [];
+    //let list2 = [];
+    for (let i=0;i<list.length;i+=2) {
+      list2.push({"x":list[i],"y":list[i+1]});
+    }
+    */
+    // Sort by Y axis values
+    //return final;
+    return lodash__WEBPACK_IMPORTED_MODULE_0___default.a.sortBy(histogam_series, "x");
+}
+/**
+ * Convert series into array of histogram data.
+ * @param data Array of series
+ * @param bucketSize
+ */
+function convertToHistogramData(data, preferedBucketSize, panelWidth) {
+    return data.map(function (series) {
+        var values = getSeriesValues([series]);
+        series.histogram = true;
+        //let bucketsize = bucketSize;
+        var ticks = preferedBucketSize || panelWidth / 50;
+        var min = lodash__WEBPACK_IMPORTED_MODULE_0___default.a.min(values);
+        var max = lodash__WEBPACK_IMPORTED_MODULE_0___default.a.max(values);
+        var bucketSize = Object(grafana_app_core_utils_ticks__WEBPACK_IMPORTED_MODULE_1__["tickStep"])(min, max, ticks);
+        //console.log("bucket size")
+        //console.log(bucketSize);
+        var histogram = convertValuesToHistogram(values, bucketSize, min, max);
+        series.data = histogram;
+        //series.min = min;
+        //series.max = max;
+        return series;
+    });
+}
+function getBucketBound(value, bucketSize) {
+    return Math.floor(value / bucketSize) * bucketSize;
+}
+
+
+/***/ }),
+
 /***/ "./panel/cpk-chart/module.ts":
 /*!***********************************!*\
   !*** ./panel/cpk-chart/module.ts ***!
@@ -17263,16 +17376,16 @@ module.exports = function(module) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PanelCtrl", function() { return RmsCPKAnalyticsPanelCtrl; });
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "../node_modules/lodash/lodash.js");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! grafana/app/plugins/sdk */ "grafana/app/plugins/sdk");
-/* harmony import */ var grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var chart_js_dist_Chart_bundle_min__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! chart.js/dist/Chart.bundle.min */ "../node_modules/chart.js/dist/Chart.bundle.min.js");
-/* harmony import */ var chart_js_dist_Chart_bundle_min__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(chart_js_dist_Chart_bundle_min__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var chartjs_plugin_annotation_chartjs_plugin_annotation_min__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! chartjs-plugin-annotation/chartjs-plugin-annotation.min */ "../node_modules/chartjs-plugin-annotation/chartjs-plugin-annotation.min.js");
-/* harmony import */ var chartjs_plugin_annotation_chartjs_plugin_annotation_min__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(chartjs_plugin_annotation_chartjs_plugin_annotation_min__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils */ "./panel/cpk-chart/utils.js");
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_utils__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! grafana/app/plugins/sdk */ "grafana/app/plugins/sdk");
+/* harmony import */ var grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var chart_js_dist_Chart_bundle_min__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! chart.js/dist/Chart.bundle.min */ "../node_modules/chart.js/dist/Chart.bundle.min.js");
+/* harmony import */ var chart_js_dist_Chart_bundle_min__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(chart_js_dist_Chart_bundle_min__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var chartjs_plugin_annotation_chartjs_plugin_annotation_min__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! chartjs-plugin-annotation/chartjs-plugin-annotation.min */ "../node_modules/chartjs-plugin-annotation/chartjs-plugin-annotation.min.js");
+/* harmony import */ var chartjs_plugin_annotation_chartjs_plugin_annotation_min__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(chartjs_plugin_annotation_chartjs_plugin_annotation_min__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils */ "./panel/cpk-chart/utils.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_utils__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _histogram__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./histogram */ "./panel/cpk-chart/histogram.ts");
+//import _ from 'lodash';
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -17284,36 +17397,42 @@ var __extends = (undefined && undefined.__extends) || (function () {
     };
 })();
 
-
 //import * as Chart from 'chart.js/dist/Chart.min';
+
 
 
 
 var template = __webpack_require__(/*! ./templet.html */ "./panel/cpk-chart/templet.html");
 var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
     __extends(RmsCPKAnalyticsPanelCtrl, _super);
+    //limit: any;
     function RmsCPKAnalyticsPanelCtrl($scope, $injector, $window) {
         var _this = _super.call(this, $scope, $injector) || this;
         _this.$window = $window;
         _this.Chart = _this.$window.Chart;
         _this.chartID = 'chart-rms-cpk-' + _this.panel.id;
-        _this.result = [];
-        //this.series = [];
-        _this.limit = {
-            "xmin": -1.0,
-            "xmax": +1.0,
-            "ymin": -1.0,
-            "ymax": +1.0
-        };
+        /*
+        this.limit = {
+          "xmin": -1.0,
+          "xmax": +1.0,
+          "ymin": -1.0,
+          "ymax": +1.0
+        }
+        */
+        _this.data = {};
+        _this.cp = 0;
+        _this.cpk = 0;
+        _this.lsl = -1;
+        _this.usl = +1;
         _this.events.on('init-edit-mode', _this.onInitEditMode.bind(_this));
         _this.events.on('render', _this.onRender.bind(_this));
         _this.events.on('panel-size-changed', _this.onSizeChanged.bind(_this));
         _this.events.on('panel-initialized', _this.onRender.bind(_this));
         _this.events.on('data-received', _this.onDataReceived.bind(_this));
         return _this;
-        /*
+        /* Sample for normal distribution
         for (var i = 1; i <= 10000; i++) {
-          this.series.push(this.gaussianRandom(1,6));
+          this.series.push(this.gaussianRandom(1,50));
         }
     
         this.series = _.countBy(this.series)
@@ -17324,231 +17443,250 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
             "y":this.series[key]
           })
         }
-    */
+        this.data = {
+          datasets: [
+            {
+              label: "data",
+              //backgroundColor: color(this.$window.chartColors.blue).alpha(0.2).rgbString(),
+              //borderColor: this.$window.chartColors.blue,
+              data: this.result
+            }
+          ]
+        };
+        */
     }
     RmsCPKAnalyticsPanelCtrl.prototype.OnInitialized = function () {
         this.OnDraw();
     };
     RmsCPKAnalyticsPanelCtrl.prototype.onSizeChanged = function () {
-        this.OnDraw();
+        //console.log("size changed");
     };
     RmsCPKAnalyticsPanelCtrl.prototype.onInitEditMode = function () {
     };
     RmsCPKAnalyticsPanelCtrl.prototype.onDataReceived = function (dataList) {
-        if (dataList == null) {
+        console.log("data received");
+        var data;
+        if (dataList == null || dataList.length > 2) {
             return;
         }
-        var datapoints = [];
-        for (var _i = 0, dataList_1 = dataList; _i < dataList_1.length; _i++) {
-            var data = dataList_1[_i];
-            for (var _a = 0, _b = data.datapoints; _a < _b.length; _a++) {
-                var point = _b[_a];
-                if (point[0] === null || point[0] === 0)
-                    continue;
-                datapoints.push(point[0]);
+        for (var i = 0; i < dataList.length; i++) {
+            if (dataList[i].type === 'table') {
+                for (var j = 0; j < dataList[i].columns.length; j++) {
+                    //console.log("===============");
+                    if (dataList[i].columns[j].text === 'cpk') {
+                        //console.log("cpk");
+                        //console.log(dataList[i].rows[j]);
+                        this.cpk = dataList[i].rows[0][j];
+                    }
+                    else if (dataList[i].columns[j].text === 'cp') {
+                        this.cp = dataList[i].rows[0][j];
+                    }
+                    else if (dataList[i].columns[j].text === 'lsl') {
+                        this.lsl = dataList[i].rows[0][j];
+                    }
+                    else if (dataList[i].columns[j].text === 'usl') {
+                        this.usl = dataList[i].rows[0][j];
+                    }
+                }
             }
-            break;
+            else {
+                data = dataList[i];
+            }
         }
-        datapoints.sort();
-        var result = lodash__WEBPACK_IMPORTED_MODULE_0___default.a.countBy(datapoints);
-        //result = result.sort();
-        var xmin = +Object.keys(result)[0];
-        var xmax = +Object.keys(result)[0];
-        var ymin = result[Object.keys(result)[0]];
-        var ymax = result[Object.keys(result)[0]];
-        for (var key in result) {
-            if (xmin > +key) {
-                xmin = +key;
-            }
-            if (xmax < +key) {
-                xmax = +key;
-            }
-            if (ymin > result[key]) {
-                ymin = result[key];
-            }
-            if (ymax < result[key]) {
-                ymax = result[key];
-            }
-            this.result.push({
-                "x": +key,
-                "y": result[key]
-            });
-        }
+        //console.log(dataList);
+        // Bucket size
+        var bucketSize = 5;
+        var panelWidth = this.canvas.width;
+        // Convert data to histogram data
+        var result = Object(_histogram__WEBPACK_IMPORTED_MODULE_4__["convertToHistogramData"])([data], bucketSize, panelWidth);
+        result = result[0].data;
+        // setting for x-axis and y-axis range
+        /*
         this.limit = {
-            "xmin": xmin,
-            "xmax": xmax,
-            "ymin": ymin,
-            "ymax": ymax
-        };
+          "xmin": result[0].x,
+          "xmax": result[result.length-1].x,
+          "ymin": (_.minBy(result,"y")).y,
+          "ymax": (_.maxBy(result,"y")).y
+        }
+      */
+        //console.log(result);
         this.data = {
             datasets: [
                 {
                     label: "data",
-                    //backgroundColor: color(this.$window.chartColors.blue).alpha(0.2).rgbString(),
+                    //backgroundColor: "#d0f33f",
                     //borderColor: this.$window.chartColors.blue,
-                    data: this.result
+                    data: result,
+                    pointRadius: 0,
+                    pointHoverRadius: 0
                 }
             ]
         };
-        console.log(this.limit);
-        console.log(this.result);
-        //console.log(datapoints);
         this.OnDraw();
     };
     RmsCPKAnalyticsPanelCtrl.prototype.createChart = function () {
-        if (this.initalized === false) {
-            this.initalized = true;
-            this.Chart.plugins.register({
-                afterDatasetsDraw: function (chart) {
-                    var ctx = chart.ctx;
-                    //console.log(chart.width);
-                    //console.log(chart.height)
-                    ctx.fillText("CPK : 0.887", chart.width * 0.8, chart.height * 0.15);
-                    chart.data.datasets.forEach(function (dataset, i) {
-                        var meta = chart.getDatasetMeta(i);
-                        if (!meta.hidden) {
-                            meta.data.forEach(function (element, index) {
-                                ctx.fillStyle = 'rgb(0, 0, 0)';
-                                var fontSize = 12;
-                                //var dataString = JSON.stringify(dataset.data[index]);
-                                ctx.textAlign = 'center';
-                                ctx.textBaseline = 'middle';
-                                var padding = 3;
-                                var position = element.tooltipPosition();
-                                ctx.fillText("", position.x, position.y - (fontSize / 2) - padding);
-                            });
-                        }
-                    });
-                }
-            });
-            this.chart = new this.Chart(this.context, {
-                type: 'line',
-                data: this.data,
-                options: {
-                    legend: {
-                        display: false
-                    },
-                    tooltips: {
-                        enabled: false
-                    },
-                    annotation: {
-                        annotations: [
-                            {
-                                type: 'line',
-                                id: 'a-line-1',
-                                mode: 'virtical',
-                                borderColor: 'red',
-                                borderDash: [2, 2],
-                                borderWidth: 2,
-                                value: this.limit["xmin"],
-                                scaleID: 'x-axis-0',
-                                label: {
-                                    backgroundColor: 'rgba(255,0,0,0.8)',
-                                    fontSize: 12,
-                                    fontStyle: "bold",
-                                    fontColor: "#fff",
-                                    xPadding: 6,
-                                    yPadding: 6,
-                                    cornerRadius: 6,
-                                    position: "center",
-                                    xAdjust: 0,
-                                    yAdjust: 0,
-                                    enabled: true,
-                                    content: "LSL"
-                                }
-                            },
-                            {
-                                type: 'line',
-                                id: 'a-line-2',
-                                mode: 'virtical',
-                                borderColor: 'red',
-                                borderDash: [2, 2],
-                                borderWidth: 2,
-                                value: this.limit["xmax"],
-                                scaleID: 'x-axis-0',
-                                label: {
-                                    backgroundColor: 'rgba(0,0,255,0.8)',
-                                    fontSize: 12,
-                                    fontStyle: "bold",
-                                    fontColor: "#fff",
-                                    xPadding: 6,
-                                    yPadding: 6,
-                                    cornerRadius: 6,
-                                    position: "center",
-                                    xAdjust: 0,
-                                    yAdjust: 0,
-                                    enabled: true,
-                                    content: "USL"
-                                }
+        this.Chart.plugins.register({
+            afterDatasetsDraw: function (chart) {
+                var ctx = chart.ctx;
+                ctx.fillStyle = '#09033f';
+                ctx.font = "20px Arial Black";
+                ctx.fillText("CPK = " + chart.options.cpk.toFixed(3), chart.width - 70, chart.height * 0.17);
+                ctx.fillText("CP = " + chart.options.cp.toFixed(3), chart.width - 70, chart.height * 0.1);
+                //ctx.fillText("CPK : "+ this.cpk, chart.width * 0.6 ,chart.height * 0.15);
+                chart.data.datasets.forEach(function (dataset, i) {
+                    var meta = chart.getDatasetMeta(i);
+                    if (!meta.hidden) {
+                        meta.data.forEach(function (element, index) {
+                            ctx.fillStyle = 'rgb(0, 0, 0)';
+                            var fontSize = 12;
+                            //var dataString = JSON.stringify(dataset.data[index]);
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'middle';
+                            var padding = 3;
+                            var position = element.tooltipPosition();
+                            ctx.fillText("", position.x, position.y - (fontSize / 2) - padding);
+                            //ctx.save();
+                        });
+                    }
+                });
+            }
+        });
+        //this.chart.options.annotation.annotations
+        this.chart = new this.Chart(this.context, {
+            type: 'line',
+            data: this.data,
+            options: {
+                cpk: this.cpk,
+                cp: this.cp,
+                legend: {
+                    display: false
+                },
+                tooltips: {
+                    enabled: false
+                },
+                annotation: {
+                    annotations: [
+                        {
+                            type: 'line',
+                            id: 'lsl_line',
+                            mode: 'virtical',
+                            borderColor: 'red',
+                            borderDash: [2, 2],
+                            borderWidth: 2,
+                            value: this.lsl,
+                            scaleID: 'x-axis-0',
+                            label: {
+                                backgroundColor: 'rgba(255,0,0,0.8)',
+                                fontSize: 12,
+                                fontStyle: "bold",
+                                fontColor: "#fff",
+                                xPadding: 6,
+                                yPadding: 6,
+                                cornerRadius: 6,
+                                position: "center",
+                                xAdjust: 0,
+                                yAdjust: 0,
+                                enabled: true,
+                                content: "LSL"
                             }
-                        ],
-                        drawTime: "afterDatasetsDraw"
-                    },
-                    scales: {
-                        xAxes: [{
-                                id: 'x-axis-0',
-                                type: "linear",
-                                display: true,
-                                gridLines: {
-                                    display: false
-                                },
-                                //autoSkip: true,
-                                // position: "bottom",
-                                ticks: {
-                                    min: this.limit["xmin"],
-                                    max: this.limit["xmax"]
-                                    //stepSize: 
-                                }
-                                //type: "linear",
-                                //position: "bottom"
-                            }],
-                        yAxes: [{
-                                id: 'y-axis-0',
-                                type: "linear",
-                                display: true,
-                                gridLines: {
-                                    display: false
-                                },
-                                //autoSkip: true,
-                                ticks: {
-                                    min: this.limit["ymin"],
-                                    max: this.limit["ymax"]
-                                    //stepSize: 1
-                                }
-                                //position: "left"
-                            }]
-                    },
-                    responsive: true,
-                    title: {
-                        display: false,
-                        text: 'CPK for MODEL'
-                    },
-                    maintainAspectRatio: false
-                }
-            });
-        }
+                        },
+                        {
+                            type: 'line',
+                            id: 'usl_line',
+                            mode: 'virtical',
+                            borderColor: 'red',
+                            borderDash: [2, 2],
+                            borderWidth: 2,
+                            value: this.usl,
+                            scaleID: 'x-axis-0',
+                            label: {
+                                backgroundColor: 'rgba(0,0,255,0.8)',
+                                fontSize: 12,
+                                fontStyle: "bold",
+                                fontColor: "#fff",
+                                xPadding: 6,
+                                yPadding: 6,
+                                cornerRadius: 6,
+                                position: "center",
+                                xAdjust: 0,
+                                yAdjust: 0,
+                                enabled: true,
+                                content: "USL"
+                            }
+                        }
+                    ],
+                    drawTime: "afterDatasetsDraw"
+                },
+                scales: {
+                    xAxes: [{
+                            id: 'x-axis-0',
+                            type: "linear",
+                            display: true,
+                            gridLines: {
+                                display: false
+                            },
+                        }],
+                    yAxes: [{
+                            id: 'y-axis-0',
+                            type: "linear",
+                            display: true,
+                            gridLines: {
+                                display: false
+                            },
+                        }]
+                },
+                responsive: true,
+                title: {
+                    display: false,
+                    text: 'CPK for MODEL'
+                },
+                maintainAspectRatio: false
+            }
+        });
     };
     RmsCPKAnalyticsPanelCtrl.prototype.OnDraw = function () {
         if (!this.context) {
             return;
         }
-        this.createChart();
+        if (this.chart) {
+            console.log("update");
+            this.chart.data = this.data;
+            var annotations = this.chart.options.annotation.annotations;
+            //console.log(annotations);
+            for (var i = 0; i < annotations.length; i++) {
+                if (annotations[i].id === "lsl_line") {
+                    annotations[i].value = this.lsl;
+                }
+                else if (annotations[i].id === "usl_line") {
+                    annotations[i].value = this.usl;
+                }
+            }
+            this.chart.options.annotation.annotations = annotations;
+            this.chart.options.cpk = this.cpk;
+            this.chart.update();
+        }
+        else {
+            console.log("create Chart");
+            this.createChart();
+        }
     };
     RmsCPKAnalyticsPanelCtrl.prototype.onRender = function () {
-        if (this.context) {
-            this.OnDraw();
-        }
     };
-    RmsCPKAnalyticsPanelCtrl.prototype.gaussianRand = function () {
-        var rand = 0;
-        for (var i = 0; i < 6; i += 1) {
-            rand += Math.random();
-        }
-        return rand / 6;
-    };
-    RmsCPKAnalyticsPanelCtrl.prototype.gaussianRandom = function (start, end) {
-        return Math.floor(start + this.gaussianRand() * (end - start + 1));
-    };
+    /*
+    gaussianRand() {
+      var rand = 0;
+  
+      for (var i = 0; i < 6; i += 1) {
+        rand += Math.random();
+      }
+  
+      return rand / 6;
+    }
+  
+    gaussianRandom(start, end) {
+      return Math.floor(start + this.gaussianRand() * (end - start + 1));
+    }
+  */
     RmsCPKAnalyticsPanelCtrl.prototype.link = function (scope, elem, attrs, ctrl) {
         this.canvas = elem.find('.chart')[0];
         if (!this.canvas) {
@@ -17558,7 +17696,7 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
     };
     RmsCPKAnalyticsPanelCtrl.template = template;
     return RmsCPKAnalyticsPanelCtrl;
-}(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_1__["MetricsPanelCtrl"]));
+}(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_0__["MetricsPanelCtrl"]));
 
 
 
@@ -17716,6 +17854,17 @@ window.chartColors = {
     Samples.utils.srand(Date.now());
 
 }(this));
+
+/***/ }),
+
+/***/ "grafana/app/core/utils/ticks":
+/*!***************************************!*\
+  !*** external "app/core/utils/ticks" ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_grafana_app_core_utils_ticks__;
 
 /***/ }),
 
