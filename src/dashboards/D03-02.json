@@ -1,12 +1,46 @@
 {
   "annotations": {
-    "list": []
+    "list": [
+    ]
   },
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
   "links": [],
-  "panels": [],
+  "panels": [
+    {
+      "consumablesCategory": [
+      ],
+      "datasource": "REMOTESOLUTIONS(V1.0)",
+      "gridPos": {
+        "h": 13,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "inputlItem": {
+        "change_date": "",
+        "consumables_name": null,
+        "count": "",
+        "machine_consumables_id": -1,
+        "machine_name": null,
+        "memo": ""
+      },
+      "machineCategory": [
+      ],
+      "targets": [
+        {
+          "alias": "",
+          "format": "table",
+          "rawSql": "SELECT MACHINE_CONSUMABLES_ID, MACHINE_NAME, CONSUMABLES_NAME, CONSUMABLES_COUNT, c.CHANGE_DATE, c.MEMO\n  FROM t_machine AS a, t_consumables AS b, t_machine_consumables AS c\n WHERE a.machine_id = c.machine_id AND b.consumables_id = c.consumables_id;\n",
+          "refId": "A"
+        }
+      ],
+      "title": "",
+      "type": "Machine-Consumables"
+    }
+  ],
   "schemaVersion": 16,
   "style": "light",
   "tags": [],
@@ -35,5 +69,5 @@
   },
   "timezone": "",
   "title": "장비별 소모품 등록",
-  "version": 3
+  "version": 8
 }
