@@ -1,7 +1,7 @@
 {
   "type": "panel",
   "name": "(RMS) 설비 불량 현황",
-  "id": "rms-monitor-facility-defect",
+  "id": "rms-monitor-facility-defect-panel",
 
   "info": {
     "description": "Monitoring : Facility Defect",

@@ -36,17 +36,32 @@ define(["app/core/core_module","app/plugins/sdk"], function(__WEBPACK_EXTERNAL_M
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -82,10 +97,10 @@ define(["app/core/core_module","app/plugins/sdk"], function(__WEBPACK_EXTERNAL_M
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AttrPlugin", function() { return AttrPlugin; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return AttrPlugin; });
-/* harmony import */ var _TweenLite__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TweenLite */ "../node_modules/gsap/TweenLite.js");
+/* harmony import */ var _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TweenLite.js */ "../node_modules/gsap/TweenLite.js");
 /*!
  * VERSION: 0.6.1
- * DATE: 2018-05-14
+ * DATE: 2018-05-30
  * UPDATES AND DOCS AT: http://greensock.com
  *
  * @license Copyright (c) 2008-2018, GreenSock. All rights reserved.
@@ -97,7 +112,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const AttrPlugin = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine.plugin({
+const AttrPlugin = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine.plugin({
 	propName: "attr",
 	API: 2,
 	version: "0.6.1",
@@ -140,10 +155,10 @@ const AttrPlugin = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BezierPlugin", function() { return BezierPlugin; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return BezierPlugin; });
-/* harmony import */ var _TweenLite__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TweenLite */ "../node_modules/gsap/TweenLite.js");
+/* harmony import */ var _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TweenLite.js */ "../node_modules/gsap/TweenLite.js");
 /*!
  * VERSION: 1.3.8
- * DATE: 2018-05-14
+ * DATE: 2018-05-30
  * UPDATES AND DOCS AT: http://greensock.com
  *
  * @license Copyright (c) 2008-2018, GreenSock. All rights reserved.
@@ -159,7 +174,7 @@ __webpack_require__.r(__webpack_exports__);
 			_r2 = [],
 			_r3 = [],
 			_corProps = {},
-			_globals = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine.globals,
+			_globals = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine.globals,
 			Segment = function(a, b, c, d) {
 				if (c === d) { //if c and d match, the final autoRotate value could lock at -90 degrees, so differentiate them slightly.
 					c = d - (d - b) / 1000000;
@@ -451,7 +466,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-			BezierPlugin = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine.plugin({
+			BezierPlugin = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine.plugin({
 					propName: "bezier",
 					priority: -1,
 					version: "1.3.8",
@@ -758,10 +773,10 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CSSPlugin", function() { return CSSPlugin; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CSSPlugin; });
-/* harmony import */ var _TweenLite__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TweenLite */ "../node_modules/gsap/TweenLite.js");
+/* harmony import */ var _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TweenLite.js */ "../node_modules/gsap/TweenLite.js");
 /*!
  * VERSION: 1.20.5
- * DATE: 2018-05-14
+ * DATE: 2018-05-30
  * UPDATES AND DOCS AT: http://greensock.com
  *
  * @license Copyright (c) 2008-2018, GreenSock. All rights reserved.
@@ -772,21 +787,21 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 
-	_TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin","TweenLite"], function() {
+	_TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("plugins.CSSPlugin", ["plugins.TweenPlugin","TweenLite"], function() {
 
 		/** @constructor **/
 		var CSSPlugin = function() {
-				_TweenLite__WEBPACK_IMPORTED_MODULE_0__["TweenPlugin"].call(this, "css");
+				_TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["TweenPlugin"].call(this, "css");
 				this._overwriteProps.length = 0;
 				this.setRatio = CSSPlugin.prototype.setRatio; //speed optimization (avoid prototype lookup on this "hot" method)
 			},
-			_globals = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine.globals,
+			_globals = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine.globals,
 			_hasPriority, //turns true whenever a CSSPropTween instance is created that has a priority other than 0. This helps us discern whether or not we should spend the time organizing the linked list or not after a CSSPlugin's _onInitTween() method is called.
 			_suffixMap, //we set this in _onInitTween() each time as a way to have a persistent variable we can use in other methods like _parse() without having to pass it around as a parameter and we keep _parse() decoupled from a particular CSSPlugin instance
 			_cs, //computed style (we store this in a shared variable to conserve memory and make minification tighter
 			_overwriteProps, //alias to the currently instantiating CSSPlugin's _overwriteProps array. We use this closure in order to avoid having to pass a reference around from method to method and aid in minification.
 			_specialProps = {},
-			p = CSSPlugin.prototype = new _TweenLite__WEBPACK_IMPORTED_MODULE_0__["TweenPlugin"]("css");
+			p = CSSPlugin.prototype = new _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["TweenPlugin"]("css");
 
 		p.constructor = CSSPlugin;
 		CSSPlugin.version = "1.20.5";
@@ -820,14 +835,14 @@ __webpack_require__.r(__webpack_exports__);
 			_RAD2DEG = 180 / Math.PI,
 			_forcePT = {},
 			_dummyElement = {style:{}},
-			_doc = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].document || {createElement: function() {return _dummyElement;}},
+			_doc = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].document || {createElement: function() {return _dummyElement;}},
 			_createElement = function(type, ns) {
 				return _doc.createElementNS ? _doc.createElementNS(ns || "http://www.w3.org/1999/xhtml", type) : _doc.createElement(type);
 			},
 			_tempDiv = _createElement("div"),
 			_tempImg = _createElement("img"),
 			_internals = CSSPlugin._internals = {_specialProps:_specialProps}, //provides a hook to a few internal methods that we need to access from inside other plugins
-			_agent = (_TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].navigator || {}).userAgent || "",
+			_agent = (_TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].navigator || {}).userAgent || "",
 			_autoRound,
 			_reqSafariFix, //we won't apply the Safari transform fix until we actually come across a tween that affects a transform property (to maintain best performance).
 
@@ -854,7 +869,7 @@ __webpack_require__.r(__webpack_exports__);
 				return (_opacityExp.test( ((typeof(v) === "string") ? v : (v.currentStyle ? v.currentStyle.filter : v.style.filter) || "") ) ? ( parseFloat( RegExp.$1 ) / 100 ) : 1);
 			},
 			_log = function(s) {//for logging messages, but in a way that won't throw errors in old versions of IE.
-				if (_TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].console) {
+				if (_TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].console) {
 					console.log(s);
 				}
 			},
@@ -951,7 +966,7 @@ __webpack_require__.r(__webpack_exports__);
 							style.position = "absolute";
 						}
 						cache = node._gsCache;
-						time = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"].ticker.frame;
+						time = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"].ticker.frame;
 						if (cache && horiz && cache.time === time) { //performance optimization: we record the width of elements along with the ticker frame so that we can quickly get it again on the same tick (seems relatively safe to assume it wouldn't change on the same tick)
 							return cache.width * v / 100;
 						}
@@ -1333,8 +1348,8 @@ __webpack_require__.r(__webpack_exports__);
 			_colorExp.lastIndex = 0;
 		};
 
-		if (!_TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"].defaultStringFilter) {
-			_TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"].defaultStringFilter = CSSPlugin.colorStringFilter;
+		if (!_TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"].defaultStringFilter) {
+			_TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"].defaultStringFilter = CSSPlugin.colorStringFilter;
 		}
 
 		/**
@@ -1965,7 +1980,7 @@ __webpack_require__.r(__webpack_exports__);
 				this.perspective = parseFloat(CSSPlugin.defaultTransformPerspective) || 0;
 				this.force3D = (CSSPlugin.defaultForce3D === false || !_supports3D) ? false : CSSPlugin.defaultForce3D || "auto";
 			},
-			_SVGElement = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].SVGElement,
+			_SVGElement = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].SVGElement,
 			_useSVGTransformAttr,
 			//Some browsers (like Firefox and IE) don't honor transform-origin properly in SVG elements, so we need to manually adjust the matrix accordingly. We feature detect here rather than always doing the conversion for certain browsers because they may fix the problem at some point in the future.
 
@@ -1982,7 +1997,7 @@ __webpack_require__.r(__webpack_exports__);
 			_docElement = _doc.documentElement || {},
 			_forceSVGTransformAttr = (function() {
 				//IE and Android stock don't support CSS transforms on SVG elements, so we must write them to the "transform" attribute. We populate this variable in the _parseTransform() method, and only if/when we come across an SVG element
-				var force = _ieVers || (/Android/i.test(_agent) && !_TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].chrome),
+				var force = _ieVers || (/Android/i.test(_agent) && !_TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].chrome),
 					svg, rect, width;
 				if (_doc.createElementNS && !force) { //IE8 and earlier doesn't support SVG anyway
 					svg = _createSVG("svg", _docElement);
@@ -2344,11 +2359,11 @@ __webpack_require__.r(__webpack_exports__);
 					t._gsTransform = tm; //record to the object's _gsTransform which we use so that tweens can control individual properties independently (we need all the properties to accurately recompose the matrix in the setRatio() method)
 					if (tm.svg) { //if we're supposed to apply transforms to the SVG element's "transform" attribute, make sure there aren't any CSS transforms applied or they'll override the attribute ones. Also clear the transform attribute if we're using CSS, just to be clean.
 						if (_useSVGTransformAttr && t.style[_transformProp]) {
-							_TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"].delayedCall(0.001, function(){ //if we apply this right away (before anything has rendered), we risk there being no transforms for a brief moment and it also interferes with adjusting the transformOrigin in a tween with immediateRender:true (it'd try reading the matrix and it wouldn't have the appropriate data in place because we just removed it).
+							_TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"].delayedCall(0.001, function(){ //if we apply this right away (before anything has rendered), we risk there being no transforms for a brief moment and it also interferes with adjusting the transformOrigin in a tween with immediateRender:true (it'd try reading the matrix and it wouldn't have the appropriate data in place because we just removed it).
 								_removeProp(t.style, _transformProp);
 							});
 						} else if (!_useSVGTransformAttr && t.getAttribute("transform")) {
-							_TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"].delayedCall(0.001, function(){
+							_TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"].delayedCall(0.001, function(){
 								t.removeAttribute("transform");
 							});
 						}
@@ -3568,7 +3583,7 @@ __webpack_require__.r(__webpack_exports__);
 				}
 				pt = pt._next;
 			}
-			return _TweenLite__WEBPACK_IMPORTED_MODULE_0__["TweenPlugin"].prototype._kill.call(this, copy);
+			return _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["TweenPlugin"].prototype._kill.call(this, copy);
 		};
 
 
@@ -3619,12 +3634,12 @@ __webpack_require__.r(__webpack_exports__);
 		 * @return {Array} An array of TweenLite instances
 		 */
 		CSSPlugin.cascadeTo = function(target, duration, vars) {
-			var tween = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"].to(target, duration, vars),
+			var tween = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"].to(target, duration, vars),
 				results = [tween],
 				b = [],
 				e = [],
 				targets = [],
-				_reservedProps = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"]._internals.reservedProps,
+				_reservedProps = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"]._internals.reservedProps,
 				i, difs, p, from;
 			target = tween._targets || tween.target;
 			_getChildStyles(target, b, targets);
@@ -3646,18 +3661,18 @@ __webpack_require__.r(__webpack_exports__);
 					for (p in difs) {
 						from[p] = b[i][p];
 					}
-					results.push(_TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"].fromTo(targets[i], duration, from, difs));
+					results.push(_TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"].fromTo(targets[i], duration, from, difs));
 				}
 			}
 			return results;
 		};
 
-		_TweenLite__WEBPACK_IMPORTED_MODULE_0__["TweenPlugin"].activate([CSSPlugin]);
+		_TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["TweenPlugin"].activate([CSSPlugin]);
 		return CSSPlugin;
 
 	}, true);
 
-const CSSPlugin = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].CSSPlugin;
+const CSSPlugin = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].CSSPlugin;
 
 
 /***/ }),
@@ -3673,10 +3688,10 @@ const CSSPlugin = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].CSSPlugin;
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DirectionalRotationPlugin", function() { return DirectionalRotationPlugin; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return DirectionalRotationPlugin; });
-/* harmony import */ var _TweenLite__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TweenLite */ "../node_modules/gsap/TweenLite.js");
+/* harmony import */ var _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TweenLite.js */ "../node_modules/gsap/TweenLite.js");
 /*!
  * VERSION: 0.3.1
- * DATE: 2018-05-14
+ * DATE: 2018-05-30
  * UPDATES AND DOCS AT: http://greensock.com
  *
  * @license Copyright (c) 2008-2018, GreenSock. All rights reserved.
@@ -3688,7 +3703,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const DirectionalRotationPlugin = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine.plugin({
+const DirectionalRotationPlugin = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine.plugin({
 		propName: "directionalRotation",
 		version: "0.3.1",
 		API: 2,
@@ -3781,22 +3796,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Expo", function() { return Expo; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Sine", function() { return Sine; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ExpoScaleEase", function() { return ExpoScaleEase; });
-/* harmony import */ var _TweenLite__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TweenLite */ "../node_modules/gsap/TweenLite.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Linear", function() { return _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Linear"]; });
+/* harmony import */ var _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TweenLite.js */ "../node_modules/gsap/TweenLite.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Linear", function() { return _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Linear"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Power0", function() { return _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Power0"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Power0", function() { return _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Power0"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Power1", function() { return _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Power1"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Power1", function() { return _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Power1"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Power2", function() { return _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Power2"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Power2", function() { return _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Power2"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Power3", function() { return _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Power3"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Power3", function() { return _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Power3"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Power4", function() { return _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Power4"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Power4", function() { return _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Power4"]; });
 
 /*!
  * VERSION: 1.16.0
- * DATE: 2018-05-14
+ * DATE: 2018-05-30
  * UPDATES AND DOCS AT: http://greensock.com
  *
  * @license Copyright (c) 2008-2018, GreenSock. All rights reserved.
@@ -3808,21 +3823,21 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-_TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("easing.Back", ["easing.Ease"], function() {
+_TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("easing.Back", ["easing.Ease"], function() {
 		
-		var w = (_TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].GreenSockGlobals || _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]),
+		var w = (_TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].GreenSockGlobals || _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]),
 			gs = w.com.greensock,
 			_2PI = Math.PI * 2,
 			_HALF_PI = Math.PI / 2,
 			_class = gs._class,
 			_create = function(n, f) {
 				var C = _class("easing." + n, function(){}, true),
-					p = C.prototype = new _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Ease"]();
+					p = C.prototype = new _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Ease"]();
 				p.constructor = C;
 				p.getRatio = f;
 				return C;
 			},
-			_easeReg = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Ease"].register || function(){}, //put an empty function in place just as a safety measure in case someone loads an OLD version of TweenLite.js where Ease.register doesn't exist.
+			_easeReg = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Ease"].register || function(){}, //put an empty function in place just as a safety measure in case someone loads an OLD version of TweenLite.js where Ease.register doesn't exist.
 			_wrap = function(name, EaseOut, EaseIn, EaseInOut, aliases) {
 				var C = _class("easing."+name, {
 					easeOut:new EaseOut(),
@@ -3849,7 +3864,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("easing.Back", ["e
 						this._p1 = (overshoot || overshoot === 0) ? overshoot : 1.70158;
 						this._p2 = this._p1 * 1.525;
 					}, true), 
-					p = C.prototype = new _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Ease"]();
+					p = C.prototype = new _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Ease"]();
 				p.constructor = C;
 				p.getRatio = f;
 				p.config = function(overshoot) {
@@ -3885,7 +3900,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("easing.Back", ["e
 				this._p3 = this._p1 + this._p2;
 				this._calcEnd = (yoyoMode === true);
 			}, true),
-			p = SlowMo.prototype = new _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Ease"](),
+			p = SlowMo.prototype = new _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Ease"](),
 			SteppedEase, ExpoScaleEase, RoughEase, _createElastic;
 			
 		p.constructor = SlowMo;
@@ -3912,7 +3927,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("easing.Back", ["e
 				this._p2 = steps + (immediateStart ? 0 : 1);
 				this._p3 = immediateStart ? 1 : 0;
 			}, true);
-		p = SteppedEase.prototype = new _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Ease"]();	
+		p = SteppedEase.prototype = new _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Ease"]();	
 		p.constructor = SteppedEase;
 		p.getRatio = function(p) {
 			if (p < 0) {
@@ -3934,7 +3949,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("easing.Back", ["e
 			this._p3 = start;
 			this._ease = ease;
 		}, true);
-		p = ExpoScaleEase.prototype = new _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Ease"]();
+		p = ExpoScaleEase.prototype = new _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Ease"]();
 		p.constructor = ExpoScaleEase;
 		p.getRatio = function(p) {
 			if (this._ease) {
@@ -3957,7 +3972,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("easing.Back", ["e
 				i = points,
 				randomize = (vars.randomize !== false),
 				clamp = (vars.clamp === true),
-				template = (vars.template instanceof _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Ease"]) ? vars.template : null,
+				template = (vars.template instanceof _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Ease"]) ? vars.template : null,
 				strength = (typeof(vars.strength) === "number") ? vars.strength * 0.4 : 0.4,
 				x, y, bump, invX, obj, pnt;
 			while (--i > -1) {
@@ -4006,7 +4021,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("easing.Back", ["e
 
 			this._prev = new EasePoint(0, 0, (pnt.t !== 0) ? pnt : pnt.next);
 		}, true);
-		p = RoughEase.prototype = new _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Ease"]();
+		p = RoughEase.prototype = new _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Ease"]();
 		p.constructor = RoughEase;
 		p.getRatio = function(p) {
 			var pnt = this._prev;
@@ -4094,7 +4109,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("easing.Back", ["e
 					this._p3 = this._p2 / _2PI * (Math.asin(1 / this._p1) || 0);
 					this._p2 = _2PI / this._p2; //precalculate to optimize
 				}, true),
-				p = C.prototype = new _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Ease"]();
+				p = C.prototype = new _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Ease"]();
 			p.constructor = C;
 			p.getRatio = f;
 			p.config = function(amplitude, period) {
@@ -4144,7 +4159,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("easing.Back", ["e
 
 		_class("easing.EaseLookup", {
 				find:function(s) {
-					return _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Ease"].map[s];
+					return _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Ease"].map[s];
 				}
 			}, true);
 
@@ -4157,16 +4172,16 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("easing.Back", ["e
 		
 	}, true);
 
-const Back = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].Back;
-const Elastic = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].Elastic;
-const Bounce = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].Bounce;
-const RoughEase = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].RoughEase;
-const SlowMo = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].SlowMo;
-const SteppedEase = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].SteppedEase;
-const Circ = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].Circ;
-const Expo = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].Expo;
-const Sine = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].Sine;
-const ExpoScaleEase = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].ExpoScaleEase;
+const Back = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].Back;
+const Elastic = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].Elastic;
+const Bounce = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].Bounce;
+const RoughEase = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].RoughEase;
+const SlowMo = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].SlowMo;
+const SteppedEase = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].SteppedEase;
+const Circ = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].Circ;
+const Expo = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].Expo;
+const Sine = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].Sine;
+const ExpoScaleEase = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].ExpoScaleEase;
 
 
 /***/ }),
@@ -4185,10 +4200,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "_roundLinkedList", function() { return _roundLinkedList; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "p", function() { return p; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return RoundPropsPlugin; });
-/* harmony import */ var _TweenLite__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TweenLite */ "../node_modules/gsap/TweenLite.js");
+/* harmony import */ var _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TweenLite.js */ "../node_modules/gsap/TweenLite.js");
 /*!
  * VERSION: 1.6.0
- * DATE: 2018-05-14
+ * DATE: 2018-05-30
  * UPDATES AND DOCS AT: http://greensock.com
  *
  * @license Copyright (c) 2008-2018, GreenSock. All rights reserved.
@@ -4199,7 +4214,7 @@ __webpack_require__.r(__webpack_exports__);
  **/
 
 
-const RoundPropsPlugin = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine.plugin({
+const RoundPropsPlugin = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine.plugin({
 				propName: "roundProps",
 				version: "1.7.0",
 				priority: -1,
@@ -4299,10 +4314,10 @@ const RoundPropsPlugin = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gs
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TimelineLite", function() { return TimelineLite; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return TimelineLite; });
-/* harmony import */ var _TweenLite__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TweenLite */ "../node_modules/gsap/TweenLite.js");
+/* harmony import */ var _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TweenLite.js */ "../node_modules/gsap/TweenLite.js");
 /*!
- * VERSION: 2.0.0
- * DATE: 2018-05-23
+ * VERSION: 2.0.1
+ * DATE: 2018-05-30
  * UPDATES AND DOCS AT: http://greensock.com
  *
  * @license Copyright (c) 2008-2018, GreenSock. All rights reserved.
@@ -4313,10 +4328,10 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 
-_TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TimelineLite", ["core.Animation","core.SimpleTimeline","TweenLite"], function() {
+_TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TimelineLite", ["core.Animation","core.SimpleTimeline","TweenLite"], function() {
 
 		var TimelineLite = function(vars) {
-				_TweenLite__WEBPACK_IMPORTED_MODULE_0__["SimpleTimeline"].call(this, vars);
+				_TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["SimpleTimeline"].call(this, vars);
 				this._labels = {};
 				this.autoRemoveChildren = (this.vars.autoRemoveChildren === true);
 				this.smoothChildTiming = (this.vars.smoothChildTiming === true);
@@ -4335,13 +4350,13 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TimelineLite", ["
 				}
 			},
 			_tinyNum = 0.0000000001,
-			TweenLiteInternals = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"]._internals,
+			TweenLiteInternals = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"]._internals,
 			_internals = TimelineLite._internals = {},
 			_isSelector = TweenLiteInternals.isSelector,
 			_isArray = TweenLiteInternals.isArray,
 			_lazyTweens = TweenLiteInternals.lazyTweens,
 			_lazyRender = TweenLiteInternals.lazyRender,
-			_globals = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine.globals,
+			_globals = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine.globals,
 			_copy = function(vars) {
 				var copy = {}, p;
 				for (p in vars) {
@@ -4366,9 +4381,9 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TimelineLite", ["
 				for (i = 0; i !== l; b.push(a[i++]));
 				return b;
 			},
-			p = TimelineLite.prototype = new _TweenLite__WEBPACK_IMPORTED_MODULE_0__["SimpleTimeline"]();
+			p = TimelineLite.prototype = new _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["SimpleTimeline"]();
 
-		TimelineLite.version = "2.0.0";
+		TimelineLite.version = "2.0.1";
 		p.constructor = TimelineLite;
 		p.kill()._gc = p._forcingPlayhead = p._hasPause = false;
 
@@ -4395,16 +4410,16 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TimelineLite", ["
 		*/
 
 		p.to = function(target, duration, vars, position) {
-			var Engine = (vars.repeat && _globals.TweenMax) || _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"];
+			var Engine = (vars.repeat && _globals.TweenMax) || _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"];
 			return duration ? this.add( new Engine(target, duration, vars), position) : this.set(target, vars, position);
 		};
 
 		p.from = function(target, duration, vars, position) {
-			return this.add( ((vars.repeat && _globals.TweenMax) || _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"]).from(target, duration, vars), position);
+			return this.add( ((vars.repeat && _globals.TweenMax) || _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"]).from(target, duration, vars), position);
 		};
 
 		p.fromTo = function(target, duration, fromVars, toVars, position) {
-			var Engine = (toVars.repeat && _globals.TweenMax) || _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"];
+			var Engine = (toVars.repeat && _globals.TweenMax) || _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"];
 			return duration ? this.add( Engine.fromTo(target, duration, fromVars, toVars), position) : this.set(target, toVars, position);
 		};
 
@@ -4413,7 +4428,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TimelineLite", ["
 				cycle = vars.cycle,
 				copy, i;
 			if (typeof(targets) === "string") {
-				targets = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"].selector(targets) || targets;
+				targets = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"].selector(targets) || targets;
 			}
 			targets = targets || [];
 			if (_isSelector(targets)) { //senses if the targets object is a selector. If it is, we should translate it into an array.
@@ -4458,7 +4473,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TimelineLite", ["
 		};
 
 		p.call = function(callback, params, scope, position) {
-			return this.add( _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"].delayedCall(0, callback, params, scope), position);
+			return this.add( _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"].delayedCall(0, callback, params, scope), position);
 		};
 
 		p.set = function(target, vars, position) {
@@ -4466,7 +4481,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TimelineLite", ["
 			if (vars.immediateRender == null) {
 				vars.immediateRender = (position === this._time && !this._paused);
 			}
-			return this.add( new _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"](target, 0, vars), position);
+			return this.add( new _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"](target, 0, vars), position);
 		};
 
 		TimelineLite.exportRoot = function(vars, ignoreDelayedCalls) {
@@ -4486,7 +4501,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TimelineLite", ["
 			tween = root._first;
 			while (tween) {
 				next = tween._next;
-				if (!ignoreDelayedCalls || !(tween instanceof _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"] && tween.target === tween.vars.onComplete)) {
+				if (!ignoreDelayedCalls || !(tween instanceof _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"] && tween.target === tween.vars.onComplete)) {
 					time = tween._startTime - tween._delay;
 					if (time < 0) {
 						hasNegativeStart = 1;
@@ -4507,7 +4522,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TimelineLite", ["
 			if (typeof(position) !== "number") {
 				position = this._parseTimeOrLabel(position, 0, true, value);
 			}
-			if (!(value instanceof _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Animation"])) {
+			if (!(value instanceof _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Animation"])) {
 				if ((value instanceof Array) || (value && value.push && _isArray(value))) {
 					align = align || "normal";
 					stagger = stagger || 0;
@@ -4531,13 +4546,13 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TimelineLite", ["
 				} else if (typeof(value) === "string") {
 					return this.addLabel(value, position);
 				} else if (typeof(value) === "function") {
-					value = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"].delayedCall(0, value);
+					value = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"].delayedCall(0, value);
 				} else {
 					throw("Cannot add " + value + " into the timeline; it is not a tween, timeline, function, or string.");
 				}
 			}
 
-			_TweenLite__WEBPACK_IMPORTED_MODULE_0__["SimpleTimeline"].prototype.add.call(this, value, position);
+			_TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["SimpleTimeline"].prototype.add.call(this, value, position);
 
 			if (value._time) { //in case, for example, the _startTime is moved on a tween that has already rendered. Imagine it's at its end state, then the startTime is moved WAY later (after the end of this timeline), it should render at its beginning.
 				value.render((this.rawTime() - value._startTime) * value._timeScale, false, false);
@@ -4562,9 +4577,9 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TimelineLite", ["
 		};
 
 		p.remove = function(value) {
-			if (value instanceof _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Animation"]) {
+			if (value instanceof _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Animation"]) {
 				this._remove(value, false);
-				var tl = value._timeline = value.vars.useFrames ? _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Animation"]._rootFramesTimeline : _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Animation"]._rootTimeline; //now that it's removed, default it to the root timeline so that if it gets played again, it doesn't jump back into this timeline.
+				var tl = value._timeline = value.vars.useFrames ? _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Animation"]._rootFramesTimeline : _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Animation"]._rootTimeline; //now that it's removed, default it to the root timeline so that if it gets played again, it doesn't jump back into this timeline.
 				value._startTime = (value._paused ? value._pauseTime : tl._time) - ((!value._reversed ? value._totalTime : value.totalDuration() - value._totalTime) / value._timeScale); //ensure that if it gets played again, the timing is correct.
 				return this;
 			} else if (value instanceof Array || (value && value.push && _isArray(value))) {
@@ -4580,7 +4595,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TimelineLite", ["
 		};
 
 		p._remove = function(tween, skipDisable) {
-			_TweenLite__WEBPACK_IMPORTED_MODULE_0__["SimpleTimeline"].prototype._remove.call(this, tween, skipDisable);
+			_TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["SimpleTimeline"].prototype._remove.call(this, tween, skipDisable);
 			var last = this._last;
 			if (!last) {
 				this._time = this._totalTime = this._duration = this._totalDuration = 0;
@@ -4609,7 +4624,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TimelineLite", ["
 		};
 
 		p.addPause = function(position, callback, params, scope) {
-			var t = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"].delayedCall(0, _pauseCallback, params, scope || this);
+			var t = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"].delayedCall(0, _pauseCallback, params, scope || this);
 			t.vars.onComplete = t.vars.onReverseComplete = callback;
 			t.data = "isPause";
 			this._hasPause = true;
@@ -4628,12 +4643,12 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TimelineLite", ["
 		p._parseTimeOrLabel = function(timeOrLabel, offsetOrLabel, appendIfAbsent, ignore) {
 			var clippedDuration, i;
 			//if we're about to add a tween/timeline (or an array of them) that's already a child of this timeline, we should remove it first so that it doesn't contaminate the duration().
-			if (ignore instanceof _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Animation"] && ignore.timeline === this) {
+			if (ignore instanceof _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Animation"] && ignore.timeline === this) {
 				this.remove(ignore);
 			} else if (ignore && ((ignore instanceof Array) || (ignore.push && _isArray(ignore)))) {
 				i = ignore.length;
 				while (--i > -1) {
-					if (ignore[i] instanceof _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Animation"] && ignore[i].timeline === this) {
+					if (ignore[i] instanceof _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Animation"] && ignore[i].timeline === this) {
 						this.remove(ignore[i]);
 					}
 				}
@@ -4865,7 +4880,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TimelineLite", ["
 			while (tween) {
 				if (tween._startTime < ignoreBeforeTime) {
 					//do nothing
-				} else if (tween instanceof _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"]) {
+				} else if (tween instanceof _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"]) {
 					if (tweens !== false) {
 						a[cnt++] = tween;
 					}
@@ -4891,7 +4906,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TimelineLite", ["
 			if (disabled) {
 				this._enabled(true, true); //getTweensOf() filters out disabled tweens, and we have to mark them as _gc = true when the timeline completes in order to allow clean garbage collection, so temporarily re-enable the timeline here.
 			}
-			tweens = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"].getTweensOf(target);
+			tweens = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"].getTweensOf(target);
 			i = tweens.length;
 			while (--i > -1) {
 				if (tweens[i].timeline === this || (nested && this._contains(tweens[i]))) {
@@ -4974,7 +4989,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TimelineLite", ["
 				tween.invalidate();
 				tween = tween._next;
 			}
-			return _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Animation"].prototype.invalidate.call(this);;
+			return _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Animation"].prototype.invalidate.call(this);;
 		};
 
 		p._enabled = function(enabled, ignoreTimeline) {
@@ -4985,12 +5000,12 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TimelineLite", ["
 					tween = tween._next;
 				}
 			}
-			return _TweenLite__WEBPACK_IMPORTED_MODULE_0__["SimpleTimeline"].prototype._enabled.call(this, enabled, ignoreTimeline);
+			return _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["SimpleTimeline"].prototype._enabled.call(this, enabled, ignoreTimeline);
 		};
 
 		p.totalTime = function(time, suppressEvents, uncapped) {
 			this._forcingPlayhead = true;
-			var val = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Animation"].prototype.totalTime.apply(this, arguments);
+			var val = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Animation"].prototype.totalTime.apply(this, arguments);
 			this._forcingPlayhead = false;
 			return val;
 		};
@@ -5063,7 +5078,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TimelineLite", ["
 					tween = tween._next;
 				}
 			}
-			return _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Animation"].prototype.paused.apply(this, arguments);
+			return _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Animation"].prototype.paused.apply(this, arguments);
 		};
 
 		p.usesFrames = function() {
@@ -5071,7 +5086,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TimelineLite", ["
 			while (tl._timeline) {
 				tl = tl._timeline;
 			}
-			return (tl === _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Animation"]._rootFramesTimeline);
+			return (tl === _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Animation"]._rootFramesTimeline);
 		};
 
 		p.rawTime = function(wrapRepeats) {
@@ -5082,7 +5097,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TimelineLite", ["
 
 	}, true);
 
-const TimelineLite = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].TimelineLite;
+const TimelineLite = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].TimelineLite;
 
 
 
@@ -5099,13 +5114,13 @@ const TimelineLite = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].Timelin
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TimelineMax", function() { return TimelineMax; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return TimelineMax; });
-/* harmony import */ var _TweenLite__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TweenLite */ "../node_modules/gsap/TweenLite.js");
-/* harmony import */ var _TimelineLite__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TimelineLite */ "../node_modules/gsap/TimelineLite.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TimelineLite", function() { return _TimelineLite__WEBPACK_IMPORTED_MODULE_1__["default"]; });
+/* harmony import */ var _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TweenLite.js */ "../node_modules/gsap/TweenLite.js");
+/* harmony import */ var _TimelineLite_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TimelineLite.js */ "../node_modules/gsap/TimelineLite.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TimelineLite", function() { return _TimelineLite_js__WEBPACK_IMPORTED_MODULE_1__["default"]; });
 
 /*!
- * VERSION: 2.0.0
- * DATE: 2018-05-23
+ * VERSION: 2.0.1
+ * DATE: 2018-05-30
  * UPDATES AND DOCS AT: http://greensock.com
  *
  * @license Copyright (c) 2008-2018, GreenSock. All rights reserved.
@@ -5118,10 +5133,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-_TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TimelineMax", ["TimelineLite","TweenLite","easing.Ease"], function() {
+_TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TimelineMax", ["TimelineLite","TweenLite","easing.Ease"], function() {
 		
 		var TimelineMax = function(vars) {
-				_TimelineLite__WEBPACK_IMPORTED_MODULE_1__["default"].call(this, vars);
+				_TimelineLite_js__WEBPACK_IMPORTED_MODULE_1__["default"].call(this, vars);
 				this._repeat = this.vars.repeat || 0;
 				this._repeatDelay = this.vars.repeatDelay || 0;
 				this._cycle = 0;
@@ -5129,27 +5144,27 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TimelineMax", ["T
 				this._dirty = true;
 			},
 			_tinyNum = 0.0000000001,
-			TweenLiteInternals = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"]._internals,
+			TweenLiteInternals = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"]._internals,
 			_lazyTweens = TweenLiteInternals.lazyTweens,
 			_lazyRender = TweenLiteInternals.lazyRender,
-			_globals = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine.globals,
-			_easeNone = new _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Ease"](null, null, 1, 0),
-			p = TimelineMax.prototype = new _TimelineLite__WEBPACK_IMPORTED_MODULE_1__["default"]();
+			_globals = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine.globals,
+			_easeNone = new _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Ease"](null, null, 1, 0),
+			p = TimelineMax.prototype = new _TimelineLite_js__WEBPACK_IMPORTED_MODULE_1__["default"]();
 			
 		p.constructor = TimelineMax;
 		p.kill()._gc = false;
-		TimelineMax.version = "2.0.0";
+		TimelineMax.version = "2.0.1";
 		
 		p.invalidate = function() {
 			this._yoyo = (this.vars.yoyo === true);
 			this._repeat = this.vars.repeat || 0;
 			this._repeatDelay = this.vars.repeatDelay || 0;
 			this._uncache(true);
-			return _TimelineLite__WEBPACK_IMPORTED_MODULE_1__["default"].prototype.invalidate.call(this);
+			return _TimelineLite_js__WEBPACK_IMPORTED_MODULE_1__["default"].prototype.invalidate.call(this);
 		};
 		
 		p.addCallback = function(callback, position, params, scope) {
-			return this.add( _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"].delayedCall(0, callback, params, scope), position);
+			return this.add( _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"].delayedCall(0, callback, params, scope), position);
 		};
 		
 		p.removeCallback = function(callback, position) {
@@ -5171,13 +5186,13 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TimelineMax", ["T
 		};
 
 		p.removePause = function(position) {
-			return this.removeCallback(_TimelineLite__WEBPACK_IMPORTED_MODULE_1__["default"]._internals.pauseCallback, position);
+			return this.removeCallback(_TimelineLite_js__WEBPACK_IMPORTED_MODULE_1__["default"]._internals.pauseCallback, position);
 		};
 
 		p.tweenTo = function(position, vars) {
 			vars = vars || {};
 			var copy = {ease:_easeNone, useFrames:this.usesFrames(), immediateRender:false, lazy:false},
-				Engine = (vars.repeat && _globals.TweenMax) || _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"],
+				Engine = (vars.repeat && _globals.TweenMax) || _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"],
 				duration, p, t;
 			for (p in vars) {
 				copy[p] = vars[p];
@@ -5546,7 +5561,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TimelineMax", ["T
 
 		p.invalidate = function() {
 			this._locked = false; //unlock and set cycle in case invalidate() is called from inside an onRepeat
-			return _TimelineLite__WEBPACK_IMPORTED_MODULE_1__["default"].prototype.invalidate.call(this);
+			return _TimelineLite_js__WEBPACK_IMPORTED_MODULE_1__["default"].prototype.invalidate.call(this);
 		};
 
 		
@@ -5563,7 +5578,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TimelineMax", ["T
 		p.totalDuration = function(value) {
 			if (!arguments.length) {
 				if (this._dirty) {
-					_TimelineLite__WEBPACK_IMPORTED_MODULE_1__["default"].prototype.totalDuration.call(this); //just forces refresh
+					_TimelineLite_js__WEBPACK_IMPORTED_MODULE_1__["default"].prototype.totalDuration.call(this); //just forces refresh
 					//Instead of Infinity, we use 999999999999 so that we can accommodate reverses.
 					this._totalDuration = (this._repeat === -1) ? 999999999999 : this._duration * (this._repeat + 1) + (this._repeatDelay * this._repeat);
 				}
@@ -5625,7 +5640,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TimelineMax", ["T
 		
 	}, true);
 
-const TimelineMax = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].TimelineMax;
+const TimelineMax = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].TimelineMax;
 
 
 /***/ }),
@@ -5654,8 +5669,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TweenPlugin", function() { return TweenPlugin; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EventDispatcher", function() { return EventDispatcher; });
 /*!
- * VERSION: 2.0.0
- * DATE: 2018-05-23
+ * VERSION: 2.0.1
+ * DATE: 2018-05-30
  * UPDATES AND DOCS AT: http://greensock.com
  *
  * @license Copyright (c) 2008-2018, GreenSock. All rights reserved.
@@ -5673,7 +5688,7 @@ __webpack_require__.r(__webpack_exports__);
 	- pass in _gsScope as the first parameter of the main function (which is actually at the bottom)
 	- remove the "export to multiple environments" in Definition().
  */
-const _gsScope = (typeof(window) !== "undefined") ? window : (typeof(module) !== "undefined" && module.exports && typeof(global) !== "undefined") ? global : undefined;
+const _gsScope = (typeof(window) !== "undefined") ? window : (typeof(module) !== "undefined" && module.exports && typeof(global) !== "undefined") ? global : undefined || {};
 
 const TweenLite = (function(window, moduleName) {
 
@@ -6626,7 +6641,7 @@ const TweenLite = (function(window, moduleName) {
 		p._firstPT = p._targets = p._overwrittenProps = p._startAt = null;
 		p._notifyPluginsOfEnabled = p._lazy = false;
 
-		TweenLite.version = "2.0.0";
+		TweenLite.version = "2.0.1";
 		TweenLite.defaultEase = p._ease = new Ease(null, null, 1, 1);
 		TweenLite.defaultOverwrite = "auto";
 		TweenLite.ticker = _ticker;
@@ -7618,7 +7633,14 @@ const gs = _gsScope.com.greensock;
 
 const SimpleTimeline = gs.core.SimpleTimeline;
 const Animation = gs.core.Animation;
-const {Ease, Linear, Power0, Power1, Power2, Power3, Power4, TweenPlugin} = _gsScope;
+const Ease = _gsScope.Ease;
+const Linear = _gsScope.Linear;
+const Power0 = Linear;
+const Power1 = _gsScope.Power1;
+const Power2 = _gsScope.Power2;
+const Power3 = _gsScope.Power3;
+const Power4 = _gsScope.Power4;
+const TweenPlugin = _gsScope.TweenPlugin;
 const EventDispatcher = gs.events.EventDispatcher;
 
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../webpack/buildin/harmony-module.js */ "../node_modules/webpack/buildin/harmony-module.js")(module)))
@@ -7636,71 +7658,71 @@ const EventDispatcher = gs.events.EventDispatcher;
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TweenMax", function() { return TweenMax; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return TweenMax; });
-/* harmony import */ var _TweenLite__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TweenLite */ "../node_modules/gsap/TweenLite.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TweenLite", function() { return _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"]; });
+/* harmony import */ var _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TweenLite.js */ "../node_modules/gsap/TweenLite.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TweenLite", function() { return _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TweenPlugin", function() { return _TweenLite__WEBPACK_IMPORTED_MODULE_0__["TweenPlugin"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TweenPlugin", function() { return _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["TweenPlugin"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Ease", function() { return _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Ease"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Ease", function() { return _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Ease"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Power0", function() { return _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Power0"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Power0", function() { return _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Power0"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Power1", function() { return _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Power1"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Power1", function() { return _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Power1"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Power2", function() { return _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Power2"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Power2", function() { return _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Power2"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Power3", function() { return _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Power3"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Power3", function() { return _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Power3"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Power4", function() { return _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Power4"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Power4", function() { return _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Power4"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Linear", function() { return _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Linear"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Linear", function() { return _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Linear"]; });
 
-/* harmony import */ var _TweenMaxBase__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TweenMaxBase */ "../node_modules/gsap/TweenMaxBase.js");
-/* harmony import */ var _CSSPlugin__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CSSPlugin */ "../node_modules/gsap/CSSPlugin.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CSSPlugin", function() { return _CSSPlugin__WEBPACK_IMPORTED_MODULE_2__["default"]; });
+/* harmony import */ var _TweenMaxBase_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TweenMaxBase.js */ "../node_modules/gsap/TweenMaxBase.js");
+/* harmony import */ var _CSSPlugin_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CSSPlugin.js */ "../node_modules/gsap/CSSPlugin.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "CSSPlugin", function() { return _CSSPlugin_js__WEBPACK_IMPORTED_MODULE_2__["default"]; });
 
-/* harmony import */ var _AttrPlugin__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./AttrPlugin */ "../node_modules/gsap/AttrPlugin.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "AttrPlugin", function() { return _AttrPlugin__WEBPACK_IMPORTED_MODULE_3__["default"]; });
+/* harmony import */ var _AttrPlugin_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./AttrPlugin.js */ "../node_modules/gsap/AttrPlugin.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "AttrPlugin", function() { return _AttrPlugin_js__WEBPACK_IMPORTED_MODULE_3__["default"]; });
 
-/* harmony import */ var _RoundPropsPlugin__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./RoundPropsPlugin */ "../node_modules/gsap/RoundPropsPlugin.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RoundPropsPlugin", function() { return _RoundPropsPlugin__WEBPACK_IMPORTED_MODULE_4__["default"]; });
+/* harmony import */ var _RoundPropsPlugin_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./RoundPropsPlugin.js */ "../node_modules/gsap/RoundPropsPlugin.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RoundPropsPlugin", function() { return _RoundPropsPlugin_js__WEBPACK_IMPORTED_MODULE_4__["default"]; });
 
-/* harmony import */ var _DirectionalRotationPlugin__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./DirectionalRotationPlugin */ "../node_modules/gsap/DirectionalRotationPlugin.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DirectionalRotationPlugin", function() { return _DirectionalRotationPlugin__WEBPACK_IMPORTED_MODULE_5__["default"]; });
+/* harmony import */ var _DirectionalRotationPlugin_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./DirectionalRotationPlugin.js */ "../node_modules/gsap/DirectionalRotationPlugin.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DirectionalRotationPlugin", function() { return _DirectionalRotationPlugin_js__WEBPACK_IMPORTED_MODULE_5__["default"]; });
 
-/* harmony import */ var _TimelineLite__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./TimelineLite */ "../node_modules/gsap/TimelineLite.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TimelineLite", function() { return _TimelineLite__WEBPACK_IMPORTED_MODULE_6__["default"]; });
+/* harmony import */ var _TimelineLite_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./TimelineLite.js */ "../node_modules/gsap/TimelineLite.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TimelineLite", function() { return _TimelineLite_js__WEBPACK_IMPORTED_MODULE_6__["default"]; });
 
-/* harmony import */ var _TimelineMax__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./TimelineMax */ "../node_modules/gsap/TimelineMax.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TimelineMax", function() { return _TimelineMax__WEBPACK_IMPORTED_MODULE_7__["default"]; });
+/* harmony import */ var _TimelineMax_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./TimelineMax.js */ "../node_modules/gsap/TimelineMax.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TimelineMax", function() { return _TimelineMax_js__WEBPACK_IMPORTED_MODULE_7__["default"]; });
 
-/* harmony import */ var _BezierPlugin__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./BezierPlugin */ "../node_modules/gsap/BezierPlugin.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BezierPlugin", function() { return _BezierPlugin__WEBPACK_IMPORTED_MODULE_8__["default"]; });
+/* harmony import */ var _BezierPlugin_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./BezierPlugin.js */ "../node_modules/gsap/BezierPlugin.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "BezierPlugin", function() { return _BezierPlugin_js__WEBPACK_IMPORTED_MODULE_8__["default"]; });
 
-/* harmony import */ var _EasePack__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./EasePack */ "../node_modules/gsap/EasePack.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Back", function() { return _EasePack__WEBPACK_IMPORTED_MODULE_9__["Back"]; });
+/* harmony import */ var _EasePack_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./EasePack.js */ "../node_modules/gsap/EasePack.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Back", function() { return _EasePack_js__WEBPACK_IMPORTED_MODULE_9__["Back"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Elastic", function() { return _EasePack__WEBPACK_IMPORTED_MODULE_9__["Elastic"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Elastic", function() { return _EasePack_js__WEBPACK_IMPORTED_MODULE_9__["Elastic"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Bounce", function() { return _EasePack__WEBPACK_IMPORTED_MODULE_9__["Bounce"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Bounce", function() { return _EasePack_js__WEBPACK_IMPORTED_MODULE_9__["Bounce"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RoughEase", function() { return _EasePack__WEBPACK_IMPORTED_MODULE_9__["RoughEase"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "RoughEase", function() { return _EasePack_js__WEBPACK_IMPORTED_MODULE_9__["RoughEase"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SlowMo", function() { return _EasePack__WEBPACK_IMPORTED_MODULE_9__["SlowMo"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SlowMo", function() { return _EasePack_js__WEBPACK_IMPORTED_MODULE_9__["SlowMo"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SteppedEase", function() { return _EasePack__WEBPACK_IMPORTED_MODULE_9__["SteppedEase"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SteppedEase", function() { return _EasePack_js__WEBPACK_IMPORTED_MODULE_9__["SteppedEase"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Circ", function() { return _EasePack__WEBPACK_IMPORTED_MODULE_9__["Circ"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Circ", function() { return _EasePack_js__WEBPACK_IMPORTED_MODULE_9__["Circ"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Expo", function() { return _EasePack__WEBPACK_IMPORTED_MODULE_9__["Expo"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Expo", function() { return _EasePack_js__WEBPACK_IMPORTED_MODULE_9__["Expo"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Sine", function() { return _EasePack__WEBPACK_IMPORTED_MODULE_9__["Sine"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Sine", function() { return _EasePack_js__WEBPACK_IMPORTED_MODULE_9__["Sine"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ExpoScaleEase", function() { return _EasePack__WEBPACK_IMPORTED_MODULE_9__["ExpoScaleEase"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ExpoScaleEase", function() { return _EasePack_js__WEBPACK_IMPORTED_MODULE_9__["ExpoScaleEase"]; });
 
 /*!
- * VERSION: 2.0.0
- * DATE: 2018-05-23
+ * VERSION: 2.0.1
+ * DATE: 2018-05-30
  * UPDATES AND DOCS AT: http://greensock.com
  *
  * @license Copyright (c) 2008-2018, GreenSock. All rights reserved.
@@ -7722,8 +7744,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 //the following two lines are designed to prevent tree shaking of the classes that were historically included with TweenMax (otherwise, folks would have to reference CSSPlugin, for example, to ensure their CSS-related animations worked)
-const TweenMax = _TweenMaxBase__WEBPACK_IMPORTED_MODULE_1__["default"];
-TweenMax._autoActivated = [_TimelineLite__WEBPACK_IMPORTED_MODULE_6__["default"], _TimelineMax__WEBPACK_IMPORTED_MODULE_7__["default"], _CSSPlugin__WEBPACK_IMPORTED_MODULE_2__["default"], _AttrPlugin__WEBPACK_IMPORTED_MODULE_3__["default"], _BezierPlugin__WEBPACK_IMPORTED_MODULE_8__["default"], _RoundPropsPlugin__WEBPACK_IMPORTED_MODULE_4__["default"], _DirectionalRotationPlugin__WEBPACK_IMPORTED_MODULE_5__["default"], _EasePack__WEBPACK_IMPORTED_MODULE_9__["Back"], _EasePack__WEBPACK_IMPORTED_MODULE_9__["Elastic"], _EasePack__WEBPACK_IMPORTED_MODULE_9__["Bounce"], _EasePack__WEBPACK_IMPORTED_MODULE_9__["RoughEase"], _EasePack__WEBPACK_IMPORTED_MODULE_9__["SlowMo"], _EasePack__WEBPACK_IMPORTED_MODULE_9__["SteppedEase"], _EasePack__WEBPACK_IMPORTED_MODULE_9__["Circ"], _EasePack__WEBPACK_IMPORTED_MODULE_9__["Expo"], _EasePack__WEBPACK_IMPORTED_MODULE_9__["Sine"], _EasePack__WEBPACK_IMPORTED_MODULE_9__["ExpoScaleEase"]];
+const TweenMax = _TweenMaxBase_js__WEBPACK_IMPORTED_MODULE_1__["default"];
+TweenMax._autoActivated = [_TimelineLite_js__WEBPACK_IMPORTED_MODULE_6__["default"], _TimelineMax_js__WEBPACK_IMPORTED_MODULE_7__["default"], _CSSPlugin_js__WEBPACK_IMPORTED_MODULE_2__["default"], _AttrPlugin_js__WEBPACK_IMPORTED_MODULE_3__["default"], _BezierPlugin_js__WEBPACK_IMPORTED_MODULE_8__["default"], _RoundPropsPlugin_js__WEBPACK_IMPORTED_MODULE_4__["default"], _DirectionalRotationPlugin_js__WEBPACK_IMPORTED_MODULE_5__["default"], _EasePack_js__WEBPACK_IMPORTED_MODULE_9__["Back"], _EasePack_js__WEBPACK_IMPORTED_MODULE_9__["Elastic"], _EasePack_js__WEBPACK_IMPORTED_MODULE_9__["Bounce"], _EasePack_js__WEBPACK_IMPORTED_MODULE_9__["RoughEase"], _EasePack_js__WEBPACK_IMPORTED_MODULE_9__["SlowMo"], _EasePack_js__WEBPACK_IMPORTED_MODULE_9__["SteppedEase"], _EasePack_js__WEBPACK_IMPORTED_MODULE_9__["Circ"], _EasePack_js__WEBPACK_IMPORTED_MODULE_9__["Expo"], _EasePack_js__WEBPACK_IMPORTED_MODULE_9__["Sine"], _EasePack_js__WEBPACK_IMPORTED_MODULE_9__["ExpoScaleEase"]];
 
 
 
@@ -7743,26 +7765,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TweenMax", function() { return TweenMax; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TweenMaxBase", function() { return TweenMaxBase; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return TweenMax; });
-/* harmony import */ var _TweenLite__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TweenLite */ "../node_modules/gsap/TweenLite.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TweenLite", function() { return _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"]; });
+/* harmony import */ var _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TweenLite.js */ "../node_modules/gsap/TweenLite.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "TweenLite", function() { return _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Ease", function() { return _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Ease"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Ease", function() { return _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Ease"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Power0", function() { return _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Power0"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Power0", function() { return _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Power0"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Power1", function() { return _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Power1"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Power1", function() { return _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Power1"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Power2", function() { return _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Power2"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Power2", function() { return _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Power2"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Power3", function() { return _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Power3"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Power3", function() { return _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Power3"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Power4", function() { return _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Power4"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Power4", function() { return _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Power4"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Linear", function() { return _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Linear"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Linear", function() { return _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Linear"]; });
 
 /*!
- * VERSION: 2.0.0
- * DATE: 2018-05-23
+ * VERSION: 2.0.1
+ * DATE: 2018-05-30
  * UPDATES AND DOCS AT: http://greensock.com
  *
  * @license Copyright (c) 2008-2018, GreenSock. All rights reserved.
@@ -7775,7 +7797,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-_TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TweenMax", ["core.Animation","core.SimpleTimeline","TweenLite"], function() {
+_TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TweenMax", ["core.Animation","core.SimpleTimeline","TweenLite"], function() {
 
 		var _slice = function(a) { //don't use [].slice because that doesn't work in IE8 with a NodeList that's returned by querySelectorAll()
 				var b = [],
@@ -7794,7 +7816,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TweenMax", ["core
 				delete vars.cycle;
 			},
 			TweenMax = function(target, duration, vars) {
-				_TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"].call(this, target, duration, vars);
+				_TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"].call(this, target, duration, vars);
 				this._cycle = 0;
 				this._yoyo = (this.vars.yoyo === true || !!this.vars.yoyoEase);
 				this._repeat = this.vars.repeat || 0;
@@ -7805,20 +7827,20 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TweenMax", ["core
 				this.render = TweenMax.prototype.render; //speed optimization (avoid prototype lookup on this "hot" method)
 			},
 			_tinyNum = 0.0000000001,
-			TweenLiteInternals = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"]._internals,
+			TweenLiteInternals = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"]._internals,
 			_isSelector = TweenLiteInternals.isSelector,
 			_isArray = TweenLiteInternals.isArray,
-			p = TweenMax.prototype = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"].to({}, 0.1, {}),
+			p = TweenMax.prototype = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"].to({}, 0.1, {}),
 			_blankArray = [];
 
-		TweenMax.version = "2.0.0";
+		TweenMax.version = "2.0.1";
 		p.constructor = TweenMax;
 		p.kill()._gc = false;
-		TweenMax.killTweensOf = TweenMax.killDelayedCallsTo = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"].killTweensOf;
-		TweenMax.getTweensOf = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"].getTweensOf;
-		TweenMax.lagSmoothing = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"].lagSmoothing;
-		TweenMax.ticker = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"].ticker;
-		TweenMax.render = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"].render;
+		TweenMax.killTweensOf = TweenMax.killDelayedCallsTo = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"].killTweensOf;
+		TweenMax.getTweensOf = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"].getTweensOf;
+		TweenMax.lagSmoothing = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"].lagSmoothing;
+		TweenMax.ticker = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"].ticker;
+		TweenMax.render = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"].render;
 
 		p.invalidate = function() {
 			this._yoyo = (this.vars.yoyo === true || !!this.vars.yoyoEase);
@@ -7826,7 +7848,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TweenMax", ["core
 			this._repeatDelay = this.vars.repeatDelay || 0;
 			this._yoyoEase = null;
 			this._uncache(true);
-			return _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.invalidate.call(this);
+			return _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"].prototype.invalidate.call(this);
 		};
 
 		p.updateTo = function(vars, resetDuration) {
@@ -7856,7 +7878,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TweenMax", ["core
 						this._enabled(true, false);
 					}
 					if (this._notifyPluginsOfEnabled && this._firstPT) {
-						_TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"]._onPluginEvent("_onDisable", this); //in case a plugin like MotionBlur must perform some cleanup tasks
+						_TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"]._onPluginEvent("_onDisable", this); //in case a plugin like MotionBlur must perform some cleanup tasks
 					}
 					if (this._time / this._duration > 0.998) { //if the tween has finished (or come extremely close to finishing), we just need to rewind it to 0 and then render it again at the end which forces it to re-initialize (parsing the new vars). We allow tweens that are close to finishing (but haven't quite finished) to work this way too because otherwise, the values are so small when determining where to project the starting values that binary math issues creep in and can make the tween appear to render incorrectly when run backwards.
 						var prevTime = this._totalTime;
@@ -7956,9 +7978,9 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TweenMax", ["core
 							if (!this._yoyoEase) {
 								if (yoyoEase === true && !this._initted) { //if it's not initted and yoyoEase is true, this._ease won't have been populated yet so we must discern it here.
 									yoyoEase = this.vars.ease;
-									this._yoyoEase = yoyoEase = !yoyoEase ? _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"].defaultEase : (yoyoEase instanceof _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Ease"]) ? yoyoEase : (typeof(yoyoEase) === "function") ? new _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Ease"](yoyoEase, this.vars.easeParams) : _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Ease"].map[yoyoEase] || _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"].defaultEase;
+									this._yoyoEase = yoyoEase = !yoyoEase ? _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"].defaultEase : (yoyoEase instanceof _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Ease"]) ? yoyoEase : (typeof(yoyoEase) === "function") ? new _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Ease"](yoyoEase, this.vars.easeParams) : _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Ease"].map[yoyoEase] || _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"].defaultEase;
 								} else {
-									this._yoyoEase = yoyoEase = (yoyoEase === true) ? this._ease : (yoyoEase instanceof _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Ease"]) ? yoyoEase : _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Ease"].map[yoyoEase];
+									this._yoyoEase = yoyoEase = (yoyoEase === true) ? this._ease : (yoyoEase instanceof _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Ease"]) ? yoyoEase : _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Ease"].map[yoyoEase];
 								}
 							}
 							this.ratio = yoyoEase ? 1 - yoyoEase.getRatio((duration - this._time) / duration) : 0;
@@ -8128,7 +8150,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TweenMax", ["core
 				l, copy, i, p;
 			if (!_isArray(targets)) {
 				if (typeof(targets) === "string") {
-					targets = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"].selector(targets) || targets;
+					targets = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"].selector(targets) || targets;
 				}
 				if (_isSelector(targets)) {
 					targets = _slice(targets);
@@ -8191,7 +8213,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TweenMax", ["core
 		};
 
 		TweenMax.isTweening = function(target) {
-			return (_TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"].getTweensOf(target, true).length > 0);
+			return (_TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"].getTweensOf(target, true).length > 0);
 		};
 
 		var _getChildrenOf = function(timeline, includeTimelines) {
@@ -8199,7 +8221,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TweenMax", ["core
 					cnt = 0,
 					tween = timeline._first;
 				while (tween) {
-					if (tween instanceof _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"]) {
+					if (tween instanceof _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"]) {
 						a[cnt++] = tween;
 					} else {
 						if (includeTimelines) {
@@ -8213,7 +8235,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TweenMax", ["core
 				return a;
 			},
 			getAllTweens = TweenMax.getAllTweens = function(includeTimelines) {
-				return _getChildrenOf(_TweenLite__WEBPACK_IMPORTED_MODULE_0__["Animation"]._rootTimeline, includeTimelines).concat( _getChildrenOf(_TweenLite__WEBPACK_IMPORTED_MODULE_0__["Animation"]._rootFramesTimeline, includeTimelines) );
+				return _getChildrenOf(_TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Animation"]._rootTimeline, includeTimelines).concat( _getChildrenOf(_TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Animation"]._rootFramesTimeline, includeTimelines) );
 			};
 
 		TweenMax.killAll = function(complete, tweens, delayedCalls, timelines) {
@@ -8229,7 +8251,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TweenMax", ["core
 				isDC, tween, i;
 			for (i = 0; i < l; i++) {
 				tween = a[i];
-				if (allTrue || (tween instanceof _TweenLite__WEBPACK_IMPORTED_MODULE_0__["SimpleTimeline"]) || ((isDC = (tween.target === tween.vars.onComplete)) && delayedCalls) || (tweens && !isDC)) {
+				if (allTrue || (tween instanceof _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["SimpleTimeline"]) || ((isDC = (tween.target === tween.vars.onComplete)) && delayedCalls) || (tweens && !isDC)) {
 					if (complete) {
 						tween.totalTime(tween._reversed ? 0 : tween.totalDuration());
 					} else {
@@ -8246,7 +8268,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TweenMax", ["core
 			var tl = TweenLiteInternals.tweenLookup,
 				a, curParent, p, i, l;
 			if (typeof(parent) === "string") {
-				parent = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"].selector(parent) || parent;
+				parent = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"].selector(parent) || parent;
 			}
 			if (_isSelector(parent)) {
 				parent = _slice(parent);
@@ -8287,7 +8309,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TweenMax", ["core
 				isDC, tween;
 			while (--i > -1) {
 				tween = a[i];
-				if (allTrue || (tween instanceof _TweenLite__WEBPACK_IMPORTED_MODULE_0__["SimpleTimeline"]) || ((isDC = (tween.target === tween.vars.onComplete)) && delayedCalls) || (tweens && !isDC)) {
+				if (allTrue || (tween instanceof _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["SimpleTimeline"]) || ((isDC = (tween.target === tween.vars.onComplete)) && delayedCalls) || (tweens && !isDC)) {
 					tween.paused(pause);
 				}
 			}
@@ -8302,17 +8324,17 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TweenMax", ["core
 		};
 
 		TweenMax.globalTimeScale = function(value) {
-			var tl = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Animation"]._rootTimeline,
-				t = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"].ticker.time;
+			var tl = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Animation"]._rootTimeline,
+				t = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"].ticker.time;
 			if (!arguments.length) {
 				return tl._timeScale;
 			}
 			value = value || _tinyNum; //can't allow zero because it'll throw the math off
 			tl._startTime = t - ((t - tl._startTime) * tl._timeScale / value);
-			tl = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Animation"]._rootFramesTimeline;
-			t = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["default"].ticker.frame;
+			tl = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Animation"]._rootFramesTimeline;
+			t = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["default"].ticker.frame;
 			tl._startTime = t - ((t - tl._startTime) * tl._timeScale / value);
-			tl._timeScale = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Animation"]._rootTimeline._timeScale = value;
+			tl._timeScale = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Animation"]._rootTimeline._timeScale = value;
 			return value;
 		};
 
@@ -8349,7 +8371,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TweenMax", ["core
 			if (!arguments.length) {
 				return this._duration; //don't set _dirty = false because there could be repeats that haven't been factored into the _totalDuration yet. Otherwise, if you create a repeated TweenMax and then immediately check its duration(), it would cache the value and the totalDuration would not be correct, thus repeats wouldn't take effect.
 			}
-			return _TweenLite__WEBPACK_IMPORTED_MODULE_0__["Animation"].prototype.duration.call(this, value);
+			return _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["Animation"].prototype.duration.call(this, value);
 		};
 
 		p.totalDuration = function(value) {
@@ -8393,7 +8415,7 @@ _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"]._gsDefine("TweenMax", ["core
 
 	}, true);
 
-const TweenMax = _TweenLite__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].TweenMax;
+const TweenMax = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].TweenMax;
 const TweenMaxBase = TweenMax;
 
 
@@ -36013,17 +36035,15 @@ module.exports = function(module) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PanelCtrl", function() { return RmsMonitorFacilityDefectPanelCtrl; });
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "../node_modules/lodash/lodash.js");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! jquery */ "../node_modules/jquery/dist/jquery.js");
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var snapsvg_dist_snap_svg_min_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! snapsvg/dist/snap.svg-min.js */ "../node_modules/snapsvg/dist/snap.svg-min.js");
-/* harmony import */ var snapsvg_dist_snap_svg_min_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(snapsvg_dist_snap_svg_min_js__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _services_remoteSolutionDS__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/remoteSolutionDS */ "./services/remoteSolutionDS.ts");
-/* harmony import */ var _services_remoteSolutionMQTT__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../services/remoteSolutionMQTT */ "./services/remoteSolutionMQTT.ts");
-/* harmony import */ var grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! grafana/app/plugins/sdk */ "grafana/app/plugins/sdk");
-/* harmony import */ var grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var gsap_TweenMax__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! gsap/TweenMax */ "../node_modules/gsap/TweenMax.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "../node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var snapsvg_dist_snap_svg_min_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! snapsvg/dist/snap.svg-min.js */ "../node_modules/snapsvg/dist/snap.svg-min.js");
+/* harmony import */ var snapsvg_dist_snap_svg_min_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(snapsvg_dist_snap_svg_min_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _services_remoteSolutionDS__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/remoteSolutionDS */ "./services/remoteSolutionDS.ts");
+/* harmony import */ var _services_remoteSolutionMQTT__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/remoteSolutionMQTT */ "./services/remoteSolutionMQTT.ts");
+/* harmony import */ var grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! grafana/app/plugins/sdk */ "grafana/app/plugins/sdk");
+/* harmony import */ var grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var gsap_TweenMax__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! gsap/TweenMax */ "../node_modules/gsap/TweenMax.js");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -36034,14 +36054,14 @@ var __extends = (undefined && undefined.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+// import _ from 'lodash';
 
 
 
 
 
 
-
-Object(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_5__["loadPluginCss"])({
+Object(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_4__["loadPluginCss"])({
     dark: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.dark.css',
     light: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.light.css'
 });
@@ -36061,9 +36081,6 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
         _this._svg = null;
         _this._animations = {};
         _this.timeSrv = timeSrv;
-        lodash__WEBPACK_IMPORTED_MODULE_0___default.a.defaults(_this.panel, {
-            options: {}
-        });
         _this.events.on('panel-initialized', _this.onInitialized.bind(_this));
         _this.events.on('init-edit-mode', _this.onInitEditMode.bind(_this));
         _this.events.on('render', _this.onRender.bind(_this));
@@ -36132,12 +36149,12 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
     });
     RmsMonitorFacilityDefectPanelCtrl.prototype.loadSVG = function (path) {
         return new Promise(function (resolve, reject) {
-            snapsvg_dist_snap_svg_min_js__WEBPACK_IMPORTED_MODULE_2__["load"](path, resolve);
+            snapsvg_dist_snap_svg_min_js__WEBPACK_IMPORTED_MODULE_1__["load"](path, resolve);
         });
     };
-    RmsMonitorFacilityDefectPanelCtrl.prototype.custom_init = function () {
+    RmsMonitorFacilityDefectPanelCtrl.prototype.onInitialized = function () {
         var _this = this;
-        var node = this.$element.find('#' + this.divID);
+        var node = this.$element.find("ng-transclude > div");
         if (node.length === 0) {
             console.error("cannot find element id '#" + this.divID + "'");
             return;
@@ -36146,7 +36163,7 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
         this.loadSVG(this.svgImgPath).then(function (svg) {
             if (_this.svg === null) {
                 var node_1 = _this.container.append(svg.node);
-                _this.svg = snapsvg_dist_snap_svg_min_js__WEBPACK_IMPORTED_MODULE_2__(node_1.find("> svg")[0]);
+                _this.svg = snapsvg_dist_snap_svg_min_js__WEBPACK_IMPORTED_MODULE_1__(node_1.find("> svg")[0]);
                 _this.svgDomMap = _this.initSvgDOM();
                 _this.animations = _this.initAnimation();
                 _this.events.on('data-received', _this.onDataReceived.bind(_this));
@@ -36160,17 +36177,17 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
     };
     RmsMonitorFacilityDefectPanelCtrl.prototype.initSvgDOM = function () {
         var _this = this;
-        var $svg = jquery__WEBPACK_IMPORTED_MODULE_1___default()(this.svg.node);
+        var $svg = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this.svg.node);
         var result = [];
         this.svg.selectAll("#modeling2-text > g").items.forEach(function (DOM, mainIdx) {
             var baseDomId = "#modeling2-" + (mainIdx + 1);
             var obj = {
                 snapTitle: _this.svg.select("#title #title" + (mainIdx + 1)),
                 snapTotal: DOM.select("text"),
-                $nodes: [],
+                $nodes: []
             };
             // set Testing Machine Channel DOM
-            jquery__WEBPACK_IMPORTED_MODULE_1___default()(DOM.node).find("g text").each(function (idx, DOM) {
+            jquery__WEBPACK_IMPORTED_MODULE_0___default()(DOM.node).find("g text").each(function (idx, DOM) {
                 var baseLightDomId = baseDomId + "-light" + (idx + 1);
                 var evtDom = $svg.find(baseDomId + "-glass" + (idx + 1));
                 var redDom = $svg.find(baseLightDomId + "-red");
@@ -36178,20 +36195,20 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
                 var yellowDom = $svg.find(baseLightDomId + "-yellow");
                 evtDom.on("click", function (evt) {
                     _this.events.emit("on-RMFDPC-clicked", {
-                        $target: jquery__WEBPACK_IMPORTED_MODULE_1___default()(evt.target),
+                        $target: jquery__WEBPACK_IMPORTED_MODULE_0___default()(evt.target),
                         idx: mainIdx,
-                        subIdx: idx,
+                        subIdx: idx
                     });
                 });
                 redDom.hide();
                 greenDom.hide();
                 yellowDom.hide();
                 obj.$nodes.push({
-                    text: jquery__WEBPACK_IMPORTED_MODULE_1___default()(DOM),
+                    text: jquery__WEBPACK_IMPORTED_MODULE_0___default()(DOM),
                     evt: evtDom,
-                    red: { dom: redDom, },
-                    green: { dom: greenDom, },
-                    yellow: { dom: yellowDom, },
+                    red: { dom: redDom },
+                    green: { dom: greenDom },
+                    yellow: { dom: yellowDom }
                 });
             });
             result.push(obj);
@@ -36200,14 +36217,14 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
     };
     RmsMonitorFacilityDefectPanelCtrl.prototype.initAnimation = function () {
         // set Process Animation DOM
-        var $svg = jquery__WEBPACK_IMPORTED_MODULE_1___default()(this.svg.node);
-        var lineAnimation = new gsap_TweenMax__WEBPACK_IMPORTED_MODULE_6__["TimelineLite"]({ onComplete: function () { this.restart(); }, });
+        var $svg = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this.svg.node);
+        var lineAnimation = new gsap_TweenMax__WEBPACK_IMPORTED_MODULE_5__["TimelineLite"]({ onComplete: function () { this.restart(); } });
         [
             $svg.find("#arrow1"), $svg.find("#arrow2"), $svg.find("#arrow3"),
             $svg.find("#arrow4"), $svg.find("#arrow5"), $svg.find("#arrow6"),
-            $svg.find("#arrow7"), $svg.find("#arrow8"), $svg.find("#arrow9"),
+            $svg.find("#arrow7"), $svg.find("#arrow8"), $svg.find("#arrow9")
         ].forEach(function (DOM, idx, arr) {
-            arr.forEach(function (subDOM, subIdx) { lineAnimation.set(subDOM[0], { opacity: (subIdx === idx) ? 1 : 0, }); });
+            arr.forEach(function (subDOM, subIdx) { lineAnimation.set(subDOM[0], { opacity: (subIdx === idx) ? 1 : 0 }); });
             lineAnimation.to(DOM[0], 0, { opacity: 0 }, "+=0.4");
         });
         return {
@@ -36232,10 +36249,9 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
             "var-PASS": "false",
             "var-INTERVAL": "$__auto_interval_INTERVAL",
             "from": range.raw.from,
-            "to": range.raw.to,
+            "to": range.raw.to
         });
     };
-    RmsMonitorFacilityDefectPanelCtrl.prototype.onInitialized = function () { };
     RmsMonitorFacilityDefectPanelCtrl.prototype.onInitEditMode = function () { };
     RmsMonitorFacilityDefectPanelCtrl.prototype.onRender = function () { };
     RmsMonitorFacilityDefectPanelCtrl.prototype.onDataReceived = function (results) {
@@ -36277,7 +36293,7 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
                                 res[facility].total + count;
                             res[facility].failed = (res[facility].failed === undefined) ? count :
                                 res[facility].failed + count;
-                            res[facility].channels[channel] = { failed: count, };
+                            res[facility].channels[channel] = { failed: count };
                             break;
                         default:
                             console.error(pass + " is not defined");
@@ -36339,8 +36355,8 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
                 if (changed) {
                     ["red", "green", "yellow"].forEach(function (color) {
                         if (color === chColor) {
-                            var animation = new gsap_TweenMax__WEBPACK_IMPORTED_MODULE_6__["TimelineMax"]({ repeat: 1, yoyo: true, });
-                            animation.set(chDOM[color].dom[0], { opacity: 1, }).to(chDOM[color].dom[0], 0.5, { opacity: 0, ease: gsap_TweenMax__WEBPACK_IMPORTED_MODULE_6__["Power0"].easeNone });
+                            var animation = new gsap_TweenMax__WEBPACK_IMPORTED_MODULE_5__["TimelineMax"]({ repeat: 1, yoyo: true });
+                            animation.set(chDOM[color].dom[0], { opacity: 1 }).to(chDOM[color].dom[0], 0.5, { opacity: 0, ease: gsap_TweenMax__WEBPACK_IMPORTED_MODULE_5__["Power0"].easeNone });
                             animation.play();
                             chDOM[color].dom.show();
                         }
@@ -36372,7 +36388,7 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
     RmsMonitorFacilityDefectPanelCtrl.prototype.link = function (scope, elem, attrs, ctrl) { };
     RmsMonitorFacilityDefectPanelCtrl.template = __webpack_require__(/*! ./partial/template.html */ "./panel/monitor-facility-defect/partial/template.html");
     return RmsMonitorFacilityDefectPanelCtrl;
-}(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_5__["MetricsPanelCtrl"]));
+}(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_4__["MetricsPanelCtrl"]));
 
 
 
@@ -36385,7 +36401,7 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div ng-init=\"ctrl.custom_init()\" id=\"rms-app-monitor-facility-defect\" class=\"rms-app-monitor-facility-defect\"></div>";
+module.exports = "<div id=\"{{ctrl.divID}}\" class=\"rms-app-monitor-facility-defect\" width='100%'></div>";
 
 /***/ }),
 

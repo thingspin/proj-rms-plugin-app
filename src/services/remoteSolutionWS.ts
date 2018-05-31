@@ -55,7 +55,7 @@ export class RemoteSolutionWSCtrl {
     }
 
     // Remote Solution Websocket Response Commands
-    onWsMessage(event, appId){
+    onWsMessage(event, appId) {
         let obj = JSON.parse(event.data);
 
         switch (obj.action) {

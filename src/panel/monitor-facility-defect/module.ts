@@ -1,4 +1,4 @@
-import _ from 'lodash';
+// import _ from 'lodash';
 import $ from "jquery";
 import * as Snap from "snapsvg/dist/snap.svg-min.js";
 
@@ -6,7 +6,7 @@ import '../../services/remoteSolutionDS';
 import '../../services/remoteSolutionMQTT';
 
 import {MetricsPanelCtrl, loadPluginCss} from  'grafana/app/plugins/sdk';
-import {Power0, TimelineMax, TimelineLite} from "gsap/TweenMax";
+import {TimelineMax, Power0, TimelineLite} from "gsap/TweenMax";
 
 loadPluginCss({
   dark: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.dark.css',
@@ -22,7 +22,7 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
   private _titleIdxMap = [];
   set titleIdxMap(titleIdxMap) { this._titleIdxMap = titleIdxMap;}
   get titleIdxMap() {return this._titleIdxMap;}
-  private getTitleIdx(title): number {
+  getTitleIdx(title): number {
     let index = null;
     this.titleIdxMap.every((id: String, idx: number) => {
       const cond: boolean = (title === id);
@@ -62,14 +62,11 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
   set animations(animation: any) { this._animations = animation; }
   get animations() { return this._animations; }
 
-  constructor($scope, $injector, private $element, private $location,
-    private rsDsSrv, private rsMqttSrv, timeSrv) {
+  constructor($scope, $injector, private $element,
+     private $location,private rsDsSrv, private rsMqttSrv,
+     timeSrv) {
     super($scope, $injector);
     this.timeSrv = timeSrv;
-
-    _.defaults(this.panel, {
-      options: { }
-    });
 
     this.events.on('panel-initialized', this.onInitialized.bind(this));
     this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
@@ -78,13 +75,13 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
   }
 
   loadSVG(path) {
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve, reject) => {
       Snap.load(path, resolve);
     });
   }
 
-  custom_init() {
-    const node: any = this.$element.find('#' + this.divID);
+  onInitialized() {
+    const node: any = this.$element.find("ng-transclude > div");
     if (node.length === 0) {
       console.error("cannot find element id '#" + this.divID + "'");
       return;
@@ -121,7 +118,7 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
       let obj = {
         snapTitle: this.svg.select("#title #title" + (mainIdx+1) ),
         snapTotal: DOM.select("text"),
-        $nodes: [],
+        $nodes: []
       };
 
       // set Testing Machine Channel DOM
@@ -137,7 +134,7 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
           this.events.emit("on-RMFDPC-clicked", {
             $target: $(evt.target),
             idx: mainIdx,
-            subIdx: idx,
+            subIdx: idx
           });
         });
 
@@ -148,9 +145,9 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
         obj.$nodes.push({
           text: $(DOM),
           evt: evtDom,
-          red: { dom: redDom, },
-          green: { dom: greenDom, },
-          yellow: { dom: yellowDom, },
+          red: { dom: redDom },
+          green: { dom: greenDom },
+          yellow: { dom: yellowDom }
         });
       });
 
@@ -163,14 +160,14 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
   initAnimation() {
     // set Process Animation DOM
     const $svg = $(this.svg.node);
-    const lineAnimation = new TimelineLite({ onComplete: function() { this.restart(); }, });
+    const lineAnimation = new TimelineLite({ onComplete: function() { this.restart(); } });
 
     [
       $svg.find("#arrow1"), $svg.find("#arrow2"), $svg.find("#arrow3"),
       $svg.find("#arrow4"), $svg.find("#arrow5"), $svg.find("#arrow6"),
-      $svg.find("#arrow7"), $svg.find("#arrow8"), $svg.find("#arrow9"),
+      $svg.find("#arrow7"), $svg.find("#arrow8"), $svg.find("#arrow9")
     ].forEach( (DOM: any, idx: Number, arr: Object[]) => {
-      arr.forEach((subDOM: any, subIdx: Number) => { lineAnimation.set(subDOM[0], { opacity: (subIdx === idx) ? 1 : 0, }); });
+      arr.forEach((subDOM: any, subIdx: Number) => { lineAnimation.set(subDOM[0], { opacity: (subIdx === idx) ? 1 : 0 }); });
       lineAnimation.to(DOM[0], 0, {opacity: 0}, "+=0.4");
     });
 
@@ -199,18 +196,17 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
       "var-PASS": "false",
       "var-INTERVAL": "$__auto_interval_INTERVAL",
       "from": range.raw.from,
-      "to": range.raw.to,
+      "to": range.raw.to
     });
   }
 
-  onInitialized() { }
   onInitEditMode() { }
   onRender() { }
 
   onDataReceived(results: any) {
     let canUseDs: Boolean;
 
-    results.every( (item: any,idx: number): Boolean => {
+    results.every( (item: any, idx: number): Boolean => {
       canUseDs = (item.target === "A-series") ? false : true;
       return canUseDs;
     });
@@ -238,21 +234,17 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
         // counting total & failed count
         if (pass !== undefined) {
           switch (pass) {
-            case "TRUE":
-            case "True":
-            case "true":
+            case "TRUE": case "True": case "true":
               res[facility].total = (res[facility].total === undefined) ? count :
                 res[facility].total + count;
               break;
-            case "FALSE":
-            case "False":
-            case "false":
+            case "FALSE": case "False": case "false":
               res[facility].total = (res[facility].total === undefined) ? count :
                 res[facility].total + count;
               res[facility].failed = (res[facility].failed === undefined) ? count :
                 res[facility].failed + count;
 
-              res[facility].channels[channel] = { failed: count, };
+              res[facility].channels[channel] = { failed: count };
               break;
             default:
               console.error(pass + " is not defined");
@@ -277,7 +269,7 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
       snapTitle.attr({text: title });
       snapTotal.attr({text: (viewData[title].total + "/" + (viewData[title].failed === undefined ? 0 : viewData[title].failed) )});
 
-      [1,2,3,4].forEach((chIdx) => {
+      [1, 2, 3, 4].forEach((chIdx) => {
         const index: string = String(chIdx);
         const chInfo = viewData[title].channels[index];
         const chDOM = $nodes[chIdx-1];
@@ -312,10 +304,10 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
         }
 
         if (changed) {
-          ["red","green","yellow"].forEach( (color: string) => {
+          ["red", "green", "yellow"].forEach( (color: string) => {
             if (color === chColor) {
-              const animation: any = new TimelineMax({ repeat: 1, yoyo: true, });
-              animation.set(chDOM[color].dom[0], { opacity: 1, }).to(chDOM[color].dom[0], 0.5, { opacity: 0, ease: Power0.easeNone });
+              const animation: any = new TimelineMax({ repeat: 1, yoyo: true });
+              animation.set(chDOM[color].dom[0], { opacity: 1 }).to(chDOM[color].dom[0], 0.5, { opacity: 0, ease: Power0.easeNone });
               animation.play();
               chDOM[color].dom.show();
             } else {

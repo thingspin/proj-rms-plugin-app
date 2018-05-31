@@ -36,17 +36,32 @@ define(["app/plugins/sdk"], function(__WEBPACK_EXTERNAL_MODULE_grafana_app_plugi
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
 /******/ 		}
 /******/ 	};
 /******/
 /******/ 	// define __esModule on exports
 /******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
 /******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
 /******/ 	};
 /******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -272,27 +287,27 @@ var RmsProductStateBarChartPanelCtrl = /** @class */ (function (_super) {
                 }
             }
         }
-        var dataRange = this.device.length;
+        var dataRange = this.labels.length;
         var map = new Map();
-        for (var i = 0; i < this.device.length; i++) {
+        for (var i = 0; i < this.labels.length; i++) {
             var deviceData = [];
             var obj = {
-                label: this.device[i],
+                label: this.labels[i],
                 backgroundColor: this.COLOR[i],
                 data: deviceData
             };
-            map.set(this.device[i], obj);
+            map.set(this.labels[i], obj);
         }
         for (var data_count = 0; data_count < this.data.length; data_count++) {
             var item = this.data[data_count];
-            var list = map.get(this.device[data_count % dataRange]);
+            var list = map.get(this.labels[data_count % dataRange]);
             list.data.push(item);
-            map.set(this.device[data_count % dataRange], list);
+            map.set(this.labels[data_count % dataRange], list);
         }
         var dataset = Array.from(map.values());
         console.log(dataset);
         this.barChartData = {
-            labels: this.labels,
+            labels: this.device,
             datasets: dataset
         };
         this.createChart(this.barChartData);

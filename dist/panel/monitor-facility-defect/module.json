@@ -112,7 +112,7 @@
           }
         ],
         "title": "",
-        "type": "rms-monitor-facility-defect"
+        "type": "rms-monitor-facility-defect-panel"
       }
     ],
     "schemaVersion": 16,

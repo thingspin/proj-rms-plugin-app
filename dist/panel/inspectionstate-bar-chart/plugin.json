@@ -1,0 +1,13 @@
+{
+  "type": "panel",
+  "name": "(RMS) Inspection State Bar Chart",
+  "id": "rms-Inspection-state-bar",
+
+  "info": {
+    "description": "Inspection State Bar Chart with chart.js",
+    "author": {
+      "name": "jiwoong@thingspin.io",
+      "url": "http://thingspin.io"
+    }
+  }
+}

@@ -2,7 +2,7 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:149",
+        "$$hashKey": "object:153",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -16,18 +16,19 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1527640112475,
+  "iteration": 1527656714950,
   "links": [],
   "panels": [
     {
       "datasource": "$DATABASE",
       "gridPos": {
-        "h": 9,
-        "w": 12,
+        "h": 11,
+        "w": 11,
         "x": 0,
         "y": 0
       },
       "id": 2,
+      "links": [],
       "targets": [
         {
           "groupBy": [
@@ -84,8 +85,91 @@
           ]
         }
       ],
-      "title": "Panel Title",
+      "title": "검사기와 채널 별",
       "type": "rms-product-state-bar"
+    },
+    {
+      "datasource": "-- Mixed --",
+      "gridPos": {
+        "h": 11,
+        "w": 12,
+        "x": 11,
+        "y": 0
+      },
+      "id": 6,
+      "links": [],
+      "targets": [
+        {
+          "datasource": "$DATABASE",
+          "groupBy": [
+            {
+              "params": [
+                "inm"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "facility"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "channel"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "/^alram.continuous.failures.detail-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "val"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "facility",
+              "operator": "=~",
+              "value": "/^$FACILITY$/"
+            },
+            {
+              "condition": "AND",
+              "key": "channel",
+              "operator": "=~",
+              "value": "/^$CHANNEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "pass",
+              "operator": "=~",
+              "value": "/^$PASS$/"
+            }
+          ]
+        },
+        {
+          "alias": "",
+          "datasource": "REMOTESOLUTIONS(V1.0)",
+          "format": "table",
+          "rawSql": "select idx, name from t_inspection_property",
+          "refId": "B"
+        }
+      ],
+      "title": "검사항목별",
+      "type": "rms-Inspection-state-bar"
     }
   ],
   "schemaVersion": 16,
@@ -111,6 +195,7 @@
       {
         "allValue": null,
         "current": {
+          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -134,6 +219,7 @@
       {
         "allValue": null,
         "current": {
+          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -157,9 +243,9 @@
       {
         "allValue": null,
         "current": {
-          "tags": [],
-          "text": "true",
-          "value": "true"
+          "selected": true,
+          "text": "false",
+          "value": "false"
         },
         "hide": 0,
         "includeAll": true,
@@ -168,20 +254,17 @@
         "name": "PASS",
         "options": [
           {
-            "$$hashKey": "object:166",
             "selected": false,
             "text": "All",
             "value": "$__all"
           },
           {
-            "$$hashKey": "object:167",
-            "selected": true,
+            "selected": false,
             "text": "true",
             "value": "true"
           },
           {
-            "$$hashKey": "object:168",
-            "selected": false,
+            "selected": true,
             "text": "false",
             "value": "false"
           }
@@ -223,5 +306,5 @@
   "timezone": "",
   "title": "불량 현황 상태",
   "uid": "KfvX3wVik",
-  "version": 3
+  "version": 8
 }
