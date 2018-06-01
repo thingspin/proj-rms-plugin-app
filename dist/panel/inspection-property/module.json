@@ -273,7 +273,7 @@
         {
           "alias": "",
           "format": "table",
-          "rawSql": "select * from t_inspection_property where IP_TYPE=1;",
+          "rawSql": "select * from t_inspection_property where IP_TYPE=1 and IDX <> 0;",
           "refId": "A"
         },
         {

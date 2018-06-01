@@ -258,7 +258,7 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
     return res;
   }
 
-  showData(viewData: Object) {
+  showData(viewData: Object= {}) {
     for (const title in viewData) {
       let mainIdx: number = this.getTitleIdx(title);
       if (mainIdx === null) {
@@ -329,6 +329,7 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
 
     const animation = this.animations[command];
     if (animation !== undefined) {
+      this.refresh();
       animation.stop();
       // console.log(topic, fields, tags);
     }

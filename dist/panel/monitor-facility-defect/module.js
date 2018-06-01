@@ -36308,6 +36308,7 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
     };
     RmsMonitorFacilityDefectPanelCtrl.prototype.showData = function (viewData) {
         var _this = this;
+        if (viewData === void 0) { viewData = {}; }
         var _loop_1 = function (title) {
             var mainIdx = this_1.getTitleIdx(title);
             if (mainIdx === null) {
@@ -36381,6 +36382,7 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
         var command = topics[topics.length - 1];
         var animation = this.animations[command];
         if (animation !== undefined) {
+            this.refresh();
             animation.stop();
             // console.log(topic, fields, tags);
         }
