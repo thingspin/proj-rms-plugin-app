@@ -1,16 +1,11 @@
 <div class="editor-row">
         <div class="section gf-form-group">
             <div class="gf-form">
-                <label class="gf-form-label width-6">모델명</label>
-                <input type="text" class="gf-form-input min-width-15 width-15" ng-model="ctrl.panel.inputlItem.mold_name">
-            </div>
-
-            <div class="gf-form">
-                <label class="gf-form-label width-6">업체명</label>
+                <label class="gf-form-label width-8">장비명</label>
                 <div class="gf-form-select-wrapper">
-                        <select class="gf-form-input min-width-15 width-15" 
-                            ng-model="ctrl.panel.inputlItem.business_name"
-                            ng-options="f for f in ctrl.panel.businessCategory">
+                        <select class="gf-form-input min-width-13 width-13" 
+                            ng-model="ctrl.panel.inputlItem.machine_name"
+                            ng-options="f for f in ctrl.panel.machineCategory">
                         </select>
                 </div>                    
             </div>             
@@ -18,25 +13,30 @@
         
         <div class="section gf-form-group">
             <div class="gf-form">
-                <label class="gf-form-label width-6">사용횟수</label>
-                <input type="text" class="gf-form-input min-width-15 width-15" ng-model="ctrl.panel.inputlItem.use_count">
+                <label class="gf-form-label width-8">소모품명</label>
+                <div class="gf-form-select-wrapper">
+                        <select class="gf-form-input min-width-13 width-13" 
+                            ng-model="ctrl.panel.inputlItem.consumables_name"
+                            ng-options="f for f in ctrl.panel.consumablesCategory">
+                        </select>
+                </div>                    
+            </div>             
+
+            <div class="gf-form">
+                <label class="gf-form-label width-8">소모품 개수</label>
+                <input type="text" class="gf-form-input min-width-13 width-13" ng-model="ctrl.panel.inputlItem.count">
             </div>
 
             <div class="gf-form">
-                <label class="gf-form-label width-6">교체주기</label>
-                <input type="text" class="gf-form-input min-width-15 width-15" ng-model="ctrl.panel.inputlItem.period">
-            </div>
-
-            <div class="gf-form">
-                <label class="gf-form-label width-6">교체일</label>
-                <input type="date" class="gf-form-input min-width-15 width-15" ng-model="ctrl.panel.inputlItem.change_date">
+                <label class="gf-form-label width-8">소모품 교체일</label>
+                <input type="date" class="gf-form-input min-width-13 width-13" ng-model="ctrl.panel.inputlItem.change_date">
             </div>
         </div>
 
         <div class="section gf-form-group">
             <div class="gf-form">
-                <label class="gf-form-label width-6">메모</label>
-                <input type="text" class="gf-form-input min-width-15 width-15" ng-model="ctrl.panel.inputlItem.memo">
+                <label class="gf-form-label width-8">메모</label>
+                <input type="text" class="gf-form-input min-width-13 width-13" ng-model="ctrl.panel.inputlItem.memo">
             </div>            
             
             <div class="gf-form">
