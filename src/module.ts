@@ -7,9 +7,11 @@ import './services/remoteSolutionMQTT';
 
 import {AppConfigCtrl} from './app-config/config';
 
+const appId = "proj-rms-plugin-app";
+const baseCssFilename = "rms-plugins-app";
 loadPluginCss({
-  dark: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.dark.css',
-  light: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.light.css'
+  dark: `plugins/${appId}/css/${baseCssFilename}.dark.css`,
+  light: `plugins/${appId}/css/${baseCssFilename}.light.css`
 });
 
 export {

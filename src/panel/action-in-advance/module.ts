@@ -13,9 +13,11 @@ import '../../vendor/mds_customs/isteven-angular-multiselect/isteven-multi-selec
 import Handsontable from 'handsontable/dist/handsontable.full';
 import 'handsontable/dist/handsontable.full.css';
 
+const appId = "proj-rms-plugin-app";
+const baseCssFilename = "rms-plugins-app";
 loadPluginCss({
-    dark: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.dark.css',
-    light: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.light.css'
+  dark: `plugins/${appId}/css/${baseCssFilename}.dark.css`,
+  light: `plugins/${appId}/css/${baseCssFilename}.light.css`
 });
 
 interface LooseObject {

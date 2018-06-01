@@ -36035,15 +36035,17 @@ module.exports = function(module) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PanelCtrl", function() { return RmsMonitorFacilityDefectPanelCtrl; });
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "../node_modules/jquery/dist/jquery.js");
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var snapsvg_dist_snap_svg_min_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! snapsvg/dist/snap.svg-min.js */ "../node_modules/snapsvg/dist/snap.svg-min.js");
-/* harmony import */ var snapsvg_dist_snap_svg_min_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(snapsvg_dist_snap_svg_min_js__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _services_remoteSolutionDS__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/remoteSolutionDS */ "./services/remoteSolutionDS.ts");
-/* harmony import */ var _services_remoteSolutionMQTT__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/remoteSolutionMQTT */ "./services/remoteSolutionMQTT.ts");
-/* harmony import */ var grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! grafana/app/plugins/sdk */ "grafana/app/plugins/sdk");
-/* harmony import */ var grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var gsap_TweenMax__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! gsap/TweenMax */ "../node_modules/gsap/TweenMax.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "../node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! jquery */ "../node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var snapsvg_dist_snap_svg_min_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! snapsvg/dist/snap.svg-min.js */ "../node_modules/snapsvg/dist/snap.svg-min.js");
+/* harmony import */ var snapsvg_dist_snap_svg_min_js__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(snapsvg_dist_snap_svg_min_js__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _services_remoteSolutionDS__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/remoteSolutionDS */ "./services/remoteSolutionDS.ts");
+/* harmony import */ var _services_remoteSolutionMQTT__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../services/remoteSolutionMQTT */ "./services/remoteSolutionMQTT.ts");
+/* harmony import */ var grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! grafana/app/plugins/sdk */ "grafana/app/plugins/sdk");
+/* harmony import */ var grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var gsap_TweenMax__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! gsap/TweenMax */ "../node_modules/gsap/TweenMax.js");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -36054,16 +36056,18 @@ var __extends = (undefined && undefined.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-// import _ from 'lodash';
 
 
 
 
 
 
-Object(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_4__["loadPluginCss"])({
-    dark: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.dark.css',
-    light: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.light.css'
+
+var appId = "proj-rms-plugin-app";
+var baseCssFilename = "rms-plugins-app";
+Object(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_5__["loadPluginCss"])({
+    dark: "plugins/" + appId + "/css/" + baseCssFilename + ".dark.css",
+    light: "plugins/" + appId + "/css/" + baseCssFilename + ".light.css"
 });
 var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
     __extends(RmsMonitorFacilityDefectPanelCtrl, _super);
@@ -36073,9 +36077,9 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
         _this.$location = $location;
         _this.rsDsSrv = rsDsSrv;
         _this.rsMqttSrv = rsMqttSrv;
+        _this.panelDirName = "monitor-facility-defect";
         _this.divID = "rms-app-monitor-facility-defect";
-        _this.svgImgPath = "public/plugins/proj-rms-plugin-app/panel/monitor-facility-defect/img/main.svg";
-        _this.appId = "proj-rms-plugin-app";
+        _this.svgImgPath = "public/plugins/" + appId + "/panel/" + _this.panelDirName + "/img/main.svg";
         _this._titleIdxMap = [];
         _this._recvData = null;
         _this._svg = null;
@@ -36149,7 +36153,7 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
     });
     RmsMonitorFacilityDefectPanelCtrl.prototype.loadSVG = function (path) {
         return new Promise(function (resolve, reject) {
-            snapsvg_dist_snap_svg_min_js__WEBPACK_IMPORTED_MODULE_1__["load"](path, resolve);
+            snapsvg_dist_snap_svg_min_js__WEBPACK_IMPORTED_MODULE_2__["load"](path, resolve);
         });
     };
     RmsMonitorFacilityDefectPanelCtrl.prototype.onInitialized = function () {
@@ -36163,49 +36167,55 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
         this.loadSVG(this.svgImgPath).then(function (svg) {
             if (_this.svg === null) {
                 var node_1 = _this.container.append(svg.node);
-                _this.svg = snapsvg_dist_snap_svg_min_js__WEBPACK_IMPORTED_MODULE_1__(node_1.find("> svg")[0]);
+                _this.svg = snapsvg_dist_snap_svg_min_js__WEBPACK_IMPORTED_MODULE_2__(node_1.find("> svg")[0]);
                 _this.svgDomMap = _this.initSvgDOM();
                 _this.animations = _this.initAnimation();
                 _this.events.on('data-received', _this.onDataReceived.bind(_this));
                 var urlPath = "/";
-                var baseUrl = "ws://" + _this.$location.host() + ":" + _this.$location.port() + "/api/plugin-proxy/" + _this.appId;
-                _this.rsMqttSrv.connect(baseUrl + urlPath);
+                var baseUrl = "ws://" + _this.$location.host() + ":" + _this.$location.port() + "/api/plugin-proxy/" + appId;
+                _this.rsMqttSrv.connect("" + baseUrl + urlPath);
                 _this.rsMqttSrv.subscribe = '+/THINGSPIN/EMERGENCY/+';
                 _this.rsMqttSrv.recvMessage(_this.onMqttRecv.bind(_this));
             }
+        }).catch(function (e) {
+            console.error(e);
         });
     };
     RmsMonitorFacilityDefectPanelCtrl.prototype.initSvgDOM = function () {
         var _this = this;
-        var $svg = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this.svg.node);
+        var $svg = jquery__WEBPACK_IMPORTED_MODULE_1___default()(this.svg.node);
         var result = [];
-        this.svg.selectAll("#modeling2-text > g").items.forEach(function (DOM, mainIdx) {
-            var baseDomId = "#modeling2-" + (mainIdx + 1);
+        ["modeling2-a", "modeling2-b", "modeling2-c"].forEach(function (baseId, mainIdx) {
+            var $dom = $svg.find("#" + baseId + "-text");
+            var tops = $dom.find("> text");
             var obj = {
-                snapTitle: _this.svg.select("#title #title" + (mainIdx + 1)),
-                snapTotal: DOM.select("text"),
+                $title: jquery__WEBPACK_IMPORTED_MODULE_1___default()(tops.get(0)),
+                $total: jquery__WEBPACK_IMPORTED_MODULE_1___default()(tops.get(1)),
                 $nodes: []
             };
-            // set Testing Machine Channel DOM
-            jquery__WEBPACK_IMPORTED_MODULE_0___default()(DOM.node).find("g text").each(function (idx, DOM) {
-                var baseLightDomId = baseDomId + "-light" + (idx + 1);
-                var evtDom = $svg.find(baseDomId + "-glass" + (idx + 1));
+            $dom.find("g > text").each(function (idx, textDOM) {
+                var baseLightDomId = "#" + baseId + "-" + (idx + 1) + "-light";
                 var redDom = $svg.find(baseLightDomId + "-red");
                 var greenDom = $svg.find(baseLightDomId + "-green");
                 var yellowDom = $svg.find(baseLightDomId + "-yellow");
-                evtDom.on("click", function (evt) {
+                redDom.css("cursor", "pointer");
+                greenDom.css("cursor", "pointer");
+                yellowDom.css("cursor", "pointer");
+                var clickEvt = function (evt) {
                     _this.events.emit("on-RMFDPC-clicked", {
-                        $target: jquery__WEBPACK_IMPORTED_MODULE_0___default()(evt.target),
+                        $target: jquery__WEBPACK_IMPORTED_MODULE_1___default()(evt.target),
                         idx: mainIdx,
                         subIdx: idx
                     });
-                });
+                };
+                redDom.on("click", clickEvt.bind(_this));
+                greenDom.on("click", clickEvt.bind(_this));
+                yellowDom.on("click", clickEvt.bind(_this));
                 redDom.hide();
                 greenDom.hide();
                 yellowDom.hide();
                 obj.$nodes.push({
-                    text: jquery__WEBPACK_IMPORTED_MODULE_0___default()(DOM),
-                    evt: evtDom,
+                    text: jquery__WEBPACK_IMPORTED_MODULE_1___default()(textDOM),
                     red: { dom: redDom },
                     green: { dom: greenDom },
                     yellow: { dom: yellowDom }
@@ -36217,30 +36227,36 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
     };
     RmsMonitorFacilityDefectPanelCtrl.prototype.initAnimation = function () {
         // set Process Animation DOM
-        var $svg = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this.svg.node);
-        var lineAnimation = new gsap_TweenMax__WEBPACK_IMPORTED_MODULE_5__["TimelineLite"]({ onComplete: function () { this.restart(); } });
-        [
-            $svg.find("#arrow1"), $svg.find("#arrow2"), $svg.find("#arrow3"),
-            $svg.find("#arrow4"), $svg.find("#arrow5"), $svg.find("#arrow6"),
-            $svg.find("#arrow7"), $svg.find("#arrow8"), $svg.find("#arrow9")
-        ].forEach(function (DOM, idx, arr) {
-            arr.forEach(function (subDOM, subIdx) { lineAnimation.set(subDOM[0], { opacity: (subIdx === idx) ? 1 : 0 }); });
-            lineAnimation.to(DOM[0], 0, { opacity: 0 }, "+=0.4");
+        var $svg = jquery__WEBPACK_IMPORTED_MODULE_1___default()(this.svg.node);
+        var $warn = $svg.find("#modeling1-warnning");
+        var warnAnimation = new gsap_TweenMax__WEBPACK_IMPORTED_MODULE_6__["TimelineMax"]({ repeat: -1, yoyo: true });
+        lodash__WEBPACK_IMPORTED_MODULE_0___default.a.range(10).forEach(function (idx) {
+            $svg.find("#modeling1-title" + (idx + 1) + "-warning").css("opacity", 0);
+            $svg.find("#modeling1-botton-light" + (idx + 1) + "-warning").css("opacity", 0);
+            $svg.find("#modeling1-botton-light" + (idx + 1) + "-on").css("opacity", 1);
         });
+        warnAnimation.fromTo($warn[0], 0.8, { opacity: 0 }, { opacity: 1, ease: gsap_TweenMax__WEBPACK_IMPORTED_MODULE_6__["Power3"].easeNone });
+        warnAnimation.pause(0);
+        // const lineAnimation = new TimelineLite({ onComplete: function() { this.restart(); } });
+        // [
+        //   $svg.find("#arrow1"), $svg.find("#arrow2"), $svg.find("#arrow3"),
+        //   $svg.find("#arrow4"), $svg.find("#arrow5"), $svg.find("#arrow6"),
+        //   $svg.find("#arrow7"), $svg.find("#arrow8"), $svg.find("#arrow9")
+        // ].forEach( (DOM: any, idx: Number, arr: Object[]) => {
+        //   arr.forEach((subDOM: any, subIdx: Number) => { lineAnimation.set(subDOM[0], { opacity: (subIdx === idx) ? 1 : 0 }); });
+        //   lineAnimation.to(DOM[0], 0, {opacity: 0}, "+=0.4");
+        // });
         return {
-            LINESTOP: lineAnimation,
+            ALERT: warnAnimation,
         };
     };
     RmsMonitorFacilityDefectPanelCtrl.prototype.onClicked = function (evtData) {
-        var range = this.timeSrv.timeRange();
         var idx = evtData.idx, subIdx = evtData.subIdx;
         var channelId = String(subIdx + 1);
+        var range = this.timeSrv.timeRange();
+        var title = !this.titleIdxMap[idx] ? "All" : this.titleIdxMap[idx];
         // const data = this.RecvData[title];
         // const {color} = data.channels[channelId];
-        var title = this.titleIdxMap[idx];
-        if (title === undefined || title === null) {
-            title = "All";
-        }
         this.$location.path("/d/rAgfpx7iz/modelbyeol-geomsagirog").search({
             "var-DATABASE": "RMS-CENTER-INFLUXDB(V1.0)",
             "var-MODEL": "All",
@@ -36271,10 +36287,10 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
         data.forEach(function (arr) {
             arr.forEach(function (_a) {
                 var facility = _a.facility, pass = _a.pass, count = _a.count, channel = _a.channel;
-                if (res[facility] === undefined) {
+                if (!res[facility]) {
                     res[facility] = {};
                 }
-                if (res[facility].channels === undefined) {
+                if (!res[facility].channels) {
                     res[facility].channels = {};
                 }
                 // counting total & failed count
@@ -36300,6 +36316,9 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
                     }
                 }
                 else {
+                    if (!res[facility].channels[channel]) {
+                        res[facility].channels[channel] = {};
+                    }
                     res[facility].channels[channel].CNF = count;
                 }
             });
@@ -36314,9 +36333,9 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
             if (mainIdx === null) {
                 mainIdx = this_1.titleIdxMap.push(title) - 1;
             }
-            var _a = this_1.svgDomMap[mainIdx], snapTitle = _a.snapTitle, snapTotal = _a.snapTotal, $nodes = _a.$nodes;
-            snapTitle.attr({ text: title });
-            snapTotal.attr({ text: (viewData[title].total + "/" + (viewData[title].failed === undefined ? 0 : viewData[title].failed)) });
+            var _a = this_1.svgDomMap[mainIdx], $title = _a.$title, $total = _a.$total, $nodes = _a.$nodes;
+            $title.text(title);
+            $total.text((!viewData[title].total ? 0 : viewData[title].total) + " / " + (!viewData[title].failed ? 0 : viewData[title].failed));
             [1, 2, 3, 4].forEach(function (chIdx) {
                 var index = String(chIdx);
                 var chInfo = viewData[title].channels[index];
@@ -36356,8 +36375,8 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
                 if (changed) {
                     ["red", "green", "yellow"].forEach(function (color) {
                         if (color === chColor) {
-                            var animation = new gsap_TweenMax__WEBPACK_IMPORTED_MODULE_5__["TimelineMax"]({ repeat: 1, yoyo: true });
-                            animation.set(chDOM[color].dom[0], { opacity: 1 }).to(chDOM[color].dom[0], 0.5, { opacity: 0, ease: gsap_TweenMax__WEBPACK_IMPORTED_MODULE_5__["Power0"].easeNone });
+                            var animation = new gsap_TweenMax__WEBPACK_IMPORTED_MODULE_6__["TimelineMax"]({ repeat: 1, yoyo: true });
+                            animation.fromTo(chDOM[color].dom[0], 0.5, { opacity: 1 }, { opacity: 0.1, ease: gsap_TweenMax__WEBPACK_IMPORTED_MODULE_6__["Power3"].easeNone });
                             animation.play();
                             chDOM[color].dom.show();
                         }
@@ -36378,19 +36397,27 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
     RmsMonitorFacilityDefectPanelCtrl.prototype.onMqttRecv = function (topic, bin) {
         // const msg = bin.toString();
         // const {fields, tags} = JSON.parse(msg);
+        console.log(topic);
         var topics = topic.split("/");
         var command = topics[topics.length - 1];
-        var animation = this.animations[command];
-        if (animation !== undefined) {
-            this.refresh();
-            animation.stop();
-            // console.log(topic, fields, tags);
+        switch (command) {
+            case "ALERT":
+                this.refresh();
+                this.animations.ALERT.play();
+                break;
+            case "LINESTOP":
+                this.refresh();
+                this.animations.ALERT.play();
+                this.animations.LINE.stop();
+                break;
+            default:
+                console.error("command not found : '" + command + "'");
         }
     };
     RmsMonitorFacilityDefectPanelCtrl.prototype.link = function (scope, elem, attrs, ctrl) { };
     RmsMonitorFacilityDefectPanelCtrl.template = __webpack_require__(/*! ./partial/template.html */ "./panel/monitor-facility-defect/partial/template.html");
     return RmsMonitorFacilityDefectPanelCtrl;
-}(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_4__["MetricsPanelCtrl"]));
+}(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_5__["MetricsPanelCtrl"]));
 
 
 

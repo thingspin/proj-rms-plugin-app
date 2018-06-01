@@ -1,4 +1,4 @@
-// import _ from 'lodash';
+import _ from 'lodash';
 import $ from "jquery";
 import * as Snap from "snapsvg/dist/snap.svg-min.js";
 
@@ -6,18 +6,20 @@ import '../../services/remoteSolutionDS';
 import '../../services/remoteSolutionMQTT';
 
 import {MetricsPanelCtrl, loadPluginCss} from  'grafana/app/plugins/sdk';
-import {TimelineMax, Power0, TimelineLite} from "gsap/TweenMax";
+import {TimelineMax, Power3} from "gsap/TweenMax";
 
+const appId = "proj-rms-plugin-app";
+const baseCssFilename = "rms-plugins-app";
 loadPluginCss({
-  dark: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.dark.css',
-  light: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.light.css'
+  dark: `plugins/${appId}/css/${baseCssFilename}.dark.css`,
+  light: `plugins/${appId}/css/${baseCssFilename}.light.css`
 });
 
 class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
   static template = require("./partial/template.html");
+  panelDirName = "monitor-facility-defect";
   divID: String = "rms-app-monitor-facility-defect";
-  svgImgPath: String = "public/plugins/proj-rms-plugin-app/panel/monitor-facility-defect/img/main.svg";
-  appId: String = "proj-rms-plugin-app";
+  svgImgPath: String = `public/plugins/${appId}/panel/${this.panelDirName}/img/main.svg`;
 
   private _titleIdxMap = [];
   set titleIdxMap(titleIdxMap) { this._titleIdxMap = titleIdxMap;}
@@ -83,7 +85,7 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
   onInitialized() {
     const node: any = this.$element.find("ng-transclude > div");
     if (node.length === 0) {
-      console.error("cannot find element id '#" + this.divID + "'");
+      console.error(`cannot find element id '#${this.divID}'`);
       return;
     }
     this.container = node;
@@ -100,11 +102,13 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
         this.events.on('data-received', this.onDataReceived.bind(this));
 
         const urlPath = "/";
-        const baseUrl = "ws://" + this.$location.host() + ":" + this.$location.port() + "/api/plugin-proxy/" + this.appId;
-        this.rsMqttSrv.connect(baseUrl + urlPath);
+        const baseUrl = `ws://${this.$location.host()}:${this.$location.port()}/api/plugin-proxy/${appId}`;
+        this.rsMqttSrv.connect(`${baseUrl}${urlPath}`);
         this.rsMqttSrv.subscribe = '+/THINGSPIN/EMERGENCY/+';
         this.rsMqttSrv.recvMessage(this.onMqttRecv.bind(this));
       }
+    }).catch(e => {
+      console.error(e);
     });
   }
 
@@ -113,38 +117,43 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
     const $svg = $(this.svg.node);
 
     let result = [];
-    this.svg.selectAll("#modeling2-text > g").items.forEach((DOM: any, mainIdx: number) => {
-      const baseDomId = "#modeling2-" + (mainIdx+1);
+    ["modeling2-a", "modeling2-b", "modeling2-c"].forEach( (baseId: String, mainIdx: number) => {
+      const $dom = $svg.find(`#${baseId}-text`);
+      const tops = $dom.find("> text");
       let obj = {
-        snapTitle: this.svg.select("#title #title" + (mainIdx+1) ),
-        snapTotal: DOM.select("text"),
+        $title: $(tops.get(0)),
+        $total: $(tops.get(1)),
         $nodes: []
       };
 
-      // set Testing Machine Channel DOM
-      $(DOM.node).find("g text").each((idx: number, DOM: any) => {
-        const baseLightDomId = baseDomId + "-light" + (idx+1);
+      $dom.find("g > text").each((idx: number, textDOM: any) => {
+        const baseLightDomId = `#${baseId}-${(idx+1)}-light`;
 
-        const evtDom = $svg.find(baseDomId + "-glass" + (idx+1));
         const redDom = $svg.find(baseLightDomId + "-red");
         const greenDom = $svg.find(baseLightDomId + "-green");
         const yellowDom = $svg.find(baseLightDomId + "-yellow");
 
-        evtDom.on("click", (evt) => {
+        redDom.css("cursor", "pointer");
+        greenDom.css("cursor", "pointer");
+        yellowDom.css("cursor", "pointer");
+
+        const clickEvt = (evt) => {
           this.events.emit("on-RMFDPC-clicked", {
             $target: $(evt.target),
             idx: mainIdx,
             subIdx: idx
           });
-        });
+        };
+        redDom.on("click", clickEvt.bind(this));
+        greenDom.on("click", clickEvt.bind(this));
+        yellowDom.on("click", clickEvt.bind(this));
 
         redDom.hide();
         greenDom.hide();
         yellowDom.hide();
 
         obj.$nodes.push({
-          text: $(DOM),
-          evt: evtDom,
+          text: $(textDOM),
           red: { dom: redDom },
           green: { dom: greenDom },
           yellow: { dom: yellowDom }
@@ -153,40 +162,48 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
 
       result.push(obj);
     });
-
     return result;
   }
 
   initAnimation() {
     // set Process Animation DOM
     const $svg = $(this.svg.node);
-    const lineAnimation = new TimelineLite({ onComplete: function() { this.restart(); } });
 
-    [
-      $svg.find("#arrow1"), $svg.find("#arrow2"), $svg.find("#arrow3"),
-      $svg.find("#arrow4"), $svg.find("#arrow5"), $svg.find("#arrow6"),
-      $svg.find("#arrow7"), $svg.find("#arrow8"), $svg.find("#arrow9")
-    ].forEach( (DOM: any, idx: Number, arr: Object[]) => {
-      arr.forEach((subDOM: any, subIdx: Number) => { lineAnimation.set(subDOM[0], { opacity: (subIdx === idx) ? 1 : 0 }); });
-      lineAnimation.to(DOM[0], 0, {opacity: 0}, "+=0.4");
+    const $warn = $svg.find("#modeling1-warnning");
+    const warnAnimation = new TimelineMax({ repeat: -1, yoyo: true });
+    _.range(10).forEach((idx: number) => {
+      $svg.find(`#modeling1-title${idx+1}-warning`).css("opacity", 0);
+      $svg.find(`#modeling1-botton-light${idx+1}-warning`).css("opacity", 0);
+      $svg.find(`#modeling1-botton-light${idx+1}-on`).css("opacity", 1);
     });
+    warnAnimation.fromTo($warn[0], 0.8,{ opacity: 0 }, { opacity: 1, ease: Power3.easeNone });
+    warnAnimation.pause(0);
+
+    // const lineAnimation = new TimelineLite({ onComplete: function() { this.restart(); } });
+
+    // [
+    //   $svg.find("#arrow1"), $svg.find("#arrow2"), $svg.find("#arrow3"),
+    //   $svg.find("#arrow4"), $svg.find("#arrow5"), $svg.find("#arrow6"),
+    //   $svg.find("#arrow7"), $svg.find("#arrow8"), $svg.find("#arrow9")
+    // ].forEach( (DOM: any, idx: Number, arr: Object[]) => {
+    //   arr.forEach((subDOM: any, subIdx: Number) => { lineAnimation.set(subDOM[0], { opacity: (subIdx === idx) ? 1 : 0 }); });
+    //   lineAnimation.to(DOM[0], 0, {opacity: 0}, "+=0.4");
+    // });
 
     return {
-      LINESTOP: lineAnimation,
+      ALERT: warnAnimation,
+      // LINESTOP: lineAnimation,
     };
   }
 
   onClicked(evtData: any) {
-    const range = this.timeSrv.timeRange();
     const {idx, subIdx} = evtData;
     const channelId = String(subIdx+1);
+    const range = this.timeSrv.timeRange();
+    const title = !this.titleIdxMap[idx] ? "All" : this.titleIdxMap[idx];
     // const data = this.RecvData[title];
     // const {color} = data.channels[channelId];
 
-    let title = this.titleIdxMap[idx];
-    if (title === undefined || title === null ) {
-      title = "All";
-    }
 
     this.$location.path("/d/rAgfpx7iz/modelbyeol-geomsagirog").search({
       "var-DATABASE": "RMS-CENTER-INFLUXDB(V1.0)",
@@ -201,6 +218,7 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
   }
 
   onInitEditMode() { }
+
   onRender() { }
 
   onDataReceived(results: any) {
@@ -224,10 +242,10 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
     let res: Object = {};
     data.forEach( (arr: Object[]) => {
       arr.forEach( ({facility, pass, count, channel}: any) => {
-        if (res[facility] === undefined) {
+        if (!res[facility]) {
           res[facility] = {};
         }
-        if (res[facility].channels === undefined) {
+        if (!res[facility].channels) {
           res[facility].channels = {};
         }
 
@@ -247,9 +265,12 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
               res[facility].channels[channel] = { failed: count };
               break;
             default:
-              console.error(pass + " is not defined");
+              console.error(`${pass} is not defined`);
           }
         } else {
+          if (!res[facility].channels[channel]) {
+            res[facility].channels[channel] = {};
+          }
           res[facility].channels[channel].CNF = count;
         }
       });
@@ -264,10 +285,10 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
       if (mainIdx === null) {
         mainIdx = this.titleIdxMap.push(title) - 1;
       }
-      const {snapTitle, snapTotal, $nodes}: any = this.svgDomMap[mainIdx];
+      const {$title, $total, $nodes}: any = this.svgDomMap[mainIdx];
 
-      snapTitle.attr({text: title });
-      snapTotal.attr({text: (viewData[title].total + "/" + (viewData[title].failed === undefined ? 0 : viewData[title].failed) )});
+      $title.text(title);
+      $total.text( `${!viewData[title].total ? 0 : viewData[title].total} / ${(!viewData[title].failed ? 0 : viewData[title].failed)}` );
 
       [1, 2, 3, 4].forEach((chIdx) => {
         const index: string = String(chIdx);
@@ -307,7 +328,7 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
           ["red", "green", "yellow"].forEach( (color: string) => {
             if (color === chColor) {
               const animation: any = new TimelineMax({ repeat: 1, yoyo: true });
-              animation.set(chDOM[color].dom[0], { opacity: 1 }).to(chDOM[color].dom[0], 0.5, { opacity: 0, ease: Power0.easeNone });
+              animation.fromTo(chDOM[color].dom[0], 0.5, { opacity: 1 }, { opacity: 0.1, ease: Power3.easeNone });
               animation.play();
               chDOM[color].dom.show();
             } else {
@@ -324,14 +345,21 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
   onMqttRecv(topic: string, bin: any) {
     // const msg = bin.toString();
     // const {fields, tags} = JSON.parse(msg);
+    console.log(topic);
     const topics = topic.split("/");
     const command = topics[topics.length-1];
-
-    const animation = this.animations[command];
-    if (animation !== undefined) {
-      this.refresh();
-      animation.stop();
-      // console.log(topic, fields, tags);
+    switch (command) {
+      case "ALERT":
+        this.refresh();
+        this.animations.ALERT.play();
+      break;
+      case "LINESTOP":
+        this.refresh();
+        this.animations.ALERT.play();
+        this.animations.LINE.stop();
+      break;
+      default:
+        console.error(`command not found : '${command}'`);
     }
   }
 

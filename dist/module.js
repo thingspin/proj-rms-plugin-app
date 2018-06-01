@@ -17356,9 +17356,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+var appId = "proj-rms-plugin-app";
+var baseCssFilename = "rms-plugins-app";
 Object(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_0__["loadPluginCss"])({
-    dark: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.dark.css',
-    light: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.light.css'
+    dark: "plugins/" + appId + "/css/" + baseCssFilename + ".dark.css",
+    light: "plugins/" + appId + "/css/" + baseCssFilename + ".light.css"
 });
 
 
