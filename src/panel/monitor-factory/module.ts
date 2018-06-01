@@ -1,66 +1,145 @@
-import _ from 'lodash';
 import $ from 'jquery';
-import 'jquery-ui';
-import 'jquery.tabulator/dist/css/tabulator.min.css';
-import 'jquery.tabulator/dist/js/tabulator.min';
-//import * as d3 from "d3";
 import * as Snap from "snapsvg/dist/snap.svg-min.js";
+
+import '../../services/remoteSolutionDS';
+import '../../services/remoteSolutionMQTT';
 
 import {MetricsPanelCtrl, loadPluginCss} from  'grafana/app/plugins/sdk';
 
+const appId = "proj-rms-plugin-app";
+const baseCssFilename = "rms-plugins-app";
 loadPluginCss({
-  dark: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.dark.css',
-  light: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.light.css'
+  dark: `plugins/${appId}/css/${baseCssFilename}.dark.css`,
+  light: `plugins/${appId}/css/${baseCssFilename}.light.css`
 });
 
 class RmsMonitorFactoryPanelCtrl extends MetricsPanelCtrl {
   static template = require("./partial/template.html");
+  panelDirName: String = "monitor-factory";
+  appId: String = "proj-rms-plugin-app";
+  divID: String = "rms-app-monitor-factory";
+  svgImgPath: String = `public/plugins/${appId}/panel/${this.panelDirName}/img/main.svg`;
 
-  divID: string;
-  svgID: string;
-  container: any;
+  private _container: any;
+  set container(container: any) { this._container = container; }
+  get container() {return this._container;}
 
-  panelDefaults = {
-    options: {
-    }
-  };
+  private _svg: any = null;
+  set svg(svg: any) { this._svg = svg; }
+  get svg() {return this._svg; }
 
-  constructor($scope, $injector, $http, $location, uiSegmentSrv, annotationsSrv) {
+  private _recvData: any = null;
+  set recvData(recvData: any) {
+    this._recvData = (this._recvData === undefined || this._recvData === null ) ?
+      recvData : Object.assign({}, this._recvData, recvData);
+  }
+  get recvData() { return this._recvData;}
+
+  private _animations: Object = {};
+  set animations(animation: any) { this._animations = animation; }
+  get animations() { return this._animations; }
+
+  private _svgDOM: Object = null;
+  set svgDOM(svgDOM) { this._svgDOM = svgDOM; }
+  get svgDOM() { return this._svgDOM; }
+
+  constructor($scope, $injector, private $element, private $location,
+    private rsMqttSrv, private rsDsSrv) {
     super($scope, $injector);
 
-    _.defaults(this.panel, this.panelDefaults);
-
-    this.divID = 'rms-app-monitor-factory-' + this.panel.id;
-    this.svgID = 'rms-app-monitor-factory-svg-' + this.panel.id;
-
-    this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
-    this.events.on('render', this.onRender.bind(this));
     this.events.on('panel-initialized', this.onInitialized.bind(this));
+    this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
   }
 
-  setContainer(container) {
-    this.container = container;
+  loadSVG(path) {
+    return new Promise((resolve,reject) => {
+      Snap.load(path, resolve);
+    });
   }
 
   onInitialized() {
+    const node: any = this.$element.find("ng-transclude > div");
+    if (node.length === 0) {
+      console.error("cannot find element id '#" + this.divID + "'");
+      return;
+    }
+    this.container = node;
 
+    this.loadSVG(this.svgImgPath).then( (svg: any) => {
+      if (this.svg === null) {
+        const node = this.container.append(svg.node);
+
+        this.svg = Snap(node.find("> svg")[0]);
+
+        this.svgDOM = this.initSvgDOM();
+        this.animations = this.initAnimations();
+
+        this.events.on('data-received', this.onDataReceived.bind(this));
+
+        const urlPath = "/";
+        const baseUrl = "ws://" + this.$location.host() + ":" + this.$location.port() + "/api/plugin-proxy/" + this.appId;
+        this.rsMqttSrv.connect(baseUrl + urlPath);
+        this.rsMqttSrv.subscribe = '+/THINGSPIN/EMERGENCY/+';
+        this.rsMqttSrv.recvMessage(this.onMqttRecv.bind(this));
+      }
+    });
   }
 
-  onInitEditMode() {
+  initSvgDOM() {
+    const $svg = $(this.svg.node);
+
+    let DOM = $svg.find("g");
+
+    let result = {
+      DOM: DOM,
+    };
+    return result;
   }
 
-  onRender() {
+  initAnimations() { }
+
+  onDataReceived(results: any) {
+    let canUseDs: Boolean;
+
+    results.every( (item: any,idx: number): Boolean => {
+      canUseDs = (item.target === "A-series") ? false : true;
+      return canUseDs;
+    });
+
+    if (canUseDs) {
+      const viewData: Object = this.convData(results);
+      this.recvData = this.visualization(viewData);
+    }
   }
 
-  link(scope, elem, attrs, ctrl) {
-      var node = elem.find('.thingspin-rms-monitor-factory');
-      node[0].id = this.divID;
-      ctrl.setContainer(node);
+  convData(results: any): Object {
+    const data: Object[] = this.rsDsSrv.getTableObj(results);
 
-      Snap.load("public/plugins/proj-rms-plugin-app/img/rms-fatory-kr.svg", (data) => {
-        $(data.node).appendTo('#'+ctrl.divID);
-      }) ;
+    return data;
   }
+
+  visualization(viewData: Object): Object {
+    console.log(viewData);
+    return viewData;
+  }
+
+
+  onMqttRecv(topic: string, bin: any) {
+    // const msg = bin.toString();
+    // const {fields, tags} = JSON.parse(msg);
+    const topics = topic.split("/");
+    const command = topics[topics.length-1];
+
+    const animation = this.animations[command];
+    if (animation !== undefined) {
+      animation.stop();
+      // console.log(topic, fields, tags);
+    }
+  }
+
+  onInitEditMode() { }
+
+  link(scope, elem, attrs, ctrl) { }
 }
 
 export {
