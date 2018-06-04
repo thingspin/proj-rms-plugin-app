@@ -33,6 +33,7 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
   cpk: number;
   lsl: number;
   usl: number;
+  mean: number;
   //limit: any;
 
   constructor($scope, $injector, private $window) {
@@ -53,6 +54,7 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
     this.cpk = 0;
     this.lsl = -1;
     this.usl = +1;
+    this.mean = 0;
 
     this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
     this.events.on('render', this.onRender.bind(this));
@@ -126,13 +128,16 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
     
     //console.log(dataList);
     // Bucket size
-    let bucketSize = 5;
+    let bucketSize = 10;
     let panelWidth = this.canvas.width
     
     // Convert data to histogram data
     let result = convertToHistogramData([data],bucketSize,panelWidth);
+    //this.mean = result[0].mean;
     result = result[0].data;
-
+    
+    //console.log("======2======");
+    //console.log(result);
     // setting for x-axis and y-axis range
     /*
     this.limit = {
@@ -199,6 +204,7 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
         options: {
           cpk: this.cpk,
           cp: this.cp,
+          //mean: this.mean,
           legend: {
             display: false
           },
@@ -261,6 +267,7 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
                   enabled: true,
                   content: "USL"
                 }    
+              
               }            
             ],
             drawTime: "afterDatasetsDraw"
@@ -333,6 +340,8 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
           annotations[i].value = this.lsl;
         }else if ( annotations[i].id === "usl_line") {
           annotations[i].value = this.usl;
+        }else if ( annotations[i].id === "mean_line") {
+          annotations[i].value = this.mean;
         }
       }
       this.chart.options.annotation.annotations = annotations;

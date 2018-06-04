@@ -2,6 +2,8 @@ import _ from 'lodash';
 import { tickStep } from 'grafana/app/core/utils/ticks';
 //import TimeSeries from 'grafana/app/core/time_series2';
 //var getCurvePoints = require("cardinal-spline-js").getCurvePoints;
+var gaussian = require('gaussian');
+
 /**
  * Convert series into array of series values.
  * @param data Array of series
@@ -30,7 +32,7 @@ export function getSeriesValues(dataList: any[]): number[] {
  * @param values
  * @param bucketSize
  */
-export function convertValuesToHistogram(values: number[], bucketSize: number, min: number, max: number): any[] {
+export function convertValuesToHistogram(values: number[], bucketSize: number, min: number, max: number, mean: number, variance: number): any[] {
   let histogram = {};
 
   let minBound = getBucketBound(min, bucketSize);
@@ -48,13 +50,17 @@ export function convertValuesToHistogram(values: number[], bucketSize: number, m
     histogram[bound] = histogram[bound] + 1;
   }
   
-  //let list = [];
-  let histogam_series = _.map(histogram, (count, bound) => {
-    //list.push(Number(bound));
+  let list = [];
+  var distribution = gaussian(mean,variance);
+  //let histogam_series = 
+  _.map(histogram, (count, bound) => {
+    list.push({"x":Number(bound),"y":distribution.pdf(Number(bound))});
     //list.push(count);  
-    return {"x":Number(bound),"y":count};
+    //return {"x":Number(bound),"y":count};
     //return Number(bound),count;
   });
+  //console.log(_.sortBy(list, "x"));
+  //console.log(histogam_series);
   //console.log(histogam_series);
   /*
   //console.log("=============");
@@ -69,7 +75,7 @@ export function convertValuesToHistogram(values: number[], bucketSize: number, m
   */
   // Sort by Y axis values
   //return final;
-  return _.sortBy(histogam_series, "x");
+  return _.sortBy(list, "x");
 }
 
 /**
@@ -89,11 +95,14 @@ export function convertToHistogramData(
     let ticks = preferedBucketSize || panelWidth / 50;
     let min = _.min(values);
     let max = _.max(values);
+    let mean = _.mean(values);
+    let variance = getVariance(values);
     let bucketSize = tickStep(min, max, ticks);
     //console.log("bucket size")
     //console.log(bucketSize);
-    let histogram = convertValuesToHistogram(values, bucketSize, min, max);
+    let histogram = convertValuesToHistogram(values, bucketSize, min, max,mean,variance);
     series.data = histogram;
+    series.mean = mean;
     //series.min = min;
     //series.max = max;
     return series;
@@ -102,4 +111,17 @@ export function convertToHistogramData(
 
 function getBucketBound(value: number, bucketSize: number): number {
   return Math.floor(value / bucketSize) * bucketSize;
+}
+
+function getVariance(values){
+  var avg = _.mean(values);
+  
+  var squareDiffs = values.map(function(value){
+    var diff = value - avg;
+    var sqrDiff = diff * diff;
+    return sqrDiff;
+  });
+  
+  var variance = _.mean(squareDiffs);
+  return variance;
 }

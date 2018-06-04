@@ -37,6 +37,7 @@
     "chart.js": "^2.7.2",
     "chartjs-plugin-annotation": "^0.5.7",
     "d3": "^5.4.0",
+    "gaussian": "^1.1.0",
     "gsap": "^2.0.1",
     "handsontable": "^3.0.0",
     "jquery": "^3.2.1",
