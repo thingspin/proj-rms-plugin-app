@@ -292,7 +292,7 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
                   + info.use_count + '", "' +  info.memo + '");'
                 ]; 
 
-                console.log(query3);
+                //console.log(query3);
     
                 this.dsSrv.query(selectId, query3).then( result => {            
                   this.panel.inputlItem.mold_id = -1;
@@ -352,42 +352,59 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
           let selectId = this.datasource.id;
 
           let query1 = [
-            'select business_id from t_business where name="'
-            + info.business_name + '" and business_type="금형업체"' 
-          ];
+            'select * from t_mold where mold_name="' + info.mold_name + '" and mold_id!=' + info.mold_id
+          ]; 
 
-          this.dsSrv.query(selectId, query1).then( result => {  
-
-            var data = result[0];      
-            var business_id = data.rows[0][0];
-
-            var tmpDate = new Date(info.change_date);
-            var strDate = tmpDate.getFullYear() + '/' + (tmpDate.getMonth()+1) + '/' + tmpDate.getDate()
-            
-            let query2 = [
-              'update t_mold set ' + 
-              'business_id="' + business_id + '", ' + 
-              'mold_name="' + info.mold_name + '", ' + 
-              'change_date="' + strDate + '", ' + 
-              'change_period="' + info.period + '", ' + 
-              'use_count="' + info.use_count + '", ' + 
-              'memo="' + info.memo + '" where mold_id=' + info.mold_id        
-            ];       
-      
-            console.log(selectId + " " + query2);
-      
-            this.dsSrv.query(selectId, query2).then( result => {
-              this.panel.inputlItem.mold_id = -1;
-              this.$rootScope.$broadcast('refresh');
-            }).catch( err => {
-              console.error(err);
-            });    
-
+          this.dsSrv.query(selectId, query1).then( result => {
+            var data = result[0];
+            //console.log("data rows: " + data.rows.length);  
+            if(data.rows.length == 0)
+            {
+              let query2 = [
+                'select business_id from t_business where name="'
+                + info.business_name + '" and business_type="금형업체"' 
+              ];
+    
+              this.dsSrv.query(selectId, query2).then( result => {  
+    
+                var data = result[0];      
+                var business_id = data.rows[0][0];
+    
+                var tmpDate = new Date(info.change_date);
+                var strDate = tmpDate.getFullYear() + '/' + (tmpDate.getMonth()+1) + '/' + tmpDate.getDate()
+                
+                let query3 = [
+                  'update t_mold set ' + 
+                  'business_id="' + business_id + '", ' + 
+                  'mold_name="' + info.mold_name + '", ' + 
+                  'change_date="' + strDate + '", ' + 
+                  'change_period="' + info.period + '", ' + 
+                  'use_count="' + info.use_count + '", ' + 
+                  'memo="' + info.memo + '" where mold_id=' + info.mold_id        
+                ];       
+          
+                console.log(selectId + " " + query3);
+          
+                this.dsSrv.query(selectId, query3).then( result => {
+                  this.panel.inputlItem.mold_id = -1;
+                  this.$rootScope.$broadcast('refresh');
+                }).catch( err => {
+                  console.error(err);
+                });    
+    
+    
+              }).catch( err => {
+                console.error(err);
+              });
+            }
+            else
+            {
+              this.alertSrv.set("이미 등록 되어있습니다.", 'error', 5000);
+            }
 
           }).catch( err => {
             console.error(err);
-          });
-          
+          });   
 
         }
       });   

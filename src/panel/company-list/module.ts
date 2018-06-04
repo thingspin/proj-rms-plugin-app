@@ -235,9 +235,14 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
         onConfirm: () => {
             
           let selectId = this.datasource.id;
+          // let query1 = [
+          //   'select * from t_business where business_type="' 
+          //   + info.business_type + '" and name="' + info.name + '" and person="' + info.person + '";'
+          // ];     
+
           let query1 = [
             'select * from t_business where business_type="' 
-            + info.business_type + '" and name="' + info.name + '" and person="' + info.person + '";'
+            + info.business_type + '" and name="' + info.name + '"'
           ];     
   
           //console.log(selectId + " " + query);
@@ -315,24 +320,43 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
         onConfirm: () => {
 
           let selectId = this.datasource.id;
-          let query = [
-            'update t_business set ' + 
-            'name="' + info.name + '", ' + 
-            'business_type="' + info.business_type + '", ' + 
-            'phone="' + info.phone + '", ' + 
-            'mail="' + info.mail + '", ' + 
-            'person="' + info.person + '", ' + 
-            'memo="' + info.memo + '" where business_id=' + info.business_id        
-          ];       
-    
-          console.log(selectId + " " + query);
-    
-          this.dsSrv.query(selectId, query).then( result => {
-            this.panel.inputlItem.business_id = -1;
-            this.$rootScope.$broadcast('refresh');
+
+          let query1 = [
+            'select * from t_business where business_type="' 
+            + info.business_type + '" and name="' + info.name + '" and business_id!=' + info.business_id
+          ];
+
+          this.dsSrv.query(selectId, query1).then( result => {
+            var data = result[0];
+            //console.log("data rows: " + data.rows.length);  
+            if(data.rows.length == 0)
+            {
+              let query2 = [
+                'update t_business set ' + 
+                'name="' + info.name + '", ' + 
+                'business_type="' + info.business_type + '", ' + 
+                'phone="' + info.phone + '", ' + 
+                'mail="' + info.mail + '", ' + 
+                'person="' + info.person + '", ' + 
+                'memo="' + info.memo + '" where business_id=' + info.business_id        
+              ];       
+        
+              console.log(selectId + " " + query2);
+        
+              this.dsSrv.query(selectId, query2).then( result => {
+                this.panel.inputlItem.business_id = -1;
+                this.$rootScope.$broadcast('refresh');
+              }).catch( err => {
+                console.error(err);
+              });    
+            }
+            else
+            {
+              this.alertSrv.set("이미 등록 되어있습니다.", 'error', 5000);
+            }
           }).catch( err => {
             console.error(err);
-          });    
+          });           
 
         }
       });   
