@@ -2,7 +2,7 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:274",
+        "$$hashKey": "object:282",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1528089530147,
+  "iteration": 1528100553071,
   "links": [
     {
       "icon": "external link",
@@ -58,7 +58,7 @@
       },
       "gridPos": {
         "h": 3,
-        "w": 8,
+        "w": 11,
         "x": 0,
         "y": 0
       },
@@ -116,12 +116,12 @@
     {
       "datasource": "-- Mixed --",
       "gridPos": {
-        "h": 12,
+        "h": 18,
         "w": 13,
         "x": 11,
         "y": 0
       },
-      "id": 12,
+      "id": 14,
       "kernel": null,
       "links": [],
       "scripts": "",
@@ -256,13 +256,13 @@
           ]
         }
       ],
-      "title": "모델별 생산 계획 / 실적수량 / 불량수",
-      "type": "rms-product-state-bar"
+      "title": "모델별 생산계획 / 실적수량 / 불량수",
+      "type": "rms-product-plan-bar"
     },
     {
       "datasource": "-- Mixed --",
       "gridPos": {
-        "h": 9,
+        "h": 15,
         "w": 11,
         "x": 0,
         "y": 3
@@ -468,7 +468,7 @@
         "h": 9,
         "w": 11,
         "x": 0,
-        "y": 12
+        "y": 18
       },
       "id": 2,
       "kernel": null,
@@ -827,7 +827,7 @@
         "h": 9,
         "w": 13,
         "x": 11,
-        "y": 12
+        "y": 18
       },
       "id": 5,
       "kernel": null,
@@ -1058,5 +1058,5 @@
   "timezone": "",
   "title": "생산 현황",
   "uid": "cU1lqH4mz",
-  "version": 5
+  "version": 8
 }

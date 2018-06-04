@@ -25,10 +25,10 @@
       }
     ]
   },
-  "editable": false,
+  "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1527171421553,
+  "iteration": 1528103640779,
   "links": [
     {
       "icon": "external link",
@@ -67,6 +67,7 @@
         "y": 0
       },
       "id": 9,
+      "kernel": null,
       "legend": {
         "alignAsTable": true,
         "avg": false,
@@ -90,6 +91,7 @@
       "points": false,
       "renderer": "flot",
       "repeat": null,
+      "scripts": "",
       "seriesOverrides": [],
       "spaceLength": 10,
       "stack": false,
@@ -224,6 +226,7 @@
         "y": 0
       },
       "id": 6,
+      "kernel": null,
       "legend": {
         "alignAsTable": true,
         "avg": false,
@@ -243,6 +246,7 @@
       "pointradius": 4,
       "points": false,
       "renderer": "flot",
+      "scripts": "",
       "seriesOverrides": [
         {
           "alias": "COUNT",
@@ -505,6 +509,7 @@
         "y": 7
       },
       "id": 4,
+      "kernel": null,
       "links": [],
       "minSpan": 4,
       "pageSize": 10,
@@ -517,6 +522,7 @@
           "value": "SOOSKIM01"
         }
       },
+      "scripts": "",
       "scroll": true,
       "showHeader": true,
       "sort": {
@@ -755,12 +761,13 @@
         "y": 7
       },
       "id": 10,
+      "kernel": null,
       "links": [],
       "minSpan": 4,
       "pageSize": 10,
       "repeat": null,
       "repeatDirection": "h",
-      "repeatIteration": 1527171421553,
+      "repeatIteration": 1528103640779,
       "repeatPanelId": 4,
       "scopedVars": {
         "FACILITY": {
@@ -769,6 +776,7 @@
           "value": "SOOSKIM02"
         }
       },
+      "scripts": "",
       "scroll": true,
       "showHeader": true,
       "sort": {
@@ -1007,12 +1015,13 @@
         "y": 7
       },
       "id": 11,
+      "kernel": null,
       "links": [],
       "minSpan": 4,
       "pageSize": 10,
       "repeat": null,
       "repeatDirection": "h",
-      "repeatIteration": 1527171421553,
+      "repeatIteration": 1528103640779,
       "repeatPanelId": 4,
       "scopedVars": {
         "FACILITY": {
@@ -1021,6 +1030,7 @@
           "value": "SOOSKIM03"
         }
       },
+      "scripts": "",
       "scroll": true,
       "showHeader": true,
       "sort": {
@@ -1263,13 +1273,13 @@
           "text": "RMS-CENTER-INFLUXDB(V1.0)",
           "value": "RMS-CENTER-INFLUXDB(V1.0)"
         },
-        "hide": 0,
+        "hide": 2,
         "label": "본사/지점 선택",
         "name": "DATABASE",
         "options": [],
         "query": "influxdb",
         "refresh": 1,
-        "regex": "/^RMS-*/",
+        "regex": "/^RMS-CENTER-*/",
         "type": "datasource"
       },
       {
@@ -1367,5 +1377,5 @@
   "timezone": "",
   "title": "CPK 이탈 감시",
   "uid": "TPC1lW4mk",
-  "version": 5
+  "version": 2
 }
