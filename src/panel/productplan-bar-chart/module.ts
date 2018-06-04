@@ -243,6 +243,7 @@ class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
     this.mapTrue.clear();
     this.mapFalse.clear();
     this.mapPlan.clear();
+    this.models = [];
 
     this.barChartData = {};
 
