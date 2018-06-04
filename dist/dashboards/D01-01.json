@@ -2,7 +2,7 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:147",
+        "$$hashKey": "object:149",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1527642233050,
+  "iteration": 1528071634239,
   "links": [
     {
       "icon": "external link",
@@ -64,6 +64,7 @@
       },
       "id": 10,
       "interval": null,
+      "kernel": null,
       "links": [],
       "mappingType": 1,
       "mappingTypes": [
@@ -90,6 +91,7 @@
           "to": "null"
         }
       ],
+      "scripts": "",
       "sparkline": {
         "fillColor": "rgba(31, 118, 189, 0.18)",
         "full": false,
@@ -112,99 +114,153 @@
       "valueName": "avg"
     },
     {
-      "aliasColors": {},
-      "bars": true,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "REMOTESOLUTIONS(V1.0)",
-      "decimals": 0,
-      "fill": 1,
+      "datasource": "-- Mixed --",
       "gridPos": {
-        "h": 7,
+        "h": 13,
         "w": 16,
         "x": 8,
         "y": 0
       },
-      "id": 4,
-      "legend": {
-        "alignAsTable": true,
-        "avg": false,
-        "current": true,
-        "hideEmpty": true,
-        "hideZero": true,
-        "max": false,
-        "min": false,
-        "rightSide": true,
-        "show": true,
-        "sideWidth": 250,
-        "sort": "current",
-        "sortDesc": true,
-        "total": true,
-        "values": true
-      },
-      "lines": false,
-      "linewidth": 1,
+      "id": 12,
+      "kernel": null,
       "links": [],
-      "nullPointMode": "null as zero",
-      "percentage": false,
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "repeat": null,
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": true,
-      "steppedLine": false,
+      "scripts": "",
       "targets": [
         {
+          "$$hashKey": "object:226",
           "alias": "",
-          "format": "time_series",
-          "rawSql": "SELECT\n  UNIX_TIMESTAMP(PLAN_DATE) as time_sec,\n  SUM(AMOUNT) as value,\n  MODEL_ID as metric\nFROM t_product_plan\nWHERE \n  $__timeFilter(PLAN_DATE) \n  AND MODEL_ID IN ($MODEL)\nGROUP BY MODEL_ID\nORDER BY value DESC\n",
+          "datasource": "REMOTESOLUTIONS(V1.0)",
+          "format": "table",
+          "rawSql": "SELECT \n  UNIX_TIMESTAMP(PLAN_DATE) as time_sec,\n  PLAN_DATE as '날짜',\n  MODEL_ID AS '모델',\n  SUM(AMOUNT) AS '생산계획'\nFROM t_product_plan\nWHERE\n  $__timeFilter(PLAN_DATE) AND\n  MODEL_ID IN ($MODEL)\nGROUP BY MODEL_ID\nORDER BY PLAN_DATE DESC",
           "refId": "A"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "모델별 생산 계획",
-      "tooltip": {
-        "shared": false,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "series",
-        "name": null,
-        "show": true,
-        "values": [
-          "total"
-        ]
-      },
-      "yaxes": [
-        {
-          "decimals": 0,
-          "format": "locale",
-          "label": "VOLUM",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
         },
         {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
+          "$$hashKey": "object:227",
+          "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+          "groupBy": [
+            {
+              "params": [
+                "1d,-9h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "model"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "/^inspection.summary-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "B",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "tuid"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              },
+              {
+                "params": [
+                  "실적수량"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "branch",
+              "operator": "=~",
+              "value": "/^$BRANCH$/"
+            },
+            {
+              "condition": "AND",
+              "key": "pass",
+              "operator": "=",
+              "value": "true"
+            }
+          ]
+        },
+        {
+          "$$hashKey": "object:228",
+          "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+          "groupBy": [
+            {
+              "params": [
+                "1d,-9h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "model"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "/^inspection.summary-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "C",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "tuid"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              },
+              {
+                "params": [
+                  "불량수"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "branch",
+              "operator": "=~",
+              "value": "/^$BRANCH$/"
+            },
+            {
+              "condition": "AND",
+              "key": "pass",
+              "operator": "=",
+              "value": "false"
+            }
+          ]
         }
       ],
-      "yaxis": {
-        "align": true,
-        "alignLevel": null
-      }
+      "title": "모델별 생산 계획 / 실적수량 / 불량수",
+      "type": "rms-product-state-bar"
     },
     {
       "datasource": "-- Mixed --",
@@ -215,7 +271,9 @@
         "y": 3
       },
       "id": 8,
+      "kernel": null,
       "links": [],
+      "scripts": "",
       "targets": [
         {
           "alias": "",
@@ -417,9 +475,10 @@
         "h": 9,
         "w": 16,
         "x": 8,
-        "y": 7
+        "y": 13
       },
       "id": 5,
+      "kernel": null,
       "legend": {
         "alignAsTable": true,
         "avg": false,
@@ -444,6 +503,7 @@
       "pointradius": 4,
       "points": true,
       "renderer": "flot",
+      "scripts": "",
       "seriesOverrides": [],
       "spaceLength": 10,
       "stack": false,
@@ -550,11 +610,13 @@
         "h": 10,
         "w": 16,
         "x": 8,
-        "y": 16
+        "y": 22
       },
       "id": 2,
+      "kernel": null,
       "links": [],
       "pageSize": null,
+      "scripts": "",
       "scroll": true,
       "showHeader": true,
       "sort": {
@@ -718,7 +780,6 @@
       ],
       "targets": [
         {
-          "$$hashKey": "object:240",
           "alias": "",
           "datasource": "REMOTESOLUTIONS(V1.0)",
           "format": "table",
@@ -727,7 +788,6 @@
           "refId": "B"
         },
         {
-          "$$hashKey": "object:241",
           "alias": "$tag_model",
           "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
           "groupBy": [
@@ -779,7 +839,6 @@
           ]
         },
         {
-          "$$hashKey": "object:242",
           "alias": "$tag_model",
           "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
           "groupBy": [
@@ -837,7 +896,6 @@
           ]
         },
         {
-          "$$hashKey": "object:243",
           "alias": "$tag_model",
           "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
           "groupBy": [
@@ -922,25 +980,21 @@
         "name": "BRANCH",
         "options": [
           {
-            "$$hashKey": "object:196",
             "selected": true,
             "text": "KR",
             "value": "KR"
           },
           {
-            "$$hashKey": "object:197",
             "selected": false,
             "text": "CH",
             "value": "CH"
           },
           {
-            "$$hashKey": "object:198",
             "selected": false,
             "text": "VN",
             "value": "VN"
           },
           {
-            "$$hashKey": "object:199",
             "selected": false,
             "text": "TI",
             "value": "TI"
@@ -952,7 +1006,6 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -976,8 +1029,8 @@
     ]
   },
   "time": {
-    "from": "now/d",
-    "to": "now/d"
+    "from": "now-1d/d",
+    "to": "now-1d/d"
   },
   "timepicker": {
     "hidden": false,
@@ -1008,5 +1061,5 @@
   "timezone": "",
   "title": "생산 현황",
   "uid": "cU1lqH4mz",
-  "version": 13
+  "version": 4
 }

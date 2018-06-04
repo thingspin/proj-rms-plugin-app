@@ -1,0 +1,13 @@
+{
+  "type": "panel",
+  "name": "(RMS) Product Plan Bar Chart",
+  "id": "rms-product-state-bar",
+
+  "info": {
+    "description": "Product Plan Bar Chart with chart.js",
+    "author": {
+      "name": "jiwoong@thingspin.io",
+      "url": "http://thingspin.io"
+    }
+  }
+}

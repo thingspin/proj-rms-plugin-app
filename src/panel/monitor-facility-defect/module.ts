@@ -98,6 +98,7 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
 
         this.svgDomMap = this.initSvgDOM();
         this.animations = this.initAnimation();
+        this.initSvgEvent();
 
         this.events.on('data-received', this.onDataReceived.bind(this));
 
@@ -165,16 +166,29 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
     return result;
   }
 
+  initSvgEvent() {
+    const $warnTitleDOM = $(this.svg.select("#modeling1-title7-warning").node);
+
+    $warnTitleDOM.on("click", (evt) => {
+      if (this.animations.ALERT.isRun) {
+        $warnTitleDOM.hide();
+        this.animations.ALERT.ani.pause(0);
+        this.animations.ALERT.isRun = false;
+      }
+    });
+  }
+
   initAnimation() {
     // set Process Animation DOM
     const $svg = $(this.svg.node);
 
     const $warn = $svg.find("#modeling1-warnning");
     const warnAnimation = new TimelineMax({ repeat: -1, yoyo: true });
+
     _.range(10).forEach((idx: number) => {
-      $svg.find(`#modeling1-title${idx+1}-warning`).css("opacity", 0);
-      $svg.find(`#modeling1-botton-light${idx+1}-warning`).css("opacity", 0);
-      $svg.find(`#modeling1-botton-light${idx+1}-on`).css("opacity", 1);
+      $svg.find(`#modeling1-title${idx+1}-warning`).hide();
+      $svg.find(`#modeling1-botton-light${idx+1}-warning`).hide();
+      $svg.find(`#modeling1-botton-light${idx+1}-on`).hide();
     });
     warnAnimation.fromTo($warn[0], 0.8,{ opacity: 0 }, { opacity: 1, ease: Power3.easeNone });
     warnAnimation.pause(0);
@@ -191,7 +205,10 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
     // });
 
     return {
-      ALERT: warnAnimation,
+      ALERT: {
+        isRun: false,
+        ani: warnAnimation,
+      }
       // LINESTOP: lineAnimation,
     };
   }
@@ -345,21 +362,34 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
   onMqttRecv(topic: string, bin: any) {
     // const msg = bin.toString();
     // const {fields, tags} = JSON.parse(msg);
-    console.log(topic);
     const topics = topic.split("/");
     const command = topics[topics.length-1];
+    console.log(command);
     switch (command) {
       case "ALERT":
         this.refresh();
-        this.animations.ALERT.play();
+        this.warningAnimation();
       break;
       case "LINESTOP":
         this.refresh();
-        this.animations.ALERT.play();
-        this.animations.LINE.stop();
+        if (!this.animations.ALERT.isRun) {
+          this.animations.ALERT.ani.play();
+          this.animations.ALERT.isRun = true;
+          // this.animations.LINE.stop();
+        }
       break;
       default:
         console.error(`command not found : '${command}'`);
+    }
+  }
+
+  warningAnimation() {
+    if (!this.animations.ALERT.isRun) {
+      const $warnTitleDOM = $(this.svg.select("#modeling1-title7-warning").node);
+
+      $warnTitleDOM.show();
+      this.animations.ALERT.ani.play();
+      this.animations.ALERT.isRun = true;
     }
   }
 

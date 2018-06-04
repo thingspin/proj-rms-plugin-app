@@ -36170,6 +36170,7 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
                 _this.svg = snapsvg_dist_snap_svg_min_js__WEBPACK_IMPORTED_MODULE_2__(node_1.find("> svg")[0]);
                 _this.svgDomMap = _this.initSvgDOM();
                 _this.animations = _this.initAnimation();
+                _this.initSvgEvent();
                 _this.events.on('data-received', _this.onDataReceived.bind(_this));
                 var urlPath = "/";
                 var baseUrl = "ws://" + _this.$location.host() + ":" + _this.$location.port() + "/api/plugin-proxy/" + appId;
@@ -36225,15 +36226,26 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
         });
         return result;
     };
+    RmsMonitorFacilityDefectPanelCtrl.prototype.initSvgEvent = function () {
+        var _this = this;
+        var $warnTitleDOM = jquery__WEBPACK_IMPORTED_MODULE_1___default()(this.svg.select("#modeling1-title7-warning").node);
+        $warnTitleDOM.on("click", function (evt) {
+            if (_this.animations.ALERT.isRun) {
+                $warnTitleDOM.hide();
+                _this.animations.ALERT.ani.pause(0);
+                _this.animations.ALERT.isRun = false;
+            }
+        });
+    };
     RmsMonitorFacilityDefectPanelCtrl.prototype.initAnimation = function () {
         // set Process Animation DOM
         var $svg = jquery__WEBPACK_IMPORTED_MODULE_1___default()(this.svg.node);
         var $warn = $svg.find("#modeling1-warnning");
         var warnAnimation = new gsap_TweenMax__WEBPACK_IMPORTED_MODULE_6__["TimelineMax"]({ repeat: -1, yoyo: true });
         lodash__WEBPACK_IMPORTED_MODULE_0___default.a.range(10).forEach(function (idx) {
-            $svg.find("#modeling1-title" + (idx + 1) + "-warning").css("opacity", 0);
-            $svg.find("#modeling1-botton-light" + (idx + 1) + "-warning").css("opacity", 0);
-            $svg.find("#modeling1-botton-light" + (idx + 1) + "-on").css("opacity", 1);
+            $svg.find("#modeling1-title" + (idx + 1) + "-warning").hide();
+            $svg.find("#modeling1-botton-light" + (idx + 1) + "-warning").hide();
+            $svg.find("#modeling1-botton-light" + (idx + 1) + "-on").hide();
         });
         warnAnimation.fromTo($warn[0], 0.8, { opacity: 0 }, { opacity: 1, ease: gsap_TweenMax__WEBPACK_IMPORTED_MODULE_6__["Power3"].easeNone });
         warnAnimation.pause(0);
@@ -36247,7 +36259,11 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
         //   lineAnimation.to(DOM[0], 0, {opacity: 0}, "+=0.4");
         // });
         return {
-            ALERT: warnAnimation,
+            ALERT: {
+                isRun: false,
+                ani: warnAnimation,
+            }
+            // LINESTOP: lineAnimation,
         };
     };
     RmsMonitorFacilityDefectPanelCtrl.prototype.onClicked = function (evtData) {
@@ -36397,21 +36413,32 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
     RmsMonitorFacilityDefectPanelCtrl.prototype.onMqttRecv = function (topic, bin) {
         // const msg = bin.toString();
         // const {fields, tags} = JSON.parse(msg);
-        console.log(topic);
         var topics = topic.split("/");
         var command = topics[topics.length - 1];
+        console.log(command);
         switch (command) {
             case "ALERT":
                 this.refresh();
-                this.animations.ALERT.play();
+                this.warningAnimation();
                 break;
             case "LINESTOP":
                 this.refresh();
-                this.animations.ALERT.play();
-                this.animations.LINE.stop();
+                if (!this.animations.ALERT.isRun) {
+                    this.animations.ALERT.ani.play();
+                    this.animations.ALERT.isRun = true;
+                    // this.animations.LINE.stop();
+                }
                 break;
             default:
                 console.error("command not found : '" + command + "'");
+        }
+    };
+    RmsMonitorFacilityDefectPanelCtrl.prototype.warningAnimation = function () {
+        if (!this.animations.ALERT.isRun) {
+            var $warnTitleDOM = jquery__WEBPACK_IMPORTED_MODULE_1___default()(this.svg.select("#modeling1-title7-warning").node);
+            $warnTitleDOM.show();
+            this.animations.ALERT.ani.play();
+            this.animations.ALERT.isRun = true;
         }
     };
     RmsMonitorFacilityDefectPanelCtrl.prototype.link = function (scope, elem, attrs, ctrl) { };
