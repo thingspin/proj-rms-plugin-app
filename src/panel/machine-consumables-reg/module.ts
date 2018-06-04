@@ -247,7 +247,7 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
             + 'and a.machine_name="' + info.machine_name + '" and b.consumables_name="' + info.consumables_name + '"'
           ];
           
-          console.log(query1);  
+          //console.log(query1);  
 
           this.dsSrv.query(selectId, query1).then( result => {
             var data = result[0];
@@ -274,7 +274,7 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
                   + strDate + '", "' + info.memo + '");'
                 ]; 
 
-                console.log(query3);
+                //console.log(query3);
     
                 this.dsSrv.query(selectId, query3).then( result => {            
                   this.panel.inputlItem.machine_consumables_id = -1;
@@ -320,43 +320,64 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
           let selectId = this.datasource.id;
 
           let query1 = [
-            'select machine_id, consumables_id from t_machine, t_consumables where machine_name="' 
-                + info.machine_name + '" and consumables_name="' + info.consumables_name + '"'
+            'SELECT machine_name, consumables_name '
+            + 'FROM t_machine AS a, t_consumables AS b, t_machine_consumables AS c WHERE a.machine_id = c.machine_id AND b.consumables_id = c.consumables_id '
+            + 'and a.machine_name="' + info.machine_name + '" and b.consumables_name="' 
+            + info.consumables_name + '" and machine_consumables_id !=' + info.machine_consumables_id
           ];
+          
+          //console.log(query1);  
 
-          this.dsSrv.query(selectId, query1).then( result => {  
-
-            var data = result[0];      
-            var machine_id = data.rows[0][0];
-            var consumables_id = data.rows[0][1];
-
-            var tmpDate = new Date(info.change_date);
-            var strDate = tmpDate.getFullYear() + '/' + (tmpDate.getMonth()+1) + '/' + tmpDate.getDate()
-            
-            let query2 = [
-              'update t_machine_consumables set ' + 
-              'machine_id=' + machine_id + ', ' + 
-              'consumables_id=' + consumables_id + ', ' + 
-              'consumables_count=' + info.count + ', ' + 
-              'change_date="' + strDate + '", ' + 
-              'memo="' + info.memo + '" where machine_consumables_id=' + info.machine_consumables_id
-            ];       
-      
-            console.log(selectId + " " + query2);
-      
-            this.dsSrv.query(selectId, query2).then( result => {
-              this.panel.inputlItem.machine_consumables_id = -1;
-              this.$rootScope.$broadcast('refresh');
-            }).catch( err => {
-              console.error(err);
-            });    
-
+          this.dsSrv.query(selectId, query1).then( result => {
+            var data = result[0];
+            //console.log("data rows: " + data.rows.length);  
+            if(data.rows.length == 0)
+            {
+              let query2 = [
+                'select machine_id, consumables_id from t_machine, t_consumables where machine_name="' 
+                    + info.machine_name + '" and consumables_name="' + info.consumables_name + '"'
+              ];
+    
+              this.dsSrv.query(selectId, query2).then( result => {  
+    
+                var data = result[0];      
+                var machine_id = data.rows[0][0];
+                var consumables_id = data.rows[0][1];
+    
+                var tmpDate = new Date(info.change_date);
+                var strDate = tmpDate.getFullYear() + '/' + (tmpDate.getMonth()+1) + '/' + tmpDate.getDate()
+                
+                let query2 = [
+                  'update t_machine_consumables set ' + 
+                  'machine_id=' + machine_id + ', ' + 
+                  'consumables_id=' + consumables_id + ', ' + 
+                  'consumables_count=' + info.count + ', ' + 
+                  'change_date="' + strDate + '", ' + 
+                  'memo="' + info.memo + '" where machine_consumables_id=' + info.machine_consumables_id
+                ];       
+          
+                console.log(selectId + " " + query2);
+          
+                this.dsSrv.query(selectId, query2).then( result => {
+                  this.panel.inputlItem.machine_consumables_id = -1;
+                  this.$rootScope.$broadcast('refresh');
+                }).catch( err => {
+                  console.error(err);
+                });    
+    
+    
+              }).catch( err => {
+                console.error(err);
+              });
+            }
+            else
+            {
+              this.alertSrv.set("이미 등록 되어있습니다.", 'error', 5000);
+            }
 
           }).catch( err => {
             console.error(err);
-          });
-          
-
+          });             
         }
       });   
 
