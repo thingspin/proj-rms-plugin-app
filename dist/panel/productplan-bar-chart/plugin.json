@@ -1,7 +1,7 @@
 {
   "type": "panel",
   "name": "(RMS) Product Plan Bar Chart",
-  "id": "rms-product-state-bar",
+  "id": "rms-product-plan-bar",
 
   "info": {
     "description": "Product Plan Bar Chart with chart.js",
