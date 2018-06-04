@@ -115,6 +115,7 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
       this.dataTable.setData("setData",tabledata);
       this.container.tabulator("setData", tabledata);
     }
+    this.container.tabulator("hideColumn","time_sec");
     this.initalized = true;
   }
 
@@ -149,9 +150,35 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
 
     tableMap.forEach(function (value, key, mapObj) {
       var object = Object();
-      value.forEach((v,k)=> {object[k] = v});
+      var tempTotal = 0;
+      var tempProduct = 0;
+      // var tempError = 0;
+      value.forEach((v,k)=> {
+        object[k] = v;
+        if (k === '생산계획') {
+          tempTotal = v;
+        } else if (k === '실적수량') {
+          tempProduct = v;
+        }
+      });
+      object.achievement = Math.round((tempProduct/tempTotal)*100);
+      object.achievement_text = Math.round((tempProduct/tempTotal)*100) + "%";
       jArray.push(object);
-    });    
+    });
+    var obj = {
+      title: 'GRAPH',
+      field: 'achievement',
+      align: "left",
+      formatter:"progress"
+    }
+    this.columns.push(obj);
+    var object = {
+      title: '달성률',
+      field: 'achievement_text',
+      align: "left",
+    }
+    this.columns.push(object);
+
     this.dataJson = jArray;
   };
 
