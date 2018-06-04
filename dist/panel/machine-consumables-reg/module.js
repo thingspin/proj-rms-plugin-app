@@ -29247,7 +29247,7 @@ var RmsMachineConsumablesPanelCtrl = /** @class */ (function (_super) {
                             + 'FROM t_machine AS a, t_consumables AS b, t_machine_consumables AS c WHERE a.machine_id = c.machine_id AND b.consumables_id = c.consumables_id '
                             + 'and a.machine_name="' + info.machine_name + '" and b.consumables_name="' + info.consumables_name + '"'
                     ];
-                    console.log(query1);
+                    //console.log(query1);  
                     _this.dsSrv.query(selectId, query1).then(function (result) {
                         var data = result[0];
                         //console.log("data rows: " + data.rows.length);  
@@ -29267,7 +29267,7 @@ var RmsMachineConsumablesPanelCtrl = /** @class */ (function (_super) {
                                         + machine_id + ', ' + consumables_id + ', ' + info.count + ', "'
                                         + strDate + '", "' + info.memo + '");'
                                 ];
-                                console.log(query3);
+                                //console.log(query3);
                                 _this.dsSrv.query(selectId, query3).then(function (result) {
                                     _this.panel.inputlItem.machine_consumables_id = -1;
                                     _this.$rootScope.$broadcast('refresh');
@@ -29302,30 +29302,48 @@ var RmsMachineConsumablesPanelCtrl = /** @class */ (function (_super) {
                 onConfirm: function () {
                     var selectId = _this.datasource.id;
                     var query1 = [
-                        'select machine_id, consumables_id from t_machine, t_consumables where machine_name="'
-                            + info.machine_name + '" and consumables_name="' + info.consumables_name + '"'
+                        'SELECT machine_name, consumables_name '
+                            + 'FROM t_machine AS a, t_consumables AS b, t_machine_consumables AS c WHERE a.machine_id = c.machine_id AND b.consumables_id = c.consumables_id '
+                            + 'and a.machine_name="' + info.machine_name + '" and b.consumables_name="'
+                            + info.consumables_name + '" and machine_consumables_id !=' + info.machine_consumables_id
                     ];
+                    //console.log(query1);  
                     _this.dsSrv.query(selectId, query1).then(function (result) {
                         var data = result[0];
-                        var machine_id = data.rows[0][0];
-                        var consumables_id = data.rows[0][1];
-                        var tmpDate = new Date(info.change_date);
-                        var strDate = tmpDate.getFullYear() + '/' + (tmpDate.getMonth() + 1) + '/' + tmpDate.getDate();
-                        var query2 = [
-                            'update t_machine_consumables set ' +
-                                'machine_id=' + machine_id + ', ' +
-                                'consumables_id=' + consumables_id + ', ' +
-                                'consumables_count=' + info.count + ', ' +
-                                'change_date="' + strDate + '", ' +
-                                'memo="' + info.memo + '" where machine_consumables_id=' + info.machine_consumables_id
-                        ];
-                        console.log(selectId + " " + query2);
-                        _this.dsSrv.query(selectId, query2).then(function (result) {
-                            _this.panel.inputlItem.machine_consumables_id = -1;
-                            _this.$rootScope.$broadcast('refresh');
-                        }).catch(function (err) {
-                            console.error(err);
-                        });
+                        //console.log("data rows: " + data.rows.length);  
+                        if (data.rows.length == 0) {
+                            var query2 = [
+                                'select machine_id, consumables_id from t_machine, t_consumables where machine_name="'
+                                    + info.machine_name + '" and consumables_name="' + info.consumables_name + '"'
+                            ];
+                            _this.dsSrv.query(selectId, query2).then(function (result) {
+                                var data = result[0];
+                                var machine_id = data.rows[0][0];
+                                var consumables_id = data.rows[0][1];
+                                var tmpDate = new Date(info.change_date);
+                                var strDate = tmpDate.getFullYear() + '/' + (tmpDate.getMonth() + 1) + '/' + tmpDate.getDate();
+                                var query2 = [
+                                    'update t_machine_consumables set ' +
+                                        'machine_id=' + machine_id + ', ' +
+                                        'consumables_id=' + consumables_id + ', ' +
+                                        'consumables_count=' + info.count + ', ' +
+                                        'change_date="' + strDate + '", ' +
+                                        'memo="' + info.memo + '" where machine_consumables_id=' + info.machine_consumables_id
+                                ];
+                                console.log(selectId + " " + query2);
+                                _this.dsSrv.query(selectId, query2).then(function (result) {
+                                    _this.panel.inputlItem.machine_consumables_id = -1;
+                                    _this.$rootScope.$broadcast('refresh');
+                                }).catch(function (err) {
+                                    console.error(err);
+                                });
+                            }).catch(function (err) {
+                                console.error(err);
+                            });
+                        }
+                        else {
+                            _this.alertSrv.set("이미 등록 되어있습니다.", 'error', 5000);
+                        }
                     }).catch(function (err) {
                         console.error(err);
                     });

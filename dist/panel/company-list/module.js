@@ -29240,9 +29240,13 @@ var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
                 //yesText: '삭제',
                 onConfirm: function () {
                     var selectId = _this.datasource.id;
+                    // let query1 = [
+                    //   'select * from t_business where business_type="' 
+                    //   + info.business_type + '" and name="' + info.name + '" and person="' + info.person + '";'
+                    // ];     
                     var query1 = [
                         'select * from t_business where business_type="'
-                            + info.business_type + '" and name="' + info.name + '" and person="' + info.person + '";'
+                            + info.business_type + '" and name="' + info.name + '"'
                     ];
                     //console.log(selectId + " " + query);
                     _this.dsSrv.query(selectId, query1).then(function (result) {
@@ -29308,19 +29312,34 @@ var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
                 //yesText: '삭제',
                 onConfirm: function () {
                     var selectId = _this.datasource.id;
-                    var query = [
-                        'update t_business set ' +
-                            'name="' + info.name + '", ' +
-                            'business_type="' + info.business_type + '", ' +
-                            'phone="' + info.phone + '", ' +
-                            'mail="' + info.mail + '", ' +
-                            'person="' + info.person + '", ' +
-                            'memo="' + info.memo + '" where business_id=' + info.business_id
+                    var query1 = [
+                        'select * from t_business where business_type="'
+                            + info.business_type + '" and name="' + info.name + '" and business_id!=' + info.business_id
                     ];
-                    console.log(selectId + " " + query);
-                    _this.dsSrv.query(selectId, query).then(function (result) {
-                        _this.panel.inputlItem.business_id = -1;
-                        _this.$rootScope.$broadcast('refresh');
+                    _this.dsSrv.query(selectId, query1).then(function (result) {
+                        var data = result[0];
+                        //console.log("data rows: " + data.rows.length);  
+                        if (data.rows.length == 0) {
+                            var query2 = [
+                                'update t_business set ' +
+                                    'name="' + info.name + '", ' +
+                                    'business_type="' + info.business_type + '", ' +
+                                    'phone="' + info.phone + '", ' +
+                                    'mail="' + info.mail + '", ' +
+                                    'person="' + info.person + '", ' +
+                                    'memo="' + info.memo + '" where business_id=' + info.business_id
+                            ];
+                            console.log(selectId + " " + query2);
+                            _this.dsSrv.query(selectId, query2).then(function (result) {
+                                _this.panel.inputlItem.business_id = -1;
+                                _this.$rootScope.$broadcast('refresh');
+                            }).catch(function (err) {
+                                console.error(err);
+                            });
+                        }
+                        else {
+                            _this.alertSrv.set("이미 등록 되어있습니다.", 'error', 5000);
+                        }
                     }).catch(function (err) {
                         console.error(err);
                     });
