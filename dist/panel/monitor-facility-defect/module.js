@@ -36228,12 +36228,27 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
     };
     RmsMonitorFacilityDefectPanelCtrl.prototype.initSvgEvent = function () {
         var _this = this;
-        var $warnTitleDOM = jquery__WEBPACK_IMPORTED_MODULE_1___default()(this.svg.select("#modeling1-title7-warning").node);
+        var $svg = jquery__WEBPACK_IMPORTED_MODULE_1___default()(this.svg.node);
+        var baseId = "modeling1-title";
+        var $warnTitleDOM = $svg.find("#" + baseId + "7-warning");
         $warnTitleDOM.on("click", function (evt) {
             if (_this.animations.ALERT.isRun) {
                 $warnTitleDOM.hide();
+                $svg.find("#" + baseId + "7").show();
                 _this.animations.ALERT.ani.pause(0);
                 _this.animations.ALERT.isRun = false;
+            }
+            if (!_this.animations.LINE.isRun) {
+                lodash__WEBPACK_IMPORTED_MODULE_0___default.a.range(10).forEach(function (idx) {
+                    var id = "modeling1";
+                    $svg.find("#" + id + "-machine" + (idx + 1) + "-on").show();
+                    $svg.find("#" + id + "-machine" + (idx + 1) + "-off").hide();
+                    $svg.find("#" + id + "-title" + (idx + 1)).show();
+                    $svg.find("#" + id + "-title" + (idx + 1) + "-warning").hide();
+                    $svg.find("#" + id + "-botton-light" + (idx + 1) + "-on").show();
+                    $svg.find("#" + id + "-botton-light" + (idx + 1) + "-warning").hide();
+                });
+                _this.animations.LINE.isRun = true;
             }
         });
     };
@@ -36262,8 +36277,10 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
             ALERT: {
                 isRun: false,
                 ani: warnAnimation,
+            },
+            LINE: {
+                isRun: true,
             }
-            // LINESTOP: lineAnimation,
         };
     };
     RmsMonitorFacilityDefectPanelCtrl.prototype.onClicked = function (evtData) {
@@ -36418,27 +36435,40 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
         console.log(command);
         switch (command) {
             case "ALERT":
-                this.refresh();
                 this.warningAnimation();
                 break;
             case "LINESTOP":
-                this.refresh();
-                if (!this.animations.ALERT.isRun) {
-                    this.animations.ALERT.ani.play();
-                    this.animations.ALERT.isRun = true;
-                    // this.animations.LINE.stop();
-                }
+                this.lineAnimation();
                 break;
             default:
                 console.error("command not found : '" + command + "'");
+                break;
         }
     };
     RmsMonitorFacilityDefectPanelCtrl.prototype.warningAnimation = function () {
         if (!this.animations.ALERT.isRun) {
             var $warnTitleDOM = jquery__WEBPACK_IMPORTED_MODULE_1___default()(this.svg.select("#modeling1-title7-warning").node);
+            this.refresh();
             $warnTitleDOM.show();
             this.animations.ALERT.ani.play();
             this.animations.ALERT.isRun = true;
+        }
+    };
+    RmsMonitorFacilityDefectPanelCtrl.prototype.lineAnimation = function () {
+        this.warningAnimation();
+        if (this.animations.LINE.isRun) {
+            var $svg_1 = jquery__WEBPACK_IMPORTED_MODULE_1___default()(this.svg.node);
+            var id_1 = "modeling1";
+            // this.animations.LINE.ani.puase(0);
+            this.animations.LINE.isRun = false;
+            lodash__WEBPACK_IMPORTED_MODULE_0___default.a.range(10).forEach(function (idx) {
+                $svg_1.find("#" + id_1 + "-machine" + (idx + 1) + "-on").hide();
+                $svg_1.find("#" + id_1 + "-machine" + (idx + 1) + "-off").show();
+                $svg_1.find("#" + id_1 + "-title" + (idx + 1)).hide();
+                $svg_1.find("#" + id_1 + "-title" + (idx + 1) + "-warning").show();
+                $svg_1.find("#" + id_1 + "-botton-light" + (idx + 1) + "-on").hide();
+            });
+            $svg_1.find("#" + id_1 + "-botton-light7-warning").show();
         }
     };
     RmsMonitorFacilityDefectPanelCtrl.prototype.link = function (scope, elem, attrs, ctrl) { };

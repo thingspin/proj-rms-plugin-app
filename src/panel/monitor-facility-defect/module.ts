@@ -167,13 +167,32 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
   }
 
   initSvgEvent() {
-    const $warnTitleDOM = $(this.svg.select("#modeling1-title7-warning").node);
+    const $svg = $(this.svg.node);
+    const baseId = "modeling1-title";
+    const $warnTitleDOM = $svg.find(`#${baseId}7-warning`);
 
     $warnTitleDOM.on("click", (evt) => {
       if (this.animations.ALERT.isRun) {
         $warnTitleDOM.hide();
+        $svg.find(`#${baseId}7`).show();
+
         this.animations.ALERT.ani.pause(0);
         this.animations.ALERT.isRun = false;
+      }
+
+      if (!this.animations.LINE.isRun) {
+        _.range(10).forEach((idx: number) => {
+          const id = `modeling1`;
+          $svg.find(`#${id}-machine${idx+1}-on`).show();
+          $svg.find(`#${id}-machine${idx+1}-off`).hide();
+
+          $svg.find(`#${id}-title${idx+1}`).show();
+          $svg.find(`#${id}-title${idx+1}-warning`).hide();
+
+          $svg.find(`#${id}-botton-light${idx+1}-on`).show();
+          $svg.find(`#${id}-botton-light${idx+1}-warning`).hide();
+        });
+        this.animations.LINE.isRun = true;
       }
     });
   }
@@ -208,8 +227,10 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
       ALERT: {
         isRun: false,
         ani: warnAnimation,
+      },
+      LINE: {
+        isRun: true,
       }
-      // LINESTOP: lineAnimation,
     };
   }
 
@@ -366,30 +387,40 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
     const command = topics[topics.length-1];
     console.log(command);
     switch (command) {
-      case "ALERT":
-        this.refresh();
-        this.warningAnimation();
-      break;
-      case "LINESTOP":
-        this.refresh();
-        if (!this.animations.ALERT.isRun) {
-          this.animations.ALERT.ani.play();
-          this.animations.ALERT.isRun = true;
-          // this.animations.LINE.stop();
-        }
-      break;
-      default:
-        console.error(`command not found : '${command}'`);
+      case "ALERT": this.warningAnimation(); break;
+      case "LINESTOP": this.lineAnimation(); break;
+      default: console.error(`command not found : '${command}'`); break;
     }
   }
 
   warningAnimation() {
     if (!this.animations.ALERT.isRun) {
       const $warnTitleDOM = $(this.svg.select("#modeling1-title7-warning").node);
+      this.refresh();
 
       $warnTitleDOM.show();
       this.animations.ALERT.ani.play();
       this.animations.ALERT.isRun = true;
+    }
+  }
+
+  lineAnimation() {
+    this.warningAnimation();
+    if (this.animations.LINE.isRun) {
+      const $svg = $(this.svg.node);
+      const id = `modeling1`;
+      // this.animations.LINE.ani.puase(0);
+      this.animations.LINE.isRun = false;
+      _.range(10).forEach((idx: number) => {
+        $svg.find(`#${id}-machine${idx+1}-on`).hide();
+        $svg.find(`#${id}-machine${idx+1}-off`).show();
+
+        $svg.find(`#${id}-title${idx+1}`).hide();
+        $svg.find(`#${id}-title${idx+1}-warning`).show();
+
+        $svg.find(`#${id}-botton-light${idx+1}-on`).hide();
+      });
+      $svg.find(`#${id}-botton-light7-warning`).show();
     }
   }
 
