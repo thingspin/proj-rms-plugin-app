@@ -58,6 +58,7 @@
     {"type": "menu", "name": "분석", "mainMenu": true,  "slug": "cpk-hyeonhwang", "img":"img/thignspin_ic_48dp_white-02.svg", "menuID": 4},
     {"type": "dashboard", "name": "CPK 현황", "path": "dashboards/D00-01.json", "AddToNav": true, "menuID": 4, "ico":"fa fa-industry"},
     {"type": "dashboard", "name": "CPK 현황 (모델별)", "path": "dashboards/D00-01.1.json", "AddToNav": false, "menuID": 4, "ico":"fa fa-industry"},
+    {"type": "dashboard", "name": "CPK 현황 (Daily, Weekly)", "path": "dashboards/D00-03.3.json", "AddToNav": true, "menuID": 4, "ico":"fa fa-industry"},
     {"type": "dashboard", "name": "불량 현황", "path": "dashboards/D00-02.json", "AddToNav": true, "menuID": 4, "ico":"fa fa-industry"},
     {"type": "dashboard", "name": "불량 현황 상태", "path": "dashboards/D00-02.1.json", "AddToNav": true, "menuID": 4, "ico":"fa fa-industry"},
     {"type": "dashboard", "name": "검사항목별 검사기록 (상세)", "path": "dashboards/D00-03.1.json", "AddToNav": true, "menuID": 4, "ico":"fa fa-industry"},

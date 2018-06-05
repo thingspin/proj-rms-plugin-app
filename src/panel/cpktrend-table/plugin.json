@@ -1,0 +1,13 @@
+{
+  "type": "panel",
+  "name": "(RMS) CPK Trend Table",
+  "id": "rms-cpk-trend-table",
+
+  "info": {
+    "description": "Asset management : Company",
+    "author": {
+      "name": "jiwoong@thingspin.io",
+      "url": "http://thingspin.io"
+    }
+  }
+}

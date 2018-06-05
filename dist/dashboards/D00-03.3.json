@@ -2,7 +2,7 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:153",
+        "$$hashKey": "object:415",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -16,116 +16,39 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1528157247674,
+  "iteration": 1528190686502,
   "links": [],
   "panels": [
     {
-      "datasource": "$DATABASE",
+      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
       "gridPos": {
-        "h": 11,
-        "w": 11,
+        "h": 18,
+        "w": 24,
         "x": 0,
         "y": 0
       },
-      "id": 2,
+      "id": 4,
       "kernel": null,
       "links": [],
       "scripts": "",
       "targets": [
         {
+          "$$hashKey": "object:816",
           "groupBy": [
             {
               "params": [
-                "facility"
+                "1d"
               ],
-              "type": "tag"
+              "type": "time"
             },
-            {
-              "params": [
-                "channel"
-              ],
-              "type": "tag"
-            }
-          ],
-          "measurement": "/^inspection.summary-*/",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "A",
-          "resultFormat": "table",
-          "select": [
-            [
-              {
-                "params": [
-                  "tuid"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "count"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "facility",
-              "operator": "=~",
-              "value": "/^$FACILITY$/"
-            },
-            {
-              "condition": "AND",
-              "key": "channel",
-              "operator": "=~",
-              "value": "/^$CHANNEL$/"
-            },
-            {
-              "condition": "AND",
-              "key": "pass",
-              "operator": "=~",
-              "value": "/^$PASS$/"
-            }
-          ]
-        }
-      ],
-      "title": "검사기와 채널 별",
-      "type": "rms-product-state-bar"
-    },
-    {
-      "datasource": "-- Mixed --",
-      "gridPos": {
-        "h": 11,
-        "w": 12,
-        "x": 11,
-        "y": 0
-      },
-      "id": 6,
-      "kernel": null,
-      "links": [],
-      "scripts": "",
-      "targets": [
-        {
-          "datasource": "$DATABASE",
-          "groupBy": [
             {
               "params": [
                 "inm"
               ],
               "type": "tag"
-            },
-            {
-              "params": [
-                "facility"
-              ],
-              "type": "tag"
-            },
-            {
-              "params": [
-                "channel"
-              ],
-              "type": "tag"
             }
           ],
-          "measurement": "/^alram.continuous.failures.detail-*/",
+          "measurement": "/^inspection.detail-*/",
           "orderByTime": "ASC",
           "policy": "default",
           "refId": "A",
@@ -134,71 +57,96 @@
             [
               {
                 "params": [
-                  "val"
+                  "cpk"
                 ],
                 "type": "field"
               },
               {
                 "params": [],
-                "type": "count"
+                "type": "mean"
               }
             ]
           ],
-          "tags": [
-            {
-              "key": "facility",
-              "operator": "=~",
-              "value": "/^$FACILITY$/"
-            },
-            {
-              "condition": "AND",
-              "key": "channel",
-              "operator": "=~",
-              "value": "/^$CHANNEL$/"
-            },
-            {
-              "condition": "AND",
-              "key": "pass",
-              "operator": "=~",
-              "value": "/^$PASS$/"
-            }
-          ]
+          "tags": []
         }
       ],
-      "title": "검사항목별",
-      "type": "rms-Inspection-state-bar"
+      "title": "Daily CPK Trend",
+      "type": "rms-cpk-trend-table"
+    },
+    {
+      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "gridPos": {
+        "h": 18,
+        "w": 24,
+        "x": 0,
+        "y": 18
+      },
+      "id": 5,
+      "kernel": null,
+      "links": [],
+      "scripts": "",
+      "targets": [
+        {
+          "$$hashKey": "object:816",
+          "groupBy": [
+            {
+              "params": [
+                "1w"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "inm"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "/^inspection.detail-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "cpk"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "Weekly CPK Trend",
+      "type": "rms-cpk-trend-table"
     }
   ],
   "schemaVersion": 16,
   "style": "dark",
-  "tags": [],
+  "tags": [
+    "CPK",
+    "Trend"
+  ],
   "templating": {
     "list": [
-      {
-        "current": {
-          "text": "RMS-CENTER-INFLUXDB(V1.0)",
-          "value": "RMS-CENTER-INFLUXDB(V1.0)"
-        },
-        "hide": 2,
-        "label": "본사/지점",
-        "name": "DATABASE",
-        "options": [],
-        "query": "influxdb",
-        "refresh": 1,
-        "regex": "/^RMS-CENTER-*/",
-        "type": "datasource"
-      },
       {
         "allValue": null,
         "current": {
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "$DATABASE",
+        "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
         "hide": 0,
         "includeAll": true,
         "label": "검사기",
-        "multi": true,
+        "multi": false,
         "name": "FACILITY",
         "options": [],
         "query": "show tag values from /inspection/ with key=facility",
@@ -217,11 +165,11 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "$DATABASE",
+        "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
         "hide": 0,
         "includeAll": true,
         "label": "채널",
-        "multi": true,
+        "multi": false,
         "name": "CHANNEL",
         "options": [],
         "query": "show tag values from /inspection/ with key=channel",
@@ -237,53 +185,36 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
-          "text": "false",
-          "value": "false"
+          "text": "All",
+          "value": "$__all"
         },
+        "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
         "hide": 0,
         "includeAll": true,
-        "label": "합격",
+        "label": "모델",
         "multi": false,
-        "name": "PASS",
-        "options": [
-          {
-            "selected": false,
-            "text": "All",
-            "value": "$__all"
-          },
-          {
-            "selected": false,
-            "text": "true",
-            "value": "true"
-          },
-          {
-            "selected": true,
-            "text": "false",
-            "value": "false"
-          }
-        ],
-        "query": "true, false",
-        "type": "custom"
+        "name": "MODEL",
+        "options": [],
+        "query": "show tag values from /inspection/ with key=model",
+        "refresh": 2,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
       }
     ]
   },
   "time": {
-    "from": "now/d",
-    "to": "now/d"
+    "from": "now-5d",
+    "to": "now"
   },
   "timepicker": {
     "refresh_intervals": [
-      "5s",
-      "10s",
-      "30s",
-      "1m",
-      "5m",
-      "15m",
-      "30m",
-      "1h",
-      "2h",
-      "1d"
+      "1d",
+      "1w"
     ],
     "time_options": [
       "5m",
@@ -298,7 +229,7 @@
     ]
   },
   "timezone": "",
-  "title": "불량 현황 상태",
-  "uid": "KfvX3wVik",
-  "version": 4
+  "title": "CPK Trend 분석",
+  "uid": "KECltDSmk",
+  "version": 5
 }
