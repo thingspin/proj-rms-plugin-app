@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1527644832022,
+  "iteration": 1528103388481,
   "links": [
     {
       "icon": "external link",
@@ -65,6 +65,7 @@
       },
       "id": 5,
       "interval": null,
+      "kernel": null,
       "links": [],
       "mappingType": 1,
       "mappingTypes": [
@@ -91,6 +92,7 @@
           "to": "null"
         }
       ],
+      "scripts": "",
       "sparkline": {
         "fillColor": "rgba(31, 118, 189, 0.18)",
         "full": false,
@@ -175,6 +177,7 @@
       },
       "id": 15,
       "interval": null,
+      "kernel": null,
       "legend": {
         "percentage": true,
         "show": true,
@@ -185,6 +188,7 @@
       "maxDataPoints": 3,
       "nullPointMode": "connected",
       "pieType": "pie",
+      "scripts": "",
       "strokeWidth": "4",
       "targets": [
         {
@@ -320,6 +324,7 @@
       },
       "id": 8,
       "interval": null,
+      "kernel": null,
       "links": [],
       "mappingType": 1,
       "mappingTypes": [
@@ -346,6 +351,7 @@
           "to": "null"
         }
       ],
+      "scripts": "",
       "sparkline": {
         "fillColor": "rgba(31, 118, 189, 0.18)",
         "full": false,
@@ -445,6 +451,7 @@
       },
       "id": 9,
       "interval": null,
+      "kernel": null,
       "links": [],
       "mappingType": 1,
       "mappingTypes": [
@@ -471,6 +478,7 @@
           "to": "null"
         }
       ],
+      "scripts": "",
       "sparkline": {
         "fillColor": "rgba(31, 118, 189, 0.18)",
         "full": false,
@@ -553,8 +561,10 @@
       },
       "hideTimeOverride": false,
       "id": 2,
+      "kernel": null,
       "links": [],
       "pageSize": 20,
+      "scripts": "",
       "scroll": true,
       "showHeader": true,
       "sort": {
@@ -867,23 +877,21 @@
     "list": [
       {
         "current": {
-          "selected": true,
           "text": "RMS-CENTER-INFLUXDB(V1.0)",
           "value": "RMS-CENTER-INFLUXDB(V1.0)"
         },
-        "hide": 0,
+        "hide": 2,
         "label": "본사/지점 선택",
         "name": "DATABASE",
         "options": [],
         "query": "influxdb",
         "refresh": 1,
-        "regex": "/^RMS-*/",
+        "regex": "/^RMS-CENTER-*/",
         "type": "datasource"
       },
       {
         "allValue": null,
         "current": {
-          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -907,7 +915,6 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -931,7 +938,6 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -1105,5 +1111,5 @@
   "timezone": "",
   "title": "모델별 검사기록",
   "uid": "rAgfpx7iz",
-  "version": 132
+  "version": 3
 }

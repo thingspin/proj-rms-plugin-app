@@ -38,7 +38,7 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
 
   constructor($scope, $injector, private $window) {
     super($scope, $injector);
-  
+
     this.Chart = this.$window.Chart;
     this.chartID = 'chart-rms-cpk-' + this.panel.id;
     /*
@@ -61,7 +61,7 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
     this.events.on('panel-size-changed', this.onSizeChanged.bind(this));
     this.events.on('panel-initialized', this.onRender.bind(this));
     this.events.on('data-received', this.onDataReceived.bind(this));
-    
+
     /* Sample for normal distribution
     for (var i = 1; i <= 10000; i++) {
       this.series.push(this.gaussianRandom(1,50));
@@ -87,7 +87,7 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
     };
     */
   }
-  
+
   OnInitialized() {
     this.OnDraw();
   }
@@ -102,22 +102,22 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
   onDataReceived(dataList) {
     console.log("data received");
     let data;
-    if(dataList == null || dataList.length > 2) {
+    if (dataList == null || dataList.length > 2) {
       return;
     }
-    for ( let i=0 ;i < dataList.length ; i++) {
+    for ( let i = 0 ;i < dataList.length ; i++) {
       if ( dataList[i].type === 'table' ) {
-        for ( let j=0; j < dataList[i].columns.length ; j++) {
+        for ( let j = 0; j < dataList[i].columns.length ; j++) {
           //console.log("===============");
           if ( dataList[i].columns[j].text === 'cpk') {
             //console.log("cpk");
             //console.log(dataList[i].rows[j]);
             this.cpk = dataList[i].rows[0][j];
-          }else if(dataList[i].columns[j].text === 'cp') {
+          }else if (dataList[i].columns[j].text === 'cp') {
             this.cp = dataList[i].rows[0][j];
-          }else if(dataList[i].columns[j].text === 'lsl') {
+          }else if (dataList[i].columns[j].text === 'lsl') {
             this.lsl = dataList[i].rows[0][j];
-          }else if(dataList[i].columns[j].text === 'usl') {
+          }else if (dataList[i].columns[j].text === 'usl') {
             this.usl = dataList[i].rows[0][j];
           }
         }
@@ -125,17 +125,17 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
         data = dataList[i];
       }
     }
-    
+
     //console.log(dataList);
     // Bucket size
     let bucketSize = 10;
-    let panelWidth = this.canvas.width
-    
+    let panelWidth = this.canvas.width;
+
     // Convert data to histogram data
     let result = convertToHistogramData([data],bucketSize,panelWidth);
     //this.mean = result[0].mean;
     result = result[0].data;
-    
+
     //console.log("======2======");
     //console.log(result);
     // setting for x-axis and y-axis range
@@ -160,7 +160,7 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
         }
       ]
     };
-   
+
     this.OnDraw();
   }
 
@@ -169,22 +169,22 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
         afterDatasetsDraw: function(chart) {
           var ctx = chart.ctx;
           ctx.fillStyle = '#09033f';
-          ctx.font="20px Arial Black";
+          ctx.font= "20px Arial Black";
           ctx.fillText("CPK = "+ chart.options.cpk.toFixed(3), chart.width - 70 ,chart.height * 0.17);
           ctx.fillText("CP = "+ chart.options.cp.toFixed(3), chart.width - 70 ,chart.height * 0.1);
-          
+
           //ctx.fillText("CPK : "+ this.cpk, chart.width * 0.6 ,chart.height * 0.15);
-          
+
           chart.data.datasets.forEach(function(dataset, i) {
             var meta = chart.getDatasetMeta(i);
             if (!meta.hidden) {
               meta.data.forEach(function(element, index) {
-      
+
                 ctx.fillStyle = 'rgb(0, 0, 0)';
                 var fontSize = 12;
-      
+
                 //var dataString = JSON.stringify(dataset.data[index]);
-      
+
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 var padding = 3;
@@ -196,7 +196,7 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
           });
         }
       });
-   
+
       //this.chart.options.annotation.annotations
       this.chart = new this.Chart(this.context, {
         type: 'line',
@@ -208,10 +208,10 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
           legend: {
             display: false
           },
-          tooltips:{
+          tooltips: {
             enabled: false
           },
-          
+
           annotation: {
             annotations: [
               {
@@ -222,7 +222,7 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
                   borderColor: 'red',
                   borderDash: [2, 2],
                   borderWidth: 2,
-                  
+
                   value: this.lsl,
 
                   scaleID: 'x-axis-0',
@@ -239,7 +239,7 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
                     yAdjust: 0,
                     enabled: true,
                     content: "LSL"
-                }         
+                }
               },
               {
                 type: 'line',
@@ -249,7 +249,7 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
                 borderColor: 'red',
                 borderDash: [2, 2],
                 borderWidth: 2,
-                
+
                 value: this.usl,
 
                 scaleID: 'x-axis-0',
@@ -266,20 +266,20 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
                   yAdjust: 0,
                   enabled: true,
                   content: "USL"
-                }    
-              
-              }            
+                }
+
+              }
             ],
             drawTime: "afterDatasetsDraw"
           },
-          
-          scales:{
+
+          scales: {
             xAxes: [{
-              id:'x-axis-0',
+              id: 'x-axis-0',
               type: "linear",
               display: true,
-              gridLines:{
-                display:false
+              gridLines: {
+                display: false
               },
               //autoSkip: true,
             // position: "bottom",
@@ -287,19 +287,19 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
               ticks:{
                 min: this.limit["xmin"],
                 max: this.limit["xmax"]
-                //stepSize: 
+                //stepSize:
               }
               */
               //type: "linear",
               //position: "bottom"
             }]
             ,
-            yAxes:[{
-              id:'y-axis-0',
+            yAxes: [{
+              id: 'y-axis-0',
               type: "linear",
               display: true,
-              gridLines:{
-                display:false
+              gridLines: {
+                display: false
               },
               //autoSkip: true,
               /*
@@ -310,7 +310,7 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
               }
               */
               //position: "left"
-            }]    
+            }]
           },
           responsive: true,
           title: {
@@ -320,22 +320,22 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
           maintainAspectRatio: false
         }
       });
-    
-  }
+
+}
 
   OnDraw() {
     if (!this.context) {
       return;
     }
-    
+
     if (this.chart) {
       console.log("update");
-      
+
       this.chart.data = this.data;
-      
+
       let annotations = this.chart.options.annotation.annotations;
       //console.log(annotations);
-      for ( let i=0; i< annotations.length; i++ ) {
+      for ( let i = 0; i< annotations.length; i++ ) {
         if ( annotations[i].id === "lsl_line" ) {
           annotations[i].value = this.lsl;
         }else if ( annotations[i].id === "usl_line") {
@@ -345,12 +345,12 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
         }
       }
       this.chart.options.annotation.annotations = annotations;
-      
+
       this.chart.options.cpk = this.cpk;
       this.chart.update();
     } else {
       console.log("create Chart");
-      this.createChart();    
+      this.createChart();
     }
   }
 

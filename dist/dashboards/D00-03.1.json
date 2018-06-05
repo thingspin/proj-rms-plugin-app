@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1526916954004,
+  "iteration": 1528103867160,
   "links": [
     {
       "icon": "external link",
@@ -62,6 +62,7 @@
       },
       "id": 18,
       "interval": null,
+      "kernel": null,
       "links": [],
       "mappingType": 1,
       "mappingTypes": [
@@ -88,6 +89,7 @@
           "to": "null"
         }
       ],
+      "scripts": "",
       "sparkline": {
         "fillColor": "rgba(31, 118, 189, 0.18)",
         "full": false,
@@ -121,9 +123,11 @@
       },
       "hideTimeOverride": false,
       "id": 16,
+      "kernel": null,
       "links": [],
       "pageSize": 30,
       "repeat": null,
+      "scripts": "",
       "scroll": true,
       "showHeader": true,
       "sort": {
@@ -498,19 +502,18 @@
           "text": "RMS-CENTER-INFLUXDB(V1.0)",
           "value": "RMS-CENTER-INFLUXDB(V1.0)"
         },
-        "hide": 0,
+        "hide": 2,
         "label": "본사/지점 선택",
         "name": "DATABASE",
         "options": [],
         "query": "influxdb",
         "refresh": 1,
-        "regex": "/^RMS-*/",
+        "regex": "/^RMS-CENTER-*/",
         "type": "datasource"
       },
       {
         "allValue": null,
         "current": {
-          "tags": [],
           "text": "IR KEY",
           "value": "IR KEY"
         },
@@ -649,5 +652,5 @@
   "timezone": "",
   "title": "검사항목별 검사기록 (상세)",
   "uid": "yFLCxZ4ik",
-  "version": 29
+  "version": 2
 }

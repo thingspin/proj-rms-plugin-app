@@ -30,10 +30,10 @@
       }
     ]
   },
-  "editable": false,
+  "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1527171137792,
+  "iteration": 1528103546792,
   "links": [
     {
       "icon": "external link",
@@ -135,6 +135,7 @@
         "y": 0
       },
       "id": 6,
+      "kernel": null,
       "legend": {
         "alignAsTable": true,
         "avg": false,
@@ -155,6 +156,7 @@
       "points": false,
       "renderer": "flot",
       "repeat": null,
+      "scripts": "",
       "seriesOverrides": [
         {
           "alias": "/^COUNT/",
@@ -504,6 +506,7 @@
       },
       "id": 22,
       "interval": null,
+      "kernel": null,
       "links": [],
       "mappingType": 1,
       "mappingTypes": [
@@ -540,6 +543,7 @@
           "value": "SOOSKIM01"
         }
       },
+      "scripts": "",
       "sparkline": {
         "fillColor": "rgba(31, 118, 189, 0.18)",
         "full": true,
@@ -624,6 +628,7 @@
       },
       "id": 29,
       "interval": null,
+      "kernel": null,
       "links": [],
       "mappingType": 1,
       "mappingTypes": [
@@ -653,7 +658,7 @@
       ],
       "repeat": null,
       "repeatDirection": "h",
-      "repeatIteration": 1527171137792,
+      "repeatIteration": 1528103546792,
       "repeatPanelId": 22,
       "scopedVars": {
         "FACILITY": {
@@ -662,6 +667,7 @@
           "value": "SOOSKIM02"
         }
       },
+      "scripts": "",
       "sparkline": {
         "fillColor": "rgba(31, 118, 189, 0.18)",
         "full": true,
@@ -746,6 +752,7 @@
       },
       "id": 30,
       "interval": null,
+      "kernel": null,
       "links": [],
       "mappingType": 1,
       "mappingTypes": [
@@ -775,7 +782,7 @@
       ],
       "repeat": null,
       "repeatDirection": "h",
-      "repeatIteration": 1527171137792,
+      "repeatIteration": 1528103546792,
       "repeatPanelId": 22,
       "scopedVars": {
         "FACILITY": {
@@ -784,6 +791,7 @@
           "value": "SOOSKIM03"
         }
       },
+      "scripts": "",
       "sparkline": {
         "fillColor": "rgba(31, 118, 189, 0.18)",
         "full": true,
@@ -867,6 +875,7 @@
         "y": 14
       },
       "id": 4,
+      "kernel": null,
       "links": [],
       "minSpan": 4,
       "pageSize": 10,
@@ -879,6 +888,7 @@
           "value": "SOOSKIM01"
         }
       },
+      "scripts": "",
       "scroll": true,
       "showHeader": true,
       "sort": {
@@ -1132,12 +1142,13 @@
         "y": 14
       },
       "id": 31,
+      "kernel": null,
       "links": [],
       "minSpan": 4,
       "pageSize": 10,
       "repeat": null,
       "repeatDirection": "h",
-      "repeatIteration": 1527171137792,
+      "repeatIteration": 1528103546792,
       "repeatPanelId": 4,
       "scopedVars": {
         "FACILITY": {
@@ -1146,6 +1157,7 @@
           "value": "SOOSKIM02"
         }
       },
+      "scripts": "",
       "scroll": true,
       "showHeader": true,
       "sort": {
@@ -1399,12 +1411,13 @@
         "y": 14
       },
       "id": 32,
+      "kernel": null,
       "links": [],
       "minSpan": 4,
       "pageSize": 10,
       "repeat": null,
       "repeatDirection": "h",
-      "repeatIteration": 1527171137792,
+      "repeatIteration": 1528103546792,
       "repeatPanelId": 4,
       "scopedVars": {
         "FACILITY": {
@@ -1413,6 +1426,7 @@
           "value": "SOOSKIM03"
         }
       },
+      "scripts": "",
       "scroll": true,
       "showHeader": true,
       "sort": {
@@ -1853,13 +1867,13 @@
           "text": "RMS-CENTER-INFLUXDB(V1.0)",
           "value": "RMS-CENTER-INFLUXDB(V1.0)"
         },
-        "hide": 0,
+        "hide": 2,
         "label": "분사/지점 선택",
         "name": "DATABASE",
         "options": [],
         "query": "influxdb",
         "refresh": 1,
-        "regex": "/^RMS-*/",
+        "regex": "/^RMS-CENTER-*/",
         "type": "datasource"
       },
       {
@@ -1936,8 +1950,8 @@
     ]
   },
   "time": {
-    "from": "now/d",
-    "to": "now/d"
+    "from": "now-10s",
+    "to": "now"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -1954,5 +1968,5 @@
   "timezone": "",
   "title": "연속 불량 감시",
   "uid": "iXsJMQniz",
-  "version": 7
+  "version": 2
 }

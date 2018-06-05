@@ -44,18 +44,18 @@ export function convertValuesToHistogram(values: number[], bucketSize: number, m
     bound = minBound + bucketSize * n;
     n++;
   }
-  
+
   for (let i = 0; i < values.length; i++) {
     let bound = getBucketBound(values[i], bucketSize);
     histogram[bound] = histogram[bound] + 1;
   }
-  
+
   let list = [];
   var distribution = gaussian(mean,variance);
-  //let histogam_series = 
+  //let histogam_series =
   _.map(histogram, (count, bound) => {
-    list.push({"x":Number(bound),"y":distribution.pdf(Number(bound))});
-    //list.push(count);  
+    list.push({"x": Number(bound),"y": distribution.pdf(Number(bound))});
+    //list.push(count);
     //return {"x":Number(bound),"y":count};
     //return Number(bound),count;
   });
@@ -113,15 +113,15 @@ function getBucketBound(value: number, bucketSize: number): number {
   return Math.floor(value / bucketSize) * bucketSize;
 }
 
-function getVariance(values){
+function getVariance(values) {
   var avg = _.mean(values);
-  
-  var squareDiffs = values.map(function(value){
+
+  var squareDiffs = values.map(function(value) {
     var diff = value - avg;
     var sqrDiff = diff * diff;
     return sqrDiff;
   });
-  
+
   var variance = _.mean(squareDiffs);
   return variance;
 }

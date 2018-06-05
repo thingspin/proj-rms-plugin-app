@@ -17455,10 +17455,10 @@ function convertValuesToHistogram(values, bucketSize, min, max, mean, variance) 
     }
     var list = [];
     var distribution = gaussian(mean, variance);
-    //let histogam_series = 
+    //let histogam_series =
     lodash__WEBPACK_IMPORTED_MODULE_0___default.a.map(histogram, function (count, bound) {
         list.push({ "x": Number(bound), "y": distribution.pdf(Number(bound)) });
-        //list.push(count);  
+        //list.push(count);
         //return {"x":Number(bound),"y":count};
         //return Number(bound),count;
     });
