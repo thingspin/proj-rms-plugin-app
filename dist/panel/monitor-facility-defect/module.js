@@ -36260,7 +36260,7 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
         lodash__WEBPACK_IMPORTED_MODULE_0___default.a.range(10).forEach(function (idx) {
             $svg.find("#modeling1-title" + (idx + 1) + "-warning").hide();
             $svg.find("#modeling1-botton-light" + (idx + 1) + "-warning").hide();
-            $svg.find("#modeling1-botton-light" + (idx + 1) + "-on").hide();
+            $svg.find("#modeling1-botton-light" + (idx + 1) + "-on").show();
         });
         warnAnimation.fromTo($warn[0], 0.8, { opacity: 0 }, { opacity: 1, ease: gsap_TweenMax__WEBPACK_IMPORTED_MODULE_6__["Power3"].easeNone });
         warnAnimation.pause(0);

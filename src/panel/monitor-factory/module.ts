@@ -140,7 +140,7 @@ class RmsMonitorFactoryPanelCtrl extends MetricsPanelCtrl {
     _.range(10).forEach((idx: number) => {
       $svg.find(`#modeling1-title${idx+1}-warning`).hide();
       $svg.find(`#modeling1-botton-light${idx+1}-warning`).hide();
-      $svg.find(`#modeling1-botton-light${idx+1}-on`).hide();
+      $svg.find(`#modeling1-botton-light${idx+1}-on`).show();
     });
     warnAnimation.fromTo($warn[0], 0.8,{ opacity: 0 }, { opacity: 1, ease: Power3.easeNone });
     warnAnimation.pause(0);
