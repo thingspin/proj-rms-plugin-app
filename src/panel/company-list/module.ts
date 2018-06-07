@@ -34,6 +34,8 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
   columns = [];
   dataJson : any;
 
+  mode : any;
+
   panelDefaults = {
     // options: {
     //   legend: {
@@ -144,12 +146,15 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
 
     var g_root = this;       
     this.container.tabulator({
-      //height: 340,    
+      pagination: "local",
+      paginationSize: 10,
       selectable: 1,
+      fitColumns: true,     
       layout: "fitColumns",
       columns: this.columns,
       rowClick: function(e, row) {              
         
+        g_root.showCtrlMode('edit');
         row.select();        
 
         g_root.panel.inputlItem.business_id = row.getData().BUSINESS_ID;
@@ -341,7 +346,7 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
                 'memo="' + info.memo + '" where business_id=' + info.business_id        
               ];       
         
-              console.log(selectId + " " + query2);
+              //console.log(selectId + " " + query2);
         
               this.dsSrv.query(selectId, query2).then( result => {
                 this.panel.inputlItem.business_id = -1;
@@ -398,6 +403,32 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
     else{
       this.alertSrv.set("테이블의 Row를 선택해 주세요", 'error', 5000);
     }
+  };
+
+  close() {
+    this.showCtrlMode('list');
+    this.refresh();
+  }
+
+  showCtrlMode(mode) {
+    if (mode == 'new') {
+      var selectedRows = this.container.tabulator("getSelectedRows");
+      if (selectedRows != undefined) {
+        this.container.tabulator("deselectRow", selectedRows);
+      }
+      this.panel.inputlItem = {
+        business_id: -1,
+        name: '',
+        business_type: '',
+        phone: '',
+        person : '',
+        mail : '',
+        memo : '',      
+      }
+      this.refresh();
+    }
+    this.mode = mode;
+    this.events.emit('panel-size-changed');
   };
 }
 
