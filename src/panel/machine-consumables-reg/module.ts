@@ -34,6 +34,8 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
   columns = [];
   dataJson : any;
 
+  mode : any;
+
   panelDefaults = {
     // options: {
     //   legend: {
@@ -158,12 +160,15 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
 
     var g_root = this;
     this.container.tabulator({
-      //height: 340,
+      pagination: "local",
+      paginationSize: 10,
       selectable: 1,
+      fitColumns: true,     
       layout: "fitColumns",
       columns: this.columns,
       rowClick: function(e, row) {
 
+        g_root.showCtrlMode('edit');
         row.select();
         
         g_root.panel.inputlItem.machine_consumables_id = row.getData().MACHINE_CONSUMABLES_ID;
@@ -408,6 +413,14 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
 
           this.dsSrv.query(selectId, query).then( result => {
             this.panel.inputlItem.machine_consumables_id = -1;
+            this.panel.inputlItem = {      
+              machine_consumables_id: -1,
+              machine_name: '',
+              consumables_name: '',      
+              count: '',
+              change_date: '',
+              memo : '',      
+            }
             this.$rootScope.$broadcast('refresh');
           }).catch( err => {
             console.error(err);
@@ -418,6 +431,31 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
     else{
       this.alertSrv.set("테이블의 Row를 선택해 주세요", 'error', 5000);
     }
+  };
+
+  close() {
+    this.showCtrlMode('list');
+    this.refresh();
+  }
+
+  showCtrlMode(mode) {
+    if (mode == 'new') {
+      var selectedRows = this.container.tabulator("getSelectedRows");
+      if (selectedRows != undefined) {
+        this.container.tabulator("deselectRow", selectedRows);
+      }
+      this.panel.inputlItem = {      
+        machine_consumables_id: -1,
+        machine_name: '',
+        consumables_name: '',      
+        count: '',
+        change_date: '',
+        memo : '',      
+      }
+      this.refresh();
+    }
+    this.mode = mode;
+    this.events.emit('panel-size-changed');
   };
 
 }

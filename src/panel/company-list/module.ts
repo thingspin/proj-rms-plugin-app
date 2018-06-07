@@ -393,6 +393,17 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
 
           this.dsSrv.query(selectId, query).then( result => {
             this.panel.inputlItem.business_id = -1;
+
+            this.panel.inputlItem = {
+              business_id: -1,
+              name: '',
+              business_type: '',
+              phone: '',
+              person : '',
+              mail : '',
+              memo : '',      
+            }
+            
             this.$rootScope.$broadcast('refresh');
           }).catch( err => {
             console.error(err);
