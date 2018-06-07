@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1527656714950,
+  "iteration": 1528157247674,
   "links": [],
   "panels": [
     {
@@ -28,7 +28,9 @@
         "y": 0
       },
       "id": 2,
+      "kernel": null,
       "links": [],
+      "scripts": "",
       "targets": [
         {
           "groupBy": [
@@ -97,7 +99,9 @@
         "y": 0
       },
       "id": 6,
+      "kernel": null,
       "links": [],
+      "scripts": "",
       "targets": [
         {
           "datasource": "$DATABASE",
@@ -159,13 +163,6 @@
               "value": "/^$PASS$/"
             }
           ]
-        },
-        {
-          "alias": "",
-          "datasource": "REMOTESOLUTIONS(V1.0)",
-          "format": "table",
-          "rawSql": "select idx, name from t_inspection_property",
-          "refId": "B"
         }
       ],
       "title": "검사항목별",
@@ -179,23 +176,21 @@
     "list": [
       {
         "current": {
-          "selected": true,
           "text": "RMS-CENTER-INFLUXDB(V1.0)",
           "value": "RMS-CENTER-INFLUXDB(V1.0)"
         },
-        "hide": 0,
+        "hide": 2,
         "label": "본사/지점",
         "name": "DATABASE",
         "options": [],
         "query": "influxdb",
         "refresh": 1,
-        "regex": "/^RMS-*/",
+        "regex": "/^RMS-CENTER-*/",
         "type": "datasource"
       },
       {
         "allValue": null,
         "current": {
-          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -219,7 +214,6 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -306,5 +300,5 @@
   "timezone": "",
   "title": "불량 현황 상태",
   "uid": "KfvX3wVik",
-  "version": 8
+  "version": 4
 }

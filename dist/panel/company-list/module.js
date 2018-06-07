@@ -29160,11 +29160,14 @@ var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
         }
         var g_root = this;
         this.container.tabulator({
-            //height: 340,    
+            pagination: "local",
+            paginationSize: 10,
             selectable: 1,
+            fitColumns: true,
             layout: "fitColumns",
             columns: this.columns,
             rowClick: function (e, row) {
+                g_root.showCtrlMode('edit');
                 row.select();
                 g_root.panel.inputlItem.business_id = row.getData().BUSINESS_ID;
                 g_root.panel.inputlItem.name = row.getData().NAME;
@@ -29329,7 +29332,7 @@ var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
                                     'person="' + info.person + '", ' +
                                     'memo="' + info.memo + '" where business_id=' + info.business_id
                             ];
-                            console.log(selectId + " " + query2);
+                            //console.log(selectId + " " + query2);
                             _this.dsSrv.query(selectId, query2).then(function (result) {
                                 _this.panel.inputlItem.business_id = -1;
                                 _this.$rootScope.$broadcast('refresh');
@@ -29380,6 +29383,31 @@ var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
         }
     };
     ;
+    RmsCompanyListPanelCtrl.prototype.close = function () {
+        this.showCtrlMode('list');
+        this.refresh();
+    };
+    RmsCompanyListPanelCtrl.prototype.showCtrlMode = function (mode) {
+        if (mode == 'new') {
+            var selectedRows = this.container.tabulator("getSelectedRows");
+            if (selectedRows != undefined) {
+                this.container.tabulator("deselectRow", selectedRows);
+            }
+            this.panel.inputlItem = {
+                business_id: -1,
+                name: '',
+                business_type: '',
+                phone: '',
+                person: '',
+                mail: '',
+                memo: '',
+            };
+            this.refresh();
+        }
+        this.mode = mode;
+        this.events.emit('panel-size-changed');
+    };
+    ;
     RmsCompanyListPanelCtrl.template = template;
     return RmsCompanyListPanelCtrl;
 }(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_5__["MetricsPanelCtrl"]));
@@ -29395,7 +29423,7 @@ var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"editor-row\">\n        <div class=\"section gf-form-group\">\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-5\">업체명</label>\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.name\">\n            </div>            \n\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-5\">업종</label>\n                <div class=\"gf-form-select-wrapper\">\n                        <select class=\"gf-form-input min-width-16 width-16\" \n                            ng-model=\"ctrl.panel.inputlItem.business_type\"\n                            ng-options=\"f for f in ctrl.panel.businessCategory\">\n                        </select>\n                </div>                    \n            </div>            \n        </div>\n        \n        <div class=\"section gf-form-group\">\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-5\">담당자</label>\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.person\">\n            </div>\n\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-5\">연락처</label>\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.phone\">\n            </div>\n\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-5\">이메일</label>\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.mail\">\n            </div>\n        </div>\n        <div class=\"section gf-form-group\">\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-5\">메모</label>\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.memo\">\n            </div>            \n            \n            <div class=\"gf-form\">\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onNew()\">\n                    등록\n                </button>\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onEdit()\">\n                    수정\n                </button>\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onDel()\">\n                    삭제\n                </button>\n            </div>\n        </div>\n    </div>\n    \n    <div class=\"editor-row\">\n        <div class=\"thingspin-table\"></div>\n    </div>\n    ";
+module.exports = "<div ng-switch on='ctrl.mode'>\n    <button type=\"submit\" class=\"btn btn-primary\" ng-click=\"ctrl.showCtrlMode('new')\">신규 등록</button>\n    <br></br>     \n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new|edit\" ng-switch-when-separator=\"|\">\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-5\">업체명</label>\n            <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.name\">\n        </div>            \n\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-5\">업종</label>\n            <div class=\"gf-form-select-wrapper\">\n                <select class=\"gf-form-input min-width-16 width-16\" \n                    ng-model=\"ctrl.panel.inputlItem.business_type\"\n                    ng-options=\"f for f in ctrl.panel.businessCategory\">\n                </select>\n            </div>                    \n        </div>            \n    </div>\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new|edit\" ng-switch-when-separator=\"|\">\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-5\">담당자</label>\n            <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.person\">\n        </div>\n\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-5\">연락처</label>\n            <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.phone\">\n        </div>\n\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-5\">이메일</label>\n            <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.mail\">\n        </div>\n    </div>\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new\">\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-5\">메모</label>\n            <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.memo\">\n        </div>  \n        <div class=\"gf-form\">\n            <button class=\"btn btn-success min-width-11 width-11\" ng-click=\"ctrl.onNew()\">\n                신규 등록\n            </button>\n            &nbsp;\n            <button class=\"btn btn-success min-width-10 width-10\" ng-click=\"ctrl.close()\">\n                창 닫기\n            </button>\n        </div>      \n    </div>\n\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"edit\">\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-5\">메모</label>\n            <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.memo\">\n        </div>  \n        <div class=\"gf-form\">\n            <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onEdit()\">\n                수정\n            </button>\n            &nbsp;\n            <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onDel()\">\n                삭제\n            </button>\n            &nbsp;\n            <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.close()\">\n                창 닫기\n            </button>\n        </div>   \n    </div>\n\n    <div class=\"editor-row\">\n        <div class=\"thingspin-table\"></div>\n    </div>\n</div>\n\n\n\n<!--\n\n<div class=\"editor-row\">\n        <div class=\"section gf-form-group\">\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-5\">업체명</label>\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.name\">\n            </div>            \n\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-5\">업종</label>\n                <div class=\"gf-form-select-wrapper\">\n                        <select class=\"gf-form-input min-width-16 width-16\" \n                            ng-model=\"ctrl.panel.inputlItem.business_type\"\n                            ng-options=\"f for f in ctrl.panel.businessCategory\">\n                        </select>\n                </div>                    \n            </div>            \n        </div>\n        \n        <div class=\"section gf-form-group\">\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-5\">담당자</label>\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.person\">\n            </div>\n\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-5\">연락처</label>\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.phone\">\n            </div>\n\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-5\">이메일</label>\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.mail\">\n            </div>\n        </div>\n        <div class=\"section gf-form-group\">\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-5\">메모</label>\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.memo\">\n            </div>            \n            \n            <div class=\"gf-form\">\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onNew()\">\n                    등록\n                </button>\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onEdit()\">\n                    수정\n                </button>\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onDel()\">\n                    삭제\n                </button>\n            </div>\n        </div>\n    </div>\n    \n    <div class=\"editor-row\">\n        <div class=\"thingspin-table\"></div>\n    </div>\n\n    -->\n    ";
 
 /***/ }),
 
