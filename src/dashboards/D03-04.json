@@ -13,7 +13,7 @@
       ],
       "datasource": "REMOTESOLUTIONS(V1.0)",
       "gridPos": {
-        "h": 13,
+        "h": 17,
         "w": 24,
         "x": 0,
         "y": 0
@@ -33,7 +33,7 @@
         {
           "alias": "",
           "format": "table",
-          "rawSql": "SELECT MOLD_ID, NAME, MOLD_NAME, CHANGE_DATE, CHANGE_PERIOD, USE_COUNT, b.MEMO FROM t_business as a, t_mold as b where a.business_id = b.business_id;\n",
+          "rawSql": "SELECT MOLD_ID as '금형 ID', NAME as 업체명, MOLD_NAME as 모델명, CHANGE_DATE as 교체일, CHANGE_PERIOD as 교체주기, USE_COUNT as 사용횟수, b.MEMO as 메모 FROM t_business as a, t_mold as b where a.business_id = b.business_id;",
           "refId": "A"
         }
       ],
