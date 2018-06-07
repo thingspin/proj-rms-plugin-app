@@ -168,14 +168,14 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
         g_root.showCtrlMode('edit');
         row.select();
 
-        g_root.panel.inputlItem.mold_id = row.getData().MOLD_ID;
+        g_root.panel.inputlItem.mold_id = row.getData()['금형 ID'];
         //g_root.panel.inputlItem.plant_id = row.getData().PLANT_ID;
-        g_root.panel.inputlItem.business_name = row.getData().NAME;
-        g_root.panel.inputlItem.mold_name = row.getData().MOLD_NAME;
-        g_root.panel.inputlItem.change_date = new Date(row.getData().CHANGE_DATE);
-        g_root.panel.inputlItem.period = row.getData().CHANGE_PERIOD;
-        g_root.panel.inputlItem.use_count = row.getData().USE_COUNT;
-        g_root.panel.inputlItem.memo = row.getData().MEMO;       
+        g_root.panel.inputlItem.business_name = row.getData()['업체명'];
+        g_root.panel.inputlItem.mold_name = row.getData()['모델명'];
+        g_root.panel.inputlItem.change_date = new Date(row.getData()['교체일']);
+        g_root.panel.inputlItem.period = row.getData()['교체주기'];
+        g_root.panel.inputlItem.use_count = row.getData()['사용횟수'];
+        g_root.panel.inputlItem.memo = row.getData()['메모'];       
 
 
         // let query2 = [

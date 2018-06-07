@@ -155,15 +155,23 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
       rowClick: function(e, row) {              
         
         g_root.showCtrlMode('edit');
-        row.select();        
+        row.select();           
+        
+        g_root.panel.inputlItem.business_id = row.getData()['업체 ID'];
+        g_root.panel.inputlItem.name = row.getData()['업체명'];
+        g_root.panel.inputlItem.business_type = row.getData()['업종'];
+        g_root.panel.inputlItem.phone = row.getData()['연락처'];
+        g_root.panel.inputlItem.person = row.getData()['담당자'];
+        g_root.panel.inputlItem.mail = row.getData()['이메일'];
+        g_root.panel.inputlItem.memo = row.getData()['메모'];  
 
-        g_root.panel.inputlItem.business_id = row.getData().BUSINESS_ID;
-        g_root.panel.inputlItem.name = row.getData().NAME;
-        g_root.panel.inputlItem.business_type = row.getData().BUSINESS_TYPE;
-        g_root.panel.inputlItem.phone = row.getData().PHONE;
-        g_root.panel.inputlItem.person = row.getData().PERSON;
-        g_root.panel.inputlItem.mail = row.getData().MAIL;
-        g_root.panel.inputlItem.memo = row.getData().MEMO;               
+        //g_root.panel.inputlItem.business_id = row.getData().BUSINESS_ID;
+        // g_root.panel.inputlItem.name = row.getData().NAME;
+        // g_root.panel.inputlItem.business_type = row.getData().BUSINESS_TYPE;
+        // g_root.panel.inputlItem.phone = row.getData().PHONE;
+        // g_root.panel.inputlItem.person = row.getData().PERSON;
+        // g_root.panel.inputlItem.mail = row.getData().MAIL;
+        // g_root.panel.inputlItem.memo = row.getData().MEMO;               
         
         g_root.events.emit('panel-size-changed');
         //g_root.$rootScope.$broadcast('refresh');           

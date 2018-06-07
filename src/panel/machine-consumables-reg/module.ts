@@ -171,12 +171,12 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
         g_root.showCtrlMode('edit');
         row.select();
         
-        g_root.panel.inputlItem.machine_consumables_id = row.getData().MACHINE_CONSUMABLES_ID;
-        g_root.panel.inputlItem.machine_name = row.getData().MACHINE_NAME;
-        g_root.panel.inputlItem.consumables_name = row.getData().CONSUMABLES_NAME;
-        g_root.panel.inputlItem.count = row.getData().CONSUMABLES_COUNT;
-        g_root.panel.inputlItem.change_date = new Date(row.getData().CHANGE_DATE);
-        g_root.panel.inputlItem.memo = row.getData().MEMO;    
+        g_root.panel.inputlItem.machine_consumables_id = row.getData()['등록 ID'];
+        g_root.panel.inputlItem.machine_name = row.getData()['장비명'];
+        g_root.panel.inputlItem.consumables_name = row.getData()['소모품명'];
+        g_root.panel.inputlItem.count = row.getData()['소모품 개수'];
+        g_root.panel.inputlItem.change_date = new Date(row.getData()['소모품 교체일']);
+        g_root.panel.inputlItem.memo = row.getData()['메모'];    
 
         g_root.events.emit('panel-size-changed');        
       },

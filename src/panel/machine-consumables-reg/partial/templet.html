@@ -6,7 +6,7 @@
         <div class="gf-form">
             <label class="gf-form-label width-8">장비명</label>
             <div class="gf-form-select-wrapper">
-                    <select class="gf-form-input min-width-13 width-13" 
+                    <select class="gf-form-input min-width-13 width-13" placeholder="장비명" 
                         ng-model="ctrl.panel.inputlItem.machine_name"
                         ng-options="f for f in ctrl.panel.machineCategory">
                     </select>
@@ -18,7 +18,7 @@
         <div class="gf-form">
             <label class="gf-form-label width-8">소모품명</label>
             <div class="gf-form-select-wrapper">
-                    <select class="gf-form-input min-width-13 width-13" 
+                    <select class="gf-form-input min-width-13 width-13" placeholder="소모품명" 
                         ng-model="ctrl.panel.inputlItem.consumables_name"
                         ng-options="f for f in ctrl.panel.consumablesCategory">
                     </select>
@@ -27,19 +27,19 @@
 
         <div class="gf-form">
             <label class="gf-form-label width-8">소모품 개수</label>
-            <input type="text" class="gf-form-input min-width-13 width-13" ng-model="ctrl.panel.inputlItem.count">
+            <input type="text" class="gf-form-input min-width-13 width-13" placeholder="소모품 개수" ng-model="ctrl.panel.inputlItem.count">
         </div>
 
         <div class="gf-form">
             <label class="gf-form-label width-8">소모품 교체일</label>
-            <input type="date" class="gf-form-input min-width-13 width-13" ng-model="ctrl.panel.inputlItem.change_date">
+            <input type="date" class="gf-form-input min-width-13 width-13" placeholder="소모품 교체일" ng-model="ctrl.panel.inputlItem.change_date">
         </div>
     </div>
 
     <div class="section gf-form-group" ng-show='1' ng-switch-when="new">
         <div class="gf-form">
             <label class="gf-form-label width-8">메모</label>
-            <input type="text" class="gf-form-input min-width-13 width-13" ng-model="ctrl.panel.inputlItem.memo">
+            <input type="text" class="gf-form-input min-width-13 width-13" placeholder="메모" ng-model="ctrl.panel.inputlItem.memo">
         </div>            
         
         <div class="gf-form">
@@ -56,7 +56,7 @@
     <div class="section gf-form-group" ng-show='1' ng-switch-when="edit">
         <div class="gf-form">
             <label class="gf-form-label width-8">메모</label>
-            <input type="text" class="gf-form-input min-width-13 width-13" ng-model="ctrl.panel.inputlItem.memo">
+            <input type="text" class="gf-form-input min-width-13 width-13" placeholder="메모" ng-model="ctrl.panel.inputlItem.memo">
         </div>            
         
         <div class="gf-form">
