@@ -73,9 +73,9 @@ class RmsCPKTrendPanelCtrl extends MetricsPanelCtrl {
   }
 
   onDataReceived(dataList) {
-    console.log(this);
+    //console.log(this);
     this.dataRaw = dataList;
-    console.log(dataList);
+    // console.log(dataList);
     Promise.resolve(this.transformer(this.dataRaw));
     this.createTable(this.dataJson);
   }
@@ -159,9 +159,9 @@ class RmsCPKTrendPanelCtrl extends MetricsPanelCtrl {
       valueMakeMap.set(row[0] + "-" + row[1], row[2]);
     }
 
-    console.log(columnMakeMap);
-    console.log(rowMakeArray);
-    console.log(valueMakeMap);
+    // console.log(columnMakeMap);
+    // console.log(rowMakeArray);
+    // console.log(valueMakeMap);
 
     var obj = {
       title: '검사항목',
@@ -191,14 +191,14 @@ class RmsCPKTrendPanelCtrl extends MetricsPanelCtrl {
     // console.log(columnSize);
     for  (var count=0;count<keyList.length;count++) {
       var key = keyList[count];
-      console.log(key);
+      // console.log(key);
       var indexStr =key.split('-');
 
       if (tableMakeMap.has(fieldArray[0]) == false) {
         tableMakeMap.set(fieldArray[0], indexStr[1]);
       }
-      console.log((count%columnSize)+1);
-      console.log(fieldArray[(count%columnSize)+1]);
+      // console.log((count%columnSize)+1);
+      // console.log(fieldArray[(count%columnSize)+1]);
       tableMakeMap.set("" + fieldArray[(count%columnSize)+1] + "", valueMakeMap.get(key));
       
       if ((count%columnSize)+1 == columnSize && count !== 0) {
@@ -221,9 +221,9 @@ class RmsCPKTrendPanelCtrl extends MetricsPanelCtrl {
       align: "left"
     }
     this.columns.push(averageTitle);
-    console.log(tableMakeMap);
-    console.log(tableArray);
-    console.log(this.columns);
+    // console.log(tableMakeMap);
+    // console.log(tableArray);
+    // console.log(this.columns);
     this.dataJson = tableArray;
   };
 
