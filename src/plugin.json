@@ -61,7 +61,7 @@
     {"type": "dashboard", "name": "CPK Trend 분석", "path": "dashboards/D00-03.3.json", "AddToNav": true, "menuID": 5, "ico":"fa fa-industry"},
     {"type": "dashboard", "name": "검사항목별 검사기록 (상세)", "path": "dashboards/D00-03.1.json", "AddToNav": true, "menuID": 5, "ico":"fa fa-industry"},
     {"type": "dashboard", "name": "모델별 검사기록 (상세)", "path": "dashboards/D02-01.1.json", "AddToNav": true, "menuID": 5, "ico":"fa fa-industry"},
-    {"type": "dashboard", "name": "CPK 현황 (모델별)", "path": "dashboards/D00-01.1.json", "AddToNav": true, "menuID": 5, "ico":"fa fa-industry"}
+    {"type": "dashboard", "name": "CPK 현황 (모델별)", "path": "dashboards/D00-01.1.json", "AddToNav": false, "menuID": 5, "ico":"fa fa-industry"}
   ],
   "routes": [
     {
