@@ -29166,20 +29166,23 @@ var RmsMoldListPanelCtrl = /** @class */ (function (_super) {
         });
         var g_root = this;
         this.container.tabulator({
-            //height: 340,
+            pagination: "local",
+            paginationSize: 10,
             selectable: 1,
+            fitColumns: true,
             layout: "fitColumns",
             columns: this.columns,
             rowClick: function (e, row) {
+                g_root.showCtrlMode('edit');
                 row.select();
-                g_root.panel.inputlItem.mold_id = row.getData().MOLD_ID;
+                g_root.panel.inputlItem.mold_id = row.getData()['금형 ID'];
                 //g_root.panel.inputlItem.plant_id = row.getData().PLANT_ID;
-                g_root.panel.inputlItem.business_name = row.getData().NAME;
-                g_root.panel.inputlItem.mold_name = row.getData().MOLD_NAME;
-                g_root.panel.inputlItem.change_date = new Date(row.getData().CHANGE_DATE);
-                g_root.panel.inputlItem.period = row.getData().CHANGE_PERIOD;
-                g_root.panel.inputlItem.use_count = row.getData().USE_COUNT;
-                g_root.panel.inputlItem.memo = row.getData().MEMO;
+                g_root.panel.inputlItem.business_name = row.getData()['업체명'];
+                g_root.panel.inputlItem.mold_name = row.getData()['모델명'];
+                g_root.panel.inputlItem.change_date = new Date(row.getData()['교체일']);
+                g_root.panel.inputlItem.period = row.getData()['교체주기'];
+                g_root.panel.inputlItem.use_count = row.getData()['사용횟수'];
+                g_root.panel.inputlItem.memo = row.getData()['메모'];
                 // let query2 = [
                 //   'select name from t_business where business_id=' + row.getData().BUSINESS_ID
                 // ]; 
@@ -29390,6 +29393,16 @@ var RmsMoldListPanelCtrl = /** @class */ (function (_super) {
                     console.log(selectId + " " + query);
                     _this.dsSrv.query(selectId, query).then(function (result) {
                         _this.panel.inputlItem.mold_id = -1;
+                        _this.panel.inputlItem = {
+                            mold_id: -1,
+                            plant_id: -1,
+                            business_name: '',
+                            mold_name: '',
+                            change_date: '',
+                            period: '',
+                            use_count: '',
+                            memo: '',
+                        };
                         _this.$rootScope.$broadcast('refresh');
                     }).catch(function (err) {
                         console.error(err);
@@ -29400,6 +29413,32 @@ var RmsMoldListPanelCtrl = /** @class */ (function (_super) {
         else {
             this.alertSrv.set("테이블의 Row를 선택해 주세요", 'error', 5000);
         }
+    };
+    ;
+    RmsMoldListPanelCtrl.prototype.close = function () {
+        this.showCtrlMode('list');
+        this.refresh();
+    };
+    RmsMoldListPanelCtrl.prototype.showCtrlMode = function (mode) {
+        if (mode == 'new') {
+            var selectedRows = this.container.tabulator("getSelectedRows");
+            if (selectedRows != undefined) {
+                this.container.tabulator("deselectRow", selectedRows);
+            }
+            this.panel.inputlItem = {
+                mold_id: -1,
+                plant_id: -1,
+                business_name: '',
+                mold_name: '',
+                change_date: '',
+                period: '',
+                use_count: '',
+                memo: '',
+            };
+            this.refresh();
+        }
+        this.mode = mode;
+        this.events.emit('panel-size-changed');
     };
     ;
     RmsMoldListPanelCtrl.template = template;
@@ -29417,7 +29456,7 @@ var RmsMoldListPanelCtrl = /** @class */ (function (_super) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"editor-row\">\n        <div class=\"section gf-form-group\">\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-6\">모델명</label>\n                <input type=\"text\" class=\"gf-form-input min-width-15 width-15\" ng-model=\"ctrl.panel.inputlItem.mold_name\">\n            </div>\n\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-6\">업체명</label>\n                <div class=\"gf-form-select-wrapper\">\n                        <select class=\"gf-form-input min-width-15 width-15\" \n                            ng-model=\"ctrl.panel.inputlItem.business_name\"\n                            ng-options=\"f for f in ctrl.panel.businessCategory\">\n                        </select>\n                </div>                    \n            </div>             \n        </div>\n        \n        <div class=\"section gf-form-group\">\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-6\">사용횟수</label>\n                <input type=\"text\" class=\"gf-form-input min-width-15 width-15\" ng-model=\"ctrl.panel.inputlItem.use_count\">\n            </div>\n\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-6\">교체주기</label>\n                <input type=\"text\" class=\"gf-form-input min-width-15 width-15\" ng-model=\"ctrl.panel.inputlItem.period\">\n            </div>\n\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-6\">교체일</label>\n                <input type=\"date\" class=\"gf-form-input min-width-15 width-15\" ng-model=\"ctrl.panel.inputlItem.change_date\">\n            </div>\n        </div>\n\n        <div class=\"section gf-form-group\">\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-6\">메모</label>\n                <input type=\"text\" class=\"gf-form-input min-width-15 width-15\" ng-model=\"ctrl.panel.inputlItem.memo\">\n            </div>            \n            \n            <div class=\"gf-form\">\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onNew()\">\n                    등록\n                </button>\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onEdit()\">\n                    수정\n                </button>\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onDel()\">\n                    삭제\n                </button>\n            </div>\n        </div>\n    </div>\n    \n    <div class=\"editor-row\">\n        <div class=\"thingspin-table\"></div>\n    </div>\n    ";
+module.exports = "<div ng-switch on='ctrl.mode'>\r\n    <button type=\"submit\" class=\"btn btn-primary\" ng-click=\"ctrl.showCtrlMode('new')\">신규 등록</button>\r\n    <br></br>   \r\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new|edit\" ng-switch-when-separator=\"|\">\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-6\">모델명</label>\r\n            <input type=\"text\" class=\"gf-form-input min-width-15 width-15\" placeholder=\"모델명\" ng-model=\"ctrl.panel.inputlItem.mold_name\">\r\n        </div>\r\n\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-6\">업체명</label>\r\n            <div class=\"gf-form-select-wrapper\">\r\n                    <select class=\"gf-form-input min-width-15 width-15\" placeholder=\"업체명\" \r\n                        ng-model=\"ctrl.panel.inputlItem.business_name\"\r\n                        ng-options=\"f for f in ctrl.panel.businessCategory\">\r\n                    </select>\r\n            </div>                    \r\n        </div>             \r\n    </div>\r\n    \r\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new|edit\" ng-switch-when-separator=\"|\">\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-6\">사용횟수</label>\r\n            <input type=\"text\" class=\"gf-form-input min-width-15 width-15\" placeholder=\"사용횟수\" ng-model=\"ctrl.panel.inputlItem.use_count\">\r\n        </div>\r\n\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-6\">교체주기</label>\r\n            <input type=\"text\" class=\"gf-form-input min-width-15 width-15\" placeholder=\"교체주기\" ng-model=\"ctrl.panel.inputlItem.period\">\r\n        </div>\r\n\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-6\">교체일</label>\r\n            <input type=\"date\" class=\"gf-form-input min-width-15 width-15\" placeholder=\"교체일\" ng-model=\"ctrl.panel.inputlItem.change_date\">\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new\">\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-6\">메모</label>\r\n            <input type=\"text\" class=\"gf-form-input min-width-15 width-15\" placeholder=\"메모\" ng-model=\"ctrl.panel.inputlItem.memo\">\r\n        </div>            \r\n        \r\n        <div class=\"gf-form\">\r\n            <button class=\"btn btn-success min-width-11 width-11\" ng-click=\"ctrl.onNew()\">\r\n                신규 등록\r\n            </button>\r\n            &nbsp;\r\n            <button class=\"btn btn-success min-width-10 width-10\" ng-click=\"ctrl.close()\">\r\n                창 닫기\r\n            </button>\r\n        </div>\r\n    </div>  \r\n\r\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"edit\">\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-6\">메모</label>\r\n            <input type=\"text\" class=\"gf-form-input min-width-15 width-15\" placeholder=\"메모\" ng-model=\"ctrl.panel.inputlItem.memo\">\r\n        </div>            \r\n        \r\n        <div class=\"gf-form\">\r\n            <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onEdit()\">\r\n                수정\r\n            </button>\r\n            &nbsp;\r\n            <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onDel()\">\r\n                삭제\r\n            </button>\r\n            &nbsp;\r\n            <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.close()\">\r\n                창 닫기\r\n            </button>\r\n        </div>\r\n    </div>  \r\n\r\n    <div class=\"editor-row\">\r\n        <div class=\"thingspin-table\"></div>\r\n    </div>\r\n</div>\r\n\r\n\r\n    \r\n    \r\n    ";
 
 /***/ }),
 

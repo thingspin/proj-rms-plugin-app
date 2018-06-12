@@ -16,7 +16,7 @@
       ],
       "datasource": "REMOTESOLUTIONS(V1.0)",
       "gridPos": {
-        "h": 13,
+        "h": 17,
         "w": 24,
         "x": 0,
         "y": 0
@@ -24,7 +24,7 @@
       "id": 2,
       "inputlItem": {
         "business_id": -1,
-        "business_type": "소모품업체",
+        "business_type": "",
         "mail": "",
         "memo": "",
         "name": "",
@@ -36,7 +36,7 @@
           "$$hashKey": "object:213",
           "alias": "",
           "format": "table",
-          "rawSql": "select * from t_business",
+          "rawSql": "select business_id as '업체 ID', business_type as 업종, name as 업체명, person as 담당자, phone as 연락처, mail as 이메일, memo as 메모 from t_business",
           "refId": "A"
         }
       ],

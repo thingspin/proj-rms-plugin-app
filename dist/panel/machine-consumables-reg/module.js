@@ -29169,18 +29169,21 @@ var RmsMachineConsumablesPanelCtrl = /** @class */ (function (_super) {
         });
         var g_root = this;
         this.container.tabulator({
-            //height: 340,
+            pagination: "local",
+            paginationSize: 10,
             selectable: 1,
+            fitColumns: true,
             layout: "fitColumns",
             columns: this.columns,
             rowClick: function (e, row) {
+                g_root.showCtrlMode('edit');
                 row.select();
-                g_root.panel.inputlItem.machine_consumables_id = row.getData().MACHINE_CONSUMABLES_ID;
-                g_root.panel.inputlItem.machine_name = row.getData().MACHINE_NAME;
-                g_root.panel.inputlItem.consumables_name = row.getData().CONSUMABLES_NAME;
-                g_root.panel.inputlItem.count = row.getData().CONSUMABLES_COUNT;
-                g_root.panel.inputlItem.change_date = new Date(row.getData().CHANGE_DATE);
-                g_root.panel.inputlItem.memo = row.getData().MEMO;
+                g_root.panel.inputlItem.machine_consumables_id = row.getData()['등록 ID'];
+                g_root.panel.inputlItem.machine_name = row.getData()['장비명'];
+                g_root.panel.inputlItem.consumables_name = row.getData()['소모품명'];
+                g_root.panel.inputlItem.count = row.getData()['소모품 개수'];
+                g_root.panel.inputlItem.change_date = new Date(row.getData()['소모품 교체일']);
+                g_root.panel.inputlItem.memo = row.getData()['메모'];
                 g_root.events.emit('panel-size-changed');
             },
         });
@@ -29372,6 +29375,14 @@ var RmsMachineConsumablesPanelCtrl = /** @class */ (function (_super) {
                     console.log(selectId + " " + query);
                     _this.dsSrv.query(selectId, query).then(function (result) {
                         _this.panel.inputlItem.machine_consumables_id = -1;
+                        _this.panel.inputlItem = {
+                            machine_consumables_id: -1,
+                            machine_name: '',
+                            consumables_name: '',
+                            count: '',
+                            change_date: '',
+                            memo: '',
+                        };
                         _this.$rootScope.$broadcast('refresh');
                     }).catch(function (err) {
                         console.error(err);
@@ -29382,6 +29393,30 @@ var RmsMachineConsumablesPanelCtrl = /** @class */ (function (_super) {
         else {
             this.alertSrv.set("테이블의 Row를 선택해 주세요", 'error', 5000);
         }
+    };
+    ;
+    RmsMachineConsumablesPanelCtrl.prototype.close = function () {
+        this.showCtrlMode('list');
+        this.refresh();
+    };
+    RmsMachineConsumablesPanelCtrl.prototype.showCtrlMode = function (mode) {
+        if (mode == 'new') {
+            var selectedRows = this.container.tabulator("getSelectedRows");
+            if (selectedRows != undefined) {
+                this.container.tabulator("deselectRow", selectedRows);
+            }
+            this.panel.inputlItem = {
+                machine_consumables_id: -1,
+                machine_name: '',
+                consumables_name: '',
+                count: '',
+                change_date: '',
+                memo: '',
+            };
+            this.refresh();
+        }
+        this.mode = mode;
+        this.events.emit('panel-size-changed');
     };
     ;
     RmsMachineConsumablesPanelCtrl.template = template;
@@ -29399,7 +29434,7 @@ var RmsMachineConsumablesPanelCtrl = /** @class */ (function (_super) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"editor-row\">\n        <div class=\"section gf-form-group\">\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-8\">장비명</label>\n                <div class=\"gf-form-select-wrapper\">\n                        <select class=\"gf-form-input min-width-13 width-13\" \n                            ng-model=\"ctrl.panel.inputlItem.machine_name\"\n                            ng-options=\"f for f in ctrl.panel.machineCategory\">\n                        </select>\n                </div>                    \n            </div>             \n        </div>\n        \n        <div class=\"section gf-form-group\">\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-8\">소모품명</label>\n                <div class=\"gf-form-select-wrapper\">\n                        <select class=\"gf-form-input min-width-13 width-13\" \n                            ng-model=\"ctrl.panel.inputlItem.consumables_name\"\n                            ng-options=\"f for f in ctrl.panel.consumablesCategory\">\n                        </select>\n                </div>                    \n            </div>             \n\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-8\">소모품 개수</label>\n                <input type=\"text\" class=\"gf-form-input min-width-13 width-13\" ng-model=\"ctrl.panel.inputlItem.count\">\n            </div>\n\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-8\">소모품 교체일</label>\n                <input type=\"date\" class=\"gf-form-input min-width-13 width-13\" ng-model=\"ctrl.panel.inputlItem.change_date\">\n            </div>\n        </div>\n\n        <div class=\"section gf-form-group\">\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-8\">메모</label>\n                <input type=\"text\" class=\"gf-form-input min-width-13 width-13\" ng-model=\"ctrl.panel.inputlItem.memo\">\n            </div>            \n            \n            <div class=\"gf-form\">\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onNew()\">\n                    등록\n                </button>\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onEdit()\">\n                    수정\n                </button>\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onDel()\">\n                    삭제\n                </button>\n            </div>\n        </div>\n    </div>\n    \n    <div class=\"editor-row\">\n        <div class=\"thingspin-table\"></div>\n    </div>\n    ";
+module.exports = "<div ng-switch on='ctrl.mode'>\r\n    <button type=\"submit\" class=\"btn btn-primary\" ng-click=\"ctrl.showCtrlMode('new')\">신규 등록</button>\r\n    <br></br>  \r\n\r\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new|edit\" ng-switch-when-separator=\"|\">\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-8\">장비명</label>\r\n            <div class=\"gf-form-select-wrapper\">\r\n                    <select class=\"gf-form-input min-width-13 width-13\" placeholder=\"장비명\" \r\n                        ng-model=\"ctrl.panel.inputlItem.machine_name\"\r\n                        ng-options=\"f for f in ctrl.panel.machineCategory\">\r\n                    </select>\r\n            </div>                    \r\n        </div>             \r\n    </div>\r\n    \r\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new|edit\" ng-switch-when-separator=\"|\">\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-8\">소모품명</label>\r\n            <div class=\"gf-form-select-wrapper\">\r\n                    <select class=\"gf-form-input min-width-13 width-13\" placeholder=\"소모품명\" \r\n                        ng-model=\"ctrl.panel.inputlItem.consumables_name\"\r\n                        ng-options=\"f for f in ctrl.panel.consumablesCategory\">\r\n                    </select>\r\n            </div>                    \r\n        </div>             \r\n\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-8\">소모품 개수</label>\r\n            <input type=\"text\" class=\"gf-form-input min-width-13 width-13\" placeholder=\"소모품 개수\" ng-model=\"ctrl.panel.inputlItem.count\">\r\n        </div>\r\n\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-8\">소모품 교체일</label>\r\n            <input type=\"date\" class=\"gf-form-input min-width-13 width-13\" placeholder=\"소모품 교체일\" ng-model=\"ctrl.panel.inputlItem.change_date\">\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new\">\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-8\">메모</label>\r\n            <input type=\"text\" class=\"gf-form-input min-width-13 width-13\" placeholder=\"메모\" ng-model=\"ctrl.panel.inputlItem.memo\">\r\n        </div>            \r\n        \r\n        <div class=\"gf-form\">\r\n            <button class=\"btn btn-success min-width-11 width-11\" ng-click=\"ctrl.onNew()\">\r\n                신규 등록\r\n            </button>\r\n            &nbsp;\r\n            <button class=\"btn btn-success min-width-10 width-10\" ng-click=\"ctrl.close()\">\r\n                창 닫기\r\n            </button>\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"edit\">\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-8\">메모</label>\r\n            <input type=\"text\" class=\"gf-form-input min-width-13 width-13\" placeholder=\"메모\" ng-model=\"ctrl.panel.inputlItem.memo\">\r\n        </div>            \r\n        \r\n        <div class=\"gf-form\">\r\n            <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onEdit()\">\r\n                수정\r\n            </button>\r\n            &nbsp;\r\n            <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onDel()\">\r\n                삭제\r\n            </button>\r\n            &nbsp;\r\n            <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.close()\">\r\n                창 닫기\r\n            </button>\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"editor-row\">\r\n        <div class=\"thingspin-table\"></div>\r\n    </div>\r\n</div>\r\n\r\n\r\n    \r\n    \r\n    ";
 
 /***/ }),
 

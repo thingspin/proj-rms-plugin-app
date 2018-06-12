@@ -13,7 +13,7 @@
       ],
       "datasource": "REMOTESOLUTIONS(V1.0)",
       "gridPos": {
-        "h": 13,
+        "h": 17,
         "w": 24,
         "x": 0,
         "y": 0
@@ -33,7 +33,7 @@
         {
           "alias": "",
           "format": "table",
-          "rawSql": "SELECT MACHINE_CONSUMABLES_ID, MACHINE_NAME, CONSUMABLES_NAME, CONSUMABLES_COUNT, c.CHANGE_DATE, c.MEMO\n  FROM t_machine AS a, t_consumables AS b, t_machine_consumables AS c\n WHERE a.machine_id = c.machine_id AND b.consumables_id = c.consumables_id;\n",
+          "rawSql": "SELECT MACHINE_CONSUMABLES_ID as '등록 ID', MACHINE_NAME as 장비명, CONSUMABLES_NAME as 소모품명, CONSUMABLES_COUNT as '소모품 개수', c.CHANGE_DATE as '소모품 교체일', c.MEMO as 메모\r\n  FROM t_machine AS a, t_consumables AS b, t_machine_consumables AS c\r\n WHERE a.machine_id = c.machine_id AND b.consumables_id = c.consumables_id;",
           "refId": "A"
         }
       ],

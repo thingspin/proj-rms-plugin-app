@@ -29103,9 +29103,9 @@ var RmsCPKTrendPanelCtrl = /** @class */ (function (_super) {
         this.render();
     };
     RmsCPKTrendPanelCtrl.prototype.onDataReceived = function (dataList) {
-        console.log(this);
+        //console.log(this);
         this.dataRaw = dataList;
-        console.log(dataList);
+        // console.log(dataList);
         Promise.resolve(this.transformer(this.dataRaw));
         this.createTable(this.dataJson);
     };
@@ -29183,9 +29183,9 @@ var RmsCPKTrendPanelCtrl = /** @class */ (function (_super) {
                 rowMakeArray.push(row[1]);
             valueMakeMap.set(row[0] + "-" + row[1], row[2]);
         }
-        console.log(columnMakeMap);
-        console.log(rowMakeArray);
-        console.log(valueMakeMap);
+        // console.log(columnMakeMap);
+        // console.log(rowMakeArray);
+        // console.log(valueMakeMap);
         var obj = {
             title: '검사항목',
             field: 'inm',
@@ -29210,13 +29210,13 @@ var RmsCPKTrendPanelCtrl = /** @class */ (function (_super) {
         // console.log(columnSize);
         for (var count = 0; count < keyList.length; count++) {
             var key = keyList[count];
-            console.log(key);
+            // console.log(key);
             var indexStr = key.split('-');
             if (tableMakeMap.has(fieldArray[0]) == false) {
                 tableMakeMap.set(fieldArray[0], indexStr[1]);
             }
-            console.log((count % columnSize) + 1);
-            console.log(fieldArray[(count % columnSize) + 1]);
+            // console.log((count%columnSize)+1);
+            // console.log(fieldArray[(count%columnSize)+1]);
             tableMakeMap.set("" + fieldArray[(count % columnSize) + 1] + "", valueMakeMap.get(key));
             if ((count % columnSize) + 1 == columnSize && count !== 0) {
                 var object = Object();
@@ -29238,9 +29238,9 @@ var RmsCPKTrendPanelCtrl = /** @class */ (function (_super) {
             align: "left"
         };
         this.columns.push(averageTitle);
-        console.log(tableMakeMap);
-        console.log(tableArray);
-        console.log(this.columns);
+        // console.log(tableMakeMap);
+        // console.log(tableArray);
+        // console.log(this.columns);
         this.dataJson = tableArray;
     };
     ;
@@ -29311,7 +29311,7 @@ var RmsCPKTrendPanelCtrl = /** @class */ (function (_super) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"editor-row\">\n    <div class=\"thingspin-table\"></div>\n</div>\n";
+module.exports = "<div class=\"editor-row\">\r\n    <div class=\"thingspin-table\"></div>\r\n</div>\r\n";
 
 /***/ }),
 
