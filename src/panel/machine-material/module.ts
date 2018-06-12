@@ -38,13 +38,19 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
   selectObj: any;
   selectTableRow : any;
   mode : any;
+  isEditor : any;
+  isViewer : any;
+  isAdmin : any;
 
-  constructor($scope, private $rootScope, $injector, $http, $location, uiSegmentSrv, annotationsSrv, private rsDsSrv, private alertSrv) {
+  constructor($scope, private $rootScope, $injector, $http, $location, uiSegmentSrv, annotationsSrv, contextSrv, private rsDsSrv, private alertSrv) {
     super($scope, $injector);
 
     // _.defaults(this.panel, this.panelDefaults);
     _.defaults(this.panel);
-
+    this.isViewer = contextSrv.hasRole('Viewer');
+    if (!this.isViewer)
+      this.mode = 'showBtn';
+    
     this.machine = {
       id : "장비 ID",
       name : '장비 설명',
@@ -67,17 +73,19 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
   }
 
   initQueryData() {
-    let selectId = this.datasource.id;
-    let deferred = this.$q.defer();
-    let query = ["select business_id, name, person from t_business where business_type='장비업체'"];
-    this.rsDsSrv.query(selectId, query).then( result => {
-        deferred.resolve(result);
-        this.transDataBusiness(result);
-    }).catch( err => {
-        deferred.reject(err);
-        console.log(err);
-    });
-    return deferred.promise;
+    if (!this.isViewer) {
+      let selectId = this.datasource.id;
+      let deferred = this.$q.defer();
+      let query = ["select business_id, name, person from t_business where business_type='장비업체'"];
+      this.rsDsSrv.query(selectId, query).then( result => {
+          deferred.resolve(result);
+          this.transDataBusiness(result);
+      }).catch( err => {
+          deferred.reject(err);
+          console.log(err);
+      });
+      return deferred.promise;  
+    }
   }
 
   link(scope, elem, attrs, ctrl) {
@@ -126,10 +134,12 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
     };
     let opts = Object.assign({ // deep copy
       rowClick: (e, row) => { //trigger an alert message when the row is clicked
+        if (!this.isViewer) {
           this.showCtrlMode('edit');
           this.selectRow(row.getData());
           this.selectTableRow = row;
           // this.container.tabulator('deselectRow');
+        }
       },
     }, this.defTabulatorOpts);
     this.container.tabulator(opts);
@@ -161,7 +171,7 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
         this.machine.id = "";
         this.machine.name = "";
         this.machine.memo = "";
-        this.businessSelect = null;  
+        this.businessSelect = null;
       }
       case 'edit' :
       {
@@ -173,7 +183,10 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
   }
 
   close() {
-    this.showCtrlMode('list');
+    if (this.isViewer)
+      this.showCtrlMode('list');
+    else
+      this.showCtrlMode('showBtn');
     this.refresh();
   }
 
@@ -310,7 +323,10 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
         this.rsDsSrv.query(selectId, query).then( result => {
             // this.updateInspectionPropertyList(selectId);
             this.alertSrv.set(name + "이(가) 삭제 되었습니다.", '', 'success', 1000);
-            this.showCtrlMode('list');
+            if (this.isViewer)
+              this.showCtrlMode('list');
+            else
+              this.showCtrlMode('showBtn');
             this.refresh();
         }).catch( err => {
             this.alertSrv.set(name + " 삭제 실패", err, 'error', 5000);
@@ -320,8 +336,8 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
     });
   }
 
-  showCtrlMode(mode) {
-    if (mode == 'new') {
+  showCtrlMode(value) {
+    if (value == 'new') {
       var selectedRows = this.container.tabulator("getSelectedRows");
       if (selectedRows != undefined) {
         this.container.tabulator("deselectRow", selectedRows);
@@ -333,7 +349,8 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
       }
       this.refresh();
     }
-    this.mode = mode;
+    this.mode = value;
+    console.log(this.mode);
     this.events.emit('panel-size-changed');
   }
 

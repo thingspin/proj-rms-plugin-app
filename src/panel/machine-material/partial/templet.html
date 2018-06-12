@@ -1,6 +1,8 @@
 <div ng-switch on='ctrl.mode'>
-    <button type="submit" class="btn btn-primary" ng-click="ctrl.showCtrlMode('new')">신규 등록</button>
-    <br></br>    
+    <div ng-switch-when="showBtn">
+        <button type="submit" class="btn btn-primary" ng-click="ctrl.showCtrlMode('new')">신규 등록</button>
+        <br></br>
+    </div>
     <div class="editor-row">
         <div class="thingspin-table"></div>
     </div>
