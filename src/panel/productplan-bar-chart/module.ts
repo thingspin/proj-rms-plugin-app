@@ -9,7 +9,7 @@ const PLAN = 0;
 const TRUE = 1;
 const FALSE = 2;
 const PLAN_LABEL = "생산계획";
-const TRUE_LABEL = "실적수량";
+const TRUE_LABEL = "양품수";
 const FALSE_LABEL = "불량수";
 
 class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
@@ -253,9 +253,9 @@ class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
       var dataRows = dataList[dataCount].rows;
       for (var dataRowCount=0;dataRowCount<dataRows.length;dataRowCount++) {
         var dataRow = dataRows[dataRowCount];
-        if (dataList[dataCount].columns[2].text === '불량수')
+        if (dataList[dataCount].columns[2].text === FALSE_LABEL)
           this.mapDataInsert(FALSE, dataRow);
-        else if (dataList[dataCount].columns[2].text === '실적수량')
+        else if (dataList[dataCount].columns[2].text === TRUE_LABEL)
           this.mapDataInsert(TRUE, dataRow);
         else
           this.mapDataInsert(PLAN, dataRow);
