@@ -54,6 +54,7 @@ module.exports = {
       { from: 'img/**' },
       { from: '**/*.css' },
       { from: '**/*.svg' },
+      { from: '**/*.html' },
     ]),
   ],
   resolve: {
