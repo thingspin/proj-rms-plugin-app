@@ -17691,7 +17691,8 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
                 var ctx = chart.ctx;
                 ctx.fillStyle = '#09033f';
                 ctx.font = "20px Arial Black";
-                ctx.fillText("CPK = " + chart.options.cpk.toFixed(3), chart.width - 70, chart.height * 0.17);
+                ctx.textAlign = "end";
+                ctx.fillText("CPK = " + chart.options.cpk.toFixed(3), chart.width - 70, chart.height * 0.21);
                 ctx.fillText("CP = " + chart.options.cp.toFixed(3), chart.width - 70, chart.height * 0.1);
                 //ctx.fillText("CPK : "+ this.cpk, chart.width * 0.6 ,chart.height * 0.15);
                 chart.data.datasets.forEach(function (dataset, i) {
