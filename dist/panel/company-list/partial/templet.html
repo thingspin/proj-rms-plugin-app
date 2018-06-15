@@ -1,0 +1,140 @@
+<div ng-switch on='ctrl.mode'>
+    <button type="submit" class="btn btn-primary" ng-click="ctrl.showCtrlMode('new')">신규 등록</button>
+    <br></br>     
+    <div class="section gf-form-group" ng-show='1' ng-switch-when="new|edit" ng-switch-when-separator="|">
+        <div class="gf-form">
+            <label class="gf-form-label width-5">업체명</label>
+            <input type="text" class="gf-form-input min-width-16 width-16" placeholder="업체명" ng-model="ctrl.panel.inputlItem.name">
+        </div>            
+
+        <div class="gf-form">
+            <label class="gf-form-label width-5">업종</label>
+            <div class="gf-form-select-wrapper">
+                <select class="gf-form-input min-width-16 width-16" placeholder="업종"
+                    ng-model="ctrl.panel.inputlItem.business_type"
+                    ng-options="f for f in ctrl.panel.businessCategory">
+                </select>
+            </div>                    
+        </div>            
+    </div>
+    <div class="section gf-form-group" ng-show='1' ng-switch-when="new|edit" ng-switch-when-separator="|">
+        <div class="gf-form">
+            <label class="gf-form-label width-5">담당자</label>
+            <input type="text" class="gf-form-input min-width-16 width-16" placeholder="담당자" ng-model="ctrl.panel.inputlItem.person">
+        </div>
+
+        <div class="gf-form">
+            <label class="gf-form-label width-5">연락처</label>
+            <input type="text" class="gf-form-input min-width-16 width-16" placeholder="연락처" ng-model="ctrl.panel.inputlItem.phone">
+        </div>
+
+        <div class="gf-form">
+            <label class="gf-form-label width-5">이메일</label>
+            <input type="text" class="gf-form-input min-width-16 width-16" placeholder="이메일" ng-model="ctrl.panel.inputlItem.mail">
+        </div>
+    </div>
+    <div class="section gf-form-group" ng-show='1' ng-switch-when="new">
+        <div class="gf-form">
+            <label class="gf-form-label width-5">메모</label>
+            <input type="text" class="gf-form-input min-width-16 width-16" placeholder="메모" ng-model="ctrl.panel.inputlItem.memo">
+        </div>  
+        <div class="gf-form">
+            <button class="btn btn-success min-width-11 width-11" ng-click="ctrl.onNew()">
+                신규 등록
+            </button>
+            &nbsp;
+            <button class="btn btn-success min-width-10 width-10" ng-click="ctrl.close()">
+                창 닫기
+            </button>
+        </div>      
+    </div>
+
+    <div class="section gf-form-group" ng-show='1' ng-switch-when="edit">
+        <div class="gf-form">
+            <label class="gf-form-label width-5">메모</label>
+            <input type="text" class="gf-form-input min-width-16 width-16" placeholder="메모" ng-model="ctrl.panel.inputlItem.memo">
+        </div>  
+        <div class="gf-form">
+            <button class="btn btn-success min-width-7 width-7" ng-click="ctrl.onEdit()">
+                수정
+            </button>
+            &nbsp;
+            <button class="btn btn-success min-width-7 width-7" ng-click="ctrl.onDel()">
+                삭제
+            </button>
+            &nbsp;
+            <button class="btn btn-success min-width-7 width-7" ng-click="ctrl.close()">
+                창 닫기
+            </button>
+        </div>   
+    </div>
+
+    <div class="editor-row">
+        <div class="thingspin-table"></div>
+    </div>
+</div>
+
+
+
+<!--
+
+<div class="editor-row">
+        <div class="section gf-form-group">
+            <div class="gf-form">
+                <label class="gf-form-label width-5">업체명</label>
+                <input type="text" class="gf-form-input min-width-16 width-16" ng-model="ctrl.panel.inputlItem.name">
+            </div>            
+
+            <div class="gf-form">
+                <label class="gf-form-label width-5">업종</label>
+                <div class="gf-form-select-wrapper">
+                        <select class="gf-form-input min-width-16 width-16" 
+                            ng-model="ctrl.panel.inputlItem.business_type"
+                            ng-options="f for f in ctrl.panel.businessCategory">
+                        </select>
+                </div>                    
+            </div>            
+        </div>
+        
+        <div class="section gf-form-group">
+            <div class="gf-form">
+                <label class="gf-form-label width-5">담당자</label>
+                <input type="text" class="gf-form-input min-width-16 width-16" ng-model="ctrl.panel.inputlItem.person">
+            </div>
+
+            <div class="gf-form">
+                <label class="gf-form-label width-5">연락처</label>
+                <input type="text" class="gf-form-input min-width-16 width-16" ng-model="ctrl.panel.inputlItem.phone">
+            </div>
+
+            <div class="gf-form">
+                <label class="gf-form-label width-5">이메일</label>
+                <input type="text" class="gf-form-input min-width-16 width-16" ng-model="ctrl.panel.inputlItem.mail">
+            </div>
+        </div>
+        <div class="section gf-form-group">
+            <div class="gf-form">
+                <label class="gf-form-label width-5">메모</label>
+                <input type="text" class="gf-form-input min-width-16 width-16" ng-model="ctrl.panel.inputlItem.memo">
+            </div>            
+            
+            <div class="gf-form">
+                <button class="btn btn-success min-width-7 width-7" ng-click="ctrl.onNew()">
+                    등록
+                </button>
+                <button class="btn btn-success min-width-7 width-7" ng-click="ctrl.onEdit()">
+                    수정
+                </button>
+                <button class="btn btn-success min-width-7 width-7" ng-click="ctrl.onDel()">
+                    삭제
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="editor-row">
+        <div class="thingspin-table"></div>
+    </div>
+
+    -->
+    

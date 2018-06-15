@@ -1,0 +1,68 @@
+<div class="editor-row">
+        <div class="section gf-form-group">
+            <div class="gf-form">
+                <label class="gf-form-label width-7">소모품(품목)</label>
+                <div class="gf-form-select-wrapper">
+                    <select class="gf-form-input min-width-10 width-12 max-width-16" 
+                        ng-model="ctrl.panel.materialItem.category"
+                        ng-options="f for f in ctrl.panel.materialCategory" ng-change="ctrl.render()">
+                    </select>
+                </div>
+            </div>
+    
+            <div class="gf-form" ng-show='1 || ctrl.panel.materialItem.category.length !== 0'>
+                <label class="gf-form-label width-7">스펙(품명)</label>
+                <input type="text" class="gf-form-input min-width-10 width-12 max-width-16" ng-model="ctrl.panel.materialItem.name" placeholder="type here spec name" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
+            </div>
+            
+            <div class="gf-form">
+                <label class="gf-form-label width-7">납품회사</label>
+                <div class="gf-form-select-wrapper">
+                    <select class="gf-form-input min-width-10 width-12 max-width-16" 
+                        ng-model="ctrl.panel.materialItem.company"
+                        ng-options="c.name for c in ctrl.panel.companies" ng-change="ctrl.render()">
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section gf-form-group" ng-show='1 || ctrl.panel.materialItem.name.length !== 0'>
+            <div class="gf-form">
+                <label class="gf-form-label width-7">안전수량</label>
+                <input type="text" class="gf-form-input width-8 max-width-12"  data-placement="auto" ng-model="ctrl.panel.materialItem.safeAmount" placeholder="확보해야 하는 수량" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
+            </div>
+    
+            <div class="gf-form">
+                <label class="gf-form-label width-7">재고수량</label>
+                <input type="number" class="gf-form-input width-8 max-width-12"  data-placement="auto" ng-model="ctrl.panel.materialItem.currAmount" placeholder="현재 남아있는 수량" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
+            </div>
+            
+            <div class="gf-form">
+                <label class="gf-form-label width-7">교체주기</label>
+                <input type="number" class="gf-form-inputwidth-8 max-width-12"  data-placement="auto" ng-model="ctrl.panel.materialItem.lifeAmount" placeholder="교체주기" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="section gf-form-group" ng-show='1 || ctrl.panel.materialItem.name.length !== 0'>
+            <div class="gf-form">
+                <label class="gf-form-label width-7">메모</label>
+                <input type="text" class="gf-form-input min-width-16 width-16" ng-model="ctrl.panel.materialItem.memo" placeholder="" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
+            </div>
+    
+            <div class="gf-form">
+                <label class="gf-form-label width-7">비고</label>
+                <input type="text" class="gf-form-input min-width-16 width-16" ng-model="ctrl.panel.materialItem.etc" placeholder="" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
+            </div>
+            
+            <div class="gf-form">
+                <button class="btn btn-success min-width-23 width-23" ng-click="ctrl.onSave()">
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="editor-row">
+        <div class="thingspin-table"></div>
+    </div>
+    

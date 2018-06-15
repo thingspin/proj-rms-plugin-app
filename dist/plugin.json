@@ -40,7 +40,7 @@
     {"type": "dashboard", "name": "CPK 현황", "path": "dashboards/D00-01.json", "AddToNav": true, "menuID": 1, "ico":"fa fa-industry"},
     {"type": "dashboard", "name": "불량 현황", "path": "dashboards/D00-02.1.json", "AddToNav": true, "menuID": 1, "ico":"fa fa-industry"},
 
-    {"type": "menu", "name": "공정 감시", "mainMenu": true, "slug": "modelbyeol-geomsagirog", "img":"img/thignspin_ic_48dp_white-10.svg", "menuID": 2},
+    {"type": "menu", "name": "공정 감시", "mainMenu": true, "slug": "modelbyeol-geomsagirog", "img":"img/thignspin_ic_48dp_white-03.svg", "menuID": 2},
     {"type": "dashboard", "name": "라인 감시", "path": "dashboards/D01-02.json", "AddToNav": true, "menuID": 2, "ico":"fa fa-industry"},
     {"type": "dashboard", "name": "설비별 불량 현황", "path": "panel/monitor-facility-defect/module.json", "AddToNav": true, "menuID": 2, "ico":"fa fa-industry"},
     {"type": "dashboard", "name": "연속 불량 감시", "path": "dashboards/D00-03.json", "AddToNav": true, "menuID": 2, "ico":"fa fa-industry"},

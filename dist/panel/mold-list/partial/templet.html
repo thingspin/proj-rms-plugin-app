@@ -1,0 +1,84 @@
+<div ng-switch on='ctrl.mode'>
+    <button type="submit" class="btn btn-primary" ng-click="ctrl.showCtrlMode('new')">신규 등록</button>
+    <br></br>   
+    <div class="section gf-form-group" ng-show='1' ng-switch-when="new|edit" ng-switch-when-separator="|">
+        <div class="gf-form">
+            <label class="gf-form-label width-6">모델명</label>
+            <input type="text" class="gf-form-input min-width-15 width-15" placeholder="모델명" ng-model="ctrl.panel.inputlItem.mold_name">
+        </div>
+
+        <div class="gf-form">
+            <label class="gf-form-label width-6">업체명</label>
+            <div class="gf-form-select-wrapper">
+                    <select class="gf-form-input min-width-15 width-15" placeholder="업체명" 
+                        ng-model="ctrl.panel.inputlItem.business_name"
+                        ng-options="f for f in ctrl.panel.businessCategory">
+                    </select>
+            </div>                    
+        </div>             
+    </div>
+    
+    <div class="section gf-form-group" ng-show='1' ng-switch-when="new|edit" ng-switch-when-separator="|">
+        <div class="gf-form">
+            <label class="gf-form-label width-6">사용횟수</label>
+            <input type="text" class="gf-form-input min-width-15 width-15" placeholder="사용횟수" ng-model="ctrl.panel.inputlItem.use_count">
+        </div>
+
+        <div class="gf-form">
+            <label class="gf-form-label width-6">교체주기</label>
+            <input type="text" class="gf-form-input min-width-15 width-15" placeholder="교체주기" ng-model="ctrl.panel.inputlItem.period">
+        </div>
+
+        <div class="gf-form">
+            <label class="gf-form-label width-6">교체일</label>
+            <input type="date" class="gf-form-input min-width-15 width-15" placeholder="교체일" ng-model="ctrl.panel.inputlItem.change_date">
+        </div>
+    </div>
+
+    <div class="section gf-form-group" ng-show='1' ng-switch-when="new">
+        <div class="gf-form">
+            <label class="gf-form-label width-6">메모</label>
+            <input type="text" class="gf-form-input min-width-15 width-15" placeholder="메모" ng-model="ctrl.panel.inputlItem.memo">
+        </div>            
+        
+        <div class="gf-form">
+            <button class="btn btn-success min-width-11 width-11" ng-click="ctrl.onNew()">
+                신규 등록
+            </button>
+            &nbsp;
+            <button class="btn btn-success min-width-10 width-10" ng-click="ctrl.close()">
+                창 닫기
+            </button>
+        </div>
+    </div>  
+
+    <div class="section gf-form-group" ng-show='1' ng-switch-when="edit">
+        <div class="gf-form">
+            <label class="gf-form-label width-6">메모</label>
+            <input type="text" class="gf-form-input min-width-15 width-15" placeholder="메모" ng-model="ctrl.panel.inputlItem.memo">
+        </div>            
+        
+        <div class="gf-form">
+            <button class="btn btn-success min-width-7 width-7" ng-click="ctrl.onEdit()">
+                수정
+            </button>
+            &nbsp;
+            <button class="btn btn-success min-width-7 width-7" ng-click="ctrl.onDel()">
+                삭제
+            </button>
+            &nbsp;
+            <button class="btn btn-success min-width-7 width-7" ng-click="ctrl.close()">
+                창 닫기
+            </button>
+        </div>
+    </div>  
+
+    <div class="editor-row">
+        <div class="thingspin-table"></div>
+    </div>
+</div>
+
+
+    
+    
+    
