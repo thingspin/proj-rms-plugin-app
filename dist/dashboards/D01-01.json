@@ -2,7 +2,7 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:282",
+        "$$hashKey": "object:268",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1528100553071,
+  "iteration": 1529039524767,
   "links": [
     {
       "icon": "external link",
@@ -127,6 +127,7 @@
       "scripts": "",
       "targets": [
         {
+          "$$hashKey": "object:341",
           "alias": "",
           "datasource": "REMOTESOLUTIONS(V1.0)",
           "format": "table",
@@ -134,6 +135,7 @@
           "refId": "A"
         },
         {
+          "$$hashKey": "object:342",
           "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
           "groupBy": [
             {
@@ -168,7 +170,7 @@
               },
               {
                 "params": [
-                  "실적수량"
+                  "양품수"
                 ],
                 "type": "alias"
               }
@@ -195,6 +197,7 @@
           ]
         },
         {
+          "$$hashKey": "object:343",
           "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
           "groupBy": [
             {
@@ -256,7 +259,7 @@
           ]
         }
       ],
-      "title": "모델별 생산계획 / 실적수량 / 불량수",
+      "title": "모델별 생산계획 / 양품수 / 불량수",
       "type": "rms-product-plan-bar"
     },
     {
@@ -1026,8 +1029,8 @@
     ]
   },
   "time": {
-    "from": "now-1d/d",
-    "to": "now-1d/d"
+    "from": "now-5d",
+    "to": "now"
   },
   "timepicker": {
     "hidden": false,
@@ -1058,5 +1061,5 @@
   "timezone": "",
   "title": "생산 현황",
   "uid": "cU1lqH4mz",
-  "version": 8
+  "version": 3
 }
