@@ -2,7 +2,7 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:172",
+        "$$hashKey": "object:1003",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1527097243174,
+  "iteration": 1529041696170,
   "links": [
     {
       "icon": "external link",
@@ -48,13 +48,14 @@
         "thresholdMarkers": true
       },
       "gridPos": {
-        "h": 6,
-        "w": 3,
+        "h": 3,
+        "w": 4,
         "x": 0,
         "y": 0
       },
       "id": 13,
       "interval": null,
+      "kernel": null,
       "links": [],
       "mappingType": 1,
       "mappingTypes": [
@@ -81,6 +82,7 @@
           "to": "null"
         }
       ],
+      "scripts": "",
       "sparkline": {
         "fillColor": "rgba(31, 118, 189, 0.18)",
         "full": false,
@@ -107,15 +109,16 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "datasource": "$DATABASE",
       "fill": 1,
       "gridPos": {
-        "h": 6,
-        "w": 9,
-        "x": 3,
+        "h": 3,
+        "w": 20,
+        "x": 4,
         "y": 0
       },
       "id": 6,
+      "kernel": null,
       "legend": {
         "avg": false,
         "current": false,
@@ -133,26 +136,14 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
+      "scripts": "",
       "seriesOverrides": [],
       "spaceLength": 10,
       "stack": false,
       "steppedLine": false,
       "targets": [
         {
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "none"
-              ],
-              "type": "fill"
-            }
-          ],
+          "groupBy": [],
           "measurement": "/^inspection.detail-*/",
           "orderByTime": "ASC",
           "policy": "default",
@@ -167,10 +158,6 @@
                   "val"
                 ],
                 "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
               }
             ]
           ],
@@ -243,39 +230,28 @@
       }
     },
     {
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "datasource": "$DATABASE",
       "gridPos": {
-        "h": 16,
-        "w": 12,
-        "x": 12,
-        "y": 0
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 3
       },
       "id": 4,
+      "kernel": null,
       "links": [],
+      "scripts": "",
       "targets": [
         {
           "alias": "$col",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "none"
-              ],
-              "type": "fill"
-            }
-          ],
+          "groupBy": [],
           "measurement": "/^inspection.detail-*/",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT mean(\"val\") AS \"val\" FROM /^inspection.detail-*/ WHERE (\"model\" =~ /^$MODEL$/ AND \"facility\" =~ /^$FACILITY$/ AND \"channel\" =~ /^$CHANNEL$/ AND \"iid\" =~ /^$INSPPROP_ID$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
           "rawQuery": false,
           "refId": "A",
-          "resultFormat": "time_series",
+          "resultFormat": "table",
           "select": [
             [
               {
@@ -285,12 +261,8 @@
                 "type": "field"
               },
               {
-                "params": [],
-                "type": "mean"
-              },
-              {
                 "params": [
-                  "CPK"
+                  "cpk"
                 ],
                 "type": "alias"
               }
@@ -303,12 +275,8 @@
                 "type": "field"
               },
               {
-                "params": [],
-                "type": "mean"
-              },
-              {
                 "params": [
-                  "LSL"
+                  "lsl"
                 ],
                 "type": "alias"
               }
@@ -321,12 +289,60 @@
                 "type": "field"
               },
               {
-                "params": [],
-                "type": "mean"
+                "params": [
+                  "usl"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "facility",
+              "operator": "=~",
+              "value": "/^$FACILITY$/"
+            },
+            {
+              "condition": "AND",
+              "key": "channel",
+              "operator": "=~",
+              "value": "/^$CHANNEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "iid",
+              "operator": "=~",
+              "value": "/^$INSPPROP$/"
+            },
+            {
+              "condition": "AND",
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            }
+          ]
+        },
+        {
+          "alias": "$col",
+          "groupBy": [],
+          "measurement": "/^inspection.detail-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"val\") AS \"val\" FROM /^inspection.detail-*/ WHERE (\"model\" =~ /^$MODEL$/ AND \"facility\" =~ /^$FACILITY$/ AND \"channel\" =~ /^$CHANNEL$/ AND \"iid\" =~ /^$INSPPROP_ID$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": false,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "val"
+                ],
+                "type": "field"
               },
               {
                 "params": [
-                  "USL"
+                  "val"
                 ],
                 "type": "alias"
               }
@@ -364,242 +380,6 @@
     },
     {
       "aliasColors": {
-        "A-series": "#052b51"
-      },
-      "bars": true,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
-      "fill": 0,
-      "gridPos": {
-        "h": 10,
-        "w": 12,
-        "x": 0,
-        "y": 6
-      },
-      "hideTimeOverride": true,
-      "id": 11,
-      "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": false,
-        "max": true,
-        "min": true,
-        "rightSide": true,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": false,
-      "linewidth": 2,
-      "links": [],
-      "minSpan": 3,
-      "nullPointMode": "connected",
-      "percentage": false,
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "repeatDirection": "v",
-      "seriesOverrides": [
-        {
-          "alias": "MAX",
-          "bars": false,
-          "fill": 7,
-          "lines": true
-        }
-      ],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "alias": "$col",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "none"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "/^inspection.detail-*/",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "D",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "val"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              },
-              {
-                "params": [
-                  "10s"
-                ],
-                "type": "non_negative_derivative"
-              },
-              {
-                "params": [
-                  "$INSPPROP_NAME"
-                ],
-                "type": "alias"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "val"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "min"
-              },
-              {
-                "params": [
-                  "MIN"
-                ],
-                "type": "alias"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "val"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "max"
-              },
-              {
-                "params": [
-                  "MAX"
-                ],
-                "type": "alias"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "val"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "max"
-              },
-              {
-                "params": [
-                  10
-                ],
-                "type": "moving_average"
-              },
-              {
-                "params": [
-                  "MVA"
-                ],
-                "type": "alias"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "model",
-              "operator": "=~",
-              "value": "/^$MODEL$/"
-            },
-            {
-              "condition": "AND",
-              "key": "facility",
-              "operator": "=~",
-              "value": "/^$FACILITY$/"
-            },
-            {
-              "condition": "AND",
-              "key": "channel",
-              "operator": "=~",
-              "value": "/^$CHANNEL$/"
-            },
-            {
-              "condition": "AND",
-              "key": "iid",
-              "operator": "=~",
-              "value": "/^$INSPPROP$/"
-            }
-          ]
-        }
-      ],
-      "thresholds": [
-        {
-          "colorMode": "ok",
-          "fill": true,
-          "line": true,
-          "op": "gt",
-          "value": 210,
-          "yaxis": "left"
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Non Negative Diference Trend of ($INSPPROP_NAME) at Machine  $FACILITY CH$CHANNEL",
-      "tooltip": {
-        "shared": false,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": 70,
-        "mode": "histogram",
-        "name": null,
-        "show": true,
-        "values": [
-          "total"
-        ]
-      },
-      "yaxes": [
-        {
-          "decimals": 1,
-          "format": "locale",
-          "label": "Mesaurement",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {
         "lsl": "#bf1b00",
         "ucl": "#2f575e",
         "uls": "#0a437c",
@@ -610,7 +390,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "datasource": "$DATABASE",
       "decimals": 2,
       "enableScript": true,
       "fill": 0,
@@ -618,7 +398,7 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 16
+        "y": 9
       },
       "id": 17,
       "kernel": "python",
@@ -629,7 +409,7 @@
         "max": true,
         "min": true,
         "rightSide": true,
-        "show": true,
+        "show": false,
         "total": false,
         "values": true
       },
@@ -641,7 +421,7 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "scripts": "import scipy\nimport math\n\nx = [xbar]\nn = len(x)\n\nmax = [rmax]\nmin = [rmin]\n\nr = []\nfor i in  range(len(max)):\n    r.append(max[i]-min[i])\n\n# 표본 평균\nxaverage = scipy.mean(x) \n\n#범위평균\nraverage = scipy.mean(r)\n\n#D2\n#d2 = 3.4873 + 0.0250141 * n - 0.00009823 * n * n\nd2 = 4.498\n#A2\na2 = 3/(d2*math.sqrt(n))\n\n#관리상한선\nucl =  xaverage + a2 * raverage\nlcl = xaverage - a2 * raverage\n \nucl_list = [ucl] * len(x)\nlcl_list = [lcl] * len(x)\nxaverage_list = [xaverage] * len(x)\nd2 = [d2]*len(x)\n\nv = {\"xbar\":x,\"lcl\":lcl_list ,\"ucl\":ucl_list,\"xaverage\":xaverage_list}\nimport json\nprint(json.dumps(v))",
+      "scripts": "import scipy\nimport math\n\n# Subgroup size별 d2 constant 값 : 2~25\n#d2_list = [1.128, 1.693, 2.059, 2.326, 2.534,2.704, 2.847, 2.970, 3.078, 3.173, 3.258, 3.336, 3.407, 3.472, 3.532, 3.588, 3.640, 3.689, 3.735, 3.778, 3.819, 3.858, 3.895, 3.931]\na2_list = [1.880,1.023,0.729,0.577,0.483,0.419,0.373,0.337,0.308,0.285,0.266,0.249,0.235,0.223,0.212,0.203,0.194,0.187,0.180,0.173,0.167,0.162,0.157,0.153]\n#d2 = 0\na2 = 0\nx = [xbar]\nmax = [rmax]\nmin = [rmin]\n\nn = len(x)\n\nsubgroup = [count]\nsubgroup_avg = scipy.mean(subgroup)\nsubgroup_avg = round(subgroup_avg)\n\nif subgroup_avg > 1 and subgroup_avg <= 25:\n  a2 = a2_list[int(subgroup_avg)-2]\n\nr = []\nfor i in  range(len(max)):\n    r.append(max[i]-min[i])\n\n# 표본 평균\nxaverage = scipy.mean(x) \n\n#범위평균\nraverage = scipy.mean(r)\n\n#관리상한선\nucl =  xaverage + a2 * raverage\nlcl = xaverage - a2 * raverage\n \nucl_list = [ucl] * len(x)\nlcl_list = [lcl] * len(x)\nxaverage_list = [xaverage] * len(x)\n\nv = {\"xbar\":x,\"lcl\":lcl_list ,\"ucl\":ucl_list,\"xaverage\":xaverage_list}\nimport json\nprint(json.dumps(v))",
       "seriesOverrides": [
         {
           "alias": "xaverage",
@@ -665,7 +445,7 @@
           "groupBy": [
             {
               "params": [
-                "1s"
+                "$INTERVAL"
               ],
               "type": "time"
             },
@@ -734,6 +514,24 @@
               {
                 "params": [
                   "rmin"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "val"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              },
+              {
+                "params": [
+                  "count"
                 ],
                 "type": "alias"
               }
@@ -814,7 +612,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "datasource": "$DATABASE",
       "decimals": 2,
       "enableScript": true,
       "fill": 1,
@@ -822,7 +620,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 21
+        "y": 14
       },
       "id": 15,
       "kernel": "python",
@@ -833,7 +631,7 @@
         "max": true,
         "min": true,
         "rightSide": true,
-        "show": true,
+        "show": false,
         "total": false,
         "values": true
       },
@@ -845,10 +643,10 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
-      "scripts": "import scipy\n\nmax = [rmax]\nmin = [rmin]\nn = len(max)\n\nr = []\nfor i in  range(len(max)):\n    r.append(max[i]-min[i])\n\n#범위평균\nraverage = scipy.mean(r)\n\nd4 = 1.541\n\n# 하한선\nucl = d4 * raverage\nlcl = 0\n\nucl_list = [ucl] * n\nlcl_list = [lcl] * n\nraverage_list = [raverage] * n\n\nv = {\"R\":r,\"lcl\":lcl_list ,\"ucl\":ucl_list,\"average\":raverage_list }\nimport json\nprint(json.dumps(v))",
+      "scripts": "import scipy\n# D4 list for subgroup size(2~25)\nd4_list = [3.267,2.574,2.282,2.114,2.004,1.924,1.864,1.816,1.777,1.774,1.716,1.692,1.671,1.652,1.636,1.621,1.608,1.596,1.586,1.575,1.566,1.557,1.548,1.541]\nd4 = 0\nmax = [rmax]\nmin = [rmin]\nn = len(max)\n\nr = []\nfor i in  range(len(max)):\n    r.append(max[i]-min[i])\n\n#범위평균\nraverage = scipy.mean(r)\n\nsubgroup = [count]\nsubgroup_avg = scipy.mean(subgroup)\nsubgroup_avg = round(subgroup_avg)\n\n# D4\nif subgroup_avg > 1 and subgroup_avg <= 25:\n  d4 = d4_list[int(subgroup_avg)-2]\n\n# 하한선\nucl = d4 * raverage\nlcl = 0\n\nucl_list = [ucl] * n\nlcl_list = [lcl] * n\nraverage_list = [raverage] * n\n\nv = {\"R\":r,\"lcl\":lcl_list ,\"ucl\":ucl_list,\"average\":raverage_list }\nimport json\nprint(json.dumps(v))",
       "seriesOverrides": [
         {
-          "alias": "raverage",
+          "alias": "average",
           "dashes": true
         },
         {
@@ -870,7 +668,7 @@
           "groupBy": [
             {
               "params": [
-                "1s"
+                "$INTERVAL"
               ],
               "type": "time"
             },
@@ -919,6 +717,24 @@
               {
                 "params": [
                   "rmin"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "val"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              },
+              {
+                "params": [
+                  "count"
                 ],
                 "type": "alias"
               }
@@ -992,6 +808,7 @@
       }
     }
   ],
+  "refresh": false,
   "schemaVersion": 16,
   "style": "light",
   "tags": [
@@ -1002,9 +819,8 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
-          "text": "IR/Current",
-          "value": "IR/Current"
+          "text": "L/Current",
+          "value": "L/Current"
         },
         "datasource": "REMOTESOLUTIONS(V1.0)",
         "hide": 0,
@@ -1013,7 +829,7 @@
         "multi": false,
         "name": "INSPPROP_NAME",
         "options": [],
-        "query": "SELECT NAME FROM t_inspection_property WHERE IDX <> 0 AND IP_TYPE = 1;",
+        "query": "SELECT NAME FROM t_inspection_property WHERE IDX <> 0;",
         "refresh": 1,
         "regex": "",
         "sort": 0,
@@ -1026,9 +842,8 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
-          "text": "2",
-          "value": "2"
+          "text": "1",
+          "value": "1"
         },
         "datasource": "REMOTESOLUTIONS(V1.0)",
         "hide": 2,
@@ -1037,7 +852,7 @@
         "multi": false,
         "name": "INSPPROP",
         "options": [],
-        "query": "SELECT IDX FROM t_inspection_property WHERE NAME IN (\"$INSPPROP_NAME\") AND IDX <> 0;",
+        "query": "SELECT IDX FROM t_inspection_property WHERE NAME IN (\"$INSPPROP_NAME\")",
         "refresh": 1,
         "regex": "",
         "sort": 0,
@@ -1121,22 +936,32 @@
         "auto_count": 30,
         "auto_min": "1s",
         "current": {
-          "text": "auto",
-          "value": "$__auto_interval_INTERVAL"
+          "text": "1s",
+          "value": "1s"
         },
         "hide": 0,
         "label": "집계단위",
         "name": "INTERVAL",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "auto",
             "value": "$__auto_interval_INTERVAL"
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "1s",
             "value": "1s"
+          },
+          {
+            "selected": false,
+            "text": "3s",
+            "value": "3s"
+          },
+          {
+            "selected": false,
+            "text": "5s",
+            "value": "5s"
           },
           {
             "selected": false,
@@ -1199,9 +1024,23 @@
             "value": "30d"
           }
         ],
-        "query": "1s, 10s, 30s, 1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
+        "query": "1s,3s,5s, 10s, 30s, 1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
         "refresh": 2,
         "type": "interval"
+      },
+      {
+        "current": {
+          "text": "RMS-CENTER-INFLUXDB(V1.0)",
+          "value": "RMS-CENTER-INFLUXDB(V1.0)"
+        },
+        "hide": 2,
+        "label": "본사/지점 선택",
+        "name": "DATABASE",
+        "options": [],
+        "query": "influxdb",
+        "refresh": 1,
+        "regex": "/^RMS-*/",
+        "type": "datasource"
       }
     ]
   },
@@ -1239,5 +1078,5 @@
   "timezone": "",
   "title": "CPK 현황",
   "uid": "N36atb7mk",
-  "version": 77
+  "version": 96
 }
