@@ -193,6 +193,14 @@ export class SettingActionInAdvancePanelCtrl extends MetricsPanelCtrl {
             dropdownMenu: true,
             manualColumnResize: true,
             minSpareRows: 1,
+            afterChange: (changes, src) => {
+                if (src === "edit" && changes[0][3] === "") {
+                    this.memo.splice(changes[0][0], 1);
+                    if (this.memo.length > 0) {
+                        this.hot.loadData(this.memo);
+                    }
+                }
+            }
         });
         this.hot.loadData(this.memo);
     }
