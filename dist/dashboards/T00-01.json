@@ -2,7 +2,7 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:250",
+        "$$hashKey": "object:1003",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -17,7 +17,7 @@
   "gnetId": null,
   "graphTooltip": 1,
   "id": 1,
-  "iteration": 1529041328890,
+  "iteration": 1529041696170,
   "links": [
     {
       "icon": "external link",
@@ -144,7 +144,6 @@
       "steppedLine": false,
       "targets": [
         {
-          "$$hashKey": "object:323",
           "groupBy": [],
           "measurement": "/^inspection.detail-*/",
           "orderByTime": "ASC",
@@ -1041,7 +1040,7 @@
         "options": [],
         "query": "influxdb",
         "refresh": 1,
-        "regex": "/^RMS-CENTER*/",
+        "regex": "/^RMS-*/",
         "type": "datasource"
       }
     ]
@@ -1080,5 +1079,5 @@
   "timezone": "",
   "title": "CPK 현황",
   "uid": "N36atb7mk",
-  "version": 93
+  "version": 96
 }
