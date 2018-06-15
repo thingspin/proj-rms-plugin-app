@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1528103388481,
+  "iteration": 1529050346798,
   "links": [
     {
       "icon": "external link",
@@ -886,7 +886,7 @@
         "options": [],
         "query": "influxdb",
         "refresh": 1,
-        "regex": "/^RMS-CENTER-*/",
+        "regex": "/^RMS-*/",
         "type": "datasource"
       },
       {
@@ -1111,5 +1111,5 @@
   "timezone": "",
   "title": "모델별 검사기록",
   "uid": "rAgfpx7iz",
-  "version": 3
+  "version": 2
 }
