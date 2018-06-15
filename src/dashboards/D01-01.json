@@ -2,7 +2,7 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:268",
+        "$$hashKey": "object:207",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1529039524767,
+  "iteration": 1529049928384,
   "links": [
     {
       "icon": "external link",
@@ -127,7 +127,7 @@
       "scripts": "",
       "targets": [
         {
-          "$$hashKey": "object:341",
+          "$$hashKey": "object:369",
           "alias": "",
           "datasource": "REMOTESOLUTIONS(V1.0)",
           "format": "table",
@@ -135,8 +135,8 @@
           "refId": "A"
         },
         {
-          "$$hashKey": "object:342",
-          "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+          "$$hashKey": "object:370",
+          "datasource": "$DATABASE",
           "groupBy": [
             {
               "params": [
@@ -154,7 +154,7 @@
           "measurement": "/^inspection.summary-*/",
           "orderByTime": "ASC",
           "policy": "default",
-          "refId": "B",
+          "refId": "D",
           "resultFormat": "table",
           "select": [
             [
@@ -197,8 +197,8 @@
           ]
         },
         {
-          "$$hashKey": "object:343",
-          "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+          "$$hashKey": "object:371",
+          "datasource": "$DATABASE",
           "groupBy": [
             {
               "params": [
@@ -216,7 +216,7 @@
           "measurement": "/^inspection.summary-*/",
           "orderByTime": "ASC",
           "policy": "default",
-          "refId": "C",
+          "refId": "B",
           "resultFormat": "table",
           "select": [
             [
@@ -276,6 +276,7 @@
       "scripts": "",
       "targets": [
         {
+          "$$hashKey": "object:772",
           "alias": "",
           "datasource": "REMOTESOLUTIONS(V1.0)",
           "format": "table",
@@ -283,7 +284,8 @@
           "refId": "A"
         },
         {
-          "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+          "$$hashKey": "object:773",
+          "datasource": "$DATABASE",
           "groupBy": [
             {
               "params": [
@@ -301,7 +303,7 @@
           "measurement": "/^inspection.summary-*/",
           "orderByTime": "ASC",
           "policy": "default",
-          "refId": "B",
+          "refId": "E",
           "resultFormat": "table",
           "select": [
             [
@@ -338,7 +340,8 @@
           ]
         },
         {
-          "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+          "$$hashKey": "object:774",
+          "datasource": "$DATABASE",
           "groupBy": [
             {
               "params": [
@@ -356,7 +359,7 @@
           "measurement": "/^inspection.summary-*/",
           "orderByTime": "ASC",
           "policy": "default",
-          "refId": "C",
+          "refId": "B",
           "resultFormat": "table",
           "select": [
             [
@@ -399,7 +402,8 @@
           ]
         },
         {
-          "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+          "$$hashKey": "object:775",
+          "datasource": "$DATABASE",
           "groupBy": [
             {
               "params": [
@@ -417,7 +421,7 @@
           "measurement": "/^inspection.summary-*/",
           "orderByTime": "ASC",
           "policy": "default",
-          "refId": "D",
+          "refId": "C",
           "resultFormat": "table",
           "select": [
             [
@@ -641,6 +645,7 @@
       ],
       "targets": [
         {
+          "$$hashKey": "object:548",
           "alias": "",
           "datasource": "REMOTESOLUTIONS(V1.0)",
           "format": "table",
@@ -649,8 +654,8 @@
           "refId": "B"
         },
         {
-          "alias": "$tag_model",
-          "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+          "$$hashKey": "object:549",
+          "datasource": "$DATABASE",
           "groupBy": [
             {
               "params": [
@@ -659,11 +664,10 @@
               "type": "tag"
             }
           ],
-          "hide": false,
           "measurement": "/^inspection.summary-*/",
           "orderByTime": "ASC",
           "policy": "default",
-          "refId": "A",
+          "refId": "E",
           "resultFormat": "table",
           "select": [
             [
@@ -700,8 +704,8 @@
           ]
         },
         {
-          "alias": "$tag_model",
-          "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+          "$$hashKey": "object:550",
+          "datasource": "$DATABASE",
           "groupBy": [
             {
               "params": [
@@ -710,11 +714,10 @@
               "type": "tag"
             }
           ],
-          "hide": false,
           "measurement": "/^inspection.summary-*/",
           "orderByTime": "ASC",
           "policy": "default",
-          "refId": "C",
+          "refId": "A",
           "resultFormat": "table",
           "select": [
             [
@@ -757,8 +760,8 @@
           ]
         },
         {
-          "alias": "$tag_model",
-          "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+          "$$hashKey": "object:551",
+          "datasource": "$DATABASE",
           "groupBy": [
             {
               "params": [
@@ -767,11 +770,10 @@
               "type": "tag"
             }
           ],
-          "hide": false,
           "measurement": "/^inspection.summary-*/",
           "orderByTime": "ASC",
           "policy": "default",
-          "refId": "D",
+          "refId": "C",
           "resultFormat": "table",
           "select": [
             [
@@ -823,7 +825,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "datasource": "$DATABASE",
       "decimals": 0,
       "fill": 1,
       "gridPos": {
@@ -865,6 +867,7 @@
       "steppedLine": false,
       "targets": [
         {
+          "$$hashKey": "object:292",
           "alias": "$tag_model",
           "groupBy": [
             {
@@ -1025,11 +1028,25 @@
         "tagsQuery": "",
         "type": "query",
         "useTags": false
+      },
+      {
+        "current": {
+          "text": "RMS-CENTER-INFLUXDB(V1.0)",
+          "value": "RMS-CENTER-INFLUXDB(V1.0)"
+        },
+        "hide": 2,
+        "label": "본사/지점 선택",
+        "name": "DATABASE",
+        "options": [],
+        "query": "influxdb",
+        "refresh": 1,
+        "regex": "/^RMS-*/",
+        "type": "datasource"
       }
     ]
   },
   "time": {
-    "from": "now-5d",
+    "from": "now-5s",
     "to": "now"
   },
   "timepicker": {
@@ -1061,5 +1078,5 @@
   "timezone": "",
   "title": "생산 현황",
   "uid": "cU1lqH4mz",
-  "version": 3
+  "version": 9
 }
