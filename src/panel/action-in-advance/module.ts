@@ -186,6 +186,7 @@ export class SettingActionInAdvancePanelCtrl extends MetricsPanelCtrl {
 
     memoInit() {
         this.hot = new Handsontable(this.$element.find("#rs-memo-input")[0], {
+            stretchH: 'all',
             rowHeaders: true,
             colHeaders: ["점검 내용"],
             filters: true,

@@ -1,11 +1,8 @@
 @import url(../vendor/mds_customs/isteven-angular-multiselect/isteven-multi-select.css);
 #rs-memo-input {
-  width: 670px;
+  width: 100%;
   height: 150px;
   overflow: hidden; }
-
-.handsontable td {
-  width: 600px; }
 
 .rms-app-monitor-facility-defect {
   width: 100%;
@@ -14,5 +11,12 @@
 .thingspin-rms-monitor-factory {
   width: 100%;
   height: 100%; }
+
+.gf-form {
+  align-items: start; }
+
+.rms.gf-form-input {
+  padding: 0;
+  border: 0; }
 
 /*# sourceMappingURL=rms-plugins-app.dark.css.map */

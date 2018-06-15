@@ -53,6 +53,7 @@
     white-space:normal;
     background-color: #fff;
     background-image: linear-gradient(#fff, #f7f7f7);      
+    width: 100%;
 }
 
 /* button: hover */

@@ -29071,7 +29071,7 @@ var template = __webpack_require__(/*! ./partial/templet.html */ "./panel/machin
 // const options = require("./partial/options.html");
 var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
     __extends(RmsMachineMaterialPanelCtrl, _super);
-    function RmsMachineMaterialPanelCtrl($scope, $rootScope, $injector, $http, $location, uiSegmentSrv, annotationsSrv, rsDsSrv, alertSrv) {
+    function RmsMachineMaterialPanelCtrl($scope, $rootScope, $injector, $http, $location, uiSegmentSrv, annotationsSrv, contextSrv, rsDsSrv, alertSrv) {
         var _this = _super.call(this, $scope, $injector) || this;
         _this.$rootScope = $rootScope;
         _this.rsDsSrv = rsDsSrv;
@@ -29082,6 +29082,9 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
         _this.checker = [];
         // _.defaults(this.panel, this.panelDefaults);
         lodash__WEBPACK_IMPORTED_MODULE_0___default.a.defaults(_this.panel);
+        _this.isViewer = contextSrv.hasRole('Viewer');
+        if (!_this.isViewer)
+            _this.mode = 'showBtn';
         _this.machine = {
             id: "장비 ID",
             name: '장비 설명',
@@ -29101,17 +29104,19 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
     };
     RmsMachineMaterialPanelCtrl.prototype.initQueryData = function () {
         var _this = this;
-        var selectId = this.datasource.id;
-        var deferred = this.$q.defer();
-        var query = ["select business_id, name, person from t_business where business_type='장비업체'"];
-        this.rsDsSrv.query(selectId, query).then(function (result) {
-            deferred.resolve(result);
-            _this.transDataBusiness(result);
-        }).catch(function (err) {
-            deferred.reject(err);
-            console.log(err);
-        });
-        return deferred.promise;
+        if (!this.isViewer) {
+            var selectId = this.datasource.id;
+            var deferred_1 = this.$q.defer();
+            var query = ["select business_id, name, person from t_business where business_type='장비업체'"];
+            this.rsDsSrv.query(selectId, query).then(function (result) {
+                deferred_1.resolve(result);
+                _this.transDataBusiness(result);
+            }).catch(function (err) {
+                deferred_1.reject(err);
+                console.log(err);
+            });
+            return deferred_1.promise;
+        }
     };
     RmsMachineMaterialPanelCtrl.prototype.link = function (scope, elem, attrs, ctrl) {
         var t = elem.find('.thingspin-table')[0];
@@ -29155,10 +29160,12 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
         };
         var opts = Object.assign({
             rowClick: function (e, row) {
-                _this.showCtrlMode('edit');
-                _this.selectRow(row.getData());
-                _this.selectTableRow = row;
-                // this.container.tabulator('deselectRow');
+                if (!_this.isViewer) {
+                    _this.showCtrlMode('edit');
+                    _this.selectRow(row.getData());
+                    _this.selectTableRow = row;
+                    // this.container.tabulator('deselectRow');
+                }
             },
         }, this.defTabulatorOpts);
         this.container.tabulator(opts);
@@ -29200,7 +29207,10 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
         }
     };
     RmsMachineMaterialPanelCtrl.prototype.close = function () {
-        this.showCtrlMode('list');
+        if (this.isViewer)
+            this.showCtrlMode('list');
+        else
+            this.showCtrlMode('showBtn');
         this.refresh();
     };
     RmsMachineMaterialPanelCtrl.prototype.transDataBusiness = function (dataList) {
@@ -29341,7 +29351,10 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
                 _this.rsDsSrv.query(selectId, query).then(function (result) {
                     // this.updateInspectionPropertyList(selectId);
                     _this.alertSrv.set(name + "이(가) 삭제 되었습니다.", '', 'success', 1000);
-                    _this.showCtrlMode('list');
+                    if (_this.isViewer)
+                        _this.showCtrlMode('list');
+                    else
+                        _this.showCtrlMode('showBtn');
                     _this.refresh();
                 }).catch(function (err) {
                     _this.alertSrv.set(name + " 삭제 실패", err, 'error', 5000);
@@ -29350,8 +29363,8 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
             }
         });
     };
-    RmsMachineMaterialPanelCtrl.prototype.showCtrlMode = function (mode) {
-        if (mode == 'new') {
+    RmsMachineMaterialPanelCtrl.prototype.showCtrlMode = function (value) {
+        if (value == 'new') {
             var selectedRows = this.container.tabulator("getSelectedRows");
             if (selectedRows != undefined) {
                 this.container.tabulator("deselectRow", selectedRows);
@@ -29363,7 +29376,8 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
             };
             this.refresh();
         }
-        this.mode = mode;
+        this.mode = value;
+        console.log(this.mode);
         this.events.emit('panel-size-changed');
     };
     RmsMachineMaterialPanelCtrl.template = template;
@@ -29381,7 +29395,7 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div ng-switch on='ctrl.mode'>\r\n    <button type=\"submit\" class=\"btn btn-primary\" ng-click=\"ctrl.showCtrlMode('new')\">신규 등록</button>\r\n    <br></br>    \r\n    <div class=\"editor-row\">\r\n        <div class=\"thingspin-table\"></div>\r\n    </div>\r\n    <br></br>\r\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new\">\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-7\">장비 이름</label>\r\n            <input type=\"text\" class=\"gf-form-input width-20 max-width-16\"  data-placement=\"auto\" ng-model=\"ctrl.machine.name\" placeholder=\"장비 이름\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\r\n            <label class=\"gf-form-label width-7\">업체 선택</label>\r\n            <select class=\"gf-form-input width-16\" ng-model=\"ctrl.businessSelect\" ng-options=\"opts.name for opts in ctrl.business\" required></select>\r\n            <label class=\"gf-form-label width-7\">특이사항</label>\r\n            <input type=\"text\" class=\"gf-form-input width-20 max-width-24\"  data-placement=\"auto\" ng-model=\"ctrl.machine.memo\" placeholder=\"비고\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\r\n        </div>\r\n        <div class=\"gf-form\">\r\n            <button class=\"btn btn-success width-7\" ng-click=\"ctrl.addMachineItem(ctrl.businessSelect, ctrl.machine.name, ctrl.machine.memo)\">\r\n                신규 등록\r\n            </button>\r\n            &nbsp;&nbsp;\r\n            <button class=\"btn btn-success width-6\" ng-click=\"ctrl.close()\">\r\n                창 닫기\r\n            </button>\r\n        </div>\r\n    </div>\r\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"edit\">\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-7\">장비 이름</label>\r\n            <input type=\"text\" class=\"gf-form-input width-20 max-width-16\"  data-placement=\"auto\" ng-model=\"ctrl.machine.name\" placeholder=\"\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\r\n            <label class=\"gf-form-label width-7\">업체 선택</label>\r\n            <select class=\"gf-form-input width-16\" ng-model=\"ctrl.businessSelect\" ng-options=\"opts.name for opts in ctrl.business\" required></select>\r\n            <label class=\"gf-form-label width-7\">특이사항</label>\r\n            <input type=\"text\" class=\"gf-form-input width-20 max-width-24\"  data-placement=\"auto\" ng-model=\"ctrl.machine.memo\" placeholder=\"\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\r\n        </div>\r\n        <div class=\"gf-form\">\r\n            <button class=\"btn btn-success width-5\" ng-click=\"ctrl.updateMachineItem(ctrl.businessSelect, ctrl.machine.name, ctrl.machine.memo)\">\r\n                변경\r\n            </button>\r\n            &nbsp;&nbsp;\r\n            <button class=\"btn btn-success width-5\" ng-click=\"ctrl.deleteMachineItem(ctrl.machine.name)\">\r\n                삭제\r\n            </button>\r\n            &nbsp;&nbsp;\r\n            <button class=\"btn btn-success width-6\" ng-click=\"ctrl.close()\">\r\n                창 닫기\r\n            </button>\r\n        </div>\r\n    </div>\r\n</div>";
+module.exports = "<div ng-switch on='ctrl.mode'>\n    <div ng-switch-when=\"showBtn\">\n        <button type=\"submit\" class=\"btn btn-primary\" ng-click=\"ctrl.showCtrlMode('new')\">신규 등록</button>\n        <br></br>\n    </div>\n    <div class=\"editor-row\">\n        <div class=\"thingspin-table\"></div>\n    </div>\n    <br></br>\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new\">\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-7\">장비 이름</label>\n            <input type=\"text\" class=\"gf-form-input width-20 max-width-16\"  data-placement=\"auto\" ng-model=\"ctrl.machine.name\" placeholder=\"장비 이름\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\n            <label class=\"gf-form-label width-7\">업체 선택</label>\n            <select class=\"gf-form-input width-16\" ng-model=\"ctrl.businessSelect\" ng-options=\"opts.name for opts in ctrl.business\" required></select>\n            <label class=\"gf-form-label width-7\">특이사항</label>\n            <input type=\"text\" class=\"gf-form-input width-20 max-width-24\"  data-placement=\"auto\" ng-model=\"ctrl.machine.memo\" placeholder=\"비고\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\n        </div>\n        <div class=\"gf-form\">\n            <button class=\"btn btn-success width-7\" ng-click=\"ctrl.addMachineItem(ctrl.businessSelect, ctrl.machine.name, ctrl.machine.memo)\">\n                신규 등록\n            </button>\n            &nbsp;&nbsp;\n            <button class=\"btn btn-success width-6\" ng-click=\"ctrl.close()\">\n                창 닫기\n            </button>\n        </div>\n    </div>\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"edit\">\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-7\">장비 이름</label>\n            <input type=\"text\" class=\"gf-form-input width-20 max-width-16\"  data-placement=\"auto\" ng-model=\"ctrl.machine.name\" placeholder=\"\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\n            <label class=\"gf-form-label width-7\">업체 선택</label>\n            <select class=\"gf-form-input width-16\" ng-model=\"ctrl.businessSelect\" ng-options=\"opts.name for opts in ctrl.business\" required></select>\n            <label class=\"gf-form-label width-7\">특이사항</label>\n            <input type=\"text\" class=\"gf-form-input width-20 max-width-24\"  data-placement=\"auto\" ng-model=\"ctrl.machine.memo\" placeholder=\"\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\n        </div>\n        <div class=\"gf-form\">\n            <button class=\"btn btn-success width-5\" ng-click=\"ctrl.updateMachineItem(ctrl.businessSelect, ctrl.machine.name, ctrl.machine.memo)\">\n                변경\n            </button>\n            &nbsp;&nbsp;\n            <button class=\"btn btn-success width-5\" ng-click=\"ctrl.deleteMachineItem(ctrl.machine.name)\">\n                삭제\n            </button>\n            &nbsp;&nbsp;\n            <button class=\"btn btn-success width-6\" ng-click=\"ctrl.close()\">\n                창 닫기\n            </button>\n        </div>\n    </div>\n</div>";
 
 /***/ }),
 

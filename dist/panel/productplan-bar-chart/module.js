@@ -138,7 +138,7 @@ var PLAN = 0;
 var TRUE = 1;
 var FALSE = 2;
 var PLAN_LABEL = "생산계획";
-var TRUE_LABEL = "실적수량";
+var TRUE_LABEL = "양품수";
 var FALSE_LABEL = "불량수";
 var RmsProductPlanBarChartPanelCtrl = /** @class */ (function (_super) {
     __extends(RmsProductPlanBarChartPanelCtrl, _super);
@@ -361,9 +361,9 @@ var RmsProductPlanBarChartPanelCtrl = /** @class */ (function (_super) {
             var dataRows = dataList[dataCount].rows;
             for (var dataRowCount = 0; dataRowCount < dataRows.length; dataRowCount++) {
                 var dataRow = dataRows[dataRowCount];
-                if (dataList[dataCount].columns[2].text === '불량수')
+                if (dataList[dataCount].columns[2].text === FALSE_LABEL)
                     this.mapDataInsert(FALSE, dataRow);
-                else if (dataList[dataCount].columns[2].text === '실적수량')
+                else if (dataList[dataCount].columns[2].text === TRUE_LABEL)
                     this.mapDataInsert(TRUE, dataRow);
                 else
                     this.mapDataInsert(PLAN, dataRow);
@@ -475,7 +475,7 @@ var RmsProductPlanBarChartPanelCtrl = /** @class */ (function (_super) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <div class=\"chart-container\" style=\"position: relative; height:40vh; width:80vw\"> -->\r\n<canvas class=\"chart\" style=\"position: relative; width:100%\"></canvas>";
+module.exports = "<!-- <div class=\"chart-container\" style=\"position: relative; height:40vh; width:80vw\"> -->\n<canvas class=\"chart\" style=\"position: relative; width:100%\"></canvas>";
 
 /***/ }),
 
