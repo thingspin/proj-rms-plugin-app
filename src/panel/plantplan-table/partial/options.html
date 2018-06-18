@@ -1,1 +1,28 @@
-<div></div>
+<div class="editor-row">
+	<div ng-repeat="formatter in ctrl.formatters">
+		<div class="section gf-form-group">
+			<h5 class="section-heading">&nbsp</h5>
+			<span class="gf-form-label">
+				<i class="fa fa-remove pointer" ng-click="ctrl.delFormatter($index)"></i>
+			</span>
+		</div>
+		<div class="section gf-form-group">
+			<h5 class="section-heading">Metric</h5>
+			<div class="gf-form-inline">				
+				<div class="gf-form">
+                    <input type="text" class="input-small gf-form-input max-width-40" ng-model="formatter.name" ng-change="ctrl.render()" ng-model-onblur />
+                    <label class="gf-form-label width-8">Format</label>
+					<input type="text" class="input-small gf-form-input width-8" ng-model="formatter.format" ng-change="ctrl.render()" />
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="editor-row">
+	<div class="gf-form-button">
+		<button class="btn btn-inverse" ng-click="ctrl.addFormatter();ctrl.render()">
+		<i class="fa fa-plus"></i>&nbsp;Add Formatter
+		</button>
+	</div>
+</div>

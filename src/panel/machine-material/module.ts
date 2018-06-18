@@ -13,7 +13,16 @@ loadPluginCss({
 });
 
 const template = require("./partial/templet.html");
-// const options = require("./partial/options.html");
+
+const DEVICE_ID = "장비 ID";
+const DEVICE_NAME = "장비 이름";
+const DEVICE_MEMO = "특이사항";
+const BUSINESS_OBJ = "업체명";
+const BUSINESS_NAME = "담당자";
+
+const panelDefaults = {
+  formatters : []
+};
 
 class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
   static template = template;
@@ -31,7 +40,10 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
   columns = [];
   business = [];
   checker = [];
+  aligns = [];
+  alignSelect = [];
   businessSelect : any;
+  selectColumn : any;
   machine : any;
   dataJson : any;
   defTabulatorOpts: object;
@@ -41,21 +53,23 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
   isEditor : any;
   isViewer : any;
   isAdmin : any;
+  dataIDMap : any;
 
   constructor($scope, private $rootScope, $injector, $http, $location, uiSegmentSrv, annotationsSrv, contextSrv, private rsDsSrv, private alertSrv) {
     super($scope, $injector);
-
-    // _.defaults(this.panel, this.panelDefaults);
-    _.defaults(this.panel);
+    
+    _.defaults(this.panel, panelDefaults);
+    // _.defaults(this.panel);
     this.isViewer = contextSrv.hasRole('Viewer');
     if (!this.isViewer)
       this.mode = 'showBtn';
     
     this.machine = {
-      id : "장비 ID",
-      name : '장비 설명',
-      memo : '특이사항'
+      id : DEVICE_ID,
+      name : DEVICE_NAME,
+      memo : DEVICE_MEMO
     }
+    this.aligns = ['LEFT','CENTER','RIGHT'];
 
     this.divID = 'table-rms-' + this.panel.id;
     this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
@@ -65,11 +79,21 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
 
   }
 
+  delFormatter(index) {
+    this.panel.formatters.splice(index,1);
+  }
+  
+  addFormatter() {
+    console.log(this.panel.formatters);
+    this.panel.formatters.push({name: '', localstring: false, decimal: 2, fontsize: 0, width: 100, align:this.aligns[0]});
+  }
+
   onInitialized() {
     this.initalized = false;
   }
 
   onInitEditMode() {
+    this.addEditorTab('Options', `public/plugins/proj-rms-plugin-app/panel/machine-material/partial/options.html`, 2);
   }
 
   initQueryData() {
@@ -130,6 +154,7 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
       selectable: 1,
       fitColumns: true,     
       layout: "fitColumns",
+      resizableColumns:false, 
       columns: this.columns
     };
     let opts = Object.assign({ // deep copy
@@ -149,19 +174,19 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
       this.dataTable.setData("setData",tabledata);
       this.container.tabulator("setData", tabledata);
     }
-    this.container.tabulator("hideColumn","장비 ID");
+    this.container.tabulator("hideColumn",DEVICE_ID);
     this.initalized = true;
   }
 
   selectRow(obj) {
-    console.log(obj);
     this.selectObj = obj;
-    this.machine.id = obj['장비 ID'];
-    this.machine.name = obj['장비 이름'];
-    this.machine.memo = obj['특이사항'];
-    var cmpStr = obj['업체명'] + " : " + obj['담당자'];
+    this.machine.id = obj[DEVICE_ID];
+    this.machine.name = obj[DEVICE_NAME];
+    this.machine.memo = obj[DEVICE_MEMO];
+    var cmpStr = obj[BUSINESS_OBJ] + " : " + obj[BUSINESS_NAME];
     var result = this.business.map(x => x.name).indexOf(cmpStr);
     this.businessSelect = this.business[result];
+    console.log(obj);
   }
 
   clearCtrl(mode) {
@@ -203,7 +228,31 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
       this.business.push(obj)
     }
   }
+/*
+name: '', format: '%.2f', fontsize: '10', width: 100, align:this.align[0]
+*/
+  columnOption(obj) {
+    // console.log(obj);
+    var count = this.panel.formatters.map(function(e) {return e.name;}).indexOf(obj.title);
+    if (count !== -1) {
+      var formatter = this.panel.formatters[count];
+      obj.width = formatter.width;
+      obj.align = formatter.align;
+      obj.formatter = function(cell, formatterParam) {
+        var value = cell.getValue();
+        if (isNaN(value) == false) {
+          if (formatter.localstring == true) {
+            return Number((Number(value)).toFixed(formatter.decimal)).toLocaleString('en');
+          } else {
+            return (Number(value)).toFixed(formatter.decimal);
+          }          
+        } else
+          return value;
+      }
+    }
+  }
 
+  
   transformer(dataList) {
     this.columns = [];
     this.checker = [];
@@ -215,11 +264,12 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
       var obj = {
         title: column,
         field: column,
-        align: "center",
         // editor: this.autocompEditor,
       }
+      if (this.panel.formatters.length > 0)
+        this.columnOption(obj);
       this.columns.push(obj);
-    }  
+    }
     var jArray = new Array;
     var mapData = new Map();
 
@@ -227,7 +277,7 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
       var row = rows[count];
       for (var row_count=0; row_count < row.length; row_count++) {
         var item = row[row_count];
-        if (getColumns[row_count].text == '장비 이름') {
+        if (getColumns[row_count].text == DEVICE_NAME) {
           this.checker.push(item);
         }
         mapData.set(getColumns[row_count].text,item);
@@ -353,54 +403,6 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
     console.log(this.mode);
     this.events.emit('panel-size-changed');
   }
-
-  /* dynamic table editor test code added
-  autocompEditor = function(cell, onRendered, success, cancel){
-    //create and style input
-    var input = $("<input type='text'/>");
-
-    //setup jquery autocomplete
-    // input.autocomplete({
-    //     source: ["United Kingdom", "Germany", "France", "USA", "Canada", "Russia", "India", "China", "South Korea", "Japan"]
-    // });
-
-    input.css({
-        "padding":"4px",
-        "width":"100%",
-        "box-sizing":"border-box",
-    })
-    .val(cell.getValue());
-
-    onRendered(function(){
-        input.focus();
-        input.css("height","100%");
-    });
-
-    //submit new value on blur
-    input.on("change blur", function(e){
-        if(input.val() != cell.getValue()){
-          alert("Update data ? ");
-            success(input.val());
-        }else{
-            cancel();
-        }
-    });
-    
-    //submit new value on enter
-    input.on("keydown", function(e){
-        if(e.keyCode == 13){
-          alert("Update data ? ");
-            success(input.val());
-        }
-
-        if(e.keyCode == 27){
-            cancel();
-        }
-    });
-
-    return input;
-  };
-  */
 }
 
 export {
