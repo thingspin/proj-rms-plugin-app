@@ -253,6 +253,7 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
       "from": range.raw.from,
       "to": range.raw.to
     });
+    this.$scope.$apply();
   }
 
   onInitEditMode() { }

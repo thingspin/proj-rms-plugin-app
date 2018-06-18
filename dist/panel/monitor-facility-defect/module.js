@@ -36300,6 +36300,7 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
             "from": range.raw.from,
             "to": range.raw.to
         });
+        this.$scope.$apply();
     };
     RmsMonitorFacilityDefectPanelCtrl.prototype.onInitEditMode = function () { };
     RmsMonitorFacilityDefectPanelCtrl.prototype.onRender = function () { };
