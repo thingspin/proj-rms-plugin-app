@@ -56,7 +56,7 @@
         {
           "alias": "",
           "format": "table",
-          "rawSql": "select A.MACHINE_NAME as '장비 이름', B.NAME as '업체명', B.PERSON as '담당자',A.MEMO as '특이사항' from t_machine as A left join t_business as B on (A.BUSINESS_ID = B.BUSINESS_ID) where (BUSINESS_TYPE='장비업체')",
+          "rawSql": "select A.MACHINE_ID as '장비 ID', A.MACHINE_NAME as '장비 이름', B.NAME as '업체명', B.PERSON as '담당자',A.MEMO as '특이사항' from t_machine as A left join t_business as B on (A.BUSINESS_ID = B.BUSINESS_ID) where (BUSINESS_TYPE='장비업체')",
           "refId": "A"
         }
       ],
