@@ -15,6 +15,14 @@ loadPluginCss({
 const template = require("./partial/templet.html");
 // const options = require("./partial/options.html");
 
+const panelDefaults = {
+  formatters : [],
+  allDeciaml : 3,
+  resizeValue : false
+};
+
+// const DEFAULT_SIZE = 3;
+
 class RmsCPKTrendPanelCtrl extends MetricsPanelCtrl {
   static template = template;
 
@@ -29,6 +37,8 @@ class RmsCPKTrendPanelCtrl extends MetricsPanelCtrl {
 
   dataRaw = [];
   columns = [];
+  indexColumns = [];
+  aligns = [];
   dataJson : any;
   defTabulatorOpts: object;
   mode : any;
@@ -37,8 +47,10 @@ class RmsCPKTrendPanelCtrl extends MetricsPanelCtrl {
   constructor($scope, $injector, $http, $location, uiSegmentSrv, annotationsSrv) {
     super($scope, $injector);
 
-    // _.defaults(this.panel, this.panelDefaults);
-    _.defaults(this.panel);
+    _.defaults(this.panel, panelDefaults);
+    // _.defaults(this.panel);
+
+    this.aligns = ['LEFT','CENTER','RIGHT'];
 
     this.divID = 'table-rms-' + this.panel.id;
     this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
@@ -53,6 +65,7 @@ class RmsCPKTrendPanelCtrl extends MetricsPanelCtrl {
   }
 
   onInitEditMode() {
+    this.addEditorTab('Options', `public/plugins/proj-rms-plugin-app/panel/cpktrend-table/partial/options.html`, 2);
   }
 
   link(scope, elem, attrs, ctrl) {
@@ -70,6 +83,15 @@ class RmsCPKTrendPanelCtrl extends MetricsPanelCtrl {
   onDataError(err) {
     this.dataRaw = [];
     this.render();
+  }
+
+  delFormatter(index) {
+    this.panel.formatters.splice(index,1);
+  }
+  
+  addFormatter() {
+    console.log(this.panel.formatters);
+    this.panel.formatters.push({name: '', localstring: false, decimal: 2, fontsize: 0, width: 100, align:this.aligns[0]});
   }
 
   onDataReceived(dataList) {
@@ -95,13 +117,14 @@ class RmsCPKTrendPanelCtrl extends MetricsPanelCtrl {
       pagination: "local",
       paginationSize: 20,
       selectable: 1,
-      fitColumns: true,     
+      fitColumns: true,
+      resizableColumns: this.panel.resizeValue,    
       layout: "fitColumns",
       columns: this.columns,
     };
     let opts = Object.assign({ // deep copy
       rowClick: (e, row) => { //trigger an alert message when the row is clicked
-          this.selectRow(row.getData());
+          // this.selectRow(row.getData());
           // this.container.tabulator('deselectRow');
       },
     }, this.defTabulatorOpts);
@@ -114,23 +137,6 @@ class RmsCPKTrendPanelCtrl extends MetricsPanelCtrl {
     }
     this.container.tabulator("hideColumn","time_sec");
     this.initalized = true;
-  }
-
-  selectRow(obj) {
-    // this.selectObj = obj;
-    // this.comsumable.id = obj['장비 ID'];
-    // this.comsumable.name = obj['장비 설명'];
-    // this.comsumable.memo = obj['메모'];
-    // this.comsumable.name = obj['품목'];
-    // this.comsumable.standard = obj['규격'];
-    // this.comsumable.cycle_count = obj['안전수량'];
-    // this.comsumable.count = obj['재고수량'];
-    // this.comsumable.count_time_count = obj['교체주기'];
-    // this.comsumable.count_time = obj['교체주기 시간'];
-    // this.comsumable.memo = obj['특이사항'];
-    // var cmpStr = obj['업체명'] + " : " + obj['담당자'];
-    // var result = this.business.map(x => x.name).indexOf(cmpStr);
-    // this.businessSelect = this.business[result];
   }
 
   transDataInput(dataList) {
@@ -170,17 +176,23 @@ class RmsCPKTrendPanelCtrl extends MetricsPanelCtrl {
       // editor: this.autocompEditor,
     }
     fieldArray.push(obj.field);
+    if (this.panel.formatters.length > 0)
+      this.columnOption(obj);
     this.columns.push(obj);
 
     var keyList = Array.from(columnMakeMap.keys());
     for (var count=0;count<keyList.length;count++) {
       var key = keyList[count];
+      console.log(key)
       obj = {
         title: columnMakeMap.get(key),
         field: "" + key + "",
-        align: "left",
+        align: "right",
         // editor: this.autocompEditor,
       }
+      console.log(obj);
+      if (this.panel.formatters.length > 0)
+        this.columnIndexOption(obj, count+1);
       this.columns.push(obj);
       fieldArray.push(key);
     }
@@ -196,21 +208,31 @@ class RmsCPKTrendPanelCtrl extends MetricsPanelCtrl {
 
       if (tableMakeMap.has(fieldArray[0]) == false) {
         tableMakeMap.set(fieldArray[0], indexStr[1]);
+          // if (this.panel.formatters.length > 0)
+          //   this.columnOption(obj);
+          // else
+          // tableMakeMap.set(fieldArray[0], Number(indexStr[1]).toFixed(DEFAULT_SIZE));
       }
       // console.log((count%columnSize)+1);
       // console.log(fieldArray[(count%columnSize)+1]);
-      tableMakeMap.set("" + fieldArray[(count%columnSize)+1] + "", valueMakeMap.get(key));
+      // tableMakeMap.set("" + fieldArray[(count%columnSize)+1] + "", valueMakeMap.get(key));
+        tableMakeMap.set("" + fieldArray[(count%columnSize)+1] + "", Number(valueMakeMap.get(key)).toFixed(this.panel.allDeciaml));
       
       if ((count%columnSize)+1 == columnSize && count !== 0) {
         var object = Object();
         var totalValue = 0;
+        var size = 0;
         tableMakeMap.forEach((v,k)=> {
           object[k] = v;
           if (k !== 'inm') {
-            totalValue = v + totalValue;
+            if (Number(v) !== 0)
+              size = size + 1;
+            totalValue = Number(v) + Number(totalValue);
           }
         });
-        object.average = totalValue/(columnSize);
+        // object.average = totalValue/(size);
+        var avg = totalValue/(size);
+        object.average = avg.toFixed(this.panel.allDeciaml);
         tableArray.push(object);
         tableMakeMap = new Map();
       }
@@ -218,8 +240,10 @@ class RmsCPKTrendPanelCtrl extends MetricsPanelCtrl {
     var averageTitle = {
       title: 'AVG',
       field: 'average',
-      align: "left"
+      align: "right"
     }
+    if (this.panel.formatters.length > 0)
+      this.columnOption(obj);
     this.columns.push(averageTitle);
     // console.log(tableMakeMap);
     // console.log(tableArray);
@@ -232,103 +256,47 @@ class RmsCPKTrendPanelCtrl extends MetricsPanelCtrl {
     return (utcDate.getMonth() + 1) + "월" + utcDate.getDate() + "일";
   }
 
-  transAddedData(data, tableMap) {
-    // var rows = data.rows;
-    // var getColumns = data.columns;
-
-    // if (getColumns.map(x => x.text).indexOf('실적수량') !== -1 || getColumns.map(x => x.text).indexOf('양품') !== -1 || getColumns.map(x => x.text).indexOf('불량') !== -1) {
-    //   var obj = {
-    //     title: getColumns[2].text,
-    //     field: getColumns[2].text,
-    //     align: "left",
-    //     // editor: this.autocompEditor,
-    //   }
-    //   this.columns.push(obj);
-    //   for (var count=0; count < rows.length; count++) {
-    //     var row = rows[count];
-    //     var inputData = tableMap.get(row[1]);
-    //     if(inputData !== undefined) {
-    //       if (row[2] !== 0) {
-    //         // console.log(row[2] + inputData.get(obj.title));
-    //         if (inputData.get(obj.title) !== undefined)
-    //           inputData.set(obj.title, row[2] + inputData.get(obj.title));
-    //         else
-    //           inputData.set(obj.title, row[2]);
-    //         tableMap.set(row[1], inputData);
-    //       }
-    //     }
-    //   }
-    // } else {
-    //   for (var count=0; count < getColumns.length; count++) {
-    //     var column = getColumns[count].text;
-    //     var obj = {
-    //       title: column,
-    //       field: column,
-    //       align: "left",
-    //       // editor: this.autocompEditor,
-    //     }
-    //     this.columns.push(obj);
-    //   }
-    //   for (var count=0; count < rows.length; count++) {
-    //     var row = rows[count];
-    //     var map = new Map();
-    //     for (var row_count=0; row_count < row.length; row_count++) {
-    //       var item = row[row_count];
-    //       map.set(getColumns[row_count].text,item);
-    //     }
-    //     // tableMap.set(map.get(getColumns[0].text) + map.get(getColumns[2].text), map);
-    //     tableMap.set(map.get(getColumns[2].text), map);
-    //   }
-    // }
+  columnOption(obj) {
+    console.log(obj);
+    var count = this.panel.formatters.map(function(e) {return e.name;}).indexOf(obj.title);
+    if (count !== -1) {
+      var formatter = this.panel.formatters[count];
+      obj.width = formatter.width;
+      obj.align = formatter.align;
+      obj.formatter = function(cell, formatterParam) {
+        var value = cell.getValue();
+        if (isNaN(value) == false) {
+          if (formatter.localstring == true) {
+            return Number((Number(value)).toFixed(formatter.decimal)).toLocaleString('en');
+          } else {
+            return (Number(value)).toFixed(formatter.decimal);
+          }          
+        } else
+          return value;
+      }
+    }
   }
 
-  /* dynamic table editor test code added
-  autocompEditor = function(cell, onRendered, success, cancel){
-    //create and style input
-    var input = $("<input type='text'/>");
-
-    //setup jquery autocomplete
-    // input.autocomplete({
-    //     source: ["United Kingdom", "Germany", "France", "USA", "Canada", "Russia", "India", "China", "South Korea", "Japan"]
-    // });
-
-    input.css({
-        "padding":"4px",
-        "width":"100%",
-        "box-sizing":"border-box",
-    })
-    .val(cell.getValue());
-
-    onRendered(function(){
-        input.focus();
-        input.css("height","100%");
-    });
-
-    //submit new value on blur
-    input.on("change blur", function(e){
-        if(input.val() != cell.getValue()){
-          alert("Update data ? ");
-            success(input.val());
-        }else{
-            cancel();
-        }
-    });
-    
-    //submit new value on enter
-    input.on("keydown", function(e){
-        if(e.keyCode == 13){
-          alert("Update data ? ");
-            success(input.val());
-        }
-
-        if(e.keyCode == 27){
-            cancel();
-        }
-    });
-
-    return input;
-  };
-  */
+  columnIndexOption(obj, value) {
+    console.log(value);
+    var count = this.panel.formatters.map(function(e) {return e.name;}).indexOf(String(value));
+    if (count !== -1) {
+      var formatter = this.panel.formatters[count];
+      obj.width = formatter.width;
+      obj.align = formatter.align;
+      obj.formatter = function(cell, formatterParam) {
+        var value = cell.getValue();
+        if (isNaN(value) == false) {
+          if (formatter.localstring == true) {
+            return Number((Number(value)).toFixed(formatter.decimal)).toLocaleString('en');
+          } else {
+            return (Number(value)).toFixed(formatter.decimal);
+          }          
+        } else
+          return value;
+      }
+    }
+  }
 }
 
 export {

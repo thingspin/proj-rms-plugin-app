@@ -41,7 +41,6 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
   business = [];
   checker = [];
   aligns = [];
-  alignSelect = [];
   businessSelect : any;
   selectColumn : any;
   machine : any;

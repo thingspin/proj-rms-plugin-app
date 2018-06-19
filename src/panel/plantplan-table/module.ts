@@ -15,6 +15,10 @@ loadPluginCss({
 const template = require("./partial/templet.html");
 // const options = require("./partial/options.html");
 
+const panelDefaults = {
+  formatters : []
+};
+
 class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
   static template = template;
 
@@ -29,6 +33,8 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
 
   dataRaw = [];
   columns = [];
+  aligns = [];
+
   dataJson : any;
   defTabulatorOpts: object;
   mode : any;
@@ -37,8 +43,10 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
   constructor($scope, $injector, $http, $location, uiSegmentSrv, annotationsSrv) {
     super($scope, $injector);
 
-    // _.defaults(this.panel, this.panelDefaults);
-    _.defaults(this.panel);
+    _.defaults(this.panel, panelDefaults);
+    // _.defaults(this.panel);
+
+    this.aligns = ['LEFT','CENTER','RIGHT'];
 
     this.divID = 'table-rms-' + this.panel.id;
     this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
@@ -53,6 +61,7 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
   }
 
   onInitEditMode() {
+    this.addEditorTab('Options', `public/plugins/proj-rms-plugin-app/panel/plantplan-table/partial/options.html`, 2);
   }
 
   link(scope, elem, attrs, ctrl) {
@@ -78,6 +87,15 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
     console.log(dataList);
     Promise.resolve(this.transformer(this.dataRaw));
     this.createTable(this.dataJson);
+  }
+
+  delFormatter(index) {
+    this.panel.formatters.splice(index,1);
+  }
+  
+  addFormatter() {
+    console.log(this.panel.formatters);
+    this.panel.formatters.push({name: '', localstring: false, decimal: 2, fontsize: 0, width: 100, align:this.aligns[0]});
   }
 
   createTable(dataList) {
@@ -140,6 +158,27 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
     console.log(dataList);
   }
 
+  columnOption(obj) {
+    // console.log(obj);
+    var count = this.panel.formatters.map(function(e) {return e.name;}).indexOf(obj.title);
+    if (count !== -1) {
+      var formatter = this.panel.formatters[count];
+      obj.width = formatter.width;
+      obj.align = formatter.align;
+      obj.formatter = function(cell, formatterParam) {
+        var value = cell.getValue();
+        if (isNaN(value) == false) {
+          if (formatter.localstring == true) {
+            return Number((Number(value)).toFixed(formatter.decimal)).toLocaleString('en');
+          } else {
+            return (Number(value)).toFixed(formatter.decimal);
+          }          
+        } else
+          return value;
+      }
+    }
+  }
+
   transformer(dataList) {
     this.columns = [];
     var jArray = new Array;
@@ -171,12 +210,16 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
       align: "left",
       formatter:"progress"
     }
+    if (this.panel.formatters.length > 0)
+      this.columnOption(obj);
     this.columns.push(obj);
     var object = {
       title: '달성률',
       field: 'achievement_text',
-      align: "left",
+      align: "right",
     }
+    if (this.panel.formatters.length > 0)
+      this.columnOption(obj);
     this.columns.push(object);
 
     this.dataJson = jArray;
@@ -193,6 +236,8 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
         align: "left",
         // editor: this.autocompEditor,
       }
+      if (this.panel.formatters.length > 0)
+        this.columnOption(obj);
       this.columns.push(obj);
       for (var count=0; count < rows.length; count++) {
         var row = rows[count];
@@ -217,6 +262,8 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
           align: "left",
           // editor: this.autocompEditor,
         }
+        if (this.panel.formatters.length > 0)
+          this.columnOption(obj);
         this.columns.push(obj);
       }
       for (var count=0; count < rows.length; count++) {
@@ -231,54 +278,6 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
       }
     }
   }
-
-  /* dynamic table editor test code added
-  autocompEditor = function(cell, onRendered, success, cancel){
-    //create and style input
-    var input = $("<input type='text'/>");
-
-    //setup jquery autocomplete
-    // input.autocomplete({
-    //     source: ["United Kingdom", "Germany", "France", "USA", "Canada", "Russia", "India", "China", "South Korea", "Japan"]
-    // });
-
-    input.css({
-        "padding":"4px",
-        "width":"100%",
-        "box-sizing":"border-box",
-    })
-    .val(cell.getValue());
-
-    onRendered(function(){
-        input.focus();
-        input.css("height","100%");
-    });
-
-    //submit new value on blur
-    input.on("change blur", function(e){
-        if(input.val() != cell.getValue()){
-          alert("Update data ? ");
-            success(input.val());
-        }else{
-            cancel();
-        }
-    });
-    
-    //submit new value on enter
-    input.on("keydown", function(e){
-        if(e.keyCode == 13){
-          alert("Update data ? ");
-            success(input.val());
-        }
-
-        if(e.keyCode == 27){
-            cancel();
-        }
-    });
-
-    return input;
-  };
-  */
 }
 
 export {
