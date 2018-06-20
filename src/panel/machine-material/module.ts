@@ -21,7 +21,8 @@ const BUSINESS_OBJ = "업체명";
 const BUSINESS_NAME = "담당자";
 
 const panelDefaults = {
-  formatters : []
+  formatters : [],
+  resizeValue : false
 };
 
 class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
@@ -153,7 +154,7 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
       selectable: 1,
       fitColumns: true,     
       layout: "fitColumns",
-      resizableColumns:false, 
+      resizableColumns: this.panel.resizeValue,
       columns: this.columns
     };
     let opts = Object.assign({ // deep copy
