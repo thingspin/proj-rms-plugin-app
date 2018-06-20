@@ -210,8 +210,9 @@ class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
 
     var planObj = {
       label : PLAN_LABEL,
-      backgroundColor:'rgba(153, 102, 255, 0.6)',
+      backgroundColor:'rgba(153, 102, 255, 0.2)',
       borderColor:'rgba(153, 102, 255, 1)',
+      borderWidth:1,
       stack : 'Stack 0',
       data: Array.from(this.mapPlan.values())
     };
@@ -219,18 +220,20 @@ class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
 
     var trueObj = {
       label : TRUE_LABEL,
-      backgroundColor: 'rgba(75, 192, 192, 0.6)',
+      backgroundColor: 'rgba(75, 192, 192, 0.2)',
       borderColor: 'rgba(75, 192, 192, 1)',
       stack : 'Stack 1',
+      borderWidth:1,
       data: this.arrayTrue
     };
     chartMap.set(TRUE_LABEL, trueObj);
 
     var falseObj = {
       label : FALSE_LABEL,
-      backgroundColor: 'rgba(255, 99, 132, 0.6)',
+      backgroundColor: 'rgba(255, 99, 132, 0.2)',
       borderColor: 'rgba(255,99,132,1)',
       stack : 'Stack 1',
+      borderWidth:1,
       data: this.arrayFalse
     };
     chartMap.set(FALSE_LABEL, falseObj);

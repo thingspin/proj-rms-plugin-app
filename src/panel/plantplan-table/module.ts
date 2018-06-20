@@ -137,6 +137,7 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
     }
     this.container.tabulator("hideColumn","time_sec");
     this.initalized = true;
+    $(window).trigger('resize');
   }
 
   selectRow(obj) {
@@ -181,15 +182,12 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
     } else {
       if (obj.title === PLAN_DATE) {
           obj.align = this.aligns[1];
-          obj.width = 97;
           obj.formatter = function(cell, formatterParam) {
             return moment(cell.getValue()).format("YYYY/MM/DD");
           }
       } else if (obj.title === PLAN_MODEL) {
         obj.align = this.aligns[0];
-        obj.width = 122;
       } else {
-        obj.width = 90;
         obj.align = this.aligns[2];
         obj.formatter = function(cell, formatterParam) {
           console.log(cell.getValue());
@@ -231,7 +229,6 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
       title: 'GRAPH',
       field: 'achievement',
       align: "left",
-      width:108,
       formatter:"progress"
     }
     this.columns.push(obj);
@@ -239,7 +236,6 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
       title: '달성률',
       field: 'achievement_text',
       align: "right",
-      width:90,
     }
     this.columns.push(object);
 
