@@ -2,7 +2,7 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:207",
+        "$$hashKey": "object:273",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1529049928384,
+  "iteration": 1529478939836,
   "links": [
     {
       "icon": "external link",
@@ -58,7 +58,7 @@
       },
       "gridPos": {
         "h": 3,
-        "w": 11,
+        "w": 13,
         "x": 0,
         "y": 0
       },
@@ -117,8 +117,8 @@
       "datasource": "-- Mixed --",
       "gridPos": {
         "h": 18,
-        "w": 13,
-        "x": 11,
+        "w": 11,
+        "x": 13,
         "y": 0
       },
       "id": 14,
@@ -127,7 +127,6 @@
       "scripts": "",
       "targets": [
         {
-          "$$hashKey": "object:369",
           "alias": "",
           "datasource": "REMOTESOLUTIONS(V1.0)",
           "format": "table",
@@ -135,7 +134,6 @@
           "refId": "A"
         },
         {
-          "$$hashKey": "object:370",
           "datasource": "$DATABASE",
           "groupBy": [
             {
@@ -197,7 +195,6 @@
           ]
         },
         {
-          "$$hashKey": "object:371",
           "datasource": "$DATABASE",
           "groupBy": [
             {
@@ -264,9 +261,10 @@
     },
     {
       "datasource": "-- Mixed --",
+      "formatters": [],
       "gridPos": {
         "h": 15,
-        "w": 11,
+        "w": 13,
         "x": 0,
         "y": 3
       },
@@ -276,7 +274,6 @@
       "scripts": "",
       "targets": [
         {
-          "$$hashKey": "object:772",
           "alias": "",
           "datasource": "REMOTESOLUTIONS(V1.0)",
           "format": "table",
@@ -284,7 +281,6 @@
           "refId": "A"
         },
         {
-          "$$hashKey": "object:773",
           "datasource": "$DATABASE",
           "groupBy": [
             {
@@ -340,7 +336,6 @@
           ]
         },
         {
-          "$$hashKey": "object:774",
           "datasource": "$DATABASE",
           "groupBy": [
             {
@@ -402,7 +397,6 @@
           ]
         },
         {
-          "$$hashKey": "object:775",
           "datasource": "$DATABASE",
           "groupBy": [
             {
@@ -645,7 +639,6 @@
       ],
       "targets": [
         {
-          "$$hashKey": "object:548",
           "alias": "",
           "datasource": "REMOTESOLUTIONS(V1.0)",
           "format": "table",
@@ -654,7 +647,6 @@
           "refId": "B"
         },
         {
-          "$$hashKey": "object:549",
           "datasource": "$DATABASE",
           "groupBy": [
             {
@@ -704,7 +696,6 @@
           ]
         },
         {
-          "$$hashKey": "object:550",
           "datasource": "$DATABASE",
           "groupBy": [
             {
@@ -760,7 +751,6 @@
           ]
         },
         {
-          "$$hashKey": "object:551",
           "datasource": "$DATABASE",
           "groupBy": [
             {
@@ -867,7 +857,6 @@
       "steppedLine": false,
       "targets": [
         {
-          "$$hashKey": "object:292",
           "alias": "$tag_model",
           "groupBy": [
             {
@@ -1046,7 +1035,7 @@
     ]
   },
   "time": {
-    "from": "now-5s",
+    "from": "now-5d",
     "to": "now"
   },
   "timepicker": {
@@ -1077,6 +1066,5 @@
   },
   "timezone": "",
   "title": "생산 현황",
-  "uid": "cU1lqH4mz",
-  "version": 9
+  "version": 2
 }

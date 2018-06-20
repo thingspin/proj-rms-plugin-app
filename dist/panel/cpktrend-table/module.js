@@ -29162,6 +29162,7 @@ var RmsCPKTrendPanelCtrl = /** @class */ (function (_super) {
         }
         this.container.tabulator("hideColumn", "time_sec");
         this.initalized = true;
+        jquery__WEBPACK_IMPORTED_MODULE_1___default()(window).trigger('resize');
     };
     RmsCPKTrendPanelCtrl.prototype.transDataInput = function (dataList) {
         console.log(dataList);
@@ -29326,7 +29327,7 @@ var RmsCPKTrendPanelCtrl = /** @class */ (function (_super) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"editor-row\">\n    <div class=\"thingspin-table\"></div>\n</div>\n";
+module.exports = "<div class=\"editor-row\">\r\n    <div class=\"thingspin-table\"></div>\r\n</div>\r\n";
 
 /***/ }),
 
