@@ -122,16 +122,15 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
   }
   */
 
- delFormatter(index) {
-  this.panel.formatters.splice(index,1);
-}
+  delFormatter(index) {
+    this.panel.formatters.splice(index,1);
+  }
 
-addFormatter() {
-  console.log(this.panel.formatters);
-  this.panel.formatters.push({name: '', localstring: false, decimal: 2, fontsize: 0, width: 100, align:this.aligns[0]});
-}
-
-
+  addFormatter() {
+    console.log(this.panel.formatters);
+    this.panel.formatters.push({name: '', localstring: false, decimal: 2, fontsize: 0, width: 100, align:this.aligns[0]});
+  }
+  
   onDataError(err) {
     this.dataRaw = [];
     this.render();

@@ -5,6 +5,8 @@ import 'jquery.tabulator/dist/css/tabulator.min.css';
 import 'jquery.tabulator/dist/js/tabulator.min';
 import {MetricsPanelCtrl, loadPluginCss} from  'grafana/app/plugins/sdk';
 
+import '../../services/remoteSolutionDS';
+
 loadPluginCss({
   dark: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.dark.css',
   light: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.light.css'
@@ -13,10 +15,17 @@ loadPluginCss({
 const template = require("./partial/templet.html");
 //const options = require("./partial/options.html");
 
+const BUSINESS_ID = '업체 ID';
+const BUSINESS_NAME = '업체명';
+const BUSINESS_TYPE = '업종';
+const BUSINESS_PHONE = '연락처';
+const BUSINESS_PERSON = '담당자';
+const BUSINESS_MAIL = '이메일';
+const BUSINESS_MEMO = '메모';
+
 class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
   static template = template;
 
-  dsSrv: any;
   alertSrv: any;
   $rootScope: any;
   $scope: any;
@@ -32,9 +41,11 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
 
   dataRaw = [];
   columns = [];
+  aligns = [];
   dataJson : any;
 
   mode : any;
+  isViewer : any;
 
   panelDefaults = {
     // options: {
@@ -60,17 +71,25 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
       person : '',
       mail : '',
       memo : '',      
-    }
+    },
+
+    formatters : [],
+    resizeValue : false
   };
 
-  constructor($rootScope, $scope, $injector, rsDsSrv, alertSrv) {
+  constructor($rootScope, $scope, $injector, contextSrv, private rsDsSrv, alertSrv) {
     super($scope, $injector);
+
+    this.isViewer = contextSrv.hasRole('Viewer');
+    if (!this.isViewer)
+      this.mode = 'showBtn';
+
+      this.aligns = ['LEFT','CENTER','RIGHT'];
 
     _.defaults(this.panel, this.panelDefaults);
 
     this.panel.inputlItem.business_id = -1;
 
-    this.dsSrv = rsDsSrv;
     this.alertSrv = alertSrv;
     this.$rootScope = $rootScope;
     this.$scope = $scope;
@@ -92,6 +111,7 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
   }
 
   onInitEditMode() {
+    this.addEditorTab('Options', `public/plugins/proj-rms-plugin-app/panel/company-list/partial/options.html`, 2);
   }  
 
   link(scope, elem, attrs, ctrl) {
@@ -124,6 +144,15 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
     this.render();
   }
 
+  delFormatter(index) {
+    this.panel.formatters.splice(index,1);
+  }
+
+  addFormatter() {
+    console.log(this.panel.formatters);
+    this.panel.formatters.push({name: '', localstring: false, decimal: 2, fontsize: 0, width: 100, align:this.aligns[0]});
+  }
+
   onDataReceived(dataList) {
     //console.log("onDataReceived");
     this.dataRaw = dataList;
@@ -151,19 +180,20 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
       selectable: 1,
       fitColumns: true,     
       layout: "fitColumns",
+      resizableColumns: this.panel.resizeValue,
       columns: this.columns,
       rowClick: function(e, row) {              
         
         g_root.showCtrlMode('edit');
         row.select();           
         
-        g_root.panel.inputlItem.business_id = row.getData()['업체 ID'];
-        g_root.panel.inputlItem.name = row.getData()['업체명'];
-        g_root.panel.inputlItem.business_type = row.getData()['업종'];
-        g_root.panel.inputlItem.phone = row.getData()['연락처'];
-        g_root.panel.inputlItem.person = row.getData()['담당자'];
-        g_root.panel.inputlItem.mail = row.getData()['이메일'];
-        g_root.panel.inputlItem.memo = row.getData()['메모'];  
+        g_root.panel.inputlItem.business_id = row.getData()[BUSINESS_ID];
+        g_root.panel.inputlItem.name = row.getData()[BUSINESS_NAME];
+        g_root.panel.inputlItem.business_type = row.getData()[BUSINESS_TYPE];
+        g_root.panel.inputlItem.phone = row.getData()[BUSINESS_PHONE];
+        g_root.panel.inputlItem.person = row.getData()[BUSINESS_PERSON];
+        g_root.panel.inputlItem.mail = row.getData()[BUSINESS_MAIL];
+        g_root.panel.inputlItem.memo = row.getData()[BUSINESS_MEMO];  
 
         //g_root.panel.inputlItem.business_id = row.getData().BUSINESS_ID;
         // g_root.panel.inputlItem.name = row.getData().NAME;
@@ -189,6 +219,7 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
       // this.dataTable.setData("setData",tabledata);
       // this.container.tabulator("setData", tabledata);
     }
+    this.container.tabulator("hideColumn", BUSINESS_ID);
     this.initalized = true;   
   }
 
@@ -202,8 +233,11 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
       var obj = {
         title: column,
         field: column,
-        align: "center",
+        align: "left",
         // editor: this.autocompEditor,
+      }
+      if (this.panel.formatters.length > 0) {
+        this.columnOption(obj);
       }
       this.columns.push(obj);
     }
@@ -259,7 +293,7 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
           ];     
   
           //console.log(selectId + " " + query);
-          this.dsSrv.query(selectId, query1).then( result => {
+          this.rsDsSrv.query(selectId, query1).then( result => {
             var data = result[0];
             //console.log("data rows: " + data.rows.length);  
             if(data.rows.length == 0)
@@ -270,8 +304,9 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
                 + info.business_type + '", "' + info.name + '", "' + info.phone + '", "' + info.person + '", "' +  info.mail + '", "' +  info.memo + '");'
               ]; 
   
-              this.dsSrv.query(selectId, query2).then( result => {            
+              this.rsDsSrv.query(selectId, query2).then( result => {            
                 this.panel.inputlItem.business_id = -1;
+                this.showCtrlMode('showBtn');
                 this.$rootScope.$broadcast('refresh');
               }).catch( err => {
                 console.error(err);
@@ -334,12 +369,34 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
 
           let selectId = this.datasource.id;
 
+          let query2 = [
+            'update t_business set ' + 
+            'name="' + info.name + '", ' + 
+            'business_type="' + info.business_type + '", ' + 
+            'phone="' + info.phone + '", ' + 
+            'mail="' + info.mail + '", ' + 
+            'person="' + info.person + '", ' + 
+            'memo="' + info.memo + '" where business_id=' + info.business_id        
+          ];       
+    
+          //console.log(selectId + " " + query2);
+    
+          this.rsDsSrv.query(selectId, query2).then( result => {
+            this.panel.inputlItem.business_id = -1;
+            this.showCtrlMode('showBtn');
+            this.$rootScope.$broadcast('refresh');
+          }).catch( err => {
+            console.error(err);
+          });    
+
+
+          /*
           let query1 = [
             'select * from t_business where business_type="' 
             + info.business_type + '" and name="' + info.name + '" and business_id!=' + info.business_id
           ];
-
-          this.dsSrv.query(selectId, query1).then( result => {
+          console.log(query1);
+          this.rsDsSrv.query(selectId, query1).then( result => {
             var data = result[0];
             //console.log("data rows: " + data.rows.length);  
             if(data.rows.length == 0)
@@ -356,8 +413,9 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
         
               //console.log(selectId + " " + query2);
         
-              this.dsSrv.query(selectId, query2).then( result => {
+              this.rsDsSrv.query(selectId, query2).then( result => {
                 this.panel.inputlItem.business_id = -1;
+                this.showCtrlMode('showBtn');
                 this.$rootScope.$broadcast('refresh');
               }).catch( err => {
                 console.error(err);
@@ -370,7 +428,7 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
           }).catch( err => {
             console.error(err);
           });           
-
+          */
         }
       });   
 
@@ -399,7 +457,7 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
 
           console.log(selectId + " " + query);
 
-          this.dsSrv.query(selectId, query).then( result => {
+          this.rsDsSrv.query(selectId, query).then( result => {
             this.panel.inputlItem.business_id = -1;
 
             this.panel.inputlItem = {
@@ -411,7 +469,7 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
               mail : '',
               memo : '',      
             }
-            
+            this.showCtrlMode('showBtn');
             this.$rootScope.$broadcast('refresh');
           }).catch( err => {
             console.error(err);
@@ -425,7 +483,10 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
   };
 
   close() {
-    this.showCtrlMode('list');
+    if (this.isViewer)
+      this.showCtrlMode('list');
+    else
+      this.showCtrlMode('showBtn');
     this.refresh();
   }
 
@@ -449,6 +510,27 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
     this.mode = mode;
     this.events.emit('panel-size-changed');
   };
+
+  columnOption(obj) {
+    // console.log(obj);
+    var count = this.panel.formatters.map(function(e) {return e.name;}).indexOf(obj.title);
+    if (count !== -1) {
+      var formatter = this.panel.formatters[count];
+      obj.width = formatter.width;
+      obj.align = formatter.align;
+      obj.formatter = function(cell, formatterParam) {
+        var value = cell.getValue();
+        if (isNaN(value) == false) {
+          if (formatter.localstring == true) {
+            return Number((Number(value)).toFixed(formatter.decimal)).toLocaleString('en');
+          } else {
+            return (Number(value)).toFixed(formatter.decimal);
+          }          
+        } else
+          return value;
+      }
+    }
+  }
 }
 
 
