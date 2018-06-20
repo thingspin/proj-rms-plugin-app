@@ -5,6 +5,8 @@ import 'jquery.tabulator/dist/css/tabulator.min.css';
 import 'jquery.tabulator/dist/js/tabulator.min';
 import {MetricsPanelCtrl, loadPluginCss} from  'grafana/app/plugins/sdk';
 
+import '../../services/remoteSolutionDS';
+
 loadPluginCss({
   dark: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.dark.css',
   light: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.light.css'
@@ -13,10 +15,16 @@ loadPluginCss({
 const template = require("./partial/templet.html");
 //const options = require("./partial/options.html");
 
+const MACHINE_CONSUMABLE_ID = '등록 ID';
+const MACHINE_NAME = '장비명';
+const CONSUMABLE_NAME = '소모품명';
+const CONSUMABLE_COUNT = '소모품 개수';
+const CHANGE_DATE = '소모품 교체일';
+const MACHINE_CONSUMABLE_MEMO = '메모';
+
 class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
   static template = template;
 
-  dsSrv: any;
   alertSrv: any;
   $rootScope: any;
   $scope: any;
@@ -32,9 +40,11 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
 
   dataRaw = [];
   columns = [];
+  aligns = [];
   dataJson : any;
 
   mode : any;
+  isViewer : any;
 
   panelDefaults = {
     // options: {
@@ -59,17 +69,24 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
       count: '',
       change_date: '',
       memo : '',      
-    }
+    },
+    formatters : [],
+    resizeValue : false
   };
 
-  constructor($rootScope, $scope, $injector, rsDsSrv, alertSrv) {
+  constructor($rootScope, $scope, $injector, contextSrv, private rsDsSrv, alertSrv) {
     super($scope, $injector);
+
+    this.isViewer = contextSrv.hasRole('Viewer');
+    if (!this.isViewer)
+      this.mode = 'showBtn';
+
+      this.aligns = ['LEFT','CENTER','RIGHT'];
 
     _.defaults(this.panel, this.panelDefaults);
 
     this.panel.inputlItem.change_date = new Date();
 
-    this.dsSrv = rsDsSrv;
     this.alertSrv = alertSrv;
     this.$rootScope = $rootScope;
     this.$scope = $scope;
@@ -88,6 +105,7 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
   }
 
   onInitEditMode() {
+    this.addEditorTab('Options', `public/plugins/proj-rms-plugin-app/panel/machine-consumables-reg/partial/options.html`, 2);
   }
 
   link(scope, elem, attrs, ctrl) {
@@ -133,7 +151,7 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
     let query1 = [
       'SELECT machine_name FROM t_machine'
     ]; 
-    this.dsSrv.query(selectId, query1).then( result => {            
+    this.rsDsSrv.query(selectId, query1).then( result => {            
       var data = result[0];            
       for(var i=0; i<data.rows.length; i++)
       {
@@ -147,7 +165,7 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
     let query2 = [
       'SELECT consumables_name FROM t_consumables'
     ]; 
-    this.dsSrv.query(selectId, query2).then( result => {            
+    this.rsDsSrv.query(selectId, query2).then( result => {            
       var data = result[0];      
       for(var i=0; i<data.rows.length; i++)
       {
@@ -165,20 +183,22 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
       selectable: 1,
       fitColumns: true,     
       layout: "fitColumns",
+      resizableColumns: this.panel.resizeValue,
       columns: this.columns,
       rowClick: function(e, row) {
-
-        g_root.showCtrlMode('edit');
-        row.select();
+        if (!this.isViewer) {
+          g_root.showCtrlMode('edit');
+          row.select();
         
-        g_root.panel.inputlItem.machine_consumables_id = row.getData()['등록 ID'];
-        g_root.panel.inputlItem.machine_name = row.getData()['장비명'];
-        g_root.panel.inputlItem.consumables_name = row.getData()['소모품명'];
-        g_root.panel.inputlItem.count = row.getData()['소모품 개수'];
-        g_root.panel.inputlItem.change_date = new Date(row.getData()['소모품 교체일']);
-        g_root.panel.inputlItem.memo = row.getData()['메모'];    
+          g_root.panel.inputlItem.machine_consumables_id = row.getData()[MACHINE_CONSUMABLE_ID];
+          g_root.panel.inputlItem.machine_name = row.getData()[MACHINE_NAME];
+          g_root.panel.inputlItem.consumables_name = row.getData()[CONSUMABLE_NAME];
+          g_root.panel.inputlItem.count = row.getData()[CONSUMABLE_COUNT];
+          g_root.panel.inputlItem.change_date = new Date(row.getData()[CHANGE_DATE]);
+          g_root.panel.inputlItem.memo = row.getData()[MACHINE_CONSUMABLE_MEMO];    
 
-        g_root.events.emit('panel-size-changed');        
+          g_root.events.emit('panel-size-changed');
+        }
       },
     });
 
@@ -191,6 +211,7 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
       // this.dataTable.setData("setData",tabledata);
       // this.container.tabulator("setData", tabledata);
     }
+    this.container.tabulator("hideColumn", MACHINE_CONSUMABLE_ID);
     this.initalized = true;
   }
 
@@ -204,9 +225,9 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
       var obj = {
         title: column,
         field: column,
-        align: "center",
         // editor: this.autocompEditor,
       }
+      this.columnOption(obj);
       this.columns.push(obj);
     }
     
@@ -254,7 +275,7 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
           
           //console.log(query1);  
 
-          this.dsSrv.query(selectId, query1).then( result => {
+          this.rsDsSrv.query(selectId, query1).then( result => {
             var data = result[0];
             //console.log("data rows: " + data.rows.length);  
             if(data.rows.length == 0)
@@ -264,7 +285,7 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
                 + info.machine_name + '" and consumables_name="' + info.consumables_name + '"'
               ];
 
-              this.dsSrv.query(selectId, query2).then( result => {  
+              this.rsDsSrv.query(selectId, query2).then( result => {  
 
                 var data = result[0];      
                 var machine_id = data.rows[0][0];
@@ -281,8 +302,9 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
 
                 //console.log(query3);
     
-                this.dsSrv.query(selectId, query3).then( result => {            
+                this.rsDsSrv.query(selectId, query3).then( result => {            
                   this.panel.inputlItem.machine_consumables_id = -1;
+                  this.showCtrlMode('showBtn');
                   this.$rootScope.$broadcast('refresh');
                 }).catch( err => {
                   console.error(err);
@@ -333,7 +355,7 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
           
           //console.log(query1);  
 
-          this.dsSrv.query(selectId, query1).then( result => {
+          this.rsDsSrv.query(selectId, query1).then( result => {
             var data = result[0];
             //console.log("data rows: " + data.rows.length);  
             if(data.rows.length == 0)
@@ -343,7 +365,7 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
                     + info.machine_name + '" and consumables_name="' + info.consumables_name + '"'
               ];
     
-              this.dsSrv.query(selectId, query2).then( result => {  
+              this.rsDsSrv.query(selectId, query2).then( result => {  
     
                 var data = result[0];      
                 var machine_id = data.rows[0][0];
@@ -363,8 +385,9 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
           
                 console.log(selectId + " " + query2);
           
-                this.dsSrv.query(selectId, query2).then( result => {
+                this.rsDsSrv.query(selectId, query2).then( result => {
                   this.panel.inputlItem.machine_consumables_id = -1;
+                  this.showCtrlMode('showBtn');
                   this.$rootScope.$broadcast('refresh');
                 }).catch( err => {
                   console.error(err);
@@ -411,7 +434,7 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
 
           console.log(selectId + " " + query);
 
-          this.dsSrv.query(selectId, query).then( result => {
+          this.rsDsSrv.query(selectId, query).then( result => {
             this.panel.inputlItem.machine_consumables_id = -1;
             this.panel.inputlItem = {      
               machine_consumables_id: -1,
@@ -421,6 +444,7 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
               change_date: '',
               memo : '',      
             }
+            this.showCtrlMode('showBtn');
             this.$rootScope.$broadcast('refresh');
           }).catch( err => {
             console.error(err);
@@ -434,7 +458,10 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
   };
 
   close() {
-    this.showCtrlMode('list');
+    if (this.isViewer)
+      this.showCtrlMode('list');
+    else
+      this.showCtrlMode('showBtn');
     this.refresh();
   }
 
@@ -458,6 +485,35 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
     this.events.emit('panel-size-changed');
   };
 
+  columnOption(obj) {
+    // console.log(obj);
+    var count = this.panel.formatters.map(function(e) {return e.name;}).indexOf(obj.title);
+    if (count !== -1) {
+      var formatter = this.panel.formatters[count];
+      obj.width = formatter.width;
+      obj.align = formatter.align;
+      obj.formatter = function(cell, formatterParam) {
+        var value = cell.getValue();
+        if (isNaN(value) == false) {
+          if (formatter.localstring == true) {
+            return Number((Number(value)).toFixed(formatter.decimal)).toLocaleString('en');
+          } else {
+            return (Number(value)).toFixed(formatter.decimal);
+          }          
+        } else
+          return value;
+      }
+    } else {
+      if (obj.title === CONSUMABLE_COUNT) {
+        obj.align = this.aligns[2];
+        obj.formatter = function(cell, formatterParam) {
+          return Number(cell.getValue()).toLocaleString('en');
+        }
+      } else {
+        obj.align = this.aligns[0];
+      }
+    }
+  }
 }
 
 export {

@@ -1,5 +1,11 @@
 <div ng-switch on='ctrl.mode'>
-    <button type="submit" class="btn btn-primary" ng-click="ctrl.showCtrlMode('new')">신규 등록</button>
+    <div ng-switch-when="showBtn">
+        <button type="submit" class="btn btn-primary" ng-click="ctrl.showCtrlMode('new')">신규 등록</button>
+        <br></br>
+    </div>
+    <div class="editor-row">
+        <div class="thingspin-table"></div>
+    </div>
     <br></br>
     <div class="section gf-form-group" ng-show='1' ng-switch-when="new">
         <div class="gf-form">
@@ -62,13 +68,5 @@
                 창 닫기
             </button>
         </div>
-    </div>        
-    <div class="editor-row">
-        <div class="thingspin-table"></div>
-    </div>
-    <br></br>
-    <div class="editor-row">
-        <div class="row-shipper-receiver"></div>
-    </div>
-        
+    </div>       
 </div>
