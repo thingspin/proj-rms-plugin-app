@@ -228,9 +228,7 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
       this.business.push(obj)
     }
   }
-/*
-name: '', format: '%.2f', fontsize: '10', width: 100, align:this.align[0]
-*/
+
   columnOption(obj) {
     // console.log(obj);
     var count = this.panel.formatters.map(function(e) {return e.name;}).indexOf(obj.title);
@@ -251,7 +249,6 @@ name: '', format: '%.2f', fontsize: '10', width: 100, align:this.align[0]
       }
     }
   }
-
   
   transformer(dataList) {
     this.columns = [];
@@ -400,7 +397,6 @@ name: '', format: '%.2f', fontsize: '10', width: 100, align:this.align[0]
       this.refresh();
     }
     this.mode = value;
-    console.log(this.mode);
     this.events.emit('panel-size-changed');
   }
 }

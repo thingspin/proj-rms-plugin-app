@@ -15,6 +15,24 @@ loadPluginCss({
 const template = require("./partial/templet.html");
 // const options = require("./partial/options.html");
 
+const panelDefaults = {
+  formatters : [],
+  resizeValue : false
+};
+
+const CONSUMABLES_ID = '소모품 ID';
+const CONSUMABLES_DSC = '장비 설명';
+const CONSUMABLES_MEMO = '메모';
+const CONSUMABLES_PRODUCT = '품목';
+const CONSUMABLES_STANDARD = '규격';
+const CONSUMABLES_SAFE_COUNT = '안전수량';
+const CONSUMABLES_COUNT = '재고수량';
+const CONSUMABLES_CYCLE = '교체주기';
+const CONSUMABLES_CYCLE_TIME = '교체주기 시간';
+const CONSUMABLES_SUBJECT = '특이사항';
+const CONSUMABLES_BUSINESS = '업체명';
+const CONSUMABLES_PERSON = '담당자';
+
 class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
   static template = template;
 
@@ -31,6 +49,7 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
   columns = [];
   business = [];
   checker = [];
+  aligns = [];
   businessSelect : any;
   comsumable : any;
   selectItem : any;
@@ -40,21 +59,28 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
   selectTableRow : any;
   mode : any;
   tableName : string;
+  isViewer : any;
 
-  constructor($scope, private $rootScope, $injector, $http, $location, uiSegmentSrv, annotationsSrv, private rsDsSrv, private alertSrv) {
+  constructor($scope, private $rootScope, $injector, $http, $location, uiSegmentSrv, annotationsSrv, contextSrv, private rsDsSrv, private alertSrv) {
     super($scope, $injector);
 
-    // _.defaults(this.panel, this.panelDefaults);
-    _.defaults(this.panel);
+    _.defaults(this.panel, panelDefaults);
+    // _.defaults(this.panel);
+
+    this.isViewer = contextSrv.hasRole('Viewer');
+    if (!this.isViewer)
+      this.mode = 'showBtn';
+    
+    this.aligns = ['LEFT','CENTER','RIGHT'];
 
     this.comsumable = {
-      name : "품목",
-      standard : '규격',
-      cycle_count : '안전수량',
-      count : '재고수량',
-      count_time_count : '교체주기',
-      count_time : '교체주기 시간',
-      memo : '특이사항'
+      name : CONSUMABLES_PRODUCT,
+      standard : CONSUMABLES_STANDARD,
+      cycle_count : CONSUMABLES_SAFE_COUNT,
+      count : CONSUMABLES_COUNT,
+      count_time_count : CONSUMABLES_CYCLE,
+      count_time : CONSUMABLES_CYCLE_TIME,
+      memo : CONSUMABLES_SUBJECT
     }
     this.tableName = "t_consumables";
 
@@ -74,32 +100,34 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
   }
 
   initQueryData() {
-    let selectId = this.datasource.id;
-    let deferred = this.$q.defer();
-    let query = ["select business_id, name, person from t_business where business_type='소모품업체'"];
-    this.rsDsSrv.query(selectId, query).then( result => {
-        deferred.resolve(result);
-        this.transDataBusiness(result);
-    }).catch( err => {
-        deferred.reject(err);
-        console.log(err);
-    });
-    return deferred.promise;
+    if (!this.isViewer) {
+      let selectId = this.datasource.id;
+      let deferred = this.$q.defer();
+      let query = ["select business_id, name, person from t_business where business_type='소모품업체'"];
+      this.rsDsSrv.query(selectId, query).then( result => {
+          deferred.resolve(result);
+          this.transDataBusiness(result);
+      }).catch( err => {
+          deferred.reject(err);
+          console.log(err);
+      });
+      return deferred.promise;  
+    }
   }
 
-  subTableQueryData() {
-    let selectId = this.datasource.id;
-    let deferred = this.$q.defer();
-    let query = ["select OPERATION_DATE as '날짜', SR_TYPE as '타입', SR_COUNT as '내역', MEMO as '특이사항' from t_shipper_receiver where "];
-    this.rsDsSrv.query(selectId, query).then( result => {
-        deferred.resolve(result);
-        this.transDataBusiness(result);
-    }).catch( err => {
-        deferred.reject(err);
-        console.log(err);
-    });
-    return deferred.promise;
-  }
+  // subTableQueryData() {
+  //   let selectId = this.datasource.id;
+  //   let deferred = this.$q.defer();
+  //   let query = ["select OPERATION_DATE as '날짜', SR_TYPE as '타입', SR_COUNT as '내역', MEMO as '특이사항' from t_shipper_receiver where "];
+  //   this.rsDsSrv.query(selectId, query).then( result => {
+  //       deferred.resolve(result);
+  //       this.transDataBusiness(result);
+  //   }).catch( err => {
+  //       deferred.reject(err);
+  //       console.log(err);
+  //   });
+  //   return deferred.promise;
+  // }
 
   link(scope, elem, attrs, ctrl) {
     let t = elem.find('.thingspin-table')[0];
@@ -143,6 +171,7 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
       selectable: 1,
       fitColumns: true,     
       layout: "fitColumns",
+      resizableColumns: this.panel.resizeValue,
       columns: this.columns
     };
     let opts = Object.assign({ // deep copy
@@ -160,22 +189,24 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
       this.dataTable.setData("setData",tabledata);
       this.container.tabulator("setData", tabledata);
     }
+    this.container.tabulator("hideColumn", CONSUMABLES_ID);
     this.initalized = true;
   }
 
   selectRow(obj) {
     this.selectObj = obj;
-    this.comsumable.id = obj['장비 ID'];
-    this.comsumable.name = obj['장비 설명'];
-    this.comsumable.memo = obj['메모'];
-    this.comsumable.name = obj['품목'];
-    this.comsumable.standard = obj['규격'];
-    this.comsumable.cycle_count = obj['안전수량'];
-    this.comsumable.count = obj['재고수량'];
-    this.comsumable.count_time_count = obj['교체주기'];
-    this.comsumable.count_time = obj['교체주기 시간'];
-    this.comsumable.memo = obj['특이사항'];
-    var cmpStr = obj['업체명'] + " : " + obj['담당자'];
+    console.log(obj);
+    this.comsumable.id = obj[CONSUMABLES_ID];
+    this.comsumable.name = obj[CONSUMABLES_DSC];
+    this.comsumable.memo = obj[CONSUMABLES_MEMO];
+    this.comsumable.name = obj[CONSUMABLES_PRODUCT];
+    this.comsumable.standard = obj[CONSUMABLES_STANDARD];
+    this.comsumable.cycle_count = obj[CONSUMABLES_SAFE_COUNT];
+    this.comsumable.count = obj[CONSUMABLES_COUNT];
+    this.comsumable.count_time_count = obj[CONSUMABLES_CYCLE];
+    this.comsumable.count_time = obj[CONSUMABLES_CYCLE_TIME];
+    this.comsumable.memo = obj[CONSUMABLES_SUBJECT];
+    var cmpStr = obj[CONSUMABLES_BUSINESS] + " : " + obj[CONSUMABLES_PERSON];
     var result = this.business.map(x => x.name).indexOf(cmpStr);
     this.businessSelect = this.business[result];
   }
@@ -206,7 +237,10 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
   }
 
   close() {
-    this.showCtrlMode('list');
+    if (this.isViewer)
+      this.showCtrlMode('list');
+    else
+      this.showCtrlMode('showBtn');
     this.refresh();
   }
 
@@ -228,6 +262,37 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
     }
   }
 
+  columnOption(obj) {
+    // console.log(obj);
+    var count = this.panel.formatters.map(function(e) {return e.name;}).indexOf(obj.title);
+    if (count !== -1) {
+      var formatter = this.panel.formatters[count];
+      obj.width = formatter.width;
+      obj.align = formatter.align;
+      obj.formatter = function(cell, formatterParam) {
+        var value = cell.getValue();
+        if (isNaN(value) == false) {
+          if (formatter.localstring == true) {
+            return Number((Number(value)).toFixed(formatter.decimal)).toLocaleString('en');
+          } else {
+            return (Number(value)).toFixed(formatter.decimal);
+          }          
+        } else
+          return value;
+      }
+    } else {
+      if (obj.title === CONSUMABLES_SAFE_COUNT || obj.title === CONSUMABLES_COUNT ||  obj.title === CONSUMABLES_CYCLE) {
+        obj.align = this.aligns[2];
+        obj.formatter = function(cell, formatterParam) {
+          return Number(cell.getValue()).toLocaleString('en');
+        }
+      } else {
+        obj.align = this.aligns[0];
+      }
+    }
+  }
+
+
   transformer(dataList) {
     this.columns = [];
     var data = dataList[0];
@@ -241,6 +306,7 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
         align: "left",
         // editor: this.autocompEditor,
       }
+      this.columnOption(obj);
       this.columns.push(obj);
     }  
     var jArray = new Array;
@@ -250,7 +316,7 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
       for (var row_count=0; row_count < row.length; row_count++) {
         var item = row[row_count];
         mapData.set(getColumns[row_count].text,item);
-        if (getColumns[row_count].text == '규격') {
+        if (getColumns[row_count].text == CONSUMABLES_STANDARD) {
           this.checker.push(item);
         }
       }
@@ -310,6 +376,7 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
             // this.updateInspectionPropertyList(selectId);
             this.alertSrv.set(name + "이(가) 추가되었습니다.", '', 'success', 1000);
             // this.addSubData(name, standard);
+            this.showCtrlMode('showBtn');
             this.refresh();
         }).catch( err => {
             this.alertSrv.set(name + " 추가 실패", err, 'error', 5000);
@@ -332,12 +399,13 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
     } else {      
       let selectId = this.datasource.id;
       let query = [
-        "update " + this.tableName + " set BUSINESS_ID = " + businessSelect.id + ", COUNT = " + count + ", CYCLE_COUNT = " + cycle_count + ", MEMO = '" + memo + "' where CONSUMABLES_STANDARD = '" + standard + "' and CONSUMABLES_NAME = '" + name + "';",
+        "update " + this.tableName + " set CONSUMABLES_NAME = '" + name + "', CONSUMABLES_STANDARD = '" + standard + "', COUNT = " + count + ", CYCLE_COUNT = " + cycle_count + ", MEMO = '" + memo + "' where CONSUMABLES_ID = " + this.comsumable.id + ";",
       ];
       console.log(query);
       this.rsDsSrv.query(selectId, query).then( result => {
           // this.updateInspectionPropertyList(selectId);
           this.alertSrv.set(name + "이(가) 변경 되었습니다.", '', 'success', 1000);
+          this.showCtrlMode('showBtn');
           this.refresh();
       }).catch( err => {
           this.alertSrv.set(name + " 변경 실패", err, 'error', 5000);
@@ -355,12 +423,15 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
       onConfirm: () => {
         let selectId = this.datasource.id;
         let query = [
-          "delete from " + this.tableName + " where CONSUMABLES_STANDARD = '" + standard + "' and CONSUMABLES_NAME = '" + name + "'",
+          "delete from " + this.tableName + " where CONSUMABLES_ID = " + this.comsumable.id,
         ];
         this.rsDsSrv.query(selectId, query).then( result => {
             // this.updateInspectionPropertyList(selectId);
             this.alertSrv.set(name + " " + standard + "이(가) 삭제 되었습니다.", '', 'success', 1000);
-            this.showCtrlMode('list');
+            if (this.isViewer)
+              this.showCtrlMode('list');
+            else
+              this.showCtrlMode('showBtn');
             this.refresh();
         }).catch( err => {
             this.alertSrv.set(name + " 삭제 실패", err, 'error', 5000);
@@ -390,54 +461,6 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
     this.mode = mode;
     this.events.emit('panel-size-changed');
   }
-
-  /* dynamic table editor test code added
-  autocompEditor = function(cell, onRendered, success, cancel){
-    //create and style input
-    var input = $("<input type='text'/>");
-
-    //setup jquery autocomplete
-    // input.autocomplete({
-    //     source: ["United Kingdom", "Germany", "France", "USA", "Canada", "Russia", "India", "China", "South Korea", "Japan"]
-    // });
-
-    input.css({
-        "padding":"4px",
-        "width":"100%",
-        "box-sizing":"border-box",
-    })
-    .val(cell.getValue());
-
-    onRendered(function(){
-        input.focus();
-        input.css("height","100%");
-    });
-
-    //submit new value on blur
-    input.on("change blur", function(e){
-        if(input.val() != cell.getValue()){
-          alert("Update data ? ");
-            success(input.val());
-        }else{
-            cancel();
-        }
-    });
-    
-    //submit new value on enter
-    input.on("keydown", function(e){
-        if(e.keyCode == 13){
-          alert("Update data ? ");
-            success(input.val());
-        }
-
-        if(e.keyCode == 27){
-            cancel();
-        }
-    });
-
-    return input;
-  };
-  */
 }
 
 export {
