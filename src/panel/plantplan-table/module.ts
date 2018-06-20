@@ -1,5 +1,6 @@
 ﻿import _ from 'lodash';
 import $ from 'jquery';
+import moment from 'moment';
 import 'jquery-ui';
 import 'jquery.tabulator/dist/css/tabulator.min.css';
 import 'jquery.tabulator/dist/js/tabulator.min';
@@ -18,6 +19,9 @@ const template = require("./partial/templet.html");
 const panelDefaults = {
   formatters : []
 };
+
+const PLAN_MODEL = "모델"
+const PLAN_DATE = "날짜"
 
 class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
   static template = template;
@@ -82,9 +86,7 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
   }
 
   onDataReceived(dataList) {
-    console.log(this);
     this.dataRaw = dataList;
-    console.log(dataList);
     Promise.resolve(this.transformer(this.dataRaw));
     this.createTable(this.dataJson);
   }
@@ -94,7 +96,7 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
   }
   
   addFormatter() {
-    console.log(this.panel.formatters);
+    // console.log(this.panel.formatters);
     this.panel.formatters.push({name: '', localstring: false, decimal: 2, fontsize: 0, width: 100, align:this.aligns[0]});
   }
 
@@ -155,7 +157,7 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
   }
 
   transDataInput(dataList) {
-    console.log(dataList);
+    // console.log(dataList);
   }
 
   columnOption(obj) {
@@ -175,6 +177,27 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
           }          
         } else
           return value;
+      }
+    } else {
+      if (obj.title === PLAN_DATE) {
+          obj.align = this.aligns[1];
+          obj.width = 97;
+          obj.formatter = function(cell, formatterParam) {
+            return moment(cell.getValue()).format("YYYY/MM/DD");
+          }
+      } else if (obj.title === PLAN_MODEL) {
+        obj.align = this.aligns[0];
+        obj.width = 122;
+      } else {
+        obj.width = 90;
+        obj.align = this.aligns[2];
+        obj.formatter = function(cell, formatterParam) {
+          console.log(cell.getValue());
+          if (cell.getValue() === undefined)
+            return 0;
+          else
+            return Number(cell.getValue()).toLocaleString('en');
+        }
       }
     }
   }
@@ -208,18 +231,16 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
       title: 'GRAPH',
       field: 'achievement',
       align: "left",
+      width:108,
       formatter:"progress"
     }
-    if (this.panel.formatters.length > 0)
-      this.columnOption(obj);
     this.columns.push(obj);
     var object = {
       title: '달성률',
       field: 'achievement_text',
       align: "right",
+      width:90,
     }
-    if (this.panel.formatters.length > 0)
-      this.columnOption(obj);
     this.columns.push(object);
 
     this.dataJson = jArray;
@@ -236,8 +257,7 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
         align: "left",
         // editor: this.autocompEditor,
       }
-      if (this.panel.formatters.length > 0)
-        this.columnOption(obj);
+      this.columnOption(obj);
       this.columns.push(obj);
       for (var count=0; count < rows.length; count++) {
         var row = rows[count];
@@ -262,8 +282,7 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
           align: "left",
           // editor: this.autocompEditor,
         }
-        if (this.panel.formatters.length > 0)
-          this.columnOption(obj);
+        this.columnOption(obj);
         this.columns.push(obj);
       }
       for (var count=0; count < rows.length; count++) {

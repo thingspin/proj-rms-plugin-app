@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import $ from 'jquery';
+import moment from 'moment';
 import 'jquery-ui';
 import 'jquery.tabulator/dist/css/tabulator.min.css';
 import 'jquery.tabulator/dist/js/tabulator.min';
@@ -508,6 +509,11 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
         obj.align = this.aligns[2];
         obj.formatter = function(cell, formatterParam) {
           return Number(cell.getValue()).toLocaleString('en');
+        }
+      } else if (obj.title === CHANGE_DATE) {
+        obj.align = this.aligns[1];
+        obj.formatter = function(cell, formatterParam) {
+          return moment(cell.getValue()).format("YYYY/MM/DD");
         }
       } else {
         obj.align = this.aligns[0];

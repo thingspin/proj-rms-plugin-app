@@ -97,6 +97,7 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
   }
 
   onInitEditMode() {
+    this.addEditorTab('Options', `public/plugins/proj-rms-plugin-app/panel/consumables-list/partial/options.html`, 2);
   }
 
   initQueryData() {
