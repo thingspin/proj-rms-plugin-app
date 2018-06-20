@@ -29245,9 +29245,6 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
             this.business.push(obj);
         }
     };
-    /*
-    name: '', format: '%.2f', fontsize: '10', width: 100, align:this.align[0]
-    */
     RmsMachineMaterialPanelCtrl.prototype.columnOption = function (obj) {
         // console.log(obj);
         var count = this.panel.formatters.map(function (e) { return e.name; }).indexOf(obj.title);
@@ -29422,7 +29419,6 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
             this.refresh();
         }
         this.mode = value;
-        console.log(this.mode);
         this.events.emit('panel-size-changed');
     };
     RmsMachineMaterialPanelCtrl.template = template;

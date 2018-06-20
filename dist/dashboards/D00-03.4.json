@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1529473440353,
+  "iteration": 1529473033415,
   "links": [],
   "panels": [
     {
@@ -29,7 +29,7 @@
         "x": 0,
         "y": 0
       },
-      "id": 4,
+      "id": 5,
       "kernel": null,
       "links": [],
       "resizeValue": false,
@@ -40,7 +40,7 @@
           "groupBy": [
             {
               "params": [
-                "1d"
+                "1w"
               ],
               "type": "time"
             },
@@ -73,7 +73,7 @@
           "tags": []
         }
       ],
-      "title": "Daily CPK Trend",
+      "title": "Weekly CPK Trend",
       "transparent": true,
       "type": "rms-cpk-trend-table"
     },
@@ -90,7 +90,7 @@
         "x": 0,
         "y": 18
       },
-      "id": 7,
+      "id": 9,
       "kernel": null,
       "legend": {
         "avg": false,
@@ -116,11 +116,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "$$hashKey": "object:713",
+          "$$hashKey": "object:1323",
           "groupBy": [
             {
               "params": [
-                "1d"
+                "1w"
               ],
               "type": "time"
             },
@@ -156,7 +156,7 @@
       "thresholds": [],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Daily CPK Trend Graph",
+      "title": "Weekly CPK Trend - Graph",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -173,7 +173,7 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:1144",
+          "$$hashKey": "object:1491",
           "format": "none",
           "label": null,
           "logBase": 1,
@@ -182,7 +182,7 @@
           "show": true
         },
         {
-          "$$hashKey": "object:1145",
+          "$$hashKey": "object:1492",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -197,6 +197,7 @@
       }
     }
   ],
+  "refresh": false,
   "schemaVersion": 16,
   "style": "dark",
   "tags": [
@@ -298,6 +299,6 @@
     ]
   },
   "timezone": "",
-  "title": "CPK Trend 분석 (Daily)",
+  "title": "CPK Trend 분석 (Weekly)",
   "version": 2
 }
