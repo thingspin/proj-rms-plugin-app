@@ -29069,14 +29069,19 @@ Object(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_5__["loadPluginCss"])({
 });
 var template = __webpack_require__(/*! ./partial/templet.html */ "./panel/plantplan-table/partial/templet.html");
 // const options = require("./partial/options.html");
+var panelDefaults = {
+    formatters: []
+};
 var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
     __extends(RmsPlantPlanPanelCtrl, _super);
     function RmsPlantPlanPanelCtrl($scope, $injector, $http, $location, uiSegmentSrv, annotationsSrv) {
         var _this = _super.call(this, $scope, $injector) || this;
         _this.dataRaw = [];
         _this.columns = [];
-        // _.defaults(this.panel, this.panelDefaults);
-        lodash__WEBPACK_IMPORTED_MODULE_0___default.a.defaults(_this.panel);
+        _this.aligns = [];
+        lodash__WEBPACK_IMPORTED_MODULE_0___default.a.defaults(_this.panel, panelDefaults);
+        // _.defaults(this.panel);
+        _this.aligns = ['LEFT', 'CENTER', 'RIGHT'];
         _this.divID = 'table-rms-' + _this.panel.id;
         _this.events.on('init-edit-mode', _this.onInitEditMode.bind(_this));
         // this.events.on('render', this.onRender.bind(this)); //dynamic ui process
@@ -29088,6 +29093,7 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
         this.initalized = false;
     };
     RmsPlantPlanPanelCtrl.prototype.onInitEditMode = function () {
+        this.addEditorTab('Options', "public/plugins/proj-rms-plugin-app/panel/plantplan-table/partial/options.html", 2);
     };
     RmsPlantPlanPanelCtrl.prototype.link = function (scope, elem, attrs, ctrl) {
         var t = elem.find('.thingspin-table')[0];
@@ -29108,6 +29114,13 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
         console.log(dataList);
         Promise.resolve(this.transformer(this.dataRaw));
         this.createTable(this.dataJson);
+    };
+    RmsPlantPlanPanelCtrl.prototype.delFormatter = function (index) {
+        this.panel.formatters.splice(index, 1);
+    };
+    RmsPlantPlanPanelCtrl.prototype.addFormatter = function () {
+        console.log(this.panel.formatters);
+        this.panel.formatters.push({ name: '', localstring: false, decimal: 2, fontsize: 0, width: 100, align: this.aligns[0] });
     };
     RmsPlantPlanPanelCtrl.prototype.createTable = function (dataList) {
         var _this = this;
@@ -29168,6 +29181,28 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
     RmsPlantPlanPanelCtrl.prototype.transDataInput = function (dataList) {
         console.log(dataList);
     };
+    RmsPlantPlanPanelCtrl.prototype.columnOption = function (obj) {
+        // console.log(obj);
+        var count = this.panel.formatters.map(function (e) { return e.name; }).indexOf(obj.title);
+        if (count !== -1) {
+            var formatter = this.panel.formatters[count];
+            obj.width = formatter.width;
+            obj.align = formatter.align;
+            obj.formatter = function (cell, formatterParam) {
+                var value = cell.getValue();
+                if (isNaN(value) == false) {
+                    if (formatter.localstring == true) {
+                        return Number((Number(value)).toFixed(formatter.decimal)).toLocaleString('en');
+                    }
+                    else {
+                        return (Number(value)).toFixed(formatter.decimal);
+                    }
+                }
+                else
+                    return value;
+            };
+        }
+    };
     RmsPlantPlanPanelCtrl.prototype.transformer = function (dataList) {
         var _this = this;
         this.columns = [];
@@ -29200,12 +29235,16 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
             align: "left",
             formatter: "progress"
         };
+        if (this.panel.formatters.length > 0)
+            this.columnOption(obj);
         this.columns.push(obj);
         var object = {
             title: '달성률',
             field: 'achievement_text',
-            align: "left",
+            align: "right",
         };
+        if (this.panel.formatters.length > 0)
+            this.columnOption(obj);
         this.columns.push(object);
         this.dataJson = jArray;
     };
@@ -29219,6 +29258,8 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
                 field: getColumns[2].text,
                 align: "left",
             };
+            if (this.panel.formatters.length > 0)
+                this.columnOption(obj);
             this.columns.push(obj);
             for (var count = 0; count < rows.length; count++) {
                 var row = rows[count];
@@ -29243,6 +29284,8 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
                     field: column,
                     align: "left",
                 };
+                if (this.panel.formatters.length > 0)
+                    this.columnOption(obj);
                 this.columns.push(obj);
             }
             for (var count = 0; count < rows.length; count++) {

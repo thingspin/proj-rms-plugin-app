@@ -29068,7 +29068,15 @@ Object(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_5__["loadPluginCss"])({
     light: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.light.css'
 });
 var template = __webpack_require__(/*! ./partial/templet.html */ "./panel/machine-material/partial/templet.html");
-// const options = require("./partial/options.html");
+var DEVICE_ID = "장비 ID";
+var DEVICE_NAME = "장비 이름";
+var DEVICE_MEMO = "특이사항";
+var BUSINESS_OBJ = "업체명";
+var BUSINESS_NAME = "담당자";
+var panelDefaults = {
+    formatters: [],
+    resizeValue: false
+};
 var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
     __extends(RmsMachineMaterialPanelCtrl, _super);
     function RmsMachineMaterialPanelCtrl($scope, $rootScope, $injector, $http, $location, uiSegmentSrv, annotationsSrv, contextSrv, rsDsSrv, alertSrv) {
@@ -29080,16 +29088,18 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
         _this.columns = [];
         _this.business = [];
         _this.checker = [];
-        // _.defaults(this.panel, this.panelDefaults);
-        lodash__WEBPACK_IMPORTED_MODULE_0___default.a.defaults(_this.panel);
+        _this.aligns = [];
+        lodash__WEBPACK_IMPORTED_MODULE_0___default.a.defaults(_this.panel, panelDefaults);
+        // _.defaults(this.panel);
         _this.isViewer = contextSrv.hasRole('Viewer');
         if (!_this.isViewer)
             _this.mode = 'showBtn';
         _this.machine = {
-            id: "장비 ID",
-            name: '장비 설명',
-            memo: '특이사항'
+            id: DEVICE_ID,
+            name: DEVICE_NAME,
+            memo: DEVICE_MEMO
         };
+        _this.aligns = ['LEFT', 'CENTER', 'RIGHT'];
         _this.divID = 'table-rms-' + _this.panel.id;
         _this.events.on('init-edit-mode', _this.onInitEditMode.bind(_this));
         // this.events.on('render', this.onRender.bind(this)); //dynamic ui process
@@ -29097,10 +29107,18 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
         _this.events.on('data-error', _this.onDataError.bind(_this));
         return _this;
     }
+    RmsMachineMaterialPanelCtrl.prototype.delFormatter = function (index) {
+        this.panel.formatters.splice(index, 1);
+    };
+    RmsMachineMaterialPanelCtrl.prototype.addFormatter = function () {
+        console.log(this.panel.formatters);
+        this.panel.formatters.push({ name: '', localstring: false, decimal: 2, fontsize: 0, width: 100, align: this.aligns[0] });
+    };
     RmsMachineMaterialPanelCtrl.prototype.onInitialized = function () {
         this.initalized = false;
     };
     RmsMachineMaterialPanelCtrl.prototype.onInitEditMode = function () {
+        this.addEditorTab('Options', "public/plugins/proj-rms-plugin-app/panel/machine-material/partial/options.html", 2);
     };
     RmsMachineMaterialPanelCtrl.prototype.initQueryData = function () {
         var _this = this;
@@ -29156,6 +29174,7 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
             selectable: 1,
             fitColumns: true,
             layout: "fitColumns",
+            resizableColumns: this.panel.resizeValue,
             columns: this.columns
         };
         var opts = Object.assign({
@@ -29176,18 +29195,18 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
             this.dataTable.setData("setData", tabledata);
             this.container.tabulator("setData", tabledata);
         }
-        this.container.tabulator("hideColumn", "장비 ID");
+        this.container.tabulator("hideColumn", DEVICE_ID);
         this.initalized = true;
     };
     RmsMachineMaterialPanelCtrl.prototype.selectRow = function (obj) {
-        console.log(obj);
         this.selectObj = obj;
-        this.machine.id = obj['장비 ID'];
-        this.machine.name = obj['장비 이름'];
-        this.machine.memo = obj['특이사항'];
-        var cmpStr = obj['업체명'] + " : " + obj['담당자'];
+        this.machine.id = obj[DEVICE_ID];
+        this.machine.name = obj[DEVICE_NAME];
+        this.machine.memo = obj[DEVICE_MEMO];
+        var cmpStr = obj[BUSINESS_OBJ] + " : " + obj[BUSINESS_NAME];
         var result = this.business.map(function (x) { return x.name; }).indexOf(cmpStr);
         this.businessSelect = this.business[result];
+        console.log(obj);
     };
     RmsMachineMaterialPanelCtrl.prototype.clearCtrl = function (mode) {
         switch (mode) {
@@ -29226,6 +29245,31 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
             this.business.push(obj);
         }
     };
+    /*
+    name: '', format: '%.2f', fontsize: '10', width: 100, align:this.align[0]
+    */
+    RmsMachineMaterialPanelCtrl.prototype.columnOption = function (obj) {
+        // console.log(obj);
+        var count = this.panel.formatters.map(function (e) { return e.name; }).indexOf(obj.title);
+        if (count !== -1) {
+            var formatter = this.panel.formatters[count];
+            obj.width = formatter.width;
+            obj.align = formatter.align;
+            obj.formatter = function (cell, formatterParam) {
+                var value = cell.getValue();
+                if (isNaN(value) == false) {
+                    if (formatter.localstring == true) {
+                        return Number((Number(value)).toFixed(formatter.decimal)).toLocaleString('en');
+                    }
+                    else {
+                        return (Number(value)).toFixed(formatter.decimal);
+                    }
+                }
+                else
+                    return value;
+            };
+        }
+    };
     RmsMachineMaterialPanelCtrl.prototype.transformer = function (dataList) {
         this.columns = [];
         this.checker = [];
@@ -29237,8 +29281,9 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
             var obj = {
                 title: column,
                 field: column,
-                align: "center",
             };
+            if (this.panel.formatters.length > 0)
+                this.columnOption(obj);
             this.columns.push(obj);
         }
         var jArray = new Array;
@@ -29247,7 +29292,7 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
             var row = rows[count];
             for (var row_count = 0; row_count < row.length; row_count++) {
                 var item = row[row_count];
-                if (getColumns[row_count].text == '장비 이름') {
+                if (getColumns[row_count].text == DEVICE_NAME) {
                     this.checker.push(item);
                 }
                 mapData.set(getColumns[row_count].text, item);

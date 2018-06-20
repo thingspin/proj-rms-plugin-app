@@ -1,6 +1,12 @@
 <div ng-switch on='ctrl.mode'>
-    <button type="submit" class="btn btn-primary" ng-click="ctrl.showCtrlMode('new')">신규 등록</button>
-    <br></br>     
+    <div ng-switch-when="showBtn">
+        <button type="submit" class="btn btn-primary" ng-click="ctrl.showCtrlMode('new')">신규 등록</button>
+        <br></br>
+    </div>
+    <div class="editor-row">
+        <div class="thingspin-table"></div>
+    </div>
+    <br></br>
     <div class="section gf-form-group" ng-show='1' ng-switch-when="new|edit" ng-switch-when-separator="|">
         <div class="gf-form">
             <label class="gf-form-label width-5">업체명</label>
@@ -67,10 +73,6 @@
                 창 닫기
             </button>
         </div>   
-    </div>
-
-    <div class="editor-row">
-        <div class="thingspin-table"></div>
     </div>
 </div>
 

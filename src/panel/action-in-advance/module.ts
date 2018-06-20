@@ -398,6 +398,7 @@ export class SettingActionInAdvancePanelCtrl extends MetricsPanelCtrl {
             INSPPROP_ID: ip[0].data.IDX,
             enCheckFacilities: (this.enCheckFacilities === undefined || this.enCheckFacilities === null) ?
                 false : this.enCheckFacilities,
+            memo: this.memo,
         };
 
         perceptionCond.forEach( (item) => {
