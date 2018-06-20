@@ -152,64 +152,6 @@ var RmsProductPlanBarChartPanelCtrl = /** @class */ (function (_super) {
         _this.arrayTrue = new Array();
         _this.arrayFalse = new Array();
         _this.models = [];
-        _this.colors = [
-            '#7EB26D',
-            '#EAB839',
-            '#6ED0E0',
-            '#EF843C',
-            '#E24D42',
-            '#1F78C1',
-            '#BA43A9',
-            '#705DA0',
-            '#508642',
-            '#CCA300',
-            '#447EBC',
-            '#C15C17',
-            '#890F02',
-            '#0A437C',
-            '#6D1F62',
-            '#584477',
-            '#B7DBAB',
-            '#F4D598',
-            '#70DBED',
-            '#F9BA8F',
-            '#F29191',
-            '#82B5D8',
-            '#E5A8E2',
-            '#AEA2E0',
-            '#629E51',
-            '#E5AC0E',
-            '#64B0C8',
-            '#E0752D',
-            '#BF1B00',
-            '#0A50A1',
-            '#962D82',
-            '#614D93',
-            '#9AC48A',
-            '#F2C96D',
-            '#65C5DB',
-            '#F9934E',
-            '#EA6460',
-            '#5195CE',
-            '#D683CE',
-            '#806EB7',
-            '#3F6833',
-            '#967302',
-            '#2F575E',
-            '#99440A',
-            '#58140C',
-            '#052B51',
-            '#511749',
-            '#3F2B5B',
-            '#E0F9D7',
-            '#FCEACA',
-            '#CFFAFF',
-            '#F9E2D2',
-            '#FCE2DE',
-            '#BADFF4',
-            '#F9D9F9',
-            '#DEDAF7',
-        ];
         _this.chart = null;
         _this.chartID = 'chart-rms-product-state-' + _this.panel.id;
         _this.events.on('init-edit-mode', _this.onInitEditMode.bind(_this));
@@ -374,21 +316,24 @@ var RmsProductPlanBarChartPanelCtrl = /** @class */ (function (_super) {
         var chartMap = new Map();
         var planObj = {
             label: PLAN_LABEL,
-            backgroundColor: this.colors[PLAN],
+            backgroundColor: 'rgba(153, 102, 255, 0.6)',
+            borderColor: 'rgba(153, 102, 255, 1)',
             stack: 'Stack 0',
             data: Array.from(this.mapPlan.values())
         };
         chartMap.set(PLAN_LABEL, planObj);
         var trueObj = {
             label: TRUE_LABEL,
-            backgroundColor: this.colors[TRUE],
+            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+            borderColor: 'rgba(75, 192, 192, 1)',
             stack: 'Stack 1',
             data: this.arrayTrue
         };
         chartMap.set(TRUE_LABEL, trueObj);
         var falseObj = {
             label: FALSE_LABEL,
-            backgroundColor: this.colors[FALSE],
+            backgroundColor: 'rgba(255, 99, 132, 0.6)',
+            borderColor: 'rgba(255,99,132,1)',
             stack: 'Stack 1',
             data: this.arrayFalse
         };
