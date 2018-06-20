@@ -137,6 +137,7 @@ class RmsCPKTrendPanelCtrl extends MetricsPanelCtrl {
     }
     this.container.tabulator("hideColumn","time_sec");
     this.initalized = true;
+    $(window).trigger('resize');
   }
 
   transDataInput(dataList) {

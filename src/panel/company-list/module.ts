@@ -220,7 +220,8 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
       // this.container.tabulator("setData", tabledata);
     }
     this.container.tabulator("hideColumn", BUSINESS_ID);
-    this.initalized = true;   
+    this.initalized = true;
+    $(window).trigger('resize');
   }
 
   transformer(dataList) {

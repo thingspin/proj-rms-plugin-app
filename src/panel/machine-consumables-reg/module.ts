@@ -181,8 +181,8 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
     this.container.tabulator({
       pagination: "local",
       paginationSize: 10,
-      selectable: 1,
-      fitColumns: true,     
+      selectable: 1, 
+      fitColumns:true,
       layout: "fitColumns",
       resizableColumns: this.panel.resizeValue,
       columns: this.columns,
@@ -214,6 +214,7 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
     }
     this.container.tabulator("hideColumn", MACHINE_CONSUMABLE_ID);
     this.initalized = true;
+    $(window).trigger('resize');
   }
 
   transformer(dataList) {

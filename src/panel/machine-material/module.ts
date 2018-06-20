@@ -176,6 +176,7 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
     }
     this.container.tabulator("hideColumn",DEVICE_ID);
     this.initalized = true;
+    $(window).trigger('resize');
   }
 
   selectRow(obj) {

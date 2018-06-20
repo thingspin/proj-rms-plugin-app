@@ -192,6 +192,7 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
     }
     this.container.tabulator("hideColumn", CONSUMABLES_ID);
     this.initalized = true;
+    $(window).trigger('resize');
   }
 
   selectRow(obj) {

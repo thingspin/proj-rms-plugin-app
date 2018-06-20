@@ -222,6 +222,7 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
     }
     this.container.tabulator("hideColumn", MOLD_ID);
     this.initalized = true;
+    $(window).trigger('resize');
   }
 
   transformer(dataList) {
