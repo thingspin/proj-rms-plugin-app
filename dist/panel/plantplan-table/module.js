@@ -46297,6 +46297,7 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
         }
         this.container.tabulator("hideColumn", "time_sec");
         this.initalized = true;
+        jquery__WEBPACK_IMPORTED_MODULE_1___default()(window).trigger('resize');
     };
     RmsPlantPlanPanelCtrl.prototype.selectRow = function (obj) {
         // this.selectObj = obj;
@@ -46341,17 +46342,14 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
         else {
             if (obj.title === PLAN_DATE) {
                 obj.align = this.aligns[1];
-                obj.width = 97;
                 obj.formatter = function (cell, formatterParam) {
                     return moment__WEBPACK_IMPORTED_MODULE_2___default()(cell.getValue()).format("YYYY/MM/DD");
                 };
             }
             else if (obj.title === PLAN_MODEL) {
                 obj.align = this.aligns[0];
-                obj.width = 122;
             }
             else {
-                obj.width = 90;
                 obj.align = this.aligns[2];
                 obj.formatter = function (cell, formatterParam) {
                     console.log(cell.getValue());
@@ -46393,7 +46391,6 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
             title: 'GRAPH',
             field: 'achievement',
             align: "left",
-            width: 108,
             formatter: "progress"
         };
         this.columns.push(obj);
@@ -46401,7 +46398,6 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
             title: '달성률',
             field: 'achievement_text',
             align: "right",
-            width: 90,
         };
         this.columns.push(object);
         this.dataJson = jArray;
