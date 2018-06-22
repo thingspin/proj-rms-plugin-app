@@ -58,6 +58,8 @@
     {"type": "dashboard", "name": "장비 리스트", "path": "dashboards/D03-05.json", "AddToNav": true, "menuID": 4, "ico":"fa fa-industry"},
 
     {"type": "menu", "name": "분석", "mainMenu": true,  "slug": "cpk-hyeonhwang", "img":"img/thignspin_ic_48dp_white-02.svg", "menuID": 5},
+    {"type": "dashboard", "name": "Tack Time", "path": "dashboards/A00-01.json", "AddToNav": true, "menuID": 5, "ico":"fa fa-industry"},
+    {"type": "dashboard", "name": "Tack Time Graph", "path": "dashboards/A00-02.json", "AddToNav": true, "menuID": 5, "ico":"fa fa-industry"},
     {"type": "dashboard", "name": "CPK Trend 분석 (Daily)", "path": "dashboards/D00-03.3.json", "AddToNav": true, "menuID": 5, "ico":"fa fa-industry"},
     {"type": "dashboard", "name": "CPK Trend 분석 (Weekly)", "path": "dashboards/D00-03.4.json", "AddToNav": true, "menuID": 5, "ico":"fa fa-industry"},
     {"type": "dashboard", "name": "검사항목별 검사기록 (상세)", "path": "dashboards/D00-03.1.json", "AddToNav": false, "menuID": 5, "ico":"fa fa-industry"},
