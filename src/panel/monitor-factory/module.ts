@@ -153,6 +153,7 @@ class RmsMonitorFactoryPanelCtrl extends MetricsPanelCtrl {
     }
 
     // test only
+    /*
     $svg.find("#modeling1-title1").on("click", (evt) => {
       this.lineAnimation(JSON.stringify({
         tags: {
@@ -172,6 +173,7 @@ class RmsMonitorFactoryPanelCtrl extends MetricsPanelCtrl {
         }
       }));
     });
+    */
   }
 
   initAnimation() {

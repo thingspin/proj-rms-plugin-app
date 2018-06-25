@@ -36206,25 +36206,27 @@ var RmsMonitorFactoryPanelCtrl = /** @class */ (function (_super) {
             });
         }
         // test only
-        $svg.find("#modeling1-title1").on("click", function (evt) {
-            _this.lineAnimation(JSON.stringify({
-                tags: {
-                    facility: "hello1",
-                    channel: "3",
-                    fireCNF: false,
-                    fireCPK: true,
-                },
-                rule: {
-                    memo: [
-                        "가나다라마바사아자차카타파하아이우에오나니누네sd;fljsdljfksjkldfjlk",
-                        "abcdefghijklmnopqrstuvwxyz1234567890",
-                        "hello3",
-                        "hello4",
-                        "hello5",
-                    ]
-                }
-            }));
+        /*
+        $svg.find("#modeling1-title1").on("click", (evt) => {
+          this.lineAnimation(JSON.stringify({
+            tags: {
+              facility: "hello1",
+              channel: "3",
+              fireCNF: false,
+              fireCPK: true,
+            },
+            rule: {
+              memo: [
+                "가나다라마바사아자차카타파하아이우에오나니누네sd;fljsdljfksjkldfjlk",
+                "abcdefghijklmnopqrstuvwxyz1234567890",
+                "hello3",
+                "hello4",
+                "hello5",
+              ]
+            }
+          }));
         });
+        */
     };
     RmsMonitorFactoryPanelCtrl.prototype.initAnimation = function () {
         // set Process Animation DOM
