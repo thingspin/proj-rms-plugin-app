@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import { tickStep } from 'grafana/app/core/utils/ticks';
-//import TimeSeries from 'grafana/app/core/time_series2';
-//var getCurvePoints = require("cardinal-spline-js").getCurvePoints;
+
 var gaussian = require('gaussian');
 
 /**
