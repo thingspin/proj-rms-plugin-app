@@ -20,7 +20,7 @@ class RmsMonitorFactoryPanelCtrl extends MetricsPanelCtrl {
   panelDirName: String = "monitor-factory";
   appId: String = "proj-rms-plugin-app";
   divID: String = "rms-app-monitor-factory";
-  svgImgPath: String = `public/plugins/${appId}/panel/${this.panelDirName}/img/main.svg`;
+  svgImgPath: String = `public/plugins/${appId}/panel/${this.panelDirName}/img/main.v2.svg`;
 
   private _container: any;
   set container(container: any) { this._container = container; }
@@ -41,7 +41,7 @@ class RmsMonitorFactoryPanelCtrl extends MetricsPanelCtrl {
   set animations(animation: any) { this._animations = animation; }
   get animations() { return this._animations; }
 
-  private _svgDOM: Object = null;
+  private _svgDOM: any = null;
   set svgDOM(svgDOM) { this._svgDOM = svgDOM; }
   get svgDOM() { return this._svgDOM; }
 
@@ -91,10 +91,23 @@ class RmsMonitorFactoryPanelCtrl extends MetricsPanelCtrl {
   initSvgDOM() {
     const $svg = $(this.svg.node);
 
-    let DOM = $svg.find("g");
+    const dialog =  $svg.find("g#Dialogs");
+    dialog.hide();
 
     let result = {
-      DOM: DOM,
+      DOM: $svg.find("g"),
+      dialogDoms: {
+        root: dialog,
+        zone: dialog.find("#zone"),
+        title: {
+          main: dialog.find("#main-title"),
+          sub: dialog.find("#sub-title"),
+        },
+        button: dialog.find("#Dialogs-button"),
+        memo: dialog.find("#Dialogs-text2 > text > tspan"),
+        memoTitle: dialog.find("#memo-title"),
+
+      },
     };
     return result;
   }
@@ -103,8 +116,7 @@ class RmsMonitorFactoryPanelCtrl extends MetricsPanelCtrl {
     const $svg = $(this.svg.node);
     const baseId = "modeling1-title";
     const $warnTitleDOM = $svg.find(`#${baseId}7-warning`);
-
-    $warnTitleDOM.on("click", (evt) => {
+    const warnEvent = () => {
       if (this.animations.ALERT.isRun) {
         $warnTitleDOM.hide();
         $svg.find(`#${baseId}7`).show();
@@ -127,7 +139,57 @@ class RmsMonitorFactoryPanelCtrl extends MetricsPanelCtrl {
         });
         this.animations.LINE.isRun = true;
       }
+    };
+
+    $warnTitleDOM.on("click", (evt) => {
+      warnEvent();
     });
+
+    if (this.svgDOM.dialogDoms) {
+      this.svgDOM.dialogDoms.button.on("click", evt => {
+        this.svgDOM.dialogDoms.root.hide();
+        warnEvent();
+      });
+    }
+
+    // test only
+    // $svg.find("#modeling1-title1").on("click", (evt) => {
+    //   this.lineAnimation(JSON.stringify({
+    //     tags: {
+    //       facility: "hello1",
+    //       channel: "3",
+    //       fireCNF: true,
+    //       fireCPK: false,
+    //       iid: 0,
+    //       inm: "L/Current",
+    //       alert: 1,
+    //       pass: false,
+    //       model: "RB70F00",
+    //     },
+    //     fields: {
+    //       tuid: "5d509ff6.20756",
+    //       val: -0.987,
+    //       min: -0.975,
+    //       max: 0.975,
+    //       acc: 0,
+    //       acum: 612,
+    //       cp: 0.8722,
+    //       cpk: 0.43728,
+    //       usl: 0.975,
+    //       lsl: -0.975,
+    //       camx: 2,
+    //     },
+    //     rule: {
+    //       memo: [
+    //         "가나다라마바사아자차카타파하아이우에오나니누네sd;fljsdljfksjkldfjlk",
+    //         "abcdefghijklmnopqrstuvwxyz1234567890",
+    //         "hello3",
+    //         "hello4",
+    //         "hello5",
+    //       ]
+    //     }
+    //   }));
+    // });
   }
 
   initAnimation() {
@@ -194,14 +256,14 @@ class RmsMonitorFactoryPanelCtrl extends MetricsPanelCtrl {
 
 
   onMqttRecv(topic: string, bin: any) {
-    // const msg = bin.toString();
+    const msg = bin.toString();
     // const {fields, tags} = JSON.parse(msg);
     const topics = topic.split("/");
     const command = topics[topics.length-1];
     console.log(command);
     switch (command) {
       case "ALERT": this.warningAnimation(); break;
-      case "LINESTOP": this.lineAnimation(); break;
+      case "LINESTOP": this.lineAnimation(msg); break;
       default: console.error(`command not found : '${command}'`); break;
     }
   }
@@ -217,7 +279,41 @@ class RmsMonitorFactoryPanelCtrl extends MetricsPanelCtrl {
     }
   }
 
-  lineAnimation() {
+  lineAnimation(message: string) {
+    let obj: any;
+    try {
+      obj = JSON.parse(message);
+    }catch (e) {
+      console.error(e);
+    }
+
+    if (obj) {
+      const zoneTitle = `${obj.tags.facility}-${obj.tags.channel}`;
+      const fireType = obj.tags.fireCNF ? "연속 불량" : obj.tags.fireCPK ? "CPK 이탈" : "알 수 없음";
+      const {memo} = obj.rule;
+      const {dialogDoms} = this.svgDOM;
+
+      dialogDoms.root.attr("transform", "translate(0,50)");
+      dialogDoms.root.show();
+      dialogDoms.title.main.text(`${fireType} 발생`);
+      dialogDoms.title.sub.html(`
+        <tspan class="st170 st169 st171" x="0" y="0">모델 '${obj.tags.model}'에 의해<tspan>
+        <tspan class="st170 st169 st171" x="0" y="20">라인이 정지 되었습니다.<tspan>
+      `);
+
+      dialogDoms.memoTitle.text(`${fireType}에 필요한 점검 내용`);
+      dialogDoms.zone.text(zoneTitle);
+      dialogDoms.memo.each( (idx,html) => {
+        const $dom = $(html);
+        if (memo[idx]) {
+          const showMemo = memo[idx].length > 24 ? `${memo[idx].slice(0, 24)}...` : memo[idx];
+          $dom.text(showMemo);
+        } else {
+          $dom.text('');
+        }
+      });
+    }
+
     this.warningAnimation();
     if (this.animations.LINE.isRun) {
       const $svg = $(this.svg.node);

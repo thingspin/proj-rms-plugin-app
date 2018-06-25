@@ -36080,7 +36080,7 @@ var RmsMonitorFactoryPanelCtrl = /** @class */ (function (_super) {
         _this.panelDirName = "monitor-factory";
         _this.appId = "proj-rms-plugin-app";
         _this.divID = "rms-app-monitor-factory";
-        _this.svgImgPath = "public/plugins/" + appId + "/panel/" + _this.panelDirName + "/img/main.svg";
+        _this.svgImgPath = "public/plugins/" + appId + "/panel/" + _this.panelDirName + "/img/main.v2.svg";
         _this._svg = null;
         _this._recvData = null;
         _this._animations = {};
@@ -36153,9 +36153,21 @@ var RmsMonitorFactoryPanelCtrl = /** @class */ (function (_super) {
     };
     RmsMonitorFactoryPanelCtrl.prototype.initSvgDOM = function () {
         var $svg = jquery__WEBPACK_IMPORTED_MODULE_1___default()(this.svg.node);
-        var DOM = $svg.find("g");
+        var dialog = $svg.find("g#Dialogs");
+        dialog.hide();
         var result = {
-            DOM: DOM,
+            DOM: $svg.find("g"),
+            dialogDoms: {
+                root: dialog,
+                zone: dialog.find("#zone"),
+                title: {
+                    main: dialog.find("#main-title"),
+                    sub: dialog.find("#sub-title"),
+                },
+                button: dialog.find("#Dialogs-button"),
+                memo: dialog.find("#Dialogs-text2 > text > tspan"),
+                memoTitle: dialog.find("#memo-title"),
+            },
         };
         return result;
     };
@@ -36164,7 +36176,7 @@ var RmsMonitorFactoryPanelCtrl = /** @class */ (function (_super) {
         var $svg = jquery__WEBPACK_IMPORTED_MODULE_1___default()(this.svg.node);
         var baseId = "modeling1-title";
         var $warnTitleDOM = $svg.find("#" + baseId + "7-warning");
-        $warnTitleDOM.on("click", function (evt) {
+        var warnEvent = function () {
             if (_this.animations.ALERT.isRun) {
                 $warnTitleDOM.hide();
                 $svg.find("#" + baseId + "7").show();
@@ -36183,7 +36195,54 @@ var RmsMonitorFactoryPanelCtrl = /** @class */ (function (_super) {
                 });
                 _this.animations.LINE.isRun = true;
             }
+        };
+        $warnTitleDOM.on("click", function (evt) {
+            warnEvent();
         });
+        if (this.svgDOM.dialogDoms) {
+            this.svgDOM.dialogDoms.button.on("click", function (evt) {
+                _this.svgDOM.dialogDoms.root.hide();
+                warnEvent();
+            });
+        }
+        // test only
+        // $svg.find("#modeling1-title1").on("click", (evt) => {
+        //   this.lineAnimation(JSON.stringify({
+        //     tags: {
+        //       facility: "hello1",
+        //       channel: "3",
+        //       fireCNF: true,
+        //       fireCPK: false,
+        //       iid: 0,
+        //       inm: "L/Current",
+        //       alert: 1,
+        //       pass: false,
+        //       model: "RB70F00",
+        //     },
+        //     fields: {
+        //       tuid: "5d509ff6.20756",
+        //       val: -0.987,
+        //       min: -0.975,
+        //       max: 0.975,
+        //       acc: 0,
+        //       acum: 612,
+        //       cp: 0.8722,
+        //       cpk: 0.43728,
+        //       usl: 0.975,
+        //       lsl: -0.975,
+        //       camx: 2,
+        //     },
+        //     rule: {
+        //       memo: [
+        //         "가나다라마바사아자차카타파하아이우에오나니누네sd;fljsdljfksjkldfjlk",
+        //         "abcdefghijklmnopqrstuvwxyz1234567890",
+        //         "hello3",
+        //         "hello4",
+        //         "hello5",
+        //       ]
+        //     }
+        //   }));
+        // });
     };
     RmsMonitorFactoryPanelCtrl.prototype.initAnimation = function () {
         // set Process Animation DOM
@@ -36236,7 +36295,7 @@ var RmsMonitorFactoryPanelCtrl = /** @class */ (function (_super) {
         return viewData;
     };
     RmsMonitorFactoryPanelCtrl.prototype.onMqttRecv = function (topic, bin) {
-        // const msg = bin.toString();
+        var msg = bin.toString();
         // const {fields, tags} = JSON.parse(msg);
         var topics = topic.split("/");
         var command = topics[topics.length - 1];
@@ -36246,7 +36305,7 @@ var RmsMonitorFactoryPanelCtrl = /** @class */ (function (_super) {
                 this.warningAnimation();
                 break;
             case "LINESTOP":
-                this.lineAnimation();
+                this.lineAnimation(msg);
                 break;
             default:
                 console.error("command not found : '" + command + "'");
@@ -36262,7 +36321,36 @@ var RmsMonitorFactoryPanelCtrl = /** @class */ (function (_super) {
             this.animations.ALERT.isRun = true;
         }
     };
-    RmsMonitorFactoryPanelCtrl.prototype.lineAnimation = function () {
+    RmsMonitorFactoryPanelCtrl.prototype.lineAnimation = function (message) {
+        var obj;
+        try {
+            obj = JSON.parse(message);
+        }
+        catch (e) {
+            console.error(e);
+        }
+        if (obj) {
+            var zoneTitle = obj.tags.facility + "-" + obj.tags.channel;
+            var fireType = obj.tags.fireCNF ? "연속 불량" : obj.tags.fireCPK ? "CPK 이탈" : "알 수 없음";
+            var memo_1 = obj.rule.memo;
+            var dialogDoms = this.svgDOM.dialogDoms;
+            dialogDoms.root.attr("transform", "translate(0,50)");
+            dialogDoms.root.show();
+            dialogDoms.title.main.text(fireType + " \uBC1C\uC0DD");
+            dialogDoms.title.sub.html("\n        <tspan class=\"st170 st169 st171\" x=\"0\" y=\"0\">\uBAA8\uB378 '" + obj.tags.model + "'\uC5D0 \uC758\uD574<tspan>\n        <tspan class=\"st170 st169 st171\" x=\"0\" y=\"20\">\uB77C\uC778\uC774 \uC815\uC9C0 \uB418\uC5C8\uC2B5\uB2C8\uB2E4.<tspan>\n      ");
+            dialogDoms.memoTitle.text(fireType + "\uC5D0 \uD544\uC694\uD55C \uC810\uAC80 \uB0B4\uC6A9");
+            dialogDoms.zone.text(zoneTitle);
+            dialogDoms.memo.each(function (idx, html) {
+                var $dom = jquery__WEBPACK_IMPORTED_MODULE_1___default()(html);
+                if (memo_1[idx]) {
+                    var showMemo = memo_1[idx].length > 24 ? memo_1[idx].slice(0, 24) + "..." : memo_1[idx];
+                    $dom.text(showMemo);
+                }
+                else {
+                    $dom.text('');
+                }
+            });
+        }
         this.warningAnimation();
         if (this.animations.LINE.isRun) {
             var $svg_1 = jquery__WEBPACK_IMPORTED_MODULE_1___default()(this.svg.node);

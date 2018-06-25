@@ -163,6 +163,10 @@ export class InspectionPropertyPanelCtrl  extends MetricsPanelCtrl  {
     }
 
     addInspectionItem(ipType, name, desc, min, max, cpk_min, cpk_max) {
+        if (!name) {
+            this.alertSrv.set('검사 항목명을 입력하세요.', '', 'info', 3000);
+            return;
+        }
         let selectId = this.datasource.id;
         let columns = "( NAME";
         let values = "('" + name + "'";
@@ -233,6 +237,10 @@ export class InspectionPropertyPanelCtrl  extends MetricsPanelCtrl  {
         let selectId = this.datasource.id;
         let obj = this.selectObj;
         let query = [];
+        if (!obj.NAME) {
+            this.alertSrv.set('검사 항목명을 입력하세요.', '', 'info', 3000);
+            return;
+        }
         let updateData = "NAME = '" + obj.NAME  + "'"
             + ", DESCRIPTION = '"   + obj.DESCRIPTION + "'"
             + ", DEFAULT_MIN = "    + obj.DEFAULT_MIN + ""
