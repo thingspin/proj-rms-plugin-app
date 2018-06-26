@@ -36165,7 +36165,7 @@ var RmsMonitorFactoryPanelCtrl = /** @class */ (function (_super) {
                     sub: dialog.find("#sub-title"),
                 },
                 button: dialog.find("#Dialogs-button"),
-                memo: dialog.find("#Dialogs-text2 > text > tspan"),
+                memo: dialog.find("#Dialogs-text2 > text"),
                 memoTitle: dialog.find("#memo-title"),
             },
         };
@@ -36211,8 +36211,8 @@ var RmsMonitorFactoryPanelCtrl = /** @class */ (function (_super) {
         //     tags: {
         //       facility: "hello1",
         //       channel: "3",
-        //       fireCNF: true,
-        //       fireCPK: false,
+        //       fireCNF: false,
+        //       fireCPK: true,
         //       iid: 0,
         //       inm: "L/Current",
         //       alert: 1,
@@ -36330,20 +36330,23 @@ var RmsMonitorFactoryPanelCtrl = /** @class */ (function (_super) {
             console.error(e);
         }
         if (obj) {
-            var zoneTitle = obj.tags.facility + "-" + obj.tags.channel;
+            var zoneTitle = "[\uB77C\uC778 \uC815\uC9C0] " + obj.tags.facility + "-" + obj.tags.channel;
             var fireType = obj.tags.fireCNF ? "연속 불량" : obj.tags.fireCPK ? "CPK 이탈" : "알 수 없음";
-            var memo_1 = obj.rule.memo;
-            var dialogDoms = this.svgDOM.dialogDoms;
-            dialogDoms.root.attr("transform", "translate(0,50)");
-            dialogDoms.root.show();
-            dialogDoms.title.main.text(fireType + " \uBC1C\uC0DD");
-            dialogDoms.title.sub.html("\n        <tspan class=\"st170 st169 st171\" x=\"0\" y=\"0\">\uBAA8\uB378 '" + obj.tags.model + "'\uC5D0 \uC758\uD574<tspan>\n        <tspan class=\"st170 st169 st171\" x=\"0\" y=\"20\">\uB77C\uC778\uC774 \uC815\uC9C0 \uB418\uC5C8\uC2B5\uB2C8\uB2E4.<tspan>\n      ");
-            dialogDoms.memoTitle.text(fireType + "\uC5D0 \uD544\uC694\uD55C \uC810\uAC80 \uB0B4\uC6A9");
-            dialogDoms.zone.text(zoneTitle);
-            dialogDoms.memo.each(function (idx, html) {
+            var _a = this.svgDOM.dialogDoms, root = _a.root, title = _a.title, zone = _a.zone, memo = _a.memo, memoTitle = _a.memoTitle;
+            var memolist_1 = [];
+            if (obj.rule && obj.rule.memo) {
+                memolist_1 = obj.rule.memo;
+            }
+            root.attr("transform", "translate(0,50)");
+            root.show();
+            title.main.text(fireType + " \uBC1C\uC0DD");
+            title.sub.html("\n        <tspan class=\"st170 st169 st171\" x=\"0\" y=\"0\">\uC0DD\uC0B0 \uBAA8\uB378 : '" + obj.tags.model + "'<tspan>\n      ");
+            memoTitle.text(fireType + "\uC5D0 \uD544\uC694\uD55C \uC810\uAC80 \uC0AC\uD56D");
+            zone.text(zoneTitle);
+            memo.each(function (idx, html) {
                 var $dom = jquery__WEBPACK_IMPORTED_MODULE_1___default()(html);
-                if (memo_1[idx]) {
-                    var showMemo = memo_1[idx].length > 24 ? memo_1[idx].slice(0, 24) + "..." : memo_1[idx];
+                if (memolist_1[idx]) {
+                    var showMemo = memolist_1[idx].length > 24 ? memolist_1[idx].slice(0, 24) + "..." : memolist_1[idx];
                     $dom.text(showMemo);
                 }
                 else {

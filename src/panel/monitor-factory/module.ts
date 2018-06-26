@@ -104,7 +104,7 @@ class RmsMonitorFactoryPanelCtrl extends MetricsPanelCtrl {
           sub: dialog.find("#sub-title"),
         },
         button: dialog.find("#Dialogs-button"),
-        memo: dialog.find("#Dialogs-text2 > text > tspan"),
+        memo: dialog.find("#Dialogs-text2 > text"),
         memoTitle: dialog.find("#memo-title"),
 
       },
@@ -158,8 +158,8 @@ class RmsMonitorFactoryPanelCtrl extends MetricsPanelCtrl {
     //     tags: {
     //       facility: "hello1",
     //       channel: "3",
-    //       fireCNF: true,
-    //       fireCPK: false,
+    //       fireCNF: false,
+    //       fireCPK: true,
     //       iid: 0,
     //       inm: "L/Current",
     //       alert: 1,
@@ -288,25 +288,25 @@ class RmsMonitorFactoryPanelCtrl extends MetricsPanelCtrl {
     }
 
     if (obj) {
-      const zoneTitle = `${obj.tags.facility}-${obj.tags.channel}`;
+      const zoneTitle = `[라인 정지] ${obj.tags.facility}-${obj.tags.channel}`;
       const fireType = obj.tags.fireCNF ? "연속 불량" : obj.tags.fireCPK ? "CPK 이탈" : "알 수 없음";
-      const {memo} = obj.rule;
-      const {dialogDoms} = this.svgDOM;
+      const {root, title,zone, memo, memoTitle} = this.svgDOM.dialogDoms;
+      let memolist = [];
+      if (obj.rule && obj.rule.memo) { memolist = obj.rule.memo; }
 
-      dialogDoms.root.attr("transform", "translate(0,50)");
-      dialogDoms.root.show();
-      dialogDoms.title.main.text(`${fireType} 발생`);
-      dialogDoms.title.sub.html(`
-        <tspan class="st170 st169 st171" x="0" y="0">모델 '${obj.tags.model}'에 의해<tspan>
-        <tspan class="st170 st169 st171" x="0" y="20">라인이 정지 되었습니다.<tspan>
+      root.attr("transform", "translate(0,50)");
+      root.show();
+      title.main.text(`${fireType} 발생`);
+      title.sub.html(`
+        <tspan class="st170 st169 st171" x="0" y="0">생산 모델 : '${obj.tags.model}'<tspan>
       `);
 
-      dialogDoms.memoTitle.text(`${fireType}에 필요한 점검 내용`);
-      dialogDoms.zone.text(zoneTitle);
-      dialogDoms.memo.each( (idx,html) => {
+      memoTitle.text(`${fireType}에 필요한 점검 사항`);
+      zone.text(zoneTitle);
+      memo.each( (idx,html) => {
         const $dom = $(html);
-        if (memo[idx]) {
-          const showMemo = memo[idx].length > 24 ? `${memo[idx].slice(0, 24)}...` : memo[idx];
+        if (memolist[idx]) {
+          const showMemo = memolist[idx].length > 24 ? `${memolist[idx].slice(0, 24)}...` : memolist[idx];
           $dom.text(showMemo);
         } else {
           $dom.text('');
