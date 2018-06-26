@@ -17410,8 +17410,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var grafana_app_core_utils_ticks__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(grafana_app_core_utils_ticks__WEBPACK_IMPORTED_MODULE_1__);
 
 
-//import TimeSeries from 'grafana/app/core/time_series2';
-//var getCurvePoints = require("cardinal-spline-js").getCurvePoints;
 var gaussian = __webpack_require__(/*! gaussian */ "../node_modules/gaussian/lib/gaussian.js");
 /**
  * Convert series into array of series values.
@@ -17542,7 +17540,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils */ "./panel/cpk-chart/utils.js");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_utils__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _histogram__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./histogram */ "./panel/cpk-chart/histogram.ts");
-//import _ from 'lodash';
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -17554,7 +17551,6 @@ var __extends = (undefined && undefined.__extends) || (function () {
     };
 })();
 
-//import * as Chart from 'chart.js/dist/Chart.min';
 
 
 
@@ -17562,20 +17558,11 @@ var __extends = (undefined && undefined.__extends) || (function () {
 var template = __webpack_require__(/*! ./templet.html */ "./panel/cpk-chart/templet.html");
 var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
     __extends(RmsCPKAnalyticsPanelCtrl, _super);
-    //limit: any;
     function RmsCPKAnalyticsPanelCtrl($scope, $injector, $window) {
         var _this = _super.call(this, $scope, $injector) || this;
         _this.$window = $window;
         _this.Chart = _this.$window.Chart;
         _this.chartID = 'chart-rms-cpk-' + _this.panel.id;
-        /*
-        this.limit = {
-          "xmin": -1.0,
-          "xmax": +1.0,
-          "ymin": -1.0,
-          "ymax": +1.0
-        }
-        */
         _this.data = {};
         _this.cp = 0;
         _this.cpk = 0;
@@ -17622,7 +17609,6 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
     RmsCPKAnalyticsPanelCtrl.prototype.onInitEditMode = function () {
     };
     RmsCPKAnalyticsPanelCtrl.prototype.onDataReceived = function (dataList) {
-        console.log("data received");
         var data;
         if (dataList == null || dataList.length > 2) {
             return;
@@ -17630,10 +17616,7 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
         for (var i = 0; i < dataList.length; i++) {
             if (dataList[i].type === 'table') {
                 for (var j = 0; j < dataList[i].columns.length; j++) {
-                    //console.log("===============");
                     if (dataList[i].columns[j].text === 'cpk') {
-                        //console.log("cpk");
-                        //console.log(dataList[i].rows[j]);
                         this.cpk = dataList[i].rows[0][j];
                     }
                     else if (dataList[i].columns[j].text === 'cp') {
@@ -17645,41 +17628,31 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
                     else if (dataList[i].columns[j].text === 'usl') {
                         this.usl = dataList[i].rows[0][j];
                     }
+                    else if (dataList[i].columns[j].text === 'mean') {
+                        this.mean = dataList[i].rows[0][j];
+                    }
                 }
             }
             else {
                 data = dataList[i];
             }
         }
-        //console.log(dataList);
         // Bucket size
         var bucketSize = 10;
         var panelWidth = this.canvas.width;
         // Convert data to histogram data
         var result = Object(_histogram__WEBPACK_IMPORTED_MODULE_4__["convertToHistogramData"])([data], bucketSize, panelWidth);
-        //this.mean = result[0].mean;
         result = result[0].data;
-        //console.log("======2======");
-        //console.log(result);
-        // setting for x-axis and y-axis range
-        /*
-        this.limit = {
-          "xmin": result[0].x,
-          "xmax": result[result.length-1].x,
-          "ymin": (_.minBy(result,"y")).y,
-          "ymax": (_.maxBy(result,"y")).y
-        }
-      */
-        //console.log(result);
         this.data = {
             datasets: [
                 {
-                    label: "data",
-                    //backgroundColor: "#d0f33f",
-                    //borderColor: this.$window.chartColors.blue,
+                    label: "Freq",
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 0.5)',
+                    borderWidth: 1,
                     data: result,
-                    pointRadius: 0,
-                    pointHoverRadius: 0
+                    pointRadius: 2,
+                    pointHoverRadius: 6
                 }
             ]
         };
@@ -17694,7 +17667,6 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
                 ctx.textAlign = "end";
                 ctx.fillText("CPK = " + chart.options.cpk.toFixed(3), chart.width - 70, chart.height * 0.21);
                 ctx.fillText("CP = " + chart.options.cp.toFixed(3), chart.width - 70, chart.height * 0.1);
-                //ctx.fillText("CPK : "+ this.cpk, chart.width * 0.6 ,chart.height * 0.15);
                 chart.data.datasets.forEach(function (dataset, i) {
                     var meta = chart.getDatasetMeta(i);
                     if (!meta.hidden) {
@@ -17713,19 +17685,18 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
                 });
             }
         });
-        //this.chart.options.annotation.annotations
         this.chart = new this.Chart(this.context, {
             type: 'line',
             data: this.data,
             options: {
                 cpk: this.cpk,
                 cp: this.cp,
-                //mean: this.mean,
+                mean: this.mean,
                 legend: {
                     display: false
                 },
                 tooltips: {
-                    enabled: false
+                    enabled: true
                 },
                 annotation: {
                     annotations: [
@@ -17776,6 +17747,16 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
                                 enabled: true,
                                 content: "USL"
                             }
+                        },
+                        {
+                            type: 'line',
+                            id: 'mean_line',
+                            mode: 'virtical',
+                            borderColor: 'black',
+                            borderDash: [2, 2],
+                            borderWidth: 1,
+                            value: this.mean,
+                            scaleID: 'x-axis-0',
                         }
                     ],
                     drawTime: "afterDatasetsDraw"
@@ -17794,7 +17775,7 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
                             type: "linear",
                             display: true,
                             gridLines: {
-                                display: false
+                                display: true
                             },
                         }]
                 },
@@ -17812,10 +17793,8 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
             return;
         }
         if (this.chart) {
-            console.log("update");
             this.chart.data = this.data;
             var annotations = this.chart.options.annotation.annotations;
-            //console.log(annotations);
             for (var i = 0; i < annotations.length; i++) {
                 if (annotations[i].id === "lsl_line") {
                     annotations[i].value = this.lsl;
@@ -17832,7 +17811,6 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
             this.chart.update();
         }
         else {
-            console.log("create Chart");
             this.createChart();
         }
     };

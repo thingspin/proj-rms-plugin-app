@@ -12,10 +12,10 @@
       }
     ]
   },
-  "editable": true,
+  "editable": false,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1529499434668,
+  "iteration": 1529928313185,
   "links": [
     {
       "icon": "external link",
@@ -30,7 +30,7 @@
   "originalTemplating": [
     {
       "current": {
-        "tags": [],
+        "selected": true,
         "text": "V/Current",
         "value": "V/Current"
       },
@@ -38,6 +38,7 @@
     },
     {
       "current": {
+        "selected": true,
         "text": "4",
         "value": "4"
       },
@@ -66,13 +67,15 @@
     },
     {
       "current": {
-        "text": "1s",
-        "value": "1s"
+        "text": "3s",
+        "value": "3s"
       },
       "name": "INTERVAL"
     },
     {
       "current": {
+        "selected": true,
+        "tags": [],
         "text": "RMS-CENTER-INFLUXDB(V1.0)",
         "value": "RMS-CENTER-INFLUXDB(V1.0)"
       },
@@ -80,35 +83,239 @@
     }
   ],
   "originalTime": {
-    "from": "now-5m",
+    "from": "now-30s",
     "to": "now"
   },
   "panels": [
     {
-      "cacheTimeout": null,
-      "colorBackground": false,
-      "colorValue": false,
-      "colors": [
-        "#299c46",
-        "rgba(237, 129, 40, 0.89)",
-        "#d44a3a"
-      ],
-      "datasource": null,
-      "format": "none",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
-      },
+      "datasource": "$DATABASE",
       "gridPos": {
-        "h": 10,
-        "w": 6,
+        "h": 8,
+        "w": 8,
         "x": 0,
         "y": 0
       },
-      "id": 13,
+      "id": 4,
+      "kernel": null,
+      "links": [],
+      "scripts": "",
+      "targets": [
+        {
+          "alias": "$col",
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            }
+          ],
+          "measurement": "/^inspection.detail-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT last(\"cpk\") AS \"cpk\", last(\"lsl\") AS \"lsl\", last(\"usl\") AS \"usl\", (last(\"usl\") + last(\"lsl\")) / 2 AS \"mean\" FROM /^inspection.detail-*/ WHERE (\"facility\" =~ /^$FACILITY$/ AND \"channel\" =~ /^$CHANNEL$/ AND \"iid\" =~ /^$INSPPROP$/ AND \"model\" =~ /^$MODEL$/) AND $timeFilter",
+          "rawQuery": true,
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "cpk"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "cpk"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "lsl"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "lsl"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "usl"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  "usl"
+                ],
+                "type": "alias"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "usl"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              },
+              {
+                "params": [
+                  " / 100"
+                ],
+                "type": "math"
+              },
+              {
+                "params": [
+                  "mean"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "facility",
+              "operator": "=~",
+              "value": "/^$FACILITY$/"
+            },
+            {
+              "condition": "AND",
+              "key": "channel",
+              "operator": "=~",
+              "value": "/^$CHANNEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "iid",
+              "operator": "=~",
+              "value": "/^$INSPPROP$/"
+            },
+            {
+              "condition": "AND",
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            }
+          ]
+        },
+        {
+          "alias": "$col",
+          "groupBy": [
+            {
+              "params": [
+                "$interval"
+              ],
+              "type": "time"
+            }
+          ],
+          "measurement": "/^inspection.detail-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT mean(\"val\") AS \"val\" FROM /^inspection.detail-*/ WHERE (\"model\" =~ /^$MODEL$/ AND \"facility\" =~ /^$FACILITY$/ AND \"channel\" =~ /^$CHANNEL$/ AND \"iid\" =~ /^$INSPPROP_ID$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
+          "rawQuery": false,
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "val"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              },
+              {
+                "params": [
+                  "val"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "facility",
+              "operator": "=~",
+              "value": "/^$FACILITY$/"
+            },
+            {
+              "condition": "AND",
+              "key": "channel",
+              "operator": "=~",
+              "value": "/^$CHANNEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "iid",
+              "operator": "=~",
+              "value": "/^$INSPPROP$/"
+            },
+            {
+              "condition": "AND",
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            }
+          ]
+        }
+      ],
+      "title": "CPK for MODEL($MODEL) TESTED AT ($FACILITY CHANNEL $CHANNEL)",
+      "type": "rms-plugin-app-cpk-01"
+    },
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": true,
+      "colors": [
+        "#052b51",
+        "rgb(2, 108, 255)",
+        "rgb(0, 255, 31)"
+      ],
+      "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
+      "decimals": 3,
+      "format": "none",
+      "gauge": {
+        "maxValue": 2.5,
+        "minValue": 0,
+        "show": true,
+        "thresholdLabels": true,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 8,
+        "y": 0
+      },
+      "id": 19,
       "interval": null,
       "kernel": null,
       "links": [],
@@ -141,23 +348,44 @@
       "sparkline": {
         "fillColor": "rgba(31, 118, 189, 0.18)",
         "full": false,
-        "lineColor": "rgb(31, 120, 193)",
+        "lineColor": "rgba(9, 61, 233, 0.24)",
         "show": false
       },
       "tableColumn": "",
-      "targets": [],
-      "thresholds": "",
-      "title": "",
+      "targets": [
+        {
+          "alias": "$col",
+          "groupBy": [],
+          "measurement": "inspection.detail-20180101",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "cpk"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "thresholds": "1.33,1.66",
+      "title": "Latest CPK for $INSPPROP_NAME",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
         {
           "op": "=",
-          "text": "$INSPPROP_NAME",
+          "text": "N/A",
           "value": "null"
         }
       ],
-      "valueName": "avg"
+      "valueName": "current"
     },
     {
       "aliasColors": {},
@@ -167,9 +395,9 @@
       "datasource": "$DATABASE",
       "fill": 1,
       "gridPos": {
-        "h": 10,
-        "w": 8,
-        "x": 6,
+        "h": 8,
+        "w": 10,
+        "x": 14,
         "y": 0
       },
       "id": 6,
@@ -296,327 +524,79 @@
       }
     },
     {
-      "datasource": "$DATABASE",
-      "gridPos": {
-        "h": 10,
-        "w": 10,
-        "x": 14,
-        "y": 0
-      },
-      "id": 4,
-      "kernel": null,
-      "links": [],
-      "scripts": "",
-      "targets": [
-        {
-          "alias": "$col",
-          "groupBy": [],
-          "measurement": "/^inspection.detail-*/",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT mean(\"val\") AS \"val\" FROM /^inspection.detail-*/ WHERE (\"model\" =~ /^$MODEL$/ AND \"facility\" =~ /^$FACILITY$/ AND \"channel\" =~ /^$CHANNEL$/ AND \"iid\" =~ /^$INSPPROP_ID$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": false,
-          "refId": "A",
-          "resultFormat": "table",
-          "select": [
-            [
-              {
-                "params": [
-                  "cpk"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [
-                  "cpk"
-                ],
-                "type": "alias"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "lsl"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [
-                  "lsl"
-                ],
-                "type": "alias"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "usl"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [
-                  "usl"
-                ],
-                "type": "alias"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "facility",
-              "operator": "=~",
-              "value": "/^$FACILITY$/"
-            },
-            {
-              "condition": "AND",
-              "key": "channel",
-              "operator": "=~",
-              "value": "/^$CHANNEL$/"
-            },
-            {
-              "condition": "AND",
-              "key": "iid",
-              "operator": "=~",
-              "value": "/^$INSPPROP$/"
-            },
-            {
-              "condition": "AND",
-              "key": "model",
-              "operator": "=~",
-              "value": "/^$MODEL$/"
-            }
-          ]
-        },
-        {
-          "alias": "$col",
-          "groupBy": [],
-          "measurement": "/^inspection.detail-*/",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT mean(\"val\") AS \"val\" FROM /^inspection.detail-*/ WHERE (\"model\" =~ /^$MODEL$/ AND \"facility\" =~ /^$FACILITY$/ AND \"channel\" =~ /^$CHANNEL$/ AND \"iid\" =~ /^$INSPPROP_ID$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": false,
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "val"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [
-                  "val"
-                ],
-                "type": "alias"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "facility",
-              "operator": "=~",
-              "value": "/^$FACILITY$/"
-            },
-            {
-              "condition": "AND",
-              "key": "channel",
-              "operator": "=~",
-              "value": "/^$CHANNEL$/"
-            },
-            {
-              "condition": "AND",
-              "key": "iid",
-              "operator": "=~",
-              "value": "/^$INSPPROP$/"
-            },
-            {
-              "condition": "AND",
-              "key": "model",
-              "operator": "=~",
-              "value": "/^$MODEL$/"
-            }
-          ]
-        }
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "#299c46",
+        "rgba(237, 129, 40, 0.89)",
+        "#d44a3a"
       ],
-      "title": "CPK for MODEL($MODEL) TESTED AT ($FACILITY CHANNEL $CHANNEL)",
-      "type": "rms-plugin-app-cpk-01"
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "$DATABASE",
-      "fill": 1,
+      "datasource": null,
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
       "gridPos": {
         "h": 12,
-        "w": 10,
+        "w": 4,
         "x": 0,
-        "y": 10
+        "y": 8
       },
-      "id": 18,
+      "id": 13,
+      "interval": null,
       "kernel": null,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
       "links": [],
-      "nullPointMode": "null",
-      "percentage": false,
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "repeat": null,
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
       "scripts": "",
-      "seriesOverrides": [
-        {
-          "alias": "CPK",
-          "color": "#052b51"
-        }
-      ],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "alias": "CPK",
-          "groupBy": [
-            {
-              "params": [
-                "$interval"
-              ],
-              "type": "time"
-            }
-          ],
-          "measurement": "/^inspection.detail-*/",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "query": "SELECT mean(\"val\") AS \"val\" FROM /^inspection.detail-*/ WHERE (\"model\" =~ /^$MODEL$/ AND \"facility\" =~ /^$FACILITY$/ AND \"channel\" =~ /^$CHANNEL$/ AND \"iid\" =~ /^$INSPPROP_ID$/) AND $timeFilter GROUP BY time($__interval) fill(null)",
-          "rawQuery": false,
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "cpk"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              },
-              {
-                "params": [
-                  "10s"
-                ],
-                "type": "non_negative_derivative"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "model",
-              "operator": "=~",
-              "value": "/^$MODEL$/"
-            },
-            {
-              "condition": "AND",
-              "key": "iid",
-              "operator": "=~",
-              "value": "/^$INSPPROP$/"
-            },
-            {
-              "condition": "AND",
-              "key": "facility",
-              "operator": "=~",
-              "value": "/^$FACILITY$/"
-            },
-            {
-              "condition": "AND",
-              "key": "channel",
-              "operator": "=~",
-              "value": "/^$CHANNEL$/"
-            }
-          ]
-        }
-      ],
-      "thresholds": [
-        {
-          "colorMode": "critical",
-          "fill": true,
-          "line": true,
-          "op": "lt",
-          "value": 0.25,
-          "yaxis": "left"
-        },
-        {
-          "colorMode": "warning",
-          "fill": true,
-          "line": true,
-          "op": "lt",
-          "value": 0.6,
-          "yaxis": "left"
-        },
-        {
-          "colorMode": "ok",
-          "fill": true,
-          "line": true,
-          "op": "gt",
-          "value": 1.5,
-          "yaxis": "left"
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "CPK Trend of $INSPPROP_NAME",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false
       },
-      "type": "graph",
-      "xaxis": {
-        "buckets": 25,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
+      "tableColumn": "",
+      "targets": [],
+      "thresholds": "",
+      "title": "",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
         {
-          "decimals": 2,
-          "format": "locale",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
+          "op": "=",
+          "text": "$INSPPROP_NAME",
+          "value": "null"
         }
       ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
+      "valueName": "avg"
     },
     {
       "aliasColors": {
@@ -636,9 +616,9 @@
       "fill": 0,
       "gridPos": {
         "h": 5,
-        "w": 14,
-        "x": 10,
-        "y": 10
+        "w": 20,
+        "x": 4,
+        "y": 8
       },
       "id": 17,
       "kernel": "python",
@@ -858,9 +838,9 @@
       "fill": 1,
       "gridPos": {
         "h": 7,
-        "w": 14,
-        "x": 10,
-        "y": 15
+        "w": 20,
+        "x": 4,
+        "y": 13
       },
       "id": 15,
       "kernel": "python",
@@ -1059,7 +1039,7 @@
       {
         "allValue": null,
         "current": {
-          "tags": [],
+          "selected": true,
           "text": "V/Current",
           "value": "V/Current"
         },
@@ -1083,6 +1063,7 @@
       {
         "allValue": null,
         "current": {
+          "selected": true,
           "text": "4",
           "value": "4"
         },
@@ -1177,8 +1158,8 @@
         "auto_count": 30,
         "auto_min": "1s",
         "current": {
-          "text": "1s",
-          "value": "1s"
+          "text": "3s",
+          "value": "3s"
         },
         "hide": 0,
         "label": "집계단위",
@@ -1271,6 +1252,8 @@
       },
       {
         "current": {
+          "selected": true,
+          "tags": [],
           "text": "RMS-CENTER-INFLUXDB(V1.0)",
           "value": "RMS-CENTER-INFLUXDB(V1.0)"
         },
@@ -1286,7 +1269,7 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-30s",
     "to": "now"
   },
   "timepicker": {
@@ -1319,5 +1302,5 @@
   "timezone": "",
   "title": "CPK 현황",
   "uid": "N36atb7mk",
-  "version": 9
+  "version": 20
 }

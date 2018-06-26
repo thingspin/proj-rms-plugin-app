@@ -1,8 +1,5 @@
-//import _ from 'lodash';
-
 import {MetricsPanelCtrl} from  'grafana/app/plugins/sdk';
 
-//import * as Chart from 'chart.js/dist/Chart.min';
 import 'chart.js/dist/Chart.bundle.min';
 import 'chartjs-plugin-annotation/chartjs-plugin-annotation.min';
 
@@ -15,7 +12,6 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
   static template = template;
 
   Chart: any;
-  //panelWidth: any;
 
   chartID: string;
   initalized: boolean;
@@ -34,21 +30,12 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
   lsl: number;
   usl: number;
   mean: number;
-  //limit: any;
 
   constructor($scope, $injector, private $window) {
     super($scope, $injector);
 
     this.Chart = this.$window.Chart;
     this.chartID = 'chart-rms-cpk-' + this.panel.id;
-    /*
-    this.limit = {
-      "xmin": -1.0,
-      "xmax": +1.0,
-      "ymin": -1.0,
-      "ymax": +1.0
-    }
-    */
     this.data = {};
     this.cp = 0;
     this.cpk = 0;
@@ -100,25 +87,25 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
   }
 
   onDataReceived(dataList) {
-    console.log("data received");
     let data;
+
     if (dataList == null || dataList.length > 2) {
       return;
     }
-    for ( let i = 0 ;i < dataList.length ; i++) {
+
+    for ( let i = 0; i < dataList.length; i++) {
       if ( dataList[i].type === 'table' ) {
         for ( let j = 0; j < dataList[i].columns.length ; j++) {
-          //console.log("===============");
           if ( dataList[i].columns[j].text === 'cpk') {
-            //console.log("cpk");
-            //console.log(dataList[i].rows[j]);
             this.cpk = dataList[i].rows[0][j];
-          }else if (dataList[i].columns[j].text === 'cp') {
+          } else if (dataList[i].columns[j].text === 'cp') {
             this.cp = dataList[i].rows[0][j];
-          }else if (dataList[i].columns[j].text === 'lsl') {
+          } else if (dataList[i].columns[j].text === 'lsl') {
             this.lsl = dataList[i].rows[0][j];
-          }else if (dataList[i].columns[j].text === 'usl') {
+          } else if (dataList[i].columns[j].text === 'usl') {
             this.usl = dataList[i].rows[0][j];
+          } else if (dataList[i].columns[j].text === 'mean') {
+            this.mean = dataList[i].rows[0][j];
           }
         }
       } else {
@@ -126,37 +113,24 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
       }
     }
 
-    //console.log(dataList);
     // Bucket size
     let bucketSize = 10;
     let panelWidth = this.canvas.width;
 
     // Convert data to histogram data
-    let result = convertToHistogramData([data],bucketSize,panelWidth);
-    //this.mean = result[0].mean;
+    let result = convertToHistogramData([data], bucketSize, panelWidth);
     result = result[0].data;
 
-    //console.log("======2======");
-    //console.log(result);
-    // setting for x-axis and y-axis range
-    /*
-    this.limit = {
-      "xmin": result[0].x,
-      "xmax": result[result.length-1].x,
-      "ymin": (_.minBy(result,"y")).y,
-      "ymax": (_.maxBy(result,"y")).y
-    }
-  */
-  //console.log(result);
     this.data = {
       datasets: [
         {
-          label: "data",
-          //backgroundColor: "#d0f33f",
-          //borderColor: this.$window.chartColors.blue,
+          label: "Freq",
+          backgroundColor: 'rgba(54, 162, 235, 0.2)',
+          borderColor: 'rgba(54, 162, 235, 0.5)',
+          borderWidth: 1,
           data: result,
-          pointRadius: 0,
-          pointHoverRadius: 0
+          pointRadius: 2,
+          pointHoverRadius: 6
         }
       ]
     };
@@ -171,10 +145,8 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
           ctx.fillStyle = '#09033f';
           ctx.font= "20px Arial Black";
           ctx.textAlign="end";
-          ctx.fillText("CPK = "+ chart.options.cpk.toFixed(3), chart.width - 70 ,chart.height * 0.21);
-          ctx.fillText("CP = "+ chart.options.cp.toFixed(3), chart.width - 70 ,chart.height * 0.1);
-
-          //ctx.fillText("CPK : "+ this.cpk, chart.width * 0.6 ,chart.height * 0.15);
+          ctx.fillText("CPK = "+ chart.options.cpk.toFixed(3), chart.width - 70, chart.height * 0.21);
+          ctx.fillText("CP = "+ chart.options.cp.toFixed(3), chart.width - 70, chart.height * 0.1);
 
           chart.data.datasets.forEach(function(dataset, i) {
             var meta = chart.getDatasetMeta(i);
@@ -198,19 +170,18 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
         }
       });
 
-      //this.chart.options.annotation.annotations
       this.chart = new this.Chart(this.context, {
         type: 'line',
         data: this.data,
         options: {
           cpk: this.cpk,
           cp: this.cp,
-          //mean: this.mean,
+          mean: this.mean,
           legend: {
             display: false
           },
           tooltips: {
-            enabled: false
+            enabled: true
           },
 
           annotation: {
@@ -268,7 +239,16 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
                   enabled: true,
                   content: "USL"
                 }
-
+              },
+              {
+                type: 'line',
+                id: 'mean_line',
+                mode: 'virtical',
+                borderColor: 'black',
+                borderDash: [2, 2],
+                borderWidth: 1,
+                value: this.mean,
+                scaleID: 'x-axis-0',
               }
             ],
             drawTime: "afterDatasetsDraw"
@@ -300,16 +280,14 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
               type: "linear",
               display: true,
               gridLines: {
-                display: false
+                display: true
               },
               //autoSkip: true,
-              /*
-              ticks:{
-                min: this.limit["ymin"],
-                max: this.limit["ymax"]
-                //stepSize: 1
-              }
-              */
+              // ticks:{
+              //   min: 0.0,
+              //   max: 1.0,
+              //   stepSize: 0.1
+              // }
               //position: "left"
             }]
           },
@@ -321,7 +299,6 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
           maintainAspectRatio: false
         }
       });
-
 }
 
   OnDraw() {
@@ -330,12 +307,9 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
     }
 
     if (this.chart) {
-      console.log("update");
-
       this.chart.data = this.data;
 
       let annotations = this.chart.options.annotation.annotations;
-      //console.log(annotations);
       for ( let i = 0; i< annotations.length; i++ ) {
         if ( annotations[i].id === "lsl_line" ) {
           annotations[i].value = this.lsl;
@@ -350,7 +324,6 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
       this.chart.options.cpk = this.cpk;
       this.chart.update();
     } else {
-      console.log("create Chart");
       this.createChart();
     }
   }
@@ -385,4 +358,3 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
 export {
   RmsCPKAnalyticsPanelCtrl as PanelCtrl
 };
-

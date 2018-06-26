@@ -46467,7 +46467,7 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"editor-row\">\n    <div class=\"thingspin-table\"></div>\n</div>\n";
+module.exports = "<div class=\"editor-row\">\r\n    <div class=\"thingspin-table\"></div>\r\n</div>\r\n";
 
 /***/ }),
 
