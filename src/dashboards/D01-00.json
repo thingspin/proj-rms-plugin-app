@@ -2,7 +2,6 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:140",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -16,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1527078773433,
+  "iteration": 1530090594377,
   "links": [
     {
       "icon": "external link",
@@ -36,55 +35,76 @@
       "type": "dashboards"
     }
   ],
+  "originalTemplating": [
+    {
+      "current": {
+        "selected": true,
+        "text": "All",
+        "value": "$__all"
+      },
+      "name": "MODEL"
+    }
+  ],
+  "originalTime": {
+    "from": "now-7d",
+    "to": "now"
+  },
   "panels": [
+    {
+      "datasource": "REMOTESOLUTIONS(V1.0)",
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 8,
+      "kernel": null,
+      "links": [],
+      "scripts": "",
+      "targets": [
+        {
+          "alias": "",
+          "format": "table",
+          "rawSql": "SELECT \n  UNIX_TIMESTAMP(PLAN_DATE) as time_sec,\n  PLAN_DATE as '날짜',\n  MODEL_ID AS '모델',\n  SUM(AMOUNT) AS '생산계획'\nFROM t_product_plan\nWHERE\n  $__timeFilter(PLAN_DATE) AND\n  MODEL_ID IN ($MODEL)\nGROUP BY MODEL_ID\nORDER BY SUM(AMOUNT) DESC",
+          "refId": "A"
+        }
+      ],
+      "title": "",
+      "transparent": false,
+      "type": "rms-product-plan-chart"
+    },
     {
       "columns": [],
       "datasource": "REMOTESOLUTIONS(V1.0)",
       "fontSize": "80%",
       "gridPos": {
-        "h": 19,
-        "w": 5,
+        "h": 13,
+        "w": 24,
         "x": 0,
-        "y": 0
+        "y": 10
       },
       "id": 2,
+      "kernel": null,
       "links": [],
       "pageSize": null,
       "repeat": null,
+      "scripts": "",
       "scroll": true,
       "showHeader": true,
       "sort": {
-        "col": 2,
-        "desc": true
+        "col": null,
+        "desc": false
       },
       "styles": [
         {
-          "alias": "Time",
+          "alias": "목표일자",
           "dateFormat": "YYYY/MM/DD",
           "pattern": "DUEDATE",
           "type": "date"
         },
         {
-          "alias": "",
-          "colorMode": "value",
-          "colors": [
-            "#82b5d8",
-            "#508642",
-            "#ba43a9"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 0,
-          "mappingType": 1,
-          "pattern": "AMOUNT",
-          "thresholds": [
-            "900",
-            "5000"
-          ],
-          "type": "number",
-          "unit": "locale"
-        },
-        {
-          "alias": "",
+          "alias": "모델",
           "colorMode": null,
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -94,9 +114,9 @@
           "dateFormat": "YYYY-MM-DD HH:mm:ss",
           "decimals": 2,
           "mappingType": 1,
-          "pattern": "",
+          "pattern": "MODEL",
           "thresholds": [],
-          "type": "number",
+          "type": "string",
           "unit": "short"
         },
         {
@@ -118,108 +138,14 @@
         {
           "alias": "",
           "format": "table",
-          "rawSql": "SELECT \n  MODEL_ID AS MODEL,\n  MIN(PLAN_DATE) AS DUEDATE, \n  SUM(AMOUNT) \nFROM t_product_plan\nWHERE\n  $__timeFilter(PLAN_DATE) AND\n  MODEL_ID IN ($MODEL)\nGROUP BY MODEL_ID\nORDER BY MODEL_ID ASC, PLAN_DATE ASC\n",
+          "rawSql": "SELECT \n  MODEL_ID AS MODEL,\n  MIN(PLAN_DATE) AS DUEDATE, \n  SUM(AMOUNT) AS \"계획량\"\nFROM t_product_plan\nWHERE\n  $__timeFilter(PLAN_DATE) AND\n  MODEL_ID IN ($MODEL)\nGROUP BY MODEL_ID\nORDER BY PLAN_DATE ASC, SUM(AMOUNT) DESC, MODEL_ID ASC\n",
           "refId": "A"
         }
       ],
-      "title": "시간별 생산 계획",
+      "title": "",
       "transform": "table",
+      "transparent": false,
       "type": "table"
-    },
-    {
-      "aliasColors": {},
-      "bars": true,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "REMOTESOLUTIONS(V1.0)",
-      "decimals": 0,
-      "fill": 1,
-      "gridPos": {
-        "h": 19,
-        "w": 19,
-        "x": 5,
-        "y": 0
-      },
-      "id": 6,
-      "legend": {
-        "alignAsTable": true,
-        "avg": false,
-        "current": true,
-        "hideEmpty": true,
-        "hideZero": true,
-        "max": false,
-        "min": false,
-        "rightSide": true,
-        "show": true,
-        "sideWidth": 200,
-        "sort": "current",
-        "sortDesc": true,
-        "total": true,
-        "values": true
-      },
-      "lines": false,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null as zero",
-      "percentage": false,
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "repeat": null,
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": true,
-      "steppedLine": false,
-      "targets": [
-        {
-          "alias": "",
-          "format": "time_series",
-          "rawSql": "SELECT\n  UNIX_TIMESTAMP(PLAN_DATE) as time_sec,\n  SUM(AMOUNT) as value,\n  MODEL_ID as metric\nFROM t_product_plan\nWHERE \n  $__timeFilter(PLAN_DATE) \n  AND MODEL_ID IN ($MODEL)\nGROUP BY MODEL_ID\nORDER BY value DESC\n",
-          "refId": "A"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "모델별 생산 계획",
-      "tooltip": {
-        "shared": false,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "series",
-        "name": null,
-        "show": true,
-        "values": [
-          "total"
-        ]
-      },
-      "yaxes": [
-        {
-          "decimals": 0,
-          "format": "locale",
-          "label": "VOLUM",
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": true,
-        "alignLevel": null
-      }
     }
   ],
   "refresh": false,
@@ -280,5 +206,5 @@
   "timezone": "",
   "title": "생산 계획",
   "uid": "4LJ_qN4ik",
-  "version": 39
+  "version": 13
 }

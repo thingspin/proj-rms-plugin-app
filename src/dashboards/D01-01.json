@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1529638183591,
+  "iteration": 1530091183395,
   "links": [
     {
       "icon": "external link",
@@ -62,15 +62,15 @@
     }
   ],
   "originalTime": {
-    "from": "now/d",
-    "to": "now/d"
+    "from": "now-7d",
+    "to": "now"
   },
   "panels": [
     {
       "datasource": "-- Mixed --",
       "gridPos": {
-        "h": 11,
-        "w": 13,
+        "h": 8,
+        "w": 24,
         "x": 0,
         "y": 0
       },
@@ -83,7 +83,7 @@
           "alias": "",
           "datasource": "REMOTESOLUTIONS(V1.0)",
           "format": "table",
-          "rawSql": "SELECT \n  UNIX_TIMESTAMP(PLAN_DATE) as time_sec,\n  PLAN_DATE as '날짜',\n  MODEL_ID AS '모델',\n  SUM(AMOUNT) AS '생산계획'\nFROM t_product_plan\nWHERE\n  $__timeFilter(PLAN_DATE) AND\n  MODEL_ID IN ($MODEL)\nGROUP BY MODEL_ID\nORDER BY PLAN_DATE DESC",
+          "rawSql": "SELECT \n  UNIX_TIMESTAMP(PLAN_DATE) as time_sec,\n  PLAN_DATE as '날짜',\n  MODEL_ID AS '모델',\n  SUM(AMOUNT) AS '생산계획'\nFROM t_product_plan\nWHERE\n  $__timeFilter(PLAN_DATE) AND\n  MODEL_ID IN ($MODEL)\nGROUP BY MODEL_ID\nORDER BY PLAN_DATE ASC, SUM(AMOUNT) DESC, MODEL_ID ASC",
           "refId": "A"
         },
         {
@@ -209,7 +209,7 @@
           ]
         }
       ],
-      "title": "모델별 생산계획 / 양품수 / 불량수",
+      "title": "계획 대비 생산 현황",
       "type": "rms-product-plan-bar"
     },
     {
@@ -217,9 +217,9 @@
       "formatters": [],
       "gridPos": {
         "h": 11,
-        "w": 11,
-        "x": 13,
-        "y": 0
+        "w": 24,
+        "x": 0,
+        "y": 8
       },
       "id": 8,
       "kernel": null,
@@ -230,7 +230,7 @@
           "alias": "",
           "datasource": "REMOTESOLUTIONS(V1.0)",
           "format": "table",
-          "rawSql": "SELECT \n  UNIX_TIMESTAMP(PLAN_DATE) as time_sec,\n  PLAN_DATE as '날짜',\n  MODEL_ID AS '모델',\n  SUM(AMOUNT) AS '생산계획'\nFROM t_product_plan\nWHERE\n  $__timeFilter(PLAN_DATE) AND\n  MODEL_ID IN ($MODEL)\nGROUP BY MODEL_ID\nORDER BY PLAN_DATE DESC",
+          "rawSql": "SELECT \n  UNIX_TIMESTAMP(PLAN_DATE) as time_sec,\n  PLAN_DATE as '날짜',\n  MODEL_ID AS '모델',\n  SUM(AMOUNT) AS '생산계획'\nFROM t_product_plan\nWHERE\n  $__timeFilter(PLAN_DATE) AND\n  MODEL_ID IN ($MODEL)\nGROUP BY MODEL_ID\nORDER BY PLAN_DATE ASC, SUM(AMOUNT) DESC, MODEL_ID ASC",
           "refId": "A"
         },
         {
@@ -411,147 +411,8 @@
           ]
         }
       ],
-      "title": "모델별 생산 수량",
+      "title": "",
       "type": "rms-plant-plan-table"
-    },
-    {
-      "aliasColors": {},
-      "bars": true,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "$DATABASE",
-      "decimals": 0,
-      "fill": 1,
-      "gridPos": {
-        "h": 11,
-        "w": 24,
-        "x": 0,
-        "y": 11
-      },
-      "id": 5,
-      "kernel": null,
-      "legend": {
-        "alignAsTable": true,
-        "avg": false,
-        "current": true,
-        "hideEmpty": true,
-        "hideZero": true,
-        "max": false,
-        "min": false,
-        "rightSide": true,
-        "show": true,
-        "sideWidth": null,
-        "sort": "current",
-        "sortDesc": true,
-        "total": true,
-        "values": true
-      },
-      "lines": false,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "percentage": false,
-      "pointradius": 4,
-      "points": true,
-      "renderer": "flot",
-      "scripts": "",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "alias": "$tag_model",
-          "groupBy": [
-            {
-              "params": [
-                "model"
-              ],
-              "type": "tag"
-            },
-            {
-              "params": [
-                "0"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "/^inspection.summary-*/",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "tuid"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "count"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "model",
-              "operator": "=~",
-              "value": "/^$MODEL$/"
-            },
-            {
-              "condition": "AND",
-              "key": "branch",
-              "operator": "=~",
-              "value": "/^$BRANCH$/"
-            }
-          ]
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "모델별 생산량",
-      "tooltip": {
-        "shared": false,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "series",
-        "name": null,
-        "show": true,
-        "values": [
-          "current"
-        ]
-      },
-      "yaxes": [
-        {
-          "decimals": 0,
-          "format": "locale",
-          "label": "VOLUM",
-          "logBase": 1,
-          "max": null,
-          "min": "0",
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": true,
-        "alignLevel": null
-      }
     }
   ],
   "schemaVersion": 16,
@@ -639,8 +500,8 @@
     ]
   },
   "time": {
-    "from": "now/d",
-    "to": "now/d"
+    "from": "now-7d",
+    "to": "now"
   },
   "timepicker": {
     "hidden": false,
@@ -671,5 +532,5 @@
   "timezone": "",
   "title": "생산 현황",
   "uid": "cU1lqH4mz",
-  "version": 6
+  "version": 11
 }

@@ -1,0 +1,13 @@
+{
+  "type": "panel",
+  "name": "(RMS) Product Plan Chart",
+  "id": "rms-product-plan-chart",
+
+  "info": {
+    "description": "Product Plan Chart",
+    "author": {
+      "name": "lonycell@thingspin.io",
+      "url": "http://thingspin.io"
+    }
+  }
+}

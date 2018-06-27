@@ -28,6 +28,7 @@ module.exports = {
       'panel/productstate-bar-chart/module.js' : './panel/productstate-bar-chart/module.ts',
       'panel/inspectionstate-bar-chart/module.js' : './panel/inspectionstate-bar-chart/module.ts',
       'panel/productplan-bar-chart/module.js' : './panel/productplan-bar-chart/module.ts',
+      'panel/productplan-chart/module.js' : './panel/productplan-chart/module.ts',
       'panel/cpktrend-table/module.js' : './panel/cpktrend-table/module.ts',
   },
   output: {
@@ -36,8 +37,6 @@ module.exports = {
     libraryTarget: "amd"
   },
   externals: [
-    // remove the line below if you don't want to use buildin versions
-    //'jquery', 'lodash', 'moment',
     function (context, request, callback) {
       var prefix = 'grafana/';
       if (request.indexOf(prefix) === 0) {
@@ -49,7 +48,6 @@ module.exports = {
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
     new CopyWebpackPlugin([
-      // { from: 'plugin.json' },
       { from: '**/*.json' },
       { from: 'img/**' },
       { from: '**/*.css' },
