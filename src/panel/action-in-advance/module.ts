@@ -178,7 +178,13 @@ export class SettingActionInAdvancePanelCtrl extends MetricsPanelCtrl {
     initAIATable() {
         let opts = Object.assign({ // deep copy
             rowClick: (e, row) => { //trigger an alert message when the row is clicked
-                this.showEtcMenu(row.getData());
+                const rows = this.aiaTable.tabulator("getSelectedData");
+                if (rows.length === 0) {
+                    this.enEtcMenu = false;
+                    this.$scope.$apply();
+                } else {
+                    this.showEtcMenu(row.getData());
+                }
             },
         }, this.defTabulatorOpts);
         this.aiaTable = $(this.$element.find('#aiaTable')).tabulator(opts);
