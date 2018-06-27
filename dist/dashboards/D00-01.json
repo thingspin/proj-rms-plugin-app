@@ -2,6 +2,7 @@
   "annotations": {
     "list": [
       {
+        "$$hashKey": "object:154",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -15,7 +16,7 @@
   "editable": false,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1529928313185,
+  "iteration": 1530096788958,
   "links": [
     {
       "icon": "external link",
@@ -27,72 +28,88 @@
       "type": "dashboards"
     }
   ],
-  "originalTemplating": [
-    {
-      "current": {
-        "selected": true,
-        "text": "V/Current",
-        "value": "V/Current"
-      },
-      "name": "INSPPROP_NAME"
-    },
-    {
-      "current": {
-        "selected": true,
-        "text": "4",
-        "value": "4"
-      },
-      "name": "INSPPROP"
-    },
-    {
-      "current": {
-        "text": "All",
-        "value": "$__all"
-      },
-      "name": "FACILITY"
-    },
-    {
-      "current": {
-        "text": "All",
-        "value": "$__all"
-      },
-      "name": "CHANNEL"
-    },
-    {
-      "current": {
-        "text": "All",
-        "value": "$__all"
-      },
-      "name": "MODEL"
-    },
-    {
-      "current": {
-        "text": "3s",
-        "value": "3s"
-      },
-      "name": "INTERVAL"
-    },
-    {
-      "current": {
-        "selected": true,
-        "tags": [],
-        "text": "RMS-CENTER-INFLUXDB(V1.0)",
-        "value": "RMS-CENTER-INFLUXDB(V1.0)"
-      },
-      "name": "DATABASE"
-    }
-  ],
-  "originalTime": {
-    "from": "now-30s",
-    "to": "now"
-  },
   "panels": [
+    {
+      "cacheTimeout": null,
+      "colorBackground": false,
+      "colorValue": false,
+      "colors": [
+        "#299c46",
+        "rgba(237, 129, 40, 0.89)",
+        "#d44a3a"
+      ],
+      "datasource": null,
+      "format": "none",
+      "gauge": {
+        "maxValue": 100,
+        "minValue": 0,
+        "show": false,
+        "thresholdLabels": false,
+        "thresholdMarkers": true
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 0,
+        "y": 0
+      },
+      "id": 20,
+      "interval": null,
+      "kernel": null,
+      "links": [],
+      "mappingType": 1,
+      "mappingTypes": [
+        {
+          "name": "value to text",
+          "value": 1
+        },
+        {
+          "name": "range to text",
+          "value": 2
+        }
+      ],
+      "maxDataPoints": 100,
+      "nullPointMode": "connected",
+      "nullText": null,
+      "postfix": "",
+      "postfixFontSize": "50%",
+      "prefix": "",
+      "prefixFontSize": "50%",
+      "rangeMaps": [
+        {
+          "from": "null",
+          "text": "N/A",
+          "to": "null"
+        }
+      ],
+      "scripts": "",
+      "sparkline": {
+        "fillColor": "rgba(31, 118, 189, 0.18)",
+        "full": false,
+        "lineColor": "rgb(31, 120, 193)",
+        "show": false
+      },
+      "tableColumn": "",
+      "targets": [],
+      "thresholds": "",
+      "title": "",
+      "type": "singlestat",
+      "valueFontSize": "80%",
+      "valueMaps": [
+        {
+          "op": "=",
+          "text": "$INSPPROP_NAME",
+          "value": "null"
+        }
+      ],
+      "valueName": "avg"
+    },
     {
       "datasource": "$DATABASE",
       "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 0,
+        "h": 9,
+        "w": 18,
+        "x": 6,
         "y": 0
       },
       "id": 4,
@@ -310,10 +327,10 @@
         "thresholdMarkers": true
       },
       "gridPos": {
-        "h": 8,
+        "h": 6,
         "w": 6,
-        "x": 8,
-        "y": 0
+        "x": 0,
+        "y": 3
       },
       "id": 19,
       "interval": null,
@@ -395,10 +412,10 @@
       "datasource": "$DATABASE",
       "fill": 1,
       "gridPos": {
-        "h": 8,
-        "w": 10,
-        "x": 14,
-        "y": 0
+        "h": 12,
+        "w": 6,
+        "x": 0,
+        "y": 9
       },
       "id": 6,
       "kernel": null,
@@ -524,81 +541,6 @@
       }
     },
     {
-      "cacheTimeout": null,
-      "colorBackground": false,
-      "colorValue": false,
-      "colors": [
-        "#299c46",
-        "rgba(237, 129, 40, 0.89)",
-        "#d44a3a"
-      ],
-      "datasource": null,
-      "format": "none",
-      "gauge": {
-        "maxValue": 100,
-        "minValue": 0,
-        "show": false,
-        "thresholdLabels": false,
-        "thresholdMarkers": true
-      },
-      "gridPos": {
-        "h": 12,
-        "w": 4,
-        "x": 0,
-        "y": 8
-      },
-      "id": 13,
-      "interval": null,
-      "kernel": null,
-      "links": [],
-      "mappingType": 1,
-      "mappingTypes": [
-        {
-          "name": "value to text",
-          "value": 1
-        },
-        {
-          "name": "range to text",
-          "value": 2
-        }
-      ],
-      "maxDataPoints": 100,
-      "nullPointMode": "connected",
-      "nullText": null,
-      "postfix": "",
-      "postfixFontSize": "50%",
-      "prefix": "",
-      "prefixFontSize": "50%",
-      "rangeMaps": [
-        {
-          "from": "null",
-          "text": "N/A",
-          "to": "null"
-        }
-      ],
-      "scripts": "",
-      "sparkline": {
-        "fillColor": "rgba(31, 118, 189, 0.18)",
-        "full": false,
-        "lineColor": "rgb(31, 120, 193)",
-        "show": false
-      },
-      "tableColumn": "",
-      "targets": [],
-      "thresholds": "",
-      "title": "",
-      "type": "singlestat",
-      "valueFontSize": "80%",
-      "valueMaps": [
-        {
-          "op": "=",
-          "text": "$INSPPROP_NAME",
-          "value": "null"
-        }
-      ],
-      "valueName": "avg"
-    },
-    {
       "aliasColors": {
         "lsl": "#bf1b00",
         "ucl": "#2f575e",
@@ -616,9 +558,9 @@
       "fill": 0,
       "gridPos": {
         "h": 5,
-        "w": 20,
-        "x": 4,
-        "y": 8
+        "w": 18,
+        "x": 6,
+        "y": 9
       },
       "id": 17,
       "kernel": "python",
@@ -838,9 +780,9 @@
       "fill": 1,
       "gridPos": {
         "h": 7,
-        "w": 20,
-        "x": 4,
-        "y": 13
+        "w": 18,
+        "x": 6,
+        "y": 14
       },
       "id": 15,
       "kernel": "python",
@@ -1039,9 +981,9 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
-          "text": "V/Current",
-          "value": "V/Current"
+          "tags": [],
+          "text": "L/Current",
+          "value": "L/Current"
         },
         "datasource": "REMOTESOLUTIONS(V1.0)",
         "hide": 0,
@@ -1061,11 +1003,33 @@
         "useTags": false
       },
       {
+        "allValue": "",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "모델",
+        "multi": false,
+        "name": "MODEL",
+        "options": [],
+        "query": "show tag values from /inspection/ with key=model",
+        "refresh": 2,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
         "allValue": null,
         "current": {
-          "selected": true,
-          "text": "4",
-          "value": "4"
+          "text": "1",
+          "value": "1"
         },
         "datasource": "REMOTESOLUTIONS(V1.0)",
         "hide": 2,
@@ -1131,35 +1095,12 @@
         "useTags": false
       },
       {
-        "allValue": null,
-        "current": {
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
-        "hide": 0,
-        "includeAll": true,
-        "label": "모델",
-        "multi": false,
-        "name": "MODEL",
-        "options": [],
-        "query": "show tag values from /inspection/ with key=model",
-        "refresh": 2,
-        "regex": "",
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
         "auto": true,
         "auto_count": 30,
         "auto_min": "1s",
         "current": {
-          "text": "3s",
-          "value": "3s"
+          "text": "1s",
+          "value": "1s"
         },
         "hide": 0,
         "label": "집계단위",
@@ -1252,8 +1193,6 @@
       },
       {
         "current": {
-          "selected": true,
-          "tags": [],
           "text": "RMS-CENTER-INFLUXDB(V1.0)",
           "value": "RMS-CENTER-INFLUXDB(V1.0)"
         },
@@ -1269,7 +1208,7 @@
     ]
   },
   "time": {
-    "from": "now-30s",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -1302,5 +1241,5 @@
   "timezone": "",
   "title": "CPK 현황",
   "uid": "N36atb7mk",
-  "version": 20
+  "version": 21
 }
