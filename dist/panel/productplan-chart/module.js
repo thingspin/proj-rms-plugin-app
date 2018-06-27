@@ -201,6 +201,7 @@ var RmsProductPlanBarChartPanelCtrl = /** @class */ (function (_super) {
             this.createChart(null);
         }
         else {
+            console.log(dataList);
             if (dataList[0].rows !== undefined) {
                 Promise.resolve(this.transformerData(dataList));
             }

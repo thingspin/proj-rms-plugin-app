@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1530090594377,
+  "iteration": 1530094999568,
   "links": [
     {
       "icon": "external link",
@@ -46,8 +46,8 @@
     }
   ],
   "originalTime": {
-    "from": "now-7d",
-    "to": "now"
+    "from": "now/w",
+    "to": "now/w"
   },
   "panels": [
     {
@@ -66,7 +66,7 @@
         {
           "alias": "",
           "format": "table",
-          "rawSql": "SELECT \n  UNIX_TIMESTAMP(PLAN_DATE) as time_sec,\n  PLAN_DATE as '날짜',\n  MODEL_ID AS '모델',\n  SUM(AMOUNT) AS '생산계획'\nFROM t_product_plan\nWHERE\n  $__timeFilter(PLAN_DATE) AND\n  MODEL_ID IN ($MODEL)\nGROUP BY MODEL_ID\nORDER BY SUM(AMOUNT) DESC",
+          "rawSql": "SELECT \n  UNIX_TIMESTAMP(PLAN_DATE) as time_sec,\n  PLAN_DATE as '날짜',\n  MODEL_ID AS '모델',\n  SUM(AMOUNT) AS '생산계획'\nFROM t_product_plan\nWHERE\n  $__timeFilter(PLAN_DATE) AND\n  MODEL_ID IN ($MODEL)\nGROUP BY PLAN_DATE, MODEL_ID\nORDER BY PLAN_DATE ASC, SUM(AMOUNT) DESC",
           "refId": "A"
         }
       ],
@@ -77,9 +77,9 @@
     {
       "columns": [],
       "datasource": "REMOTESOLUTIONS(V1.0)",
-      "fontSize": "80%",
+      "fontSize": "90%",
       "gridPos": {
-        "h": 13,
+        "h": 18,
         "w": 24,
         "x": 0,
         "y": 10
@@ -138,7 +138,7 @@
         {
           "alias": "",
           "format": "table",
-          "rawSql": "SELECT \n  MODEL_ID AS MODEL,\n  MIN(PLAN_DATE) AS DUEDATE, \n  SUM(AMOUNT) AS \"계획량\"\nFROM t_product_plan\nWHERE\n  $__timeFilter(PLAN_DATE) AND\n  MODEL_ID IN ($MODEL)\nGROUP BY MODEL_ID\nORDER BY PLAN_DATE ASC, SUM(AMOUNT) DESC, MODEL_ID ASC\n",
+          "rawSql": "SELECT \n  PLAN_DATE AS DUEDATE,\n  MODEL_ID AS MODEL,\n  SUM(AMOUNT) AS \"계획량\"\nFROM t_product_plan\nWHERE\n  $__timeFilter(PLAN_DATE) AND\n  MODEL_ID IN ($MODEL)\nGROUP BY PLAN_DATE, MODEL_ID\nORDER BY PLAN_DATE ASC, SUM(AMOUNT) DESC, MODEL_ID ASC\n",
           "refId": "A"
         }
       ],
@@ -148,7 +148,6 @@
       "type": "table"
     }
   ],
-  "refresh": false,
   "schemaVersion": 16,
   "style": "dark",
   "tags": [
@@ -183,8 +182,8 @@
     ]
   },
   "time": {
-    "from": "now-7d",
-    "to": "now"
+    "from": "now/w",
+    "to": "now/w"
   },
   "timepicker": {
     "hidden": false,
@@ -206,5 +205,5 @@
   "timezone": "",
   "title": "생산 계획",
   "uid": "4LJ_qN4ik",
-  "version": 13
+  "version": 22
 }

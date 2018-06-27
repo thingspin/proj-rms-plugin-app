@@ -86,6 +86,8 @@ class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
     if (dataList.length === 0) {
       this.createChart(null);
     } else {
+      console.log(dataList);
+
       if (dataList[0].rows !== undefined) {
         Promise.resolve(this.transformerData(dataList));
       }
