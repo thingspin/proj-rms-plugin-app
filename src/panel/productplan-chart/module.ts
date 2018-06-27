@@ -47,7 +47,12 @@ class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
               stacked: true,
             }],
             yAxes: [{
-              stacked: true
+              stacked: true,
+              ticks: {
+                callback: function(value, index, values) {
+                    return value.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                }
+              }
             }]
           },
           maintainAspectRatio: false

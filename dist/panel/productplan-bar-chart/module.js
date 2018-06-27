@@ -175,7 +175,12 @@ var RmsProductPlanBarChartPanelCtrl = /** @class */ (function (_super) {
                                 stacked: true,
                             }],
                         yAxes: [{
-                                stacked: true
+                                stacked: true,
+                                ticks: {
+                                    callback: function (value, index, values) {
+                                        return value.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                    }
+                                }
                             }]
                     },
                     maintainAspectRatio: false
@@ -221,7 +226,10 @@ var RmsProductPlanBarChartPanelCtrl = /** @class */ (function (_super) {
                         scales: {
                             yAxes: [{
                                     ticks: {
-                                        beginAtZero: false
+                                        beginAtZero: false,
+                                        callback: function (value, index, values) {
+                                            return value.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                        }
                                     }
                                 }]
                         },
