@@ -1,4 +1,4 @@
-define(["app/core/core_module","app/plugins/sdk"], function(__WEBPACK_EXTERNAL_MODULE_grafana_app_core_core_module__, __WEBPACK_EXTERNAL_MODULE_grafana_app_plugins_sdk__) { return /******/ (function(modules) { // webpackBootstrap
+define(["app/plugins/sdk"], function(__WEBPACK_EXTERNAL_MODULE_grafana_app_plugins_sdk__) { return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -46180,7 +46180,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var jquery_tabulator_dist_js_tabulator_min__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(jquery_tabulator_dist_js_tabulator_min__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! grafana/app/plugins/sdk */ "grafana/app/plugins/sdk");
 /* harmony import */ var grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _services_remoteSolutionDS__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../services/remoteSolutionDS */ "./services/remoteSolutionDS.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -46198,13 +46197,10 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 
 
-
 Object(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_6__["loadPluginCss"])({
     dark: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.dark.css',
     light: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.light.css'
 });
-var template = __webpack_require__(/*! ./partial/templet.html */ "./panel/plantplan-table/partial/templet.html");
-// const options = require("./partial/options.html");
 var panelDefaults = {
     formatters: []
 };
@@ -46218,10 +46214,10 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
         _this.columns = [];
         _this.aligns = [];
         lodash__WEBPACK_IMPORTED_MODULE_0___default.a.defaults(_this.panel, panelDefaults);
-        // _.defaults(this.panel);
         _this.aligns = ['LEFT', 'CENTER', 'RIGHT'];
         _this.divID = 'table-rms-' + _this.panel.id;
         _this.events.on('init-edit-mode', _this.onInitEditMode.bind(_this));
+        _this.events.on('panel-size-changed', _this.onSizeChanged.bind(_this));
         // this.events.on('render', this.onRender.bind(this)); //dynamic ui process
         _this.events.on('data-received', _this.onDataReceived.bind(_this));
         _this.events.on('data-error', _this.onDataError.bind(_this));
@@ -46267,10 +46263,11 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
             { id: 4, name: "Brendon Philips", age: "125", col: "orange", dob: "01/08/1980" },
             { id: 5, name: "Margret Marmajuke", age: "16", col: "yellow", dob: "31/01/1999" },
         ];
-        if (this.initalized == true) {
+        if (this.initalized) {
             this.container.tabulator("destroy");
         }
         this.defTabulatorOpts = {
+            height: this.height - 10,
             pagination: "local",
             paginationSize: 20,
             selectable: 1,
@@ -46281,13 +46278,13 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
                 { column: "실적수량", dir: "desc" },
             ]
         };
-        var opts = Object.assign({
+        this.defTabulatorOpts = Object.assign({
             rowClick: function (e, row) {
                 _this.selectRow(row.getData());
                 // this.container.tabulator('deselectRow');
             },
         }, this.defTabulatorOpts);
-        this.container.tabulator(opts);
+        this.tableInstance = this.container.tabulator(this.defTabulatorOpts);
         if (dataList != null) {
             this.container.tabulator("setData", dataList);
         }
@@ -46298,6 +46295,13 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
         this.container.tabulator("hideColumn", "time_sec");
         this.initalized = true;
         jquery__WEBPACK_IMPORTED_MODULE_1___default()(window).trigger('resize');
+    };
+    RmsPlantPlanPanelCtrl.prototype.onSizeChanged = function () {
+        // if (this.tableInstance) {
+        //   this.defTabulatorOpts.height = this.height-10;
+        //   this.container.tabulator("destroy");
+        //   this.tableInstance = this.container.tabulator(this.defTabulatorOpts);
+        // }
     };
     RmsPlantPlanPanelCtrl.prototype.selectRow = function (obj) {
         // this.selectObj = obj;
@@ -46327,37 +46331,40 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
             obj.align = formatter.align;
             obj.formatter = function (cell, formatterParam) {
                 var value = cell.getValue();
-                if (isNaN(value) == false) {
-                    if (formatter.localstring == true) {
-                        return Number((Number(value)).toFixed(formatter.decimal)).toLocaleString('en');
-                    }
-                    else {
-                        return (Number(value)).toFixed(formatter.decimal);
-                    }
+                if (!isNaN(value)) {
+                    return (formatter.localstring)
+                        ? Number((Number(value)).toFixed(formatter.decimal)).toLocaleString('en')
+                        : (Number(value)).toFixed(formatter.decimal);
                 }
-                else
+                else {
                     return value;
+                }
             };
         }
         else {
-            if (obj.title === PLAN_DATE) {
-                obj.align = this.aligns[1];
-                obj.formatter = function (cell, formatterParam) {
-                    return moment__WEBPACK_IMPORTED_MODULE_2___default()(cell.getValue()).format("YYYY/MM/DD");
-                };
-            }
-            else if (obj.title === PLAN_MODEL) {
-                obj.align = this.aligns[0];
-            }
-            else {
-                obj.align = this.aligns[2];
-                obj.formatter = function (cell, formatterParam) {
-                    console.log(cell.getValue());
-                    if (cell.getValue() === undefined)
-                        return 0;
-                    else
-                        return Number(cell.getValue()).toLocaleString('en');
-                };
+            switch (obj.title) {
+                case PLAN_DATE:
+                    {
+                        obj.align = this.aligns[1];
+                        obj.formatter = function (cell, formatterParam) {
+                            return moment__WEBPACK_IMPORTED_MODULE_2___default()(cell.getValue()).format("YYYY/MM/DD");
+                        };
+                    }
+                    break;
+                case PLAN_MODEL:
+                    {
+                        obj.align = this.aligns[0];
+                    }
+                    break;
+                default:
+                    {
+                        obj.align = this.aligns[2];
+                        obj.formatter = function (cell, formatterParam) {
+                            // console.log(cell.getValue());
+                            return (!cell.getValue()) ? 0 : Number(cell.getValue()).toLocaleString('en');
+                        };
+                    }
+                    break;
             }
         }
     };
@@ -46376,37 +46383,35 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
             // var tempError = 0;
             value.forEach(function (v, k) {
                 object[k] = v;
-                if (k === '생산계획') {
-                    tempTotal = v;
-                }
-                else if (k === '실적수량') {
-                    tempProduct = v;
+                switch (k) {
+                    case '생산계획': tempTotal = v;
+                    case '실적수량': tempProduct = v;
                 }
             });
             object.achievement = Math.round((tempProduct / tempTotal) * 100);
             object.achievement_text = Math.round((tempProduct / tempTotal) * 100) + "%";
             jArray.push(object);
         });
-        var obj = {
+        this.columns.push({
             title: 'GRAPH',
             field: 'achievement',
             align: "left",
             formatter: "progress"
-        };
-        this.columns.push(obj);
-        var object = {
+        });
+        this.columns.push({
             title: '달성률',
             field: 'achievement_text',
             align: "right",
-        };
-        this.columns.push(object);
+        });
         this.dataJson = jArray;
     };
-    ;
     RmsPlantPlanPanelCtrl.prototype.transAddedData = function (data, tableMap) {
+        var _this = this;
         var rows = data.rows;
         var getColumns = data.columns;
-        if (getColumns.map(function (x) { return x.text; }).indexOf('실적수량') !== -1 || getColumns.map(function (x) { return x.text; }).indexOf('양품') !== -1 || getColumns.map(function (x) { return x.text; }).indexOf('불량') !== -1) {
+        if (getColumns.map(function (x) { return x.text; }).indexOf('실적수량') !== -1
+            || getColumns.map(function (x) { return x.text; }).indexOf('양품') !== -1
+            || getColumns.map(function (x) { return x.text; }).indexOf('불량') !== -1) {
             var obj = {
                 title: getColumns[2].text,
                 field: getColumns[2].text,
@@ -46414,45 +46419,39 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
             };
             this.columnOption(obj);
             this.columns.push(obj);
-            for (var count = 0; count < rows.length; count++) {
-                var row = rows[count];
+            rows.forEach(function (row, count) {
                 var inputData = tableMap.get(row[1]);
-                if (inputData !== undefined) {
+                if (inputData) {
                     if (row[2] !== 0) {
                         // console.log(row[2] + inputData.get(obj.title));
-                        if (inputData.get(obj.title) !== undefined)
-                            inputData.set(obj.title, row[2] + inputData.get(obj.title));
-                        else
-                            inputData.set(obj.title, row[2]);
+                        var setData = inputData.get(obj.title) ? row[2] + inputData.get(obj.title) : row[2];
+                        inputData.set(obj.title, setData);
                         tableMap.set(row[1], inputData);
                     }
                 }
-            }
+            });
         }
         else {
-            for (var count = 0; count < getColumns.length; count++) {
-                var column = getColumns[count].text;
+            getColumns.forEach(function (columnObj, count) {
+                var column = columnObj.text;
                 var obj = {
                     title: column,
                     field: column,
                     align: "left",
                 };
-                this.columnOption(obj);
-                this.columns.push(obj);
-            }
-            for (var count = 0; count < rows.length; count++) {
-                var row = rows[count];
+                _this.columnOption(obj);
+                _this.columns.push(obj);
+            });
+            rows.forEach(function (row, count) {
                 var map = new Map();
-                for (var row_count = 0; row_count < row.length; row_count++) {
-                    var item = row[row_count];
+                row.forEach(function (item, row_count) {
                     map.set(getColumns[row_count].text, item);
-                }
-                // tableMap.set(map.get(getColumns[0].text) + map.get(getColumns[2].text), map);
+                });
                 tableMap.set(map.get(getColumns[2].text), map);
-            }
+            });
         }
     };
-    RmsPlantPlanPanelCtrl.template = template;
+    RmsPlantPlanPanelCtrl.template = __webpack_require__(/*! ./partial/templet.html */ "./panel/plantplan-table/partial/templet.html");
     return RmsPlantPlanPanelCtrl;
 }(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_6__["MetricsPanelCtrl"]));
 
@@ -46468,136 +46467,6 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"editor-row\">\n    <div class=\"thingspin-table\"></div>\n</div>\n";
-
-/***/ }),
-
-/***/ "./services/remoteSolutionDS.ts":
-/*!**************************************!*\
-  !*** ./services/remoteSolutionDS.ts ***!
-  \**************************************/
-/*! exports provided: RemoteSolutionDSCtrl */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RemoteSolutionDSCtrl", function() { return RemoteSolutionDSCtrl; });
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "../node_modules/lodash/lodash.js");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var grafana_app_core_core_module__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! grafana/app/core/core_module */ "grafana/app/core/core_module");
-/* harmony import */ var grafana_app_core_core_module__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(grafana_app_core_core_module__WEBPACK_IMPORTED_MODULE_1__);
-
-
-var RemoteSolutionDSCtrl = /** @class */ (function () {
-    function RemoteSolutionDSCtrl($q, backendSrv) {
-        this.$q = $q;
-        this.backendSrv = backendSrv;
-        this.dsReady = false;
-    }
-    RemoteSolutionDSCtrl.prototype.getDatasource = function () {
-        return this.datasources;
-    };
-    // promise
-    RemoteSolutionDSCtrl.prototype.getDatasources = function () {
-        var _this = this;
-        return this.backendSrv.get('/api/datasources').then(function (result) {
-            _this.datasources = lodash__WEBPACK_IMPORTED_MODULE_0___default.a.filter(result, { "type": "mysql" });
-            return _this.datasources;
-        });
-    };
-    RemoteSolutionDSCtrl.prototype.query = function (dsIdx, statement) {
-        var _this = this;
-        if (!this.dsReady) {
-            return this.getDatasources().then(function (res) {
-                if (_this.datasources.length !== 0) {
-                    _this.dsReady = true;
-                }
-                else {
-                    console.error("MariaDB datasource is not defined", res);
-                }
-                return _this.sql(dsIdx, statement);
-            });
-        }
-        else {
-            return this.sql(dsIdx, statement);
-        }
-    };
-    RemoteSolutionDSCtrl.prototype.setQueries = function (selectId, statements) {
-        var queries = [];
-        statements.forEach(function (statement) {
-            queries.push({
-                refId: 'A',
-                intervalMs: 1,
-                maxDataPoints: 1,
-                datasourceId: selectId,
-                rawSql: statement,
-                format: 'table',
-            });
-        });
-        return queries;
-    };
-    RemoteSolutionDSCtrl.prototype.sql = function (selectId, statements) {
-        var _this = this;
-        if (selectId !== undefined && this.dsReady === true) {
-            selectId = parseInt(selectId);
-            return this.backendSrv.datasourceRequest({
-                url: '/api/tsdb/query',
-                method: 'POST',
-                data: {
-                    queries: this.setQueries(selectId, statements),
-                }
-            }).then(function (res) {
-                return res.data.results.A.tables;
-            }).catch(function (err) {
-                if (err.data && err.data.message) {
-                    return _this.$q.reject({ status: "error", message: err.data.message });
-                }
-                else {
-                    return _this.$q.reject({ status: "error", message: err.status });
-                }
-            });
-        }
-        else {
-            return this.$q.reject({ status: "error", message: "datasource is not found" });
-        }
-    };
-    RemoteSolutionDSCtrl.prototype.getTableObj = function (target) {
-        var data = [];
-        target.forEach(function (item, itemIdx) {
-            data[itemIdx] = [];
-            item.rows.forEach(function (row) {
-                var obj = {};
-                row.forEach(function (field, idx) {
-                    obj[item.columns[idx].text] = field;
-                });
-                data[itemIdx].push(obj);
-            });
-        });
-        return data;
-    };
-    RemoteSolutionDSCtrl.prototype.getPluginInfo = function (pluginId) {
-        var _this = this;
-        return this.backendSrv.get('/api/plugins/' + pluginId + '/settings').then(function (app) {
-            return app;
-        }).catch(function (err) {
-            return _this.$q.reject({ status: "error", message: err });
-        });
-    };
-    return RemoteSolutionDSCtrl;
-}());
-
-grafana_app_core_core_module__WEBPACK_IMPORTED_MODULE_1___default.a.service('rsDsSrv', RemoteSolutionDSCtrl);
-
-
-/***/ }),
-
-/***/ "grafana/app/core/core_module":
-/*!***************************************!*\
-  !*** external "app/core/core_module" ***!
-  \***************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_grafana_app_core_core_module__;
 
 /***/ }),
 

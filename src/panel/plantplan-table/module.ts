@@ -6,25 +6,20 @@ import 'jquery.tabulator/dist/css/tabulator.min.css';
 import 'jquery.tabulator/dist/js/tabulator.min';
 import {MetricsPanelCtrl, loadPluginCss} from  'grafana/app/plugins/sdk';
 
-import '../../services/remoteSolutionDS';
-
 loadPluginCss({
   dark: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.dark.css',
   light: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.light.css'
 });
 
-const template = require("./partial/templet.html");
-// const options = require("./partial/options.html");
-
 const panelDefaults = {
   formatters : []
 };
 
-const PLAN_MODEL = "모델"
-const PLAN_DATE = "날짜"
+const PLAN_MODEL = "모델";
+const PLAN_DATE = "날짜";
 
 class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
-  static template = template;
+  static template = require("./partial/templet.html");
 
   divID: string;
   initalized: boolean;
@@ -34,26 +29,28 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
   dataTable: any;
   data: any[];
   mouse: any;
+  tableInstance: any;
 
   dataRaw = [];
   columns = [];
   aligns = [];
 
-  dataJson : any;
-  defTabulatorOpts: object;
-  mode : any;
-  tableName : string;
+  dataJson: any;
+  defTabulatorOpts: any;
+  mode: any;
+  tableName: string;
 
   constructor($scope, $injector, $http, $location, uiSegmentSrv, annotationsSrv) {
     super($scope, $injector);
 
     _.defaults(this.panel, panelDefaults);
-    // _.defaults(this.panel);
 
     this.aligns = ['LEFT','CENTER','RIGHT'];
 
     this.divID = 'table-rms-' + this.panel.id;
     this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
+    this.events.on('panel-size-changed', this.onSizeChanged.bind(this));
+
     // this.events.on('render', this.onRender.bind(this)); //dynamic ui process
     this.events.on('data-received', this.onDataReceived.bind(this));
     this.events.on('data-error', this.onDataError.bind(this));
@@ -94,10 +91,10 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
   delFormatter(index) {
     this.panel.formatters.splice(index,1);
   }
-  
+
   addFormatter() {
     // console.log(this.panel.formatters);
-    this.panel.formatters.push({name: '', localstring: false, decimal: 2, fontsize: 0, width: 100, align:this.aligns[0]});
+    this.panel.formatters.push({name: '', localstring: false, decimal: 2, fontsize: 0, width: 100, align: this.aligns[0]});
   }
 
   createTable(dataList) {
@@ -108,27 +105,30 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
       { id: 4, name: "Brendon Philips", age: "125", col: "orange", dob: "01/08/1980"},
       { id: 5, name: "Margret Marmajuke", age: "16", col: "yellow", dob: "31/01/1999"},
     ];
-    if (this.initalized == true) {
+    if (this.initalized) {
       this.container.tabulator("destroy");
     }
     this.defTabulatorOpts = {
+      height: this.height-10,
       pagination: "local",
       paginationSize: 20,
       selectable: 1,
-      fitColumns: true,     
+      fitColumns: true,
       layout: "fitColumns",
       columns: this.columns,
-      initialSort:[
-        {column:"실적수량", dir:"desc"},
+      initialSort: [
+        {column: "실적수량", dir: "desc"},
       ]
     };
-    let opts = Object.assign({ // deep copy
+    this.defTabulatorOpts = Object.assign({ // deep copy
       rowClick: (e, row) => { //trigger an alert message when the row is clicked
           this.selectRow(row.getData());
           // this.container.tabulator('deselectRow');
       },
     }, this.defTabulatorOpts);
-    this.container.tabulator(opts);
+
+    this.tableInstance = this.container.tabulator(this.defTabulatorOpts);
+
     if (dataList != null) {
       this.container.tabulator("setData",dataList);
     } else {
@@ -138,6 +138,15 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
     this.container.tabulator("hideColumn","time_sec");
     this.initalized = true;
     $(window).trigger('resize');
+  }
+
+  onSizeChanged () {
+    // if (this.tableInstance) {
+    //   this.defTabulatorOpts.height = this.height-10;
+
+    //   this.container.tabulator("destroy");
+    //   this.tableInstance = this.container.tabulator(this.defTabulatorOpts);
+    // }
   }
 
   selectRow(obj) {
@@ -163,39 +172,39 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
 
   columnOption(obj) {
     // console.log(obj);
-    var count = this.panel.formatters.map(function(e) {return e.name;}).indexOf(obj.title);
+    var count = this.panel.formatters.map( (e) => {return e.name;}).indexOf(obj.title);
     if (count !== -1) {
       var formatter = this.panel.formatters[count];
       obj.width = formatter.width;
       obj.align = formatter.align;
       obj.formatter = function(cell, formatterParam) {
-        var value = cell.getValue();
-        if (isNaN(value) == false) {
-          if (formatter.localstring == true) {
-            return Number((Number(value)).toFixed(formatter.decimal)).toLocaleString('en');
-          } else {
-            return (Number(value)).toFixed(formatter.decimal);
-          }          
-        } else
+        const value = cell.getValue();
+        if (!isNaN(value)) {
+          return (formatter.localstring)
+            ? Number((Number(value)).toFixed(formatter.decimal)).toLocaleString('en')
+            : (Number(value)).toFixed(formatter.decimal);
+        } else {
           return value;
-      }
+        }
+      };
     } else {
-      if (obj.title === PLAN_DATE) {
+      switch (obj.title) {
+        case PLAN_DATE: {
           obj.align = this.aligns[1];
           obj.formatter = function(cell, formatterParam) {
             return moment(cell.getValue()).format("YYYY/MM/DD");
-          }
-      } else if (obj.title === PLAN_MODEL) {
-        obj.align = this.aligns[0];
-      } else {
-        obj.align = this.aligns[2];
-        obj.formatter = function(cell, formatterParam) {
-          console.log(cell.getValue());
-          if (cell.getValue() === undefined)
-            return 0;
-          else
-            return Number(cell.getValue()).toLocaleString('en');
-        }
+          };
+        } break;
+        case PLAN_MODEL: {
+          obj.align = this.aligns[0];
+        } break;
+        default: {
+          obj.align = this.aligns[2];
+          obj.formatter = function(cell, formatterParam) {
+            // console.log(cell.getValue());
+            return (!cell.getValue()) ? 0 : Number(cell.getValue()).toLocaleString('en');
+          };
+        } break;
       }
     }
   }
@@ -213,84 +222,77 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
       var tempTotal = 0;
       var tempProduct = 0;
       // var tempError = 0;
-      value.forEach((v,k)=> {
+      value.forEach((v,k) => {
         object[k] = v;
-        if (k === '생산계획') {
-          tempTotal = v;
-        } else if (k === '실적수량') {
-          tempProduct = v;
+        switch (k) {
+          case '생산계획': tempTotal = v;
+          case '실적수량': tempProduct = v;
         }
       });
       object.achievement = Math.round((tempProduct/tempTotal)*100);
       object.achievement_text = Math.round((tempProduct/tempTotal)*100) + "%";
       jArray.push(object);
     });
-    var obj = {
+    this.columns.push({
       title: 'GRAPH',
       field: 'achievement',
       align: "left",
-      formatter:"progress"
-    }
-    this.columns.push(obj);
-    var object = {
+      formatter: "progress"
+    });
+    this.columns.push({
       title: '달성률',
       field: 'achievement_text',
       align: "right",
-    }
-    this.columns.push(object);
+    });
 
     this.dataJson = jArray;
-  };
+  }
 
   transAddedData(data, tableMap) {
     var rows = data.rows;
     var getColumns = data.columns;
 
-    if (getColumns.map(x => x.text).indexOf('실적수량') !== -1 || getColumns.map(x => x.text).indexOf('양품') !== -1 || getColumns.map(x => x.text).indexOf('불량') !== -1) {
+    if (getColumns.map(x => x.text).indexOf('실적수량') !== -1
+      || getColumns.map(x => x.text).indexOf('양품') !== -1
+      || getColumns.map(x => x.text).indexOf('불량') !== -1) {
       var obj = {
         title: getColumns[2].text,
         field: getColumns[2].text,
         align: "left",
         // editor: this.autocompEditor,
-      }
+      };
       this.columnOption(obj);
       this.columns.push(obj);
-      for (var count=0; count < rows.length; count++) {
-        var row = rows[count];
+      rows.forEach((row, count) => {
         var inputData = tableMap.get(row[1]);
-        if(inputData !== undefined) {
+        if (inputData) {
           if (row[2] !== 0) {
             // console.log(row[2] + inputData.get(obj.title));
-            if (inputData.get(obj.title) !== undefined)
-              inputData.set(obj.title, row[2] + inputData.get(obj.title));
-            else
-              inputData.set(obj.title, row[2]);
+            const setData = inputData.get(obj.title) ? row[2] + inputData.get(obj.title) : row[2];
+            inputData.set(obj.title, setData);
             tableMap.set(row[1], inputData);
           }
         }
-      }
+      });
     } else {
-      for (var count=0; count < getColumns.length; count++) {
-        var column = getColumns[count].text;
+      getColumns.forEach((columnObj, count) => {
+        const column = columnObj.text;
         var obj = {
           title: column,
           field: column,
           align: "left",
           // editor: this.autocompEditor,
-        }
+        };
         this.columnOption(obj);
         this.columns.push(obj);
-      }
-      for (var count=0; count < rows.length; count++) {
-        var row = rows[count];
+      });
+      rows.forEach((row, count) => {
         var map = new Map();
-        for (var row_count=0; row_count < row.length; row_count++) {
-          var item = row[row_count];
-          map.set(getColumns[row_count].text,item);
-        }
-        // tableMap.set(map.get(getColumns[0].text) + map.get(getColumns[2].text), map);
+        row.forEach((item, row_count) => {
+          map.set(getColumns[row_count].text, item);
+        });
         tableMap.set(map.get(getColumns[2].text), map);
-      }
+      });
     }
   }
 }
