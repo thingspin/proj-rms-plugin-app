@@ -156,7 +156,18 @@ var RmsProductPlanBarChartPanelCtrl = /** @class */ (function (_super) {
                 options: {
                     tooltips: {
                         mode: 'index',
-                        intersect: false
+                        intersect: false,
+                        enabled: true,
+                        callbacks: {
+                            label: function (tooltipItem, data) {
+                                var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                label += tooltipItem.yLabel.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                return label;
+                            }
+                        }
                     },
                     responsive: true,
                     scales: {
@@ -201,7 +212,6 @@ var RmsProductPlanBarChartPanelCtrl = /** @class */ (function (_super) {
             this.createChart(null);
         }
         else {
-            console.log(dataList);
             if (dataList[0].rows !== undefined) {
                 Promise.resolve(this.transformerData(dataList));
             }

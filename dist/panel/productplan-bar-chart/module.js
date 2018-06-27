@@ -167,7 +167,18 @@ var RmsProductPlanBarChartPanelCtrl = /** @class */ (function (_super) {
                 options: {
                     tooltips: {
                         mode: 'index',
-                        intersect: false
+                        intersect: false,
+                        enabled: true,
+                        callbacks: {
+                            label: function (tooltipItem, data) {
+                                var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                label += tooltipItem.yLabel.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                return label;
+                            }
+                        }
                     },
                     responsive: true,
                     scales: {
@@ -243,7 +254,6 @@ var RmsProductPlanBarChartPanelCtrl = /** @class */ (function (_super) {
         }
     };
     RmsProductPlanBarChartPanelCtrl.prototype.addData = function (chart, data) {
-        // chart.data.labels.push(label);
         chart.data.datasets.forEach(function (dataset) {
             dataset.data.push(data);
         });
@@ -256,8 +266,6 @@ var RmsProductPlanBarChartPanelCtrl = /** @class */ (function (_super) {
         chart.update();
     };
     RmsProductPlanBarChartPanelCtrl.prototype.onDataReceived = function (dataList) {
-        // console.log(this);
-        // console.log(dataList);
         if (dataList.length === 0) {
             this.createChart(null);
         }

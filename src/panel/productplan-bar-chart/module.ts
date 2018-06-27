@@ -52,7 +52,21 @@ class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
         options: {
           tooltips: {
             mode: 'index',
-            intersect: false
+            intersect: false,
+            enabled: true,
+            callbacks: {
+              label: function(tooltipItem, data) {
+                  let label = data.datasets[tooltipItem.datasetIndex].label || '';
+
+                  if (label) {
+                      label += ': ';
+                  }                  
+                  
+                  label += tooltipItem.yLabel.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+                  return label;
+              }
+            }
           },
           responsive: true,
           scales: {
@@ -128,7 +142,6 @@ class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
   }
 
   addData(chart, data) {
-    // chart.data.labels.push(label);
     chart.data.datasets.forEach((dataset) => {
         dataset.data.push(data);
     });
@@ -143,8 +156,6 @@ class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
   }
 
   onDataReceived(dataList) {
-    // console.log(this);
-    // console.log(dataList);
     if (dataList.length === 0) {
       this.createChart(null);
     } else {
