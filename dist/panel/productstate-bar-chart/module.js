@@ -132,8 +132,6 @@ var __extends = (undefined && undefined.__extends) || (function () {
 })();
 
 
-// import * as cbundle from 'chart.js/dist/Chart.bundle.min';
-var template = __webpack_require__(/*! ./templet.html */ "./panel/productstate-bar-chart/templet.html");
 var RmsProductStateBarChartPanelCtrl = /** @class */ (function (_super) {
     __extends(RmsProductStateBarChartPanelCtrl, _super);
     function RmsProductStateBarChartPanelCtrl($scope, $injector) {
@@ -161,7 +159,7 @@ var RmsProductStateBarChartPanelCtrl = /** @class */ (function (_super) {
             'rgba(255, 159, 64, 1)'
         ];
         _this.chart = null;
-        _this.chartID = 'chart-rms-product-state-' + _this.panel.id;
+        _this.chartID = "chart-rms-product-state-" + _this.panel.id;
         _this.events.on('init-edit-mode', _this.onInitEditMode.bind(_this));
         _this.events.on('data-received', _this.onDataReceived.bind(_this));
         return _this;
@@ -173,27 +171,23 @@ var RmsProductStateBarChartPanelCtrl = /** @class */ (function (_super) {
     };
     RmsProductStateBarChartPanelCtrl.prototype.createChart = function (inputData) {
         if (inputData !== undefined) {
-            if (this.chart == null) {
-                this.chart = new chart_js_dist_Chart_min__WEBPACK_IMPORTED_MODULE_1__(this.context, {
-                    type: 'bar',
-                    data: inputData
-                });
-            }
-            else {
+            var charOpts = {
+                type: 'bar',
+                data: inputData,
+                options: {
+                    maintainAspectRatio: false
+                }
+            };
+            if (this.chart) {
                 this.chart.destroy();
-                this.chart = new chart_js_dist_Chart_min__WEBPACK_IMPORTED_MODULE_1__(this.context, {
-                    type: 'bar',
-                    data: inputData
-                });
-                // this.removeData(this.chart);
-                // this.addData(this.chart, inputData);
             }
+            this.chart = new chart_js_dist_Chart_min__WEBPACK_IMPORTED_MODULE_1__(this.context, charOpts);
         }
         else if (inputData === null) {
             this.chart.clear();
         }
         else {
-            if (this.chart == null) {
+            if (!this.chart) {
                 this.chart = new chart_js_dist_Chart_min__WEBPACK_IMPORTED_MODULE_1__(this.context, {
                     type: 'bar',
                     data: {
@@ -251,13 +245,13 @@ var RmsProductStateBarChartPanelCtrl = /** @class */ (function (_super) {
         chart.update();
     };
     RmsProductStateBarChartPanelCtrl.prototype.onDataReceived = function (dataList) {
-        console.log(this);
-        console.log(dataList);
-        if (dataList.length === 0)
+        if (dataList.length === 0) {
             this.createChart(null);
+        }
         else {
-            if (dataList[0].rows !== undefined)
+            if (dataList[0].rows) {
                 Promise.resolve(this.transformerData(dataList));
+            }
         }
     };
     RmsProductStateBarChartPanelCtrl.prototype.link = function (scope, elem, attrs, ctrl) {
@@ -268,70 +262,66 @@ var RmsProductStateBarChartPanelCtrl = /** @class */ (function (_super) {
         this.context = this.canvas.getContext('2d');
     };
     RmsProductStateBarChartPanelCtrl.prototype.transformerData = function (dataList) {
+        var _this = this;
         this.labels = [];
         this.device = [];
         this.data = [];
         this.dataSet = [];
         this.barChartData = {};
         var rows = dataList[0].rows;
-        for (var count = 0; count < rows.length; count++) {
-            var row = rows[count];
-            // var map = new Map();
-            // var strTemp = "";
-            for (var row_count = 0; row_count < row.length; row_count++) {
-                var item = row[row_count];
+        rows.forEach(function (row, count) {
+            row.forEach(function (item, row_count) {
                 switch (row_count) {
                     case 1:
                         {
-                            if (this.labels.indexOf(item) === -1)
-                                this.labels.push(item);
+                            if (_this.labels.indexOf(item) === -1) {
+                                _this.labels.push(item);
+                            }
                         }
                         break;
                     case 2:
                         {
-                            if (this.device.indexOf(item) === -1)
-                                this.device.push(item);
+                            if (_this.device.indexOf(item) === -1) {
+                                _this.device.push(item);
+                            }
                         }
                         break;
                     case 3:
                         {
-                            this.data.push(item);
+                            _this.data.push(item);
                         }
                         break;
                     default:
-                        continue;
+                        break;
                 }
-            }
-        }
+            });
+        });
         var dataRange = this.labels.length;
         var map = new Map();
-        for (var i = 0; i < this.labels.length; i++) {
+        this.labels.forEach(function (label, i) {
             var deviceData = [];
             var obj = {
-                label: this.labels[i],
-                backgroundColor: this.backgroundColor[i],
-                borderColor: this.borderColor[i],
+                label: label,
+                backgroundColor: _this.backgroundColor[i],
+                borderColor: _this.borderColor[i],
                 borderWidth: 1,
                 data: deviceData
             };
-            map.set(this.labels[i], obj);
-        }
-        for (var data_count = 0; data_count < this.data.length; data_count++) {
-            var item = this.data[data_count];
-            var list = map.get(this.labels[data_count % dataRange]);
+            map.set(label, obj);
+        });
+        this.data.forEach(function (item, data_count) {
+            var list = map.get(_this.labels[data_count % dataRange]);
             list.data.push(item);
-            map.set(this.labels[data_count % dataRange], list);
-        }
+            map.set(_this.labels[data_count % dataRange], list);
+        });
         var dataset = Array.from(map.values());
-        console.log(dataset);
         this.barChartData = {
             labels: this.device,
             datasets: dataset
         };
         this.createChart(this.barChartData);
     };
-    ;
-    RmsProductStateBarChartPanelCtrl.template = template;
+    RmsProductStateBarChartPanelCtrl.template = __webpack_require__(/*! ./templet.html */ "./panel/productstate-bar-chart/templet.html");
     return RmsProductStateBarChartPanelCtrl;
 }(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_0__["MetricsPanelCtrl"]));
 
