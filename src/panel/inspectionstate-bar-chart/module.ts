@@ -99,22 +99,23 @@ class RmsInspectionStateBarChartPanelCtrl extends MetricsPanelCtrl {
 
   createChart(inputData) {
     if (inputData !== undefined) {
+      const charOpts = {
+        type: 'bar',
+        data: inputData,
+        options: {
+          maintainAspectRatio: false
+        }
+      };
       if (this.chart == null) {
-        this.chart = new Chart(this.context, {
-          type: 'bar',
-          data: inputData
-        });  
+        this.chart = new Chart(this.context, charOpts);
       } else {
         this.chart.destroy();
-        this.chart = new Chart(this.context, {
-          type: 'bar',
-          data: inputData
-        });        
+        this.chart = new Chart(this.context, charOpts);
         // this.removeData(this.chart);
         // this.addData(this.chart, inputData);
       }
-    } else if(inputData === null) {
-      this.chart.clear();    
+    } else if (inputData === null) {
+      this.chart.clear();
     } else {
       if (this.chart == null) {
         this.chart = new Chart(this.context, {
@@ -156,7 +157,7 @@ class RmsInspectionStateBarChartPanelCtrl extends MetricsPanelCtrl {
             },
             maintainAspectRatio: false
           }
-        });  
+        });
       }
     }
   }
@@ -177,14 +178,13 @@ class RmsInspectionStateBarChartPanelCtrl extends MetricsPanelCtrl {
   }
 
   onDataReceived(dataList) {
-    console.log(this);
-    console.log(dataList);
-    if (dataList.length === 0) 
+    if (dataList.length === 0) {
       this.createChart(null);
-    else {
-      if (dataList[0].rows !== undefined)
-      Promise.resolve(this.transformerData(dataList));
-    }      
+    } else {
+      if (dataList[0].rows !== undefined) {
+        Promise.resolve(this.transformerData(dataList));
+      }
+    }
   }
 
   link(scope, elem, attrs, ctrl) {
@@ -200,33 +200,34 @@ class RmsInspectionStateBarChartPanelCtrl extends MetricsPanelCtrl {
     this.device = [];
     this.data = [];
     this.inspection = [];
-    this.dataSet = [];    
+    this.dataSet = [];
     this.barChartData = {};
 
     var rows = dataList[0].rows;
-    for (var count=0; count < rows.length; count++) {
+    for (var count = 0; count < rows.length; count++) {
       var row = rows[count];
-      // var map = new Map();
-      // var strTemp = "";
-      for (var row_count=0; row_count < row.length; row_count++) {
+      for (var row_count = 0; row_count < row.length; row_count++) {
         var item = row[row_count];
         switch (row_count) {
           case 1:
           {
-            if (this.labels.indexOf(item) === -1)
+            if (this.labels.indexOf(item) === -1) {
               this.labels.push(item);
+            }
           }
           break;
           case 2:
           {
-            if (this.device.indexOf(item) === -1)
+            if (this.device.indexOf(item) === -1) {
               this.device.push(item);
+            }
           }
           break;
           case 3:
           {
-            if (this.inspection.indexOf(item) === -1)
+            if (this.inspection.indexOf(item) === -1) {
               this.inspection.push(item);
+            }
           }
           break;
           case 4:
@@ -242,7 +243,7 @@ class RmsInspectionStateBarChartPanelCtrl extends MetricsPanelCtrl {
 
     var dataRange = this.inspection.length;
     var map = new Map();
-    for (var i=0;i< this.inspection.length;i++) {
+    for (var i = 0;i< this.inspection.length;i++) {
       var deviceData = [];
       var obj = {
         label : this.inspection[i],
@@ -252,24 +253,22 @@ class RmsInspectionStateBarChartPanelCtrl extends MetricsPanelCtrl {
       map.set(this.inspection[i], obj);
     }
 
-    for (var data_count = 0;data_count < this.data.length; data_count++) {
-      var item = this.data[data_count];
+    this.data.forEach((item, data_count) => {
       var list = map.get(this.inspection[data_count%dataRange]);
       if (list !== undefined) {
         list.data.push(item);
         map.set(this.inspection[data_count%dataRange],list);
       }
-    }
-    
+    });
+
     var dataset = Array.from(map.values());
-    console.log(dataset);
-    
+
     this.barChartData = {
       labels: this.device,
       datasets: dataset
-    }
+    };
     this.createChart(this.barChartData);
-  };
+  }
 }
 
 export {
