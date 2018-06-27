@@ -87,8 +87,14 @@ export class InspectionPropertyPanelCtrl  extends MetricsPanelCtrl  {
     initInspectTable() {
         let opts = Object.assign({ // deep copy
             rowClick: (e, row) => { //trigger an alert message when the row is clicked
+                const rows = this.inspectTable.tabulator("getSelectedData");
+                if (rows.length === 0) {
+                    this.enEtcMenu = false;
+                    this.$scope.$apply();
+                } else {
                 this.showEtcMenu(row.getData());
                 this.faultyTable.tabulator('deselectRow');
+                }
             },
         }, this.defTabulatorOpts);
         this.inspectTable = $(this.$element.find('#inspectTable')).tabulator(opts);
@@ -96,8 +102,14 @@ export class InspectionPropertyPanelCtrl  extends MetricsPanelCtrl  {
     initFaultyTable() {
         let opts = Object.assign({ // deep copy
             rowClick: (e, row) => { //trigger an alert message when the row is clicked
-                this.showEtcMenu(row.getData());
-                this.inspectTable.tabulator('deselectRow');
+                const rows = this.faultyTable.tabulator("getSelectedData");
+                if (rows.length === 0) {
+                    this.enEtcMenu = false;
+                    this.$scope.$apply();
+                } else {
+                    this.showEtcMenu(row.getData());
+                    this.inspectTable.tabulator('deselectRow');
+                }
             },
         }, this.defTabulatorOpts);
         this.faultyTable = $(this.$element.find('#faultyTable')).tabulator(opts);

@@ -29133,8 +29133,15 @@ var InspectionPropertyPanelCtrl = /** @class */ (function (_super) {
         var _this = this;
         var opts = Object.assign({
             rowClick: function (e, row) {
-                _this.showEtcMenu(row.getData());
-                _this.faultyTable.tabulator('deselectRow');
+                var rows = _this.inspectTable.tabulator("getSelectedData");
+                if (rows.length === 0) {
+                    _this.enEtcMenu = false;
+                    _this.$scope.$apply();
+                }
+                else {
+                    _this.showEtcMenu(row.getData());
+                    _this.faultyTable.tabulator('deselectRow');
+                }
             },
         }, this.defTabulatorOpts);
         this.inspectTable = jquery__WEBPACK_IMPORTED_MODULE_3___default()(this.$element.find('#inspectTable')).tabulator(opts);
@@ -29143,8 +29150,15 @@ var InspectionPropertyPanelCtrl = /** @class */ (function (_super) {
         var _this = this;
         var opts = Object.assign({
             rowClick: function (e, row) {
-                _this.showEtcMenu(row.getData());
-                _this.inspectTable.tabulator('deselectRow');
+                var rows = _this.faultyTable.tabulator("getSelectedData");
+                if (rows.length === 0) {
+                    _this.enEtcMenu = false;
+                    _this.$scope.$apply();
+                }
+                else {
+                    _this.showEtcMenu(row.getData());
+                    _this.inspectTable.tabulator('deselectRow');
+                }
             },
         }, this.defTabulatorOpts);
         this.faultyTable = jquery__WEBPACK_IMPORTED_MODULE_3___default()(this.$element.find('#faultyTable')).tabulator(opts);
