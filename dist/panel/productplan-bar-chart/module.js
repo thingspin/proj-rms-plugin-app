@@ -133,7 +133,6 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 
 // import * as cbundle from 'chart.js/dist/Chart.bundle.min';
-var template = __webpack_require__(/*! ./templet.html */ "./panel/productplan-bar-chart/templet.html");
 var PLAN = 0;
 var TRUE = 1;
 var FALSE = 2;
@@ -144,6 +143,7 @@ var RmsProductPlanBarChartPanelCtrl = /** @class */ (function (_super) {
     __extends(RmsProductPlanBarChartPanelCtrl, _super);
     function RmsProductPlanBarChartPanelCtrl($scope, $injector) {
         var _this = _super.call(this, $scope, $injector) || this;
+        _this.chart = null;
         _this.mapPlan = new Map();
         _this.mapTrue = new Map();
         _this.mapFalse = new Map();
@@ -152,68 +152,45 @@ var RmsProductPlanBarChartPanelCtrl = /** @class */ (function (_super) {
         _this.arrayTrue = new Array();
         _this.arrayFalse = new Array();
         _this.models = [];
-        _this.chart = null;
-        _this.chartID = 'chart-rms-product-state-' + _this.panel.id;
+        _this.chartID = "chart-rms-product-state-" + _this.panel.id;
         _this.events.on('init-edit-mode', _this.onInitEditMode.bind(_this));
         _this.events.on('data-received', _this.onDataReceived.bind(_this));
         return _this;
     }
-    RmsProductPlanBarChartPanelCtrl.prototype.onInitialized = function () {
-        this.initalized = false;
-    };
     RmsProductPlanBarChartPanelCtrl.prototype.onInitEditMode = function () {
     };
     RmsProductPlanBarChartPanelCtrl.prototype.createChart = function (inputData) {
         if (inputData !== undefined) {
-            if (this.chart == null) {
-                this.chart = new chart_js_dist_Chart_min__WEBPACK_IMPORTED_MODULE_1__(this.context, {
-                    type: 'bar',
-                    data: inputData,
-                    options: {
-                        tooltips: {
-                            mode: 'index',
-                            intersect: false
-                        },
-                        responsive: true,
-                        scales: {
-                            xAxes: [{
-                                    stacked: true,
-                                }],
-                            yAxes: [{
-                                    stacked: true
-                                }]
-                        }
-                    }
-                });
-            }
-            else {
+            var chartOpts = {
+                type: 'bar',
+                data: inputData,
+                options: {
+                    tooltips: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    responsive: true,
+                    scales: {
+                        xAxes: [{
+                                stacked: true,
+                            }],
+                        yAxes: [{
+                                stacked: true
+                            }]
+                    },
+                    maintainAspectRatio: false
+                }
+            };
+            if (this.chart) {
                 this.chart.destroy();
-                this.chart = new chart_js_dist_Chart_min__WEBPACK_IMPORTED_MODULE_1__(this.context, {
-                    type: 'bar',
-                    data: inputData,
-                    options: {
-                        tooltips: {
-                            mode: 'index',
-                            intersect: false
-                        },
-                        responsive: true,
-                        scales: {
-                            xAxes: [{
-                                    stacked: true,
-                                }],
-                            yAxes: [{
-                                    stacked: true
-                                }]
-                        }
-                    }
-                });
             }
+            this.chart = new chart_js_dist_Chart_min__WEBPACK_IMPORTED_MODULE_1__(this.context, chartOpts);
         }
         else if (inputData === null) {
             this.chart.clear();
         }
         else {
-            if (this.chart == null) {
+            if (!this.chart) {
                 this.chart = new chart_js_dist_Chart_min__WEBPACK_IMPORTED_MODULE_1__(this.context, {
                     type: 'bar',
                     data: {
@@ -271,13 +248,15 @@ var RmsProductPlanBarChartPanelCtrl = /** @class */ (function (_super) {
         chart.update();
     };
     RmsProductPlanBarChartPanelCtrl.prototype.onDataReceived = function (dataList) {
-        console.log(this);
-        console.log(dataList);
-        if (dataList.length === 0)
+        // console.log(this);
+        // console.log(dataList);
+        if (dataList.length === 0) {
             this.createChart(null);
+        }
         else {
-            if (dataList[0].rows !== undefined)
+            if (dataList[0].rows !== undefined) {
                 Promise.resolve(this.transformerData(dataList));
+            }
         }
     };
     RmsProductPlanBarChartPanelCtrl.prototype.link = function (scope, elem, attrs, ctrl) {
@@ -288,6 +267,7 @@ var RmsProductPlanBarChartPanelCtrl = /** @class */ (function (_super) {
         this.context = this.canvas.getContext('2d');
     };
     RmsProductPlanBarChartPanelCtrl.prototype.transformerData = function (dataList) {
+        var _this = this;
         this.arrayTrue = [];
         this.arrayFalse = [];
         this.arrayTrueEmpty = [];
@@ -299,116 +279,119 @@ var RmsProductPlanBarChartPanelCtrl = /** @class */ (function (_super) {
         this.barChartData = {};
         // Mixed Data Input Process
         // - dataCount >> 0:plan 1:true product 2:false product
-        for (var dataCount = 0; dataCount < dataList.length; dataCount++) {
-            var dataRows = dataList[dataCount].rows;
-            for (var dataRowCount = 0; dataRowCount < dataRows.length; dataRowCount++) {
-                var dataRow = dataRows[dataRowCount];
-                if (dataList[dataCount].columns[2].text === FALSE_LABEL)
-                    this.mapDataInsert(FALSE, dataRow);
-                else if (dataList[dataCount].columns[2].text === TRUE_LABEL)
-                    this.mapDataInsert(TRUE, dataRow);
-                else
-                    this.mapDataInsert(PLAN, dataRow);
-            }
-        }
+        dataList.forEach(function (data, dataCount) {
+            var dataRows = data.rows;
+            dataRows.forEach(function (dataRow, dataRowCount) {
+                switch (data.columns[2].text) {
+                    case FALSE_LABEL:
+                        _this.mapDataInsert(FALSE, dataRow);
+                        break;
+                    case TRUE_LABEL:
+                        _this.mapDataInsert(TRUE, dataRow);
+                        break;
+                    default:
+                        _this.mapDataInsert(PLAN, dataRow);
+                        break;
+                }
+            });
+        });
         this.dataProcess();
         var labels = Array.from(this.mapPlan.keys());
         var chartMap = new Map();
-        var planObj = {
+        chartMap.set(PLAN_LABEL, {
             label: PLAN_LABEL,
             backgroundColor: 'rgba(153, 102, 255, 0.2)',
             borderColor: 'rgba(153, 102, 255, 1)',
             borderWidth: 1,
             stack: 'Stack 0',
             data: Array.from(this.mapPlan.values())
-        };
-        chartMap.set(PLAN_LABEL, planObj);
-        var trueObj = {
+        });
+        chartMap.set(TRUE_LABEL, {
             label: TRUE_LABEL,
             backgroundColor: 'rgba(75, 192, 192, 0.2)',
             borderColor: 'rgba(75, 192, 192, 1)',
             stack: 'Stack 1',
             borderWidth: 1,
             data: this.arrayTrue
-        };
-        chartMap.set(TRUE_LABEL, trueObj);
-        var falseObj = {
+        });
+        chartMap.set(FALSE_LABEL, {
             label: FALSE_LABEL,
             backgroundColor: 'rgba(255, 99, 132, 0.2)',
             borderColor: 'rgba(255,99,132,1)',
             stack: 'Stack 1',
             borderWidth: 1,
             data: this.arrayFalse
-        };
-        chartMap.set(FALSE_LABEL, falseObj);
+        });
         var dataset = Array.from(chartMap.values());
-        console.log(dataset);
+        // console.log(dataset);
         this.barChartData = {
             labels: labels,
             datasets: dataset
         };
-        console.log(this.barChartData);
+        // console.log(this.barChartData);
         this.createChart(this.barChartData);
     };
     RmsProductPlanBarChartPanelCtrl.prototype.mapDataInsert = function (value, dataRow) {
+        var _this = this;
         var tempModel = "";
-        for (var rowCount = 0; rowCount < dataRow.length; rowCount++) {
-            var item = dataRow[rowCount];
+        dataRow.forEach(function (item, rowCount) {
             if (value === PLAN) {
-                if (rowCount == 2) {
-                    if (this.models.indexOf(item) === -1) {
-                        this.models.push(item);
-                        tempModel = item;
-                    }
-                }
-                else if (rowCount == 3) {
-                    this.mapPlan.set(tempModel, item);
+                switch (rowCount) {
+                    case 2:
+                        if (_this.models.indexOf(item) === -1) {
+                            _this.models.push(item);
+                            tempModel = item;
+                        }
+                        break;
+                    case 3:
+                        _this.mapPlan.set(tempModel, item);
+                        break;
                 }
             }
             else {
-                if (rowCount == 1) {
-                    tempModel = item;
-                }
-                else if (rowCount == 2) {
-                    if (value == TRUE) {
-                        var trueValue = this.mapTrue.get(tempModel);
-                        if (trueValue !== undefined)
-                            this.mapTrue.set(tempModel, trueValue + item);
-                        else
-                            this.mapTrue.set(tempModel, item);
-                    }
-                    else {
-                        var falseValue = this.mapFalse.get(tempModel);
-                        if (falseValue !== undefined)
-                            this.mapFalse.set(tempModel, falseValue + item);
-                        else
-                            this.mapFalse.set(tempModel, item);
-                    }
+                switch (rowCount) {
+                    case 1:
+                        tempModel = item;
+                        break;
+                    case 2:
+                        var valStr = (value === TRUE) ? "mapTrue" : "mapFalse";
+                        var val = _this[valStr].get(tempModel);
+                        if (val) {
+                            _this[valStr].set(tempModel, val + item);
+                        }
+                        else {
+                            _this[valStr].set(tempModel, item);
+                        }
+                        break;
                 }
             }
-        }
+        });
     };
     RmsProductPlanBarChartPanelCtrl.prototype.dataProcess = function () {
+        var _this = this;
         var keyList = Array.from(this.mapPlan.keys());
         var cpTrueMap = new Map(this.mapTrue);
         var cpFalseMap = new Map(this.mapFalse);
-        for (var keyCount = 0; keyCount < keyList.length; keyCount++) {
-            var key = keyList[keyCount];
-            var trueValue = this.mapTrue.get(key);
-            if (trueValue !== undefined) {
-                this.arrayTrue.push(trueValue);
-                cpTrueMap.delete(key);
-            }
-            var falseValue = this.mapFalse.get(key);
-            if (falseValue !== undefined) {
-                this.arrayFalse.push(falseValue);
-                cpFalseMap.delete(key);
-            }
-        }
+        keyList.forEach(function (key, keyCount) {
+            ["True", "False"].forEach(function (str) {
+                var val = _this["map" + str].get(key);
+                if (val) {
+                    _this["array" + str].push(val);
+                    switch (str) {
+                        case "True":
+                            cpTrueMap.delete(key);
+                            break;
+                        case "False":
+                            cpFalseMap.delete(key);
+                            break;
+                    }
+                }
+            });
+        });
         this.arrayTrueEmpty = Array.from(cpTrueMap.values());
         this.arrayFalseEmpty = Array.from(cpFalseMap.values());
     };
-    RmsProductPlanBarChartPanelCtrl.template = template;
+    RmsProductPlanBarChartPanelCtrl.template = __webpack_require__(/*! ./templet.html */ "./panel/productplan-bar-chart/templet.html");
     return RmsProductPlanBarChartPanelCtrl;
 }(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_0__["MetricsPanelCtrl"]));
 

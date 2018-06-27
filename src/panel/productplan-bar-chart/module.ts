@@ -3,8 +3,6 @@ import {MetricsPanelCtrl} from  'grafana/app/plugins/sdk';
 import * as Chart from 'chart.js/dist/Chart.min';
 // import * as cbundle from 'chart.js/dist/Chart.bundle.min';
 
-const template = require("./templet.html");
-
 const PLAN = 0;
 const TRUE = 1;
 const FALSE = 2;
@@ -13,7 +11,7 @@ const TRUE_LABEL = "양품수";
 const FALSE_LABEL = "불량수";
 
 class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
-  static template = template;  
+  static template = require("./templet.html");
 
   chartID: string;
   initalized: boolean;
@@ -21,9 +19,9 @@ class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
 
   context: any;
   canvas: any;
-  chart: any;
+  chart: any = null;
   mouse: any;
-  
+
   mapPlan = new Map();
   mapTrue = new Map();
   mapFalse = new Map();
@@ -38,14 +36,9 @@ class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
 
   constructor($scope, $injector) {
     super($scope, $injector);
-    this.chart = null;
-    this.chartID = 'chart-rms-product-state-' + this.panel.id;
+    this.chartID = `chart-rms-product-state-${this.panel.id}`;
     this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
     this.events.on('data-received', this.onDataReceived.bind(this));
-  }
-
-  onInitialized() {
-    this.initalized = false;
   }
 
   onInitEditMode() {
@@ -53,52 +46,35 @@ class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
 
   createChart(inputData) {
     if (inputData !== undefined) {
-      if (this.chart == null) {
-        this.chart = new Chart(this.context, {
-          type: 'bar',
-          data: inputData,
-          options: {
-            tooltips: {
-              mode: 'index',
-              intersect: false
-            },
-            responsive: true,
-            scales: {
-              xAxes: [{
-                stacked: true,
-              }],
-              yAxes: [{
-                stacked: true
-              }]
-            }
-          }
-        });  
-      } else {
+      const chartOpts = {
+        type: 'bar',
+        data: inputData,
+        options: {
+          tooltips: {
+            mode: 'index',
+            intersect: false
+          },
+          responsive: true,
+          scales: {
+            xAxes: [{
+              stacked: true,
+            }],
+            yAxes: [{
+              stacked: true
+            }]
+          },
+          maintainAspectRatio: false
+        }
+      };
+
+      if (this.chart) {
         this.chart.destroy();
-        this.chart = new Chart(this.context, {
-          type: 'bar',
-          data: inputData,
-          options: {
-            tooltips: {
-              mode: 'index',
-              intersect: false
-            },
-            responsive: true,
-            scales: {
-              xAxes: [{
-                stacked: true,
-              }],
-              yAxes: [{
-                stacked: true
-              }]
-            }
-          }          
-        });
       }
-    } else if(inputData === null) {
-      this.chart.clear();    
+      this.chart = new Chart(this.context, chartOpts);
+    } else if (inputData === null) {
+      this.chart.clear();
     } else {
-      if (this.chart == null) {
+      if (!this.chart) {
         this.chart = new Chart(this.context, {
           type: 'bar',
           data: {
@@ -138,7 +114,7 @@ class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
             },
             maintainAspectRatio: false
           }
-        });  
+        });
       }
     }
   }
@@ -159,14 +135,15 @@ class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
   }
 
   onDataReceived(dataList) {
-    console.log(this);
-    console.log(dataList);
-    if (dataList.length === 0) 
+    // console.log(this);
+    // console.log(dataList);
+    if (dataList.length === 0) {
       this.createChart(null);
-    else {
-      if (dataList[0].rows !== undefined)
-      Promise.resolve(this.transformerData(dataList));
-    }      
+    } else {
+      if (dataList[0].rows !== undefined) {
+        Promise.resolve(this.transformerData(dataList));
+      }
+    }
   }
 
   link(scope, elem, attrs, ctrl) {
@@ -191,97 +168,91 @@ class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
 
     // Mixed Data Input Process
     // - dataCount >> 0:plan 1:true product 2:false product
-    for (var dataCount=0;dataCount<dataList.length;dataCount++) {
-      var dataRows = dataList[dataCount].rows;
-      for (var dataRowCount=0;dataRowCount<dataRows.length;dataRowCount++) {
-        var dataRow = dataRows[dataRowCount];
-        if (dataList[dataCount].columns[2].text === FALSE_LABEL)
-          this.mapDataInsert(FALSE, dataRow);
-        else if (dataList[dataCount].columns[2].text === TRUE_LABEL)
-          this.mapDataInsert(TRUE, dataRow);
-        else
-          this.mapDataInsert(PLAN, dataRow);
-      }
-    }
+    dataList.forEach((data, dataCount) => {
+      const dataRows = data.rows;
+      dataRows.forEach((dataRow, dataRowCount) => {
+        switch (data.columns[2].text) {
+          case FALSE_LABEL: this.mapDataInsert(FALSE, dataRow); break;
+          case TRUE_LABEL: this.mapDataInsert(TRUE, dataRow); break;
+          default: this.mapDataInsert(PLAN, dataRow); break;
+        }
+      });
+    });
     this.dataProcess();
 
     var labels = Array.from( this.mapPlan.keys() );
     var chartMap =  new Map();
 
-    var planObj = {
+    chartMap.set(PLAN_LABEL, {
       label : PLAN_LABEL,
-      backgroundColor:'rgba(153, 102, 255, 0.2)',
-      borderColor:'rgba(153, 102, 255, 1)',
-      borderWidth:1,
+      backgroundColor: 'rgba(153, 102, 255, 0.2)',
+      borderColor: 'rgba(153, 102, 255, 1)',
+      borderWidth: 1,
       stack : 'Stack 0',
       data: Array.from(this.mapPlan.values())
-    };
-    chartMap.set(PLAN_LABEL, planObj);
+    });
 
-    var trueObj = {
+    chartMap.set(TRUE_LABEL, {
       label : TRUE_LABEL,
       backgroundColor: 'rgba(75, 192, 192, 0.2)',
       borderColor: 'rgba(75, 192, 192, 1)',
       stack : 'Stack 1',
-      borderWidth:1,
+      borderWidth: 1,
       data: this.arrayTrue
-    };
-    chartMap.set(TRUE_LABEL, trueObj);
+    });
 
-    var falseObj = {
+    chartMap.set(FALSE_LABEL, {
       label : FALSE_LABEL,
       backgroundColor: 'rgba(255, 99, 132, 0.2)',
       borderColor: 'rgba(255,99,132,1)',
       stack : 'Stack 1',
-      borderWidth:1,
+      borderWidth: 1,
       data: this.arrayFalse
-    };
-    chartMap.set(FALSE_LABEL, falseObj);
+    });
 
     var dataset = Array.from(chartMap.values());
-    console.log(dataset);
-    
+    // console.log(dataset);
+
     this.barChartData = {
       labels: labels,
       datasets: dataset
-    }
-    console.log(this.barChartData);
+    };
+    // console.log(this.barChartData);
     this.createChart(this.barChartData);
   }
 
   mapDataInsert(value, dataRow) {
     var tempModel = "";
-    for (var rowCount=0;rowCount<dataRow.length;rowCount++) {
-      var item = dataRow[rowCount];
+    dataRow.forEach((item, rowCount) => {
       if (value === PLAN) {
-        if (rowCount == 2) {
-          if (this.models.indexOf(item) === -1) {
-            this.models.push(item);
-            tempModel = item;
-          }
-        } else if (rowCount == 3) {
-          this.mapPlan.set(tempModel,item);
+        switch (rowCount) {
+          case 2:
+            if (this.models.indexOf(item) === -1) {
+              this.models.push(item);
+              tempModel = item;
+            }
+          break;
+          case 3:
+            this.mapPlan.set(tempModel,item);
+          break;
         }
       } else {
-        if (rowCount == 1) {
-          tempModel = item;
-        } else if (rowCount == 2) {
-          if (value == TRUE) {
-            var trueValue = this.mapTrue.get(tempModel);
-            if (trueValue !== undefined)
-              this.mapTrue.set(tempModel, trueValue + item);
-            else
-              this.mapTrue.set(tempModel, item);
-          } else {
-            var falseValue = this.mapFalse.get(tempModel);
-            if (falseValue !== undefined)
-              this.mapFalse.set(tempModel, falseValue + item);
-            else
-              this.mapFalse.set(tempModel, item);            
-          }
+        switch (rowCount) {
+          case 1:
+            tempModel = item;
+          break;
+          case 2:
+            const valStr = (value === TRUE) ? "mapTrue" : "mapFalse";
+            const val = this[valStr].get(tempModel);
+            if (val) {
+              this[valStr].set(tempModel, val + item);
+            } else {
+              this[valStr].set(tempModel, item);
+            }
+          break;
         }
       }
-    }
+    });
   }
 
   dataProcess() {
@@ -289,19 +260,18 @@ class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
     var cpTrueMap = new Map(this.mapTrue);
     var cpFalseMap = new Map(this.mapFalse);
 
-    for (var keyCount=0;keyCount<keyList.length;keyCount++) {
-      var key = keyList[keyCount];
-      var trueValue = this.mapTrue.get(key);
-      if (trueValue !== undefined) {
-        this.arrayTrue.push(trueValue);
-        cpTrueMap.delete(key);
-      }
-      var falseValue = this.mapFalse.get(key);
-      if (falseValue !== undefined) {
-        this.arrayFalse.push(falseValue);
-        cpFalseMap.delete(key);
-      }
-    }
+    keyList.forEach((key, keyCount) => {
+      ["True","False"].forEach((str) => {
+        var val = this[`map${str}`].get(key);
+        if (val) {
+          this[`array${str}`].push(val);
+          switch (str) {
+            case "True": cpTrueMap.delete(key); break;
+            case "False": cpFalseMap.delete(key); break;
+          }
+        }
+      });
+    });
 
     this.arrayTrueEmpty = Array.from(cpTrueMap.values());
     this.arrayFalseEmpty = Array.from(cpFalseMap.values());
