@@ -1,12 +1,9 @@
 import {MetricsPanelCtrl} from  'grafana/app/plugins/sdk';
 
 import * as Chart from 'chart.js/dist/Chart.min';
-// import * as cbundle from 'chart.js/dist/Chart.bundle.min';
-
-const template = require("./templet.html");
 
 class RmsInspectionStateBarChartPanelCtrl extends MetricsPanelCtrl {
-  static template = template;
+  static template = require("./templet.html");
 
   chartID: string;
   initalized: boolean;
@@ -85,7 +82,7 @@ class RmsInspectionStateBarChartPanelCtrl extends MetricsPanelCtrl {
   constructor($scope, $injector) {
     super($scope, $injector);
     this.chart = null;
-    this.chartID = 'chart-rms-product-state-' + this.panel.id;
+    this.chartID = `chart-rms-product-state-${this.panel.id}`;
     this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
     this.events.on('data-received', this.onDataReceived.bind(this));
   }
@@ -99,25 +96,20 @@ class RmsInspectionStateBarChartPanelCtrl extends MetricsPanelCtrl {
 
   createChart(inputData) {
     if (inputData !== undefined) {
-      const charOpts = {
+      if (this.chart) {
+        this.chart.destroy();
+      }
+      this.chart = new Chart(this.context, {
         type: 'bar',
         data: inputData,
         options: {
           maintainAspectRatio: false
         }
-      };
-      if (this.chart == null) {
-        this.chart = new Chart(this.context, charOpts);
-      } else {
-        this.chart.destroy();
-        this.chart = new Chart(this.context, charOpts);
-        // this.removeData(this.chart);
-        // this.addData(this.chart, inputData);
-      }
+      });
     } else if (inputData === null) {
       this.chart.clear();
     } else {
-      if (this.chart == null) {
+      if (!this.chart) {
         this.chart = new Chart(this.context, {
           type: 'bar',
           data: {
@@ -163,7 +155,6 @@ class RmsInspectionStateBarChartPanelCtrl extends MetricsPanelCtrl {
   }
 
   addData(chart, data) {
-    // chart.data.labels.push(label);
     chart.data.datasets.forEach((dataset) => {
         dataset.data.push(data);
     });
@@ -204,10 +195,8 @@ class RmsInspectionStateBarChartPanelCtrl extends MetricsPanelCtrl {
     this.barChartData = {};
 
     var rows = dataList[0].rows;
-    for (var count = 0; count < rows.length; count++) {
-      var row = rows[count];
-      for (var row_count = 0; row_count < row.length; row_count++) {
-        var item = row[row_count];
+    rows.forEach((row, count) => {
+      row.forEach((item, row_count) => {
         switch (row_count) {
           case 1:
           {
@@ -236,36 +225,32 @@ class RmsInspectionStateBarChartPanelCtrl extends MetricsPanelCtrl {
           }
           break;
           default:
-          continue;
+          break;
         }
-      }
-    }
+      });
+    });
 
     var dataRange = this.inspection.length;
     var map = new Map();
-    for (var i = 0;i< this.inspection.length;i++) {
-      var deviceData = [];
-      var obj = {
-        label : this.inspection[i],
+    this.inspection.forEach((label, i) => {
+      map.set(label, {
+        label : label,
         backgroundColor: this.colors[i],
-        data: deviceData
-      };
-      map.set(this.inspection[i], obj);
-    }
+        data: []
+      });
+    });
 
     this.data.forEach((item, data_count) => {
-      var list = map.get(this.inspection[data_count%dataRange]);
-      if (list !== undefined) {
+      var list = map.get(this.inspection[data_count % dataRange]);
+      if (list) {
         list.data.push(item);
-        map.set(this.inspection[data_count%dataRange],list);
+        map.set(this.inspection[data_count % dataRange],list);
       }
     });
 
-    var dataset = Array.from(map.values());
-
     this.barChartData = {
       labels: this.device,
-      datasets: dataset
+      datasets: Array.from(map.values())
     };
     this.createChart(this.barChartData);
   }

@@ -132,8 +132,6 @@ var __extends = (undefined && undefined.__extends) || (function () {
 })();
 
 
-// import * as cbundle from 'chart.js/dist/Chart.bundle.min';
-var template = __webpack_require__(/*! ./templet.html */ "./panel/inspectionstate-bar-chart/templet.html");
 var RmsInspectionStateBarChartPanelCtrl = /** @class */ (function (_super) {
     __extends(RmsInspectionStateBarChartPanelCtrl, _super);
     function RmsInspectionStateBarChartPanelCtrl($scope, $injector) {
@@ -203,7 +201,7 @@ var RmsInspectionStateBarChartPanelCtrl = /** @class */ (function (_super) {
             '#DEDAF7',
         ];
         _this.chart = null;
-        _this.chartID = 'chart-rms-product-state-' + _this.panel.id;
+        _this.chartID = "chart-rms-product-state-" + _this.panel.id;
         _this.events.on('init-edit-mode', _this.onInitEditMode.bind(_this));
         _this.events.on('data-received', _this.onDataReceived.bind(_this));
         return _this;
@@ -215,28 +213,22 @@ var RmsInspectionStateBarChartPanelCtrl = /** @class */ (function (_super) {
     };
     RmsInspectionStateBarChartPanelCtrl.prototype.createChart = function (inputData) {
         if (inputData !== undefined) {
-            var charOpts = {
+            if (this.chart) {
+                this.chart.destroy();
+            }
+            this.chart = new chart_js_dist_Chart_min__WEBPACK_IMPORTED_MODULE_1__(this.context, {
                 type: 'bar',
                 data: inputData,
                 options: {
                     maintainAspectRatio: false
                 }
-            };
-            if (this.chart == null) {
-                this.chart = new chart_js_dist_Chart_min__WEBPACK_IMPORTED_MODULE_1__(this.context, charOpts);
-            }
-            else {
-                this.chart.destroy();
-                this.chart = new chart_js_dist_Chart_min__WEBPACK_IMPORTED_MODULE_1__(this.context, charOpts);
-                // this.removeData(this.chart);
-                // this.addData(this.chart, inputData);
-            }
+            });
         }
         else if (inputData === null) {
             this.chart.clear();
         }
         else {
-            if (this.chart == null) {
+            if (!this.chart) {
                 this.chart = new chart_js_dist_Chart_min__WEBPACK_IMPORTED_MODULE_1__(this.context, {
                     type: 'bar',
                     data: {
@@ -281,7 +273,6 @@ var RmsInspectionStateBarChartPanelCtrl = /** @class */ (function (_super) {
         }
     };
     RmsInspectionStateBarChartPanelCtrl.prototype.addData = function (chart, data) {
-        // chart.data.labels.push(label);
         chart.data.datasets.forEach(function (dataset) {
             dataset.data.push(data);
         });
@@ -319,68 +310,63 @@ var RmsInspectionStateBarChartPanelCtrl = /** @class */ (function (_super) {
         this.dataSet = [];
         this.barChartData = {};
         var rows = dataList[0].rows;
-        for (var count = 0; count < rows.length; count++) {
-            var row = rows[count];
-            for (var row_count = 0; row_count < row.length; row_count++) {
-                var item = row[row_count];
+        rows.forEach(function (row, count) {
+            row.forEach(function (item, row_count) {
                 switch (row_count) {
                     case 1:
                         {
-                            if (this.labels.indexOf(item) === -1) {
-                                this.labels.push(item);
+                            if (_this.labels.indexOf(item) === -1) {
+                                _this.labels.push(item);
                             }
                         }
                         break;
                     case 2:
                         {
-                            if (this.device.indexOf(item) === -1) {
-                                this.device.push(item);
+                            if (_this.device.indexOf(item) === -1) {
+                                _this.device.push(item);
                             }
                         }
                         break;
                     case 3:
                         {
-                            if (this.inspection.indexOf(item) === -1) {
-                                this.inspection.push(item);
+                            if (_this.inspection.indexOf(item) === -1) {
+                                _this.inspection.push(item);
                             }
                         }
                         break;
                     case 4:
                         {
-                            this.data.push(item);
+                            _this.data.push(item);
                         }
                         break;
                     default:
-                        continue;
+                        break;
                 }
-            }
-        }
+            });
+        });
         var dataRange = this.inspection.length;
         var map = new Map();
-        for (var i = 0; i < this.inspection.length; i++) {
-            var deviceData = [];
-            var obj = {
-                label: this.inspection[i],
-                backgroundColor: this.colors[i],
-                data: deviceData
-            };
-            map.set(this.inspection[i], obj);
-        }
+        this.inspection.forEach(function (label, i) {
+            map.set(label, {
+                label: label,
+                backgroundColor: _this.colors[i],
+                data: []
+            });
+        });
         this.data.forEach(function (item, data_count) {
             var list = map.get(_this.inspection[data_count % dataRange]);
-            if (list !== undefined) {
+            if (list) {
                 list.data.push(item);
                 map.set(_this.inspection[data_count % dataRange], list);
             }
         });
-        var dataset = Array.from(map.values());
         this.barChartData = {
             labels: this.device,
-            datasets: dataset
+            datasets: Array.from(map.values())
         };
         this.createChart(this.barChartData);
     };
-    RmsInspectionStateBarChartPanelCtrl.template = template;
+    RmsInspectionStateBarChartPanelCtrl.template = __webpack_require__(/*! ./templet.html */ "./panel/inspectionstate-bar-chart/templet.html");
     return RmsInspectionStateBarChartPanelCtrl;
 }(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_0__["MetricsPanelCtrl"]));
 
