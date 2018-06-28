@@ -2,7 +2,7 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:143",
+        "$$hashKey": "object:225",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -13,11 +13,30 @@
       }
     ]
   },
-  "editable": true,
+  "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1530150619235,
-  "links": [],
+  "iteration": 1530155698049,
+  "links": [
+    {
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "모델별 검사기록"
+      ],
+      "type": "dashboards"
+    },
+    {
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "CPK 현황"
+      ],
+      "type": "dashboards"
+    }
+  ],
   "panels": [
     {
       "datasource": "$DATABASE",
@@ -104,7 +123,6 @@
       "scripts": "",
       "targets": [
         {
-          "$$hashKey": "object:186",
           "datasource": "$DATABASE",
           "groupBy": [
             {
@@ -172,7 +190,9 @@
   ],
   "schemaVersion": 16,
   "style": "dark",
-  "tags": [],
+  "tags": [
+    "불량 현황"
+  ],
   "templating": {
     "list": [
       {
@@ -304,5 +324,5 @@
   "timezone": "",
   "title": "불량 현황",
   "uid": "KfvX3wVik",
-  "version": 8
+  "version": 17
 }

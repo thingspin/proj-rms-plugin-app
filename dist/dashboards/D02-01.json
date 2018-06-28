@@ -2,7 +2,7 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:11123",
+        "$$hashKey": "object:151",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -13,17 +13,17 @@
       }
     ]
   },
-  "editable": true,
+  "editable": false,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1529050346798,
+  "iteration": 1530155546960,
   "links": [
     {
       "icon": "external link",
       "includeVars": true,
       "keepTime": true,
       "tags": [
-        "설비 불량 현황"
+        "CPK 현황"
       ],
       "type": "dashboards"
     },
@@ -32,7 +32,7 @@
       "includeVars": true,
       "keepTime": true,
       "tags": [
-        "CPK 이탈 감시"
+        "불량 현황"
       ],
       "type": "dashboards"
     }
@@ -870,7 +870,6 @@
   "schemaVersion": 16,
   "style": "light",
   "tags": [
-    "모델별검사기록",
     "모델별 검사기록"
   ],
   "templating": {
@@ -1111,5 +1110,5 @@
   "timezone": "",
   "title": "모델별 검사기록",
   "uid": "rAgfpx7iz",
-  "version": 2
+  "version": 13
 }
