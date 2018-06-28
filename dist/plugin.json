@@ -31,7 +31,7 @@
   "includes": [
 
     {"type": "menu", "name": "생산 현황", "mainMenu": true, "slug": "saengsan-gyehoeg", "img":"img/thignspin_ic_48dp_white-04.svg", "menuId": 0},
-    {"type": "dashboard", "name": "제품 모델 정보", "path": "dashboards/D03-06.json", "AddToNav": true, "menuID": 0, "ico":"fa fa-industry"},
+    {"type": "dashboard", "name": "생산 모델", "path": "dashboards/D03-06.json", "AddToNav": true, "menuID": 0, "ico":"fa fa-industry"},
     {"type": "dashboard", "name": "생산 계획", "path": "dashboards/D01-00.json", "defaultNav": true, "addToNav": true, "menuID": 0, "ico":"fa fa-industry"},
     {"type": "dashboard", "name": "생산 현황", "path": "dashboards/D01-01.json", "defaultNav": true, "addToNav": true, "menuID": 0, "ico":"fa fa-industry"},
 

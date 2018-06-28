@@ -246,7 +246,7 @@
   "schemaVersion": 16,
   "style": "dark",
   "tags": [
-    "제품 모델 정보"
+    "생산 모델"
   ],
   "templating": {
     "list": [
@@ -299,7 +299,7 @@
     ]
   },
   "timezone": "",
-  "title": "제품 모델 정보",
+  "title": "생산 모델",
   "uid": "z_4Bcy7ik",
   "version": 27
 }
