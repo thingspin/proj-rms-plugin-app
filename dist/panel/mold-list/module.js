@@ -46241,7 +46241,8 @@ var RmsMoldListPanelCtrl = /** @class */ (function (_super) {
                 memo: '',
             },
             formatters: [],
-            resizeValue: false
+            resizeValue: false,
+            graphTitle: "GRAPH"
         };
         _this.isViewer = contextSrv.hasRole('Viewer');
         if (!_this.isViewer) {
@@ -46379,12 +46380,31 @@ var RmsMoldListPanelCtrl = /** @class */ (function (_super) {
             };
             _this.columnOption(obj);
             _this.columns.push(obj);
+            if (obj.title === '사용횟수') {
+                _this.columns.push({
+                    title: _this.panel.graphTitle,
+                    field: 'achievement',
+                    align: "left",
+                    formatter: "progress"
+                });
+            }
         });
         var jArray = new Array;
         var mapData = new Map();
         rows.forEach(function (row, count) {
+            var limit = 0;
+            var useCount = 0;
             row.forEach(function (item, row_count) {
                 mapData.set(getColumns[row_count].text, item);
+                switch (getColumns[row_count].text) {
+                    case '교체주기':
+                        limit = item;
+                        break;
+                    case '사용횟수':
+                        useCount = item;
+                        mapData.set('achievement', (100 - (100 * Number(useCount) / Number(limit))));
+                        break;
+                }
             });
             var object = Object();
             mapData.forEach(function (v, k) { object[k] = v; });
@@ -46617,7 +46637,7 @@ var RmsMoldListPanelCtrl = /** @class */ (function (_super) {
             };
         }
         else {
-            if (obj.title === MOLD_USE_COUNT) {
+            if (obj.title === MOLD_USE_COUNT || obj.title === MOLD_PERIOD) {
                 obj.align = this.aligns[2];
                 obj.formatter = function (cell, formatterParam) {
                     return Number(cell.getValue()).toLocaleString('en');

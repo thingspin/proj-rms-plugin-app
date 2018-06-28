@@ -262,8 +262,9 @@ var RmsProductPlanBarChartPanelCtrl = /** @class */ (function (_super) {
                         _this.models.push(item);
                         tempModel = item;
                     }
-                    else
+                    else {
                         tempModel = item;
+                    }
                     break;
                 case 3:
                     if (_this.mapPlan.has(tempModel) === true) {

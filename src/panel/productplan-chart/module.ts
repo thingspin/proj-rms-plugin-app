@@ -47,8 +47,7 @@ class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
 
                   if (label) {
                       label += ': ';
-                  }                  
-                  
+                  }
                   label += tooltipItem.yLabel.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
                   return label;
@@ -156,8 +155,9 @@ class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
             if (this.models.indexOf(item) === -1) {
               this.models.push(item);
               tempModel = item;
-            } else 
+            } else {
               tempModel = item;
+            }
           break;
           case 3:
             if (this.mapPlan.has(tempModel) === true) {

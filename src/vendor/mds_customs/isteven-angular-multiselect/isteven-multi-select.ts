@@ -329,14 +329,16 @@ export function istevenMultiSelect ($sce, $timeout, $templateCache) {
                             break;
                         }
 
-                        if (typeof $scope.filteredModel[i][attrs.groupProperty] !== 'undefined' && $scope.filteredModel[i][attrs.groupProperty] === true) {
+                        if (typeof $scope.filteredModel[i][attrs.groupProperty] !== 'undefined'
+                            && $scope.filteredModel[i][attrs.groupProperty] === true) {
 
                             // To cater multi level grouping
                             if (tempArr.length === 0) {
                                 startIndex = i + 1;
                             }
                             nestLevel = nestLevel + 1;
-                        } else if (typeof $scope.filteredModel[i][attrs.groupProperty] !== 'undefined' && $scope.filteredModel[i][attrs.groupProperty] === false) {
+                        } else if (typeof $scope.filteredModel[i][attrs.groupProperty] !== 'undefined'
+                            && $scope.filteredModel[i][attrs.groupProperty] === false) {
                         // if group end
 
                             nestLevel = nestLevel - 1;
@@ -724,7 +726,9 @@ export function istevenMultiSelect ($sce, $timeout, $templateCache) {
                         break;
                     case 'RESET':
                         angular.forEach($scope.filteredModel, function (value, key) {
-                            if (typeof value[attrs.groupProperty] === 'undefined' && typeof value !== 'undefined' && value[attrs.disableProperty] !== true) {
+                            if (typeof value[attrs.groupProperty] === 'undefined'
+                                && typeof value !== 'undefined'
+                                && value[attrs.disableProperty] !== true) {
                                 var temp = value[$scope.indexProperty];
                                 value[$scope.tickProperty] = $scope.backUp[temp][$scope.tickProperty];
                             }
