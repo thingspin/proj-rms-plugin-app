@@ -73,7 +73,8 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
     },
 
     formatters : [],
-    resizeValue : false
+    resizeValue : false,
+    graphTitle : "GRAPH"
   };
 
   constructor($rootScope, $scope, $injector, contextSrv, private rsDsSrv, alertSrv) {
@@ -237,14 +238,33 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
       };
       this.columnOption(obj);
       this.columns.push(obj);
-
+      if (obj.title === '사용횟수') {
+        this.columns.push({
+          title: this.panel.graphTitle,
+          field: 'achievement',
+          align: "left",
+          formatter: "progress"
+        });    
+      }
     });
 
     var jArray = new Array;
     var mapData = new Map();
     rows.forEach((row, count) => {
+      var limit = 0;
+      var useCount = 0;
       row.forEach((item, row_count) => {
         mapData.set(getColumns[row_count].text,item);
+        switch(getColumns[row_count].text) {
+          case '교체주기' :
+          limit = item;
+          break;
+          case '사용횟수' :
+          useCount = item;
+          mapData.set('achievement', (100-(100*Number(useCount) / Number(limit))));
+          break;
+        }
+
       });
       var object = Object();
       mapData.forEach((v,k)=> {object[k] = v;});
@@ -507,7 +527,7 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
         }
       };
     } else {
-      if (obj.title === MOLD_USE_COUNT) {
+      if (obj.title === MOLD_USE_COUNT || obj.title === MOLD_PERIOD) {
         obj.align = this.aligns[2];
         obj.formatter = function(cell, formatterParam) {
           return Number(cell.getValue()).toLocaleString('en');
