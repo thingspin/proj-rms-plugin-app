@@ -93,7 +93,7 @@ class RmsProductStateBarChartPanelCtrl extends MetricsPanelCtrl {
       }
       this.chart = new Chart(this.context, charOpts);
     } else {
-      if(this.chart) this.chart.clear();
+      if (this.chart) { this.chart.clear(); }
     }
   }
 

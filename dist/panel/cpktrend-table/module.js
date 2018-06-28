@@ -29134,7 +29134,7 @@ var RmsCPKTrendPanelCtrl = /** @class */ (function (_super) {
             { id: 4, name: "Brendon Philips", age: "125", col: "orange", dob: "01/08/1980" },
             { id: 5, name: "Margret Marmajuke", age: "16", col: "yellow", dob: "31/01/1999" },
         ];
-        if (this.initalized == true) {
+        if (this.initalized) {
             this.container.tabulator("destroy");
         }
         this.defTabulatorOpts = {
@@ -29168,6 +29168,7 @@ var RmsCPKTrendPanelCtrl = /** @class */ (function (_super) {
         console.log(dataList);
     };
     RmsCPKTrendPanelCtrl.prototype.transformer = function (dataList) {
+        var _this = this;
         this.columns = [];
         var columnMakeMap = new Map();
         var valueMakeMap = new Map();
@@ -29177,14 +29178,14 @@ var RmsCPKTrendPanelCtrl = /** @class */ (function (_super) {
         var tableArray = new Array;
         var data = dataList[0];
         var rows = data.rows;
-        for (var count = 0; count < rows.length; count++) {
-            var row = rows[count];
-            var dateTitle = this.transformerEpochToDate(row[0]);
+        rows.forEach(function (row, count) {
+            var dateTitle = _this.transformerEpochToDate(row[0]);
             columnMakeMap.set(row[0], dateTitle);
-            if (rowMakeArray.indexOf(row[1]) === -1)
+            if (rowMakeArray.indexOf(row[1]) === -1) {
                 rowMakeArray.push(row[1]);
+            }
             valueMakeMap.set(row[0] + "-" + row[1], row[2]);
-        }
+        });
         // console.log(columnMakeMap);
         // console.log(rowMakeArray);
         // console.log(valueMakeMap);
@@ -29194,12 +29195,12 @@ var RmsCPKTrendPanelCtrl = /** @class */ (function (_super) {
             align: "left",
         };
         fieldArray.push(obj.field);
-        if (this.panel.formatters.length > 0)
+        if (this.panel.formatters.length > 0) {
             this.columnOption(obj);
+        }
         this.columns.push(obj);
         var keyList = Array.from(columnMakeMap.keys());
-        for (var count = 0; count < keyList.length; count++) {
-            var key = keyList[count];
+        keyList.forEach(function (key, count) {
             console.log(key);
             obj = {
                 title: columnMakeMap.get(key),
@@ -29207,20 +29208,19 @@ var RmsCPKTrendPanelCtrl = /** @class */ (function (_super) {
                 align: "right",
             };
             console.log(obj);
-            if (this.panel.formatters.length > 0)
-                this.columnIndexOption(obj, count + 1);
-            this.columns.push(obj);
+            if (_this.panel.formatters.length > 0) {
+                _this.columnIndexOption(obj, count + 1);
+            }
+            _this.columns.push(obj);
             fieldArray.push(key);
-        }
+        });
         keyList = Array.from(valueMakeMap.keys());
         var tableMakeMap = new Map();
         var columnSize = this.columns.length - 1;
         // console.log(columnSize);
-        for (var count = 0; count < keyList.length; count++) {
-            var key = keyList[count];
-            // console.log(key);
+        keyList.forEach(function (key, count) {
             var indexStr = key.split('-');
-            if (tableMakeMap.has(fieldArray[0]) == false) {
+            if (tableMakeMap.has(fieldArray[0]) === false) {
                 tableMakeMap.set(fieldArray[0], indexStr[1]);
                 // if (this.panel.formatters.length > 0)
                 //   this.columnOption(obj);
@@ -29230,40 +29230,41 @@ var RmsCPKTrendPanelCtrl = /** @class */ (function (_super) {
             // console.log((count%columnSize)+1);
             // console.log(fieldArray[(count%columnSize)+1]);
             // tableMakeMap.set("" + fieldArray[(count%columnSize)+1] + "", valueMakeMap.get(key));
-            tableMakeMap.set("" + fieldArray[(count % columnSize) + 1] + "", Number(valueMakeMap.get(key)).toFixed(this.panel.allDeciaml));
-            if ((count % columnSize) + 1 == columnSize && count !== 0) {
+            tableMakeMap.set("" + fieldArray[(count % columnSize) + 1] + "", Number(valueMakeMap.get(key)).toFixed(_this.panel.allDeciaml));
+            if ((count % columnSize) + 1 === columnSize && count !== 0) {
                 var object = Object();
                 var totalValue = 0;
                 var size = 0;
                 tableMakeMap.forEach(function (v, k) {
                     object[k] = v;
                     if (k !== 'inm') {
-                        if (Number(v) !== 0)
+                        if (Number(v) !== 0) {
                             size = size + 1;
+                        }
                         totalValue = Number(v) + Number(totalValue);
                     }
                 });
                 // object.average = totalValue/(size);
                 var avg = totalValue / (size);
-                object.average = avg.toFixed(this.panel.allDeciaml);
+                object.average = avg.toFixed(_this.panel.allDeciaml);
                 tableArray.push(object);
                 tableMakeMap = new Map();
             }
-        }
+        });
         var averageTitle = {
             title: 'AVG',
             field: 'average',
             align: "right"
         };
-        if (this.panel.formatters.length > 0)
+        if (this.panel.formatters.length > 0) {
             this.columnOption(obj);
+        }
         this.columns.push(averageTitle);
         // console.log(tableMakeMap);
         // console.log(tableArray);
         // console.log(this.columns);
         this.dataJson = tableArray;
     };
-    ;
     RmsCPKTrendPanelCtrl.prototype.transformerEpochToDate = function (incomingUTCepoch) {
         var utcDate = new Date(incomingUTCepoch);
         return (utcDate.getMonth() + 1) + "월" + utcDate.getDate() + "일";
@@ -29277,16 +29278,14 @@ var RmsCPKTrendPanelCtrl = /** @class */ (function (_super) {
             obj.align = formatter.align;
             obj.formatter = function (cell, formatterParam) {
                 var value = cell.getValue();
-                if (isNaN(value) == false) {
-                    if (formatter.localstring == true) {
-                        return Number((Number(value)).toFixed(formatter.decimal)).toLocaleString('en');
-                    }
-                    else {
-                        return (Number(value)).toFixed(formatter.decimal);
-                    }
+                if (isNaN(value) === false) {
+                    return formatter.localstring
+                        ? Number((Number(value)).toFixed(formatter.decimal)).toLocaleString('en')
+                        : (Number(value)).toFixed(formatter.decimal);
                 }
-                else
+                else {
                     return value;
+                }
             };
         }
     };
@@ -29299,16 +29298,14 @@ var RmsCPKTrendPanelCtrl = /** @class */ (function (_super) {
             obj.align = formatter.align;
             obj.formatter = function (cell, formatterParam) {
                 var value = cell.getValue();
-                if (isNaN(value) == false) {
-                    if (formatter.localstring == true) {
-                        return Number((Number(value)).toFixed(formatter.decimal)).toLocaleString('en');
-                    }
-                    else {
-                        return (Number(value)).toFixed(formatter.decimal);
-                    }
+                if (isNaN(value) === false) {
+                    return (formatter.localstring)
+                        ? Number((Number(value)).toFixed(formatter.decimal)).toLocaleString('en')
+                        : (Number(value)).toFixed(formatter.decimal);
                 }
-                else
+                else {
                     return value;
+                }
             };
         }
     };
@@ -29327,7 +29324,7 @@ var RmsCPKTrendPanelCtrl = /** @class */ (function (_super) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"editor-row\">\r\n    <div class=\"thingspin-table\"></div>\r\n</div>\r\n";
+module.exports = "<div class=\"editor-row\">\n    <div class=\"thingspin-table\"></div>\n</div>\n";
 
 /***/ }),
 

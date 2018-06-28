@@ -208,8 +208,9 @@ var RmsProductStateBarChartPanelCtrl = /** @class */ (function (_super) {
             this.chart = new chart_js_dist_Chart_min__WEBPACK_IMPORTED_MODULE_1__(this.context, charOpts);
         }
         else {
-            if (this.chart)
+            if (this.chart) {
                 this.chart.clear();
+            }
         }
     };
     RmsProductStateBarChartPanelCtrl.prototype.addData = function (chart, data) {

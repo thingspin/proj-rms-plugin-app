@@ -39,18 +39,18 @@ class RmsXbarRAnalyticsPanelCtrl extends MetricsPanelCtrl {
     this.events.on('render', this.onRender.bind(this));
     this.events.on('panel-size-changed', this.onSizeChanged.bind(this));
     this.events.on('panel-initialized', this.onRender.bind(this));
-    
+
     for (var i = 1; i <= 10000; i++) {
       this.series.push(this.gaussianRandom(1,6));
     }
 
-    this.series = _.countBy(this.series)
+    this.series = _.countBy(this.series);
 
     for (var key in this.series) {
       this.result.push({
-        "x":key,
-        "y":this.series[key]
-      })
+        x: key,
+        y: this.series[key]
+      });
     }
 
     this.data = {
@@ -64,7 +64,7 @@ class RmsXbarRAnalyticsPanelCtrl extends MetricsPanelCtrl {
       ]
     };
   }
-  
+
   OnInitialized() {
     this.OnDraw();
   }
@@ -84,12 +84,12 @@ class RmsXbarRAnalyticsPanelCtrl extends MetricsPanelCtrl {
           var meta = chart.getDatasetMeta(i);
           if (!meta.hidden) {
             meta.data.forEach(function(element, index) {
-    
+
               ctx.fillStyle = 'rgb(0, 0, 0)';
               var fontSize = 12;
-    
+
               var dataString = JSON.stringify(dataset.data[index]);
-    
+
               ctx.textAlign = 'center';
               ctx.textBaseline = 'middle';
               var padding = 3;
@@ -105,7 +105,7 @@ class RmsXbarRAnalyticsPanelCtrl extends MetricsPanelCtrl {
       type: 'line',
       data: this.data,
       options: {
-        tooltips:{
+        tooltips: {
           enabled: true
         },
         annotation: {
@@ -118,7 +118,7 @@ class RmsXbarRAnalyticsPanelCtrl extends MetricsPanelCtrl {
                 borderColor: 'red',
                 borderDash: [2, 2],
                 borderWidth: 2,
-                
+
                 value: 2,
 
                 scaleID: 'x-axis-0',
@@ -135,7 +135,7 @@ class RmsXbarRAnalyticsPanelCtrl extends MetricsPanelCtrl {
                   yAdjust: 0,
                   enabled: true,
                   content: "LSL"
-              }         
+              }
             },
             {
               type: 'line',
@@ -145,7 +145,7 @@ class RmsXbarRAnalyticsPanelCtrl extends MetricsPanelCtrl {
               borderColor: 'red',
               borderDash: [2, 2],
               borderWidth: 2,
-              
+
               value: 5,
 
               scaleID: 'x-axis-0',
@@ -162,20 +162,19 @@ class RmsXbarRAnalyticsPanelCtrl extends MetricsPanelCtrl {
                 yAdjust: 0,
                 enabled: true,
                 content: "USL"
-              }    
-            }            
+              }
+            }
           ],
           drawTime: "afterDatasetsDraw"
         },
-        scales:{
+        scales: {
           xAxes: [{
-            id:'x-axis-0',
+            id: 'x-axis-0',
             type: "linear",
             display: true,
             //autoSkip: true,
            // position: "bottom",
-            
-            ticks:{
+            ticks: {
               min: 1,
               max: 6,
               stepSize: 1
@@ -184,18 +183,18 @@ class RmsXbarRAnalyticsPanelCtrl extends MetricsPanelCtrl {
             //position: "bottom"
           }]
           ,
-          yAxes:[{
-            id:'y-axis-0',
+          yAxes: [{
+            id: 'y-axis-0',
             type: "linear",
             display: true,
             //autoSkip: true,
-            ticks:{
+            ticks: {
               min: 0,
               max: 10000,
               stepSize: 500
             }
             //position: "left"
-          }]    
+          }]
         }
         ,
         responsive: true,

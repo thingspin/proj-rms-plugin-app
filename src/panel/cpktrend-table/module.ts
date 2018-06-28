@@ -39,10 +39,10 @@ class RmsCPKTrendPanelCtrl extends MetricsPanelCtrl {
   columns = [];
   indexColumns = [];
   aligns = [];
-  dataJson : any;
+  dataJson: any;
   defTabulatorOpts: object;
-  mode : any;
-  tableName : string;
+  mode: any;
+  tableName: string;
 
   constructor($scope, $injector, $http, $location, uiSegmentSrv, annotationsSrv) {
     super($scope, $injector);
@@ -88,10 +88,10 @@ class RmsCPKTrendPanelCtrl extends MetricsPanelCtrl {
   delFormatter(index) {
     this.panel.formatters.splice(index,1);
   }
-  
+
   addFormatter() {
     console.log(this.panel.formatters);
-    this.panel.formatters.push({name: '', localstring: false, decimal: 2, fontsize: 0, width: 100, align:this.aligns[0]});
+    this.panel.formatters.push({name: '', localstring: false, decimal: 2, fontsize: 0, width: 100, align: this.aligns[0]});
   }
 
   onDataReceived(dataList) {
@@ -110,7 +110,7 @@ class RmsCPKTrendPanelCtrl extends MetricsPanelCtrl {
       { id: 4, name: "Brendon Philips", age: "125", col: "orange", dob: "01/08/1980"},
       { id: 5, name: "Margret Marmajuke", age: "16", col: "yellow", dob: "31/01/1999"},
     ];
-    if (this.initalized == true) {
+    if (this.initalized) {
       this.container.tabulator("destroy");
     }
     this.defTabulatorOpts = {
@@ -118,7 +118,7 @@ class RmsCPKTrendPanelCtrl extends MetricsPanelCtrl {
       paginationSize: 20,
       selectable: 1,
       fitColumns: true,
-      resizableColumns: this.panel.resizeValue,    
+      resizableColumns: this.panel.resizeValue,
       layout: "fitColumns",
       columns: this.columns,
     };
@@ -155,17 +155,15 @@ class RmsCPKTrendPanelCtrl extends MetricsPanelCtrl {
     var data = dataList[0];
     var rows = data.rows;
 
-    for (var count=0; count < rows.length; count++) {
-      var row = rows[count];
+    rows.forEach((row, count) => {
       var dateTitle = this.transformerEpochToDate(row[0]);
       columnMakeMap.set(row[0], dateTitle);
-      
-      if (rowMakeArray.indexOf(row[1]) === -1)
-        rowMakeArray.push(row[1]);
-      
-      valueMakeMap.set(row[0] + "-" + row[1], row[2]);
-    }
 
+      if (rowMakeArray.indexOf(row[1]) === -1) {
+        rowMakeArray.push(row[1]);
+      }
+      valueMakeMap.set(row[0] + "-" + row[1], row[2]);
+    });
     // console.log(columnMakeMap);
     // console.log(rowMakeArray);
     // console.log(valueMakeMap);
@@ -175,39 +173,38 @@ class RmsCPKTrendPanelCtrl extends MetricsPanelCtrl {
       field: 'inm',
       align: "left",
       // editor: this.autocompEditor,
-    }
+    };
     fieldArray.push(obj.field);
-    if (this.panel.formatters.length > 0)
+    if (this.panel.formatters.length > 0) {
       this.columnOption(obj);
+    }
     this.columns.push(obj);
 
     var keyList = Array.from(columnMakeMap.keys());
-    for (var count=0;count<keyList.length;count++) {
-      var key = keyList[count];
-      console.log(key)
+    keyList.forEach((key, count) => {
+      console.log(key);
       obj = {
         title: columnMakeMap.get(key),
         field: "" + key + "",
         align: "right",
         // editor: this.autocompEditor,
-      }
+      };
       console.log(obj);
-      if (this.panel.formatters.length > 0)
+      if (this.panel.formatters.length > 0) {
         this.columnIndexOption(obj, count+1);
+      }
       this.columns.push(obj);
       fieldArray.push(key);
-    }
+    });
 
     keyList = Array.from(valueMakeMap.keys());
     var tableMakeMap = new Map();
     var columnSize = this.columns.length-1;
     // console.log(columnSize);
-    for  (var count=0;count<keyList.length;count++) {
-      var key = keyList[count];
-      // console.log(key);
-      var indexStr =key.split('-');
+    keyList.forEach((key, count) => {
+      var indexStr = key.split('-');
 
-      if (tableMakeMap.has(fieldArray[0]) == false) {
+      if (tableMakeMap.has(fieldArray[0]) === false) {
         tableMakeMap.set(fieldArray[0], indexStr[1]);
           // if (this.panel.formatters.length > 0)
           //   this.columnOption(obj);
@@ -217,17 +214,18 @@ class RmsCPKTrendPanelCtrl extends MetricsPanelCtrl {
       // console.log((count%columnSize)+1);
       // console.log(fieldArray[(count%columnSize)+1]);
       // tableMakeMap.set("" + fieldArray[(count%columnSize)+1] + "", valueMakeMap.get(key));
-        tableMakeMap.set("" + fieldArray[(count%columnSize)+1] + "", Number(valueMakeMap.get(key)).toFixed(this.panel.allDeciaml));
-      
-      if ((count%columnSize)+1 == columnSize && count !== 0) {
+      tableMakeMap.set("" + fieldArray[(count%columnSize)+1] + "", Number(valueMakeMap.get(key)).toFixed(this.panel.allDeciaml));
+
+      if ((count%columnSize)+1 === columnSize && count !== 0) {
         var object = Object();
         var totalValue = 0;
         var size = 0;
         tableMakeMap.forEach((v,k)=> {
           object[k] = v;
           if (k !== 'inm') {
-            if (Number(v) !== 0)
+            if (Number(v) !== 0) {
               size = size + 1;
+            }
             totalValue = Number(v) + Number(totalValue);
           }
         });
@@ -237,20 +235,21 @@ class RmsCPKTrendPanelCtrl extends MetricsPanelCtrl {
         tableArray.push(object);
         tableMakeMap = new Map();
       }
-    }
+    });
     var averageTitle = {
       title: 'AVG',
       field: 'average',
       align: "right"
-    }
-    if (this.panel.formatters.length > 0)
+    };
+    if (this.panel.formatters.length > 0) {
       this.columnOption(obj);
+    }
     this.columns.push(averageTitle);
     // console.log(tableMakeMap);
     // console.log(tableArray);
     // console.log(this.columns);
     this.dataJson = tableArray;
-  };
+  }
 
   transformerEpochToDate(incomingUTCepoch) {
     var utcDate = new Date(incomingUTCepoch);
@@ -266,15 +265,14 @@ class RmsCPKTrendPanelCtrl extends MetricsPanelCtrl {
       obj.align = formatter.align;
       obj.formatter = function(cell, formatterParam) {
         var value = cell.getValue();
-        if (isNaN(value) == false) {
-          if (formatter.localstring == true) {
-            return Number((Number(value)).toFixed(formatter.decimal)).toLocaleString('en');
-          } else {
-            return (Number(value)).toFixed(formatter.decimal);
-          }          
-        } else
+        if (isNaN(value) === false) {
+          return formatter.localstring
+            ? Number((Number(value)).toFixed(formatter.decimal)).toLocaleString('en')
+            : (Number(value)).toFixed(formatter.decimal);
+        } else {
           return value;
-      }
+        }
+      };
     }
   }
 
@@ -287,15 +285,14 @@ class RmsCPKTrendPanelCtrl extends MetricsPanelCtrl {
       obj.align = formatter.align;
       obj.formatter = function(cell, formatterParam) {
         var value = cell.getValue();
-        if (isNaN(value) == false) {
-          if (formatter.localstring == true) {
-            return Number((Number(value)).toFixed(formatter.decimal)).toLocaleString('en');
-          } else {
-            return (Number(value)).toFixed(formatter.decimal);
-          }          
-        } else
+        if (isNaN(value) === false) {
+          return (formatter.localstring)
+            ? Number((Number(value)).toFixed(formatter.decimal)).toLocaleString('en')
+            : (Number(value)).toFixed(formatter.decimal);
+        } else {
           return value;
-      }
+        }
+      };
     }
   }
 }

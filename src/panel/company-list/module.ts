@@ -12,9 +12,6 @@ loadPluginCss({
   light: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.light.css'
 });
 
-const template = require("./partial/templet.html");
-//const options = require("./partial/options.html");
-
 const BUSINESS_ID = '업체 ID';
 const BUSINESS_NAME = '업체명';
 const BUSINESS_TYPE = '업종';
@@ -24,7 +21,7 @@ const BUSINESS_MAIL = '이메일';
 const BUSINESS_MEMO = '메모';
 
 class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
-  static template = template;
+  static template = require("./partial/templet.html");
 
   alertSrv: any;
   $rootScope: any;
@@ -42,10 +39,10 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
   dataRaw = [];
   columns = [];
   aligns = [];
-  dataJson : any;
+  dataJson: any;
 
-  mode : any;
-  isViewer : any;
+  mode: any;
+  isViewer: any;
 
   panelDefaults = {
     // options: {
@@ -60,7 +57,7 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
     businessCategory: [
       '소모품업체',
       '장비업체',
-      '금형업체'      
+      '금형업체'
     ],
 
     inputlItem: {
@@ -70,7 +67,7 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
       phone: '',
       person : '',
       mail : '',
-      memo : '',      
+      memo : '',
     },
 
     formatters : [],
@@ -81,8 +78,9 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
     super($scope, $injector);
 
     this.isViewer = contextSrv.hasRole('Viewer');
-    if (!this.isViewer)
+    if (!this.isViewer) {
       this.mode = 'showBtn';
+    }
 
       this.aligns = ['LEFT','CENTER','RIGHT'];
 
@@ -112,7 +110,7 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
 
   onInitEditMode() {
     this.addEditorTab('Options', `public/plugins/proj-rms-plugin-app/panel/company-list/partial/options.html`, 2);
-  }  
+  }
 
   link(scope, elem, attrs, ctrl) {
     console.log("link");
@@ -134,7 +132,7 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
       console.log("table is not initialized, yet!");
       //return Promise.resolve(this.createTable(null));
       return Promise.resolve(this.createTable(this.dataJson));
-    } 
+    }
 
     return super.render(this.container.tabulator);
   }
@@ -150,7 +148,7 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
 
   addFormatter() {
     console.log(this.panel.formatters);
-    this.panel.formatters.push({name: '', localstring: false, decimal: 2, fontsize: 0, width: 100, align:this.aligns[0]});
+    this.panel.formatters.push({name: '', localstring: false, decimal: 2, fontsize: 0, width: 100, align: this.aligns[0]});
   }
 
   onDataReceived(dataList) {
@@ -159,41 +157,41 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
     //console.log(this.dataRaw);
     Promise.resolve(this.transformer(this.dataRaw));
     this.createTable(this.dataJson);
-  }  
+  }
 
   createTable(dataList) {
-    //console.log("create table ...");   
-    
+    //console.log("create table ...");
+
     // var tabledata = [
-    //   { id: 1, name: 'A업체', phone: '010-1234-1234', person: '아무개', mail: 'email1@mda.com',  memo: ''}, 
-    //   { id: 2, name: 'B업체', phone: '010-1234-1234', person: '아무개', mail: 'email1@mda.com',  memo: ''},     
+    //   { id: 1, name: 'A업체', phone: '010-1234-1234', person: '아무개', mail: 'email1@mda.com',  memo: ''},
+    //   { id: 2, name: 'B업체', phone: '010-1234-1234', person: '아무개', mail: 'email1@mda.com',  memo: ''},
     // ];
 
-    if (this.initalized == true) {
+    if (this.initalized) {
       this.container.tabulator("destroy");
-    }  
+    }
 
-    var g_root = this;       
+    var g_root = this;
     this.container.tabulator({
       pagination: "local",
       paginationSize: 10,
       selectable: 1,
-      fitColumns: true,     
+      fitColumns: true,
       layout: "fitColumns",
       resizableColumns: this.panel.resizeValue,
       columns: this.columns,
-      rowClick: function(e, row) {              
-        
+      rowClick: function(e, row) {
+
         g_root.showCtrlMode('edit');
-        row.select();           
-        
+        row.select();
+
         g_root.panel.inputlItem.business_id = row.getData()[BUSINESS_ID];
         g_root.panel.inputlItem.name = row.getData()[BUSINESS_NAME];
         g_root.panel.inputlItem.business_type = row.getData()[BUSINESS_TYPE];
         g_root.panel.inputlItem.phone = row.getData()[BUSINESS_PHONE];
         g_root.panel.inputlItem.person = row.getData()[BUSINESS_PERSON];
         g_root.panel.inputlItem.mail = row.getData()[BUSINESS_MAIL];
-        g_root.panel.inputlItem.memo = row.getData()[BUSINESS_MEMO];  
+        g_root.panel.inputlItem.memo = row.getData()[BUSINESS_MEMO];
 
         //g_root.panel.inputlItem.business_id = row.getData().BUSINESS_ID;
         // g_root.panel.inputlItem.name = row.getData().NAME;
@@ -201,11 +199,11 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
         // g_root.panel.inputlItem.phone = row.getData().PHONE;
         // g_root.panel.inputlItem.person = row.getData().PERSON;
         // g_root.panel.inputlItem.mail = row.getData().MAIL;
-        // g_root.panel.inputlItem.memo = row.getData().MEMO;               
-        
+        // g_root.panel.inputlItem.memo = row.getData().MEMO;
+
         g_root.events.emit('panel-size-changed');
-        //g_root.$rootScope.$broadcast('refresh');           
-                 
+        //g_root.$rootScope.$broadcast('refresh');
+
         console.log("select business_id: " + g_root.panel.inputlItem.business_id);
       },
     });
@@ -229,137 +227,130 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
     var data = dataList[0];
     var rows = data.rows;
     var getColumns = data.columns;
-    for (var count=0; count < getColumns.length; count++) {
-      var column = getColumns[count].text;
-      var obj = {
+    getColumns.forEach((columnObj, count) => {
+      const column = columnObj.text;
+      const obj = {
         title: column,
         field: column,
         align: "left",
         // editor: this.autocompEditor,
-      }
+      };
       if (this.panel.formatters.length > 0) {
         this.columnOption(obj);
       }
       this.columns.push(obj);
-    }
-    
+    });
+
     var jArray = new Array;
     var mapData = new Map();
-    for (var count=0; count < rows.length; count++) {
-      var row = rows[count];
-      for (var row_count=0; row_count < row.length; row_count++) {
-        var item = row[row_count];
+    rows.forEach((row, count) => {
+      row.forEach((item, row_count) => {
         mapData.set(getColumns[row_count].text,item);
-      }
+      });
       var object = Object();
-      mapData.forEach((v,k)=> {object[k] = v});
+      mapData.forEach((v,k)=> {object[k] = v;});
       jArray.push(object);
-    }
+    });
     this.dataJson = jArray;
-  };
+  }
 
   onNew() {
 
-    let info = this.panel.inputlItem; 
+    let info = this.panel.inputlItem;
 
     // console.log(info.name);
     // console.log(info.person);
     // console.log(info.mail);
     // console.log(info.phone);
 
-    if (info.name == "" 
-      || info.person == ""
-      || info.mail == ""
-      || info.phone == "" ) {
+    if (info.name === ""
+      || info.person === ""
+      || info.mail === ""
+      || info.phone === "" ) {
       this.alertSrv.set("입력 정보를 확인해 주세요", 'error', 5000);
-    }
-    else
-    {
+    } else {
       this.$rootScope.appEvent('confirm-modal', {
         title: '등록',
         text: '정말로 등록 하시겠습니까?',
         //icon: 'fa-trash',
         //yesText: '삭제',
         onConfirm: () => {
-            
           let selectId = this.datasource.id;
           // let query1 = [
-          //   'select * from t_business where business_type="' 
+          //   'select * from t_business where business_type="'
           //   + info.business_type + '" and name="' + info.name + '" and person="' + info.person + '";'
-          // ];     
+          // ];
 
           let query1 = [
-            'select * from t_business where business_type="' 
+            'select * from t_business where business_type="'
             + info.business_type + '" and name="' + info.name + '"'
-          ];     
-  
+          ];
           //console.log(selectId + " " + query);
           this.rsDsSrv.query(selectId, query1).then( result => {
             var data = result[0];
-            //console.log("data rows: " + data.rows.length);  
-            if(data.rows.length == 0)
-            {
-  
+            //console.log("data rows: " + data.rows.length);
+            if (data.rows.length === 0) {
               let query2 = [
                 'insert into t_business(business_type, name, phone, person, mail, memo) values("'
-                + info.business_type + '", "' + info.name + '", "' + info.phone + '", "' + info.person + '", "' +  info.mail + '", "' +  info.memo + '");'
-              ]; 
-  
-              this.rsDsSrv.query(selectId, query2).then( result => {            
+                + info.business_type + '", "'
+                + info.name + '", "'
+                + info.phone + '", "'
+                + info.person + '", "'
+                +  info.mail + '", "'
+                +  info.memo + '");'
+              ];
+
+              this.rsDsSrv.query(selectId, query2).then( result => {
                 this.panel.inputlItem.business_id = -1;
                 this.showCtrlMode('showBtn');
                 this.$rootScope.$broadcast('refresh');
               }).catch( err => {
                 console.error(err);
-              }); 
-            } 
-            else
-            {
+              });
+            } else {
               this.alertSrv.set("이미 등록 되어있습니다.", 'error', 5000);
             }
-  
           }).catch( err => {
             console.error(err);
-          });  
-  
+          });
+
           // {
           //   let query = [
           //     'insert into t_business(business_type, name, phone, person, mail, memo) values("'
           //     + info.business_type + '", "' + info.name + '", "' + info.phone + '", "' + info.person + '", "' +  info.mail + '", "' +  info.memo + '");'
-          //   ];       
-    
+          //   ];
+
           //   // let query = [
           //   //   'insert into t_business(business_type, name, phone, person, mail, memo) select "'
-          //   //   + info.business_type + '", "' 
-          //   //   + info.name + '", "' 
-          //   //   + info.phone + '", "' 
-          //   //   + info.person + '", "' 
-          //   //   +  info.mail + '", "' 
+          //   //   + info.business_type + '", "'
+          //   //   + info.name + '", "'
+          //   //   + info.phone + '", "'
+          //   //   + info.person + '", "'
+          //   //   +  info.mail + '", "'
           //   //   +  info.memo + '" from dual where not exists(select * from t_business where business_type="'
           //   //                                               + info.business_type + '" and name="'
           //   //                                               + info.name + '" and person="'
           //   //                                               + info.person + '")'
-          //   // ];       
-    
+          //   // ];
+
           //   console.log(selectId + " " + query);
-    
-          //   this.dsSrv.query(selectId, query).then( result => {            
+
+          //   this.dsSrv.query(selectId, query).then( result => {
           //     this.panel.inputlItem.business_id = -1;
           //     this.$rootScope.$broadcast('refresh');
           //   }).catch( err => {
           //     console.error(err);
-          //   });   
+          //   });
           // }
           //console.log("select business_id: " + this.panel.inputlItem.business_id);
         }
       });
-    }        
-  };
+    }
+  }
 
-  onEdit() {    
-
+  onEdit() {
     let info = this.panel.inputlItem;
-    if(info.business_id != -1){
+    if (info.business_id !== -1) {
 
       this.$rootScope.appEvent('confirm-modal', {
         title: '수정',
@@ -367,60 +358,56 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
         //icon: 'fa-trash',
         //yesText: '삭제',
         onConfirm: () => {
+          const selectId = this.datasource.id,
+          query2 = [
+            'update t_business set ' +
+            'name="' + info.name + '", ' +
+            'business_type="' + info.business_type + '", ' +
+            'phone="' + info.phone + '", ' +
+            'mail="' + info.mail + '", ' +
+            'person="' + info.person + '", ' +
+            'memo="' + info.memo + '" where business_id=' + info.business_id
+          ];
 
-          let selectId = this.datasource.id;
-
-          let query2 = [
-            'update t_business set ' + 
-            'name="' + info.name + '", ' + 
-            'business_type="' + info.business_type + '", ' + 
-            'phone="' + info.phone + '", ' + 
-            'mail="' + info.mail + '", ' + 
-            'person="' + info.person + '", ' + 
-            'memo="' + info.memo + '" where business_id=' + info.business_id        
-          ];       
-    
           //console.log(selectId + " " + query2);
-    
+
           this.rsDsSrv.query(selectId, query2).then( result => {
             this.panel.inputlItem.business_id = -1;
             this.showCtrlMode('showBtn');
             this.$rootScope.$broadcast('refresh');
           }).catch( err => {
             console.error(err);
-          });    
+          });
 
 
           /*
           let query1 = [
-            'select * from t_business where business_type="' 
+            'select * from t_business where business_type="'
             + info.business_type + '" and name="' + info.name + '" and business_id!=' + info.business_id
           ];
           console.log(query1);
           this.rsDsSrv.query(selectId, query1).then( result => {
             var data = result[0];
-            //console.log("data rows: " + data.rows.length);  
+            //console.log("data rows: " + data.rows.length);
             if(data.rows.length == 0)
             {
               let query2 = [
-                'update t_business set ' + 
-                'name="' + info.name + '", ' + 
-                'business_type="' + info.business_type + '", ' + 
-                'phone="' + info.phone + '", ' + 
-                'mail="' + info.mail + '", ' + 
-                'person="' + info.person + '", ' + 
-                'memo="' + info.memo + '" where business_id=' + info.business_id        
-              ];       
-        
+                'update t_business set ' +
+                'name="' + info.name + '", ' +
+                'business_type="' + info.business_type + '", ' +
+                'phone="' + info.phone + '", ' +
+                'mail="' + info.mail + '", ' +
+                'person="' + info.person + '", ' +
+                'memo="' + info.memo + '" where business_id=' + info.business_id
+              ];
               //console.log(selectId + " " + query2);
-        
               this.rsDsSrv.query(selectId, query2).then( result => {
                 this.panel.inputlItem.business_id = -1;
                 this.showCtrlMode('showBtn');
                 this.$rootScope.$broadcast('refresh');
               }).catch( err => {
                 console.error(err);
-              });    
+              });
             }
             else
             {
@@ -428,23 +415,20 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
             }
           }).catch( err => {
             console.error(err);
-          });           
+          });
           */
         }
-      });   
+      });
 
-    }
-    else{
+    } else {
       this.alertSrv.set("테이블의 Row를 선택해 주세요", 'error', 5000);
-    }    
+    }
+  }
 
-  };
-
-  onDel() {    
-    
+  onDel() {
     let info = this.panel.inputlItem;
-    if(info.business_id != -1){
 
+    if (info.business_id !== -1) {
       this.$rootScope.appEvent('confirm-modal', {
         title: '삭제',
         text: '정말로 삭제 하시겠습니까?',
@@ -454,8 +438,7 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
           let selectId = this.datasource.id;
           let query = [
             'delete from t_business where business_id=' + info.business_id
-          ];       
-
+          ];
           console.log(selectId + " " + query);
 
           this.rsDsSrv.query(selectId, query).then( result => {
@@ -468,33 +451,33 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
               phone: '',
               person : '',
               mail : '',
-              memo : '',      
-            }
+              memo : '',
+            };
             this.showCtrlMode('showBtn');
             this.$rootScope.$broadcast('refresh');
           }).catch( err => {
             console.error(err);
-          });  
-        } 
+          });
+        }
       });
-    }
-    else{
+    } else {
       this.alertSrv.set("테이블의 Row를 선택해 주세요", 'error', 5000);
     }
-  };
+  }
 
   close() {
-    if (this.isViewer)
+    if (this.isViewer) {
       this.showCtrlMode('list');
-    else
+    } else {
       this.showCtrlMode('showBtn');
+    }
     this.refresh();
   }
 
   showCtrlMode(mode) {
-    if (mode == 'new') {
+    if (mode === 'new') {
       var selectedRows = this.container.tabulator("getSelectedRows");
-      if (selectedRows != undefined) {
+      if (selectedRows !== undefined) {
         this.container.tabulator("deselectRow", selectedRows);
       }
       this.panel.inputlItem = {
@@ -504,13 +487,13 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
         phone: '',
         person : '',
         mail : '',
-        memo : '',      
-      }
+        memo : '',
+      };
       this.refresh();
     }
     this.mode = mode;
     this.events.emit('panel-size-changed');
-  };
+  }
 
   columnOption(obj) {
     // console.log(obj);
@@ -521,15 +504,14 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
       obj.align = formatter.align;
       obj.formatter = function(cell, formatterParam) {
         var value = cell.getValue();
-        if (isNaN(value) == false) {
-          if (formatter.localstring == true) {
-            return Number((Number(value)).toFixed(formatter.decimal)).toLocaleString('en');
-          } else {
-            return (Number(value)).toFixed(formatter.decimal);
-          }          
-        } else
+        if (isNaN(value) === false) {
+          return formatter.localstring
+            ? Number((Number(value)).toFixed(formatter.decimal)).toLocaleString('en')
+            : (Number(value)).toFixed(formatter.decimal);
+        } else {
           return value;
-      }
+        }
+      };
     }
   }
 }

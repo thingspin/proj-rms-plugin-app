@@ -29092,8 +29092,9 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
         lodash__WEBPACK_IMPORTED_MODULE_0___default.a.defaults(_this.panel, panelDefaults);
         // _.defaults(this.panel);
         _this.isViewer = contextSrv.hasRole('Viewer');
-        if (!_this.isViewer)
+        if (!_this.isViewer) {
             _this.mode = 'showBtn';
+        }
         _this.machine = {
             id: DEVICE_ID,
             name: DEVICE_NAME,
@@ -29153,8 +29154,9 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
         this.dataRaw = dataList;
         Promise.resolve(this.transformer(this.dataRaw));
         this.createTable(this.dataJson);
-        if (this.mode != 'edit')
+        if (this.mode !== 'edit') {
             this.initQueryData();
+        }
     };
     RmsMachineMaterialPanelCtrl.prototype.createTable = function (dataList) {
         var _this = this;
@@ -29165,7 +29167,7 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
             { id: 4, name: "Brendon Philips", age: "125", col: "orange", dob: "01/08/1980" },
             { id: 5, name: "Margret Marmajuke", age: "16", col: "yellow", dob: "31/01/1999" },
         ];
-        if (this.initalized == true) {
+        if (this.initalized) {
             this.container.tabulator("destroy");
         }
         this.defTabulatorOpts = {
@@ -29227,24 +29229,21 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
         }
     };
     RmsMachineMaterialPanelCtrl.prototype.close = function () {
-        if (this.isViewer)
-            this.showCtrlMode('list');
-        else
-            this.showCtrlMode('showBtn');
+        var mode = (this.isViewer) ? 'list' : 'showBtn';
+        this.showCtrlMode(mode);
         this.refresh();
     };
     RmsMachineMaterialPanelCtrl.prototype.transDataBusiness = function (dataList) {
+        var _this = this;
         this.business = [];
         var data = dataList[0];
         var rows = data.rows;
-        for (var count = 0; count < rows.length; count++) {
-            var item = rows[count];
-            var obj = {
+        rows.forEach(function (item, count) {
+            _this.business.push({
                 name: item[1] + " : " + item[2],
                 id: item[0]
-            };
-            this.business.push(obj);
-        }
+            });
+        });
     };
     RmsMachineMaterialPanelCtrl.prototype.columnOption = function (obj) {
         // console.log(obj);
@@ -29255,42 +29254,44 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
             obj.align = formatter.align;
             obj.formatter = function (cell, formatterParam) {
                 var value = cell.getValue();
-                if (isNaN(value) == false) {
-                    if (formatter.localstring == true) {
+                if (isNaN(value) === false) {
+                    if (formatter.localstring) {
                         return Number((Number(value)).toFixed(formatter.decimal)).toLocaleString('en');
                     }
                     else {
                         return (Number(value)).toFixed(formatter.decimal);
                     }
                 }
-                else
+                else {
                     return value;
+                }
             };
         }
     };
     RmsMachineMaterialPanelCtrl.prototype.transformer = function (dataList) {
+        var _this = this;
         this.columns = [];
         this.checker = [];
         var data = dataList[0];
         var rows = data.rows;
         var getColumns = data.columns;
-        for (var count = 0; count < getColumns.length; count++) {
-            var column = getColumns[count].text;
-            var obj = {
+        getColumns.forEach(function (columnObj, count) {
+            var column = columnObj.text, obj = {
                 title: column,
                 field: column,
             };
-            if (this.panel.formatters.length > 0)
-                this.columnOption(obj);
-            this.columns.push(obj);
-        }
+            if (_this.panel.formatters.length > 0) {
+                _this.columnOption(obj);
+            }
+            _this.columns.push(obj);
+        });
         var jArray = new Array;
         var mapData = new Map();
         for (var count = 0; count < rows.length; count++) {
             var row = rows[count];
             for (var row_count = 0; row_count < row.length; row_count++) {
                 var item = row[row_count];
-                if (getColumns[row_count].text == DEVICE_NAME) {
+                if (getColumns[row_count].text === DEVICE_NAME) {
                     this.checker.push(item);
                 }
                 mapData.set(getColumns[row_count].text, item);
@@ -29301,20 +29302,16 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
         }
         this.dataJson = jArray;
     };
-    ;
     RmsMachineMaterialPanelCtrl.prototype.insertChecker = function (value) {
-        if (this.checker.indexOf(value) == -1)
-            return false;
-        else
-            return true;
+        return (this.checker.indexOf(value) === -1) ? false : true;
     };
     RmsMachineMaterialPanelCtrl.prototype.addMachineItem = function (businessSelect, name, memo) {
         var _this = this;
-        if (businessSelect == undefined) {
+        if (businessSelect === undefined) {
             this.alertSrv.set("업체를 입력해 주세요", 'error', 5000);
             return;
         }
-        else if (name == undefined) {
+        else if (name === undefined) {
             this.alertSrv.set("장비 이름을 입력해 주세요", 'error', 5000);
             return;
         }
@@ -29354,20 +29351,22 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
     };
     RmsMachineMaterialPanelCtrl.prototype.updateMachineItem = function (businessSelect, name, memo) {
         var _this = this;
-        if (businessSelect == undefined) {
+        if (businessSelect === undefined) {
             this.alertSrv.set("업체를 입력해 주세요", 'error', 5000);
             return;
         }
-        else if (name == undefined) {
+        else if (name === undefined) {
             this.alertSrv.set("장비 이름을 입력해 주세요", 'error', 5000);
             return;
         }
         else {
             var selectId = this.datasource.id;
-            if (memo === undefined)
+            if (memo === undefined) {
                 memo = "";
+            }
             var query = [
-                "update t_machine set MACHINE_NAME = '" + name + "', BUSINESS_ID = " + businessSelect.id + ", MEMO = '" + memo + "' where MACHINE_ID = '" + this.machine.id + "'",
+                "update t_machine set MACHINE_NAME = '" + name + "', BUSINESS_ID = " + businessSelect.id + ", MEMO = '" + memo
+                    + "' where MACHINE_ID = '" + this.machine.id + "'",
             ];
             this.rsDsSrv.query(selectId, query).then(function (result) {
                 // this.updateInspectionPropertyList(selectId);
@@ -29394,10 +29393,8 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
                 _this.rsDsSrv.query(selectId, query).then(function (result) {
                     // this.updateInspectionPropertyList(selectId);
                     _this.alertSrv.set(name + "이(가) 삭제 되었습니다.", '', 'success', 1000);
-                    if (_this.isViewer)
-                        _this.showCtrlMode('list');
-                    else
-                        _this.showCtrlMode('showBtn');
+                    var mode = (_this.isViewer) ? 'list' : 'showBtn';
+                    _this.showCtrlMode(mode);
                     _this.refresh();
                 }).catch(function (err) {
                     _this.alertSrv.set(name + " 삭제 실패", err, 'error', 5000);
@@ -29407,9 +29404,9 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
         });
     };
     RmsMachineMaterialPanelCtrl.prototype.showCtrlMode = function (value) {
-        if (value == 'new') {
+        if (value === 'new') {
             var selectedRows = this.container.tabulator("getSelectedRows");
-            if (selectedRows != undefined) {
+            if (selectedRows !== undefined) {
                 this.container.tabulator("deselectRow", selectedRows);
             }
             this.machine = {
@@ -29437,7 +29434,7 @@ var RmsMachineMaterialPanelCtrl = /** @class */ (function (_super) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div ng-switch on='ctrl.mode'>\r\n    <div ng-switch-when=\"showBtn\">\r\n        <button type=\"submit\" class=\"btn btn-primary\" ng-click=\"ctrl.showCtrlMode('new')\">신규 등록</button>\r\n        <br></br>\r\n    </div>\r\n    <div class=\"editor-row\">\r\n        <div class=\"thingspin-table\"></div>\r\n    </div>\r\n    <br></br>\r\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new\">\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-7\">장비 이름</label>\r\n            <input type=\"text\" class=\"gf-form-input width-20 max-width-16\"  data-placement=\"auto\" ng-model=\"ctrl.machine.name\" placeholder=\"장비 이름\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\r\n            <label class=\"gf-form-label width-7\">업체 선택</label>\r\n            <select class=\"gf-form-input width-16\" ng-model=\"ctrl.businessSelect\" ng-options=\"opts.name for opts in ctrl.business\" required></select>\r\n            <label class=\"gf-form-label width-7\">특이사항</label>\r\n            <input type=\"text\" class=\"gf-form-input width-20 max-width-24\"  data-placement=\"auto\" ng-model=\"ctrl.machine.memo\" placeholder=\"비고\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\r\n        </div>\r\n        <div class=\"gf-form\">\r\n            <button class=\"btn btn-success width-7\" ng-click=\"ctrl.addMachineItem(ctrl.businessSelect, ctrl.machine.name, ctrl.machine.memo)\">\r\n                신규 등록\r\n            </button>\r\n            &nbsp;&nbsp;\r\n            <button class=\"btn btn-success width-6\" ng-click=\"ctrl.close()\">\r\n                창 닫기\r\n            </button>\r\n        </div>\r\n    </div>\r\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"edit\">\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-7\">장비 이름</label>\r\n            <input type=\"text\" class=\"gf-form-input width-20 max-width-16\"  data-placement=\"auto\" ng-model=\"ctrl.machine.name\" placeholder=\"\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\r\n            <label class=\"gf-form-label width-7\">업체 선택</label>\r\n            <select class=\"gf-form-input width-16\" ng-model=\"ctrl.businessSelect\" ng-options=\"opts.name for opts in ctrl.business\" required></select>\r\n            <label class=\"gf-form-label width-7\">특이사항</label>\r\n            <input type=\"text\" class=\"gf-form-input width-20 max-width-24\"  data-placement=\"auto\" ng-model=\"ctrl.machine.memo\" placeholder=\"\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\r\n        </div>\r\n        <div class=\"gf-form\">\r\n            <button class=\"btn btn-success width-5\" ng-click=\"ctrl.updateMachineItem(ctrl.businessSelect, ctrl.machine.name, ctrl.machine.memo)\">\r\n                변경\r\n            </button>\r\n            &nbsp;&nbsp;\r\n            <button class=\"btn btn-success width-5\" ng-click=\"ctrl.deleteMachineItem(ctrl.machine.name)\">\r\n                삭제\r\n            </button>\r\n            &nbsp;&nbsp;\r\n            <button class=\"btn btn-success width-6\" ng-click=\"ctrl.close()\">\r\n                창 닫기\r\n            </button>\r\n        </div>\r\n    </div>\r\n</div>";
+module.exports = "<div ng-switch on='ctrl.mode'>\n    <div ng-switch-when=\"showBtn\">\n        <button type=\"submit\" class=\"btn btn-primary\" ng-click=\"ctrl.showCtrlMode('new')\">신규 등록</button>\n        <br></br>\n    </div>\n    <div class=\"editor-row\">\n        <div class=\"thingspin-table\"></div>\n    </div>\n    <br></br>\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new\">\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-7\">장비 이름</label>\n            <input type=\"text\" class=\"gf-form-input width-20 max-width-16\"  data-placement=\"auto\" ng-model=\"ctrl.machine.name\" placeholder=\"장비 이름\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\n            <label class=\"gf-form-label width-7\">업체 선택</label>\n            <select class=\"gf-form-input width-16\" ng-model=\"ctrl.businessSelect\" ng-options=\"opts.name for opts in ctrl.business\" required></select>\n            <label class=\"gf-form-label width-7\">특이사항</label>\n            <input type=\"text\" class=\"gf-form-input width-20 max-width-24\"  data-placement=\"auto\" ng-model=\"ctrl.machine.memo\" placeholder=\"비고\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\n        </div>\n        <div class=\"gf-form\">\n            <button class=\"btn btn-success width-7\" ng-click=\"ctrl.addMachineItem(ctrl.businessSelect, ctrl.machine.name, ctrl.machine.memo)\">\n                신규 등록\n            </button>\n            &nbsp;&nbsp;\n            <button class=\"btn btn-success width-6\" ng-click=\"ctrl.close()\">\n                창 닫기\n            </button>\n        </div>\n    </div>\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"edit\">\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-7\">장비 이름</label>\n            <input type=\"text\" class=\"gf-form-input width-20 max-width-16\"  data-placement=\"auto\" ng-model=\"ctrl.machine.name\" placeholder=\"\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\n            <label class=\"gf-form-label width-7\">업체 선택</label>\n            <select class=\"gf-form-input width-16\" ng-model=\"ctrl.businessSelect\" ng-options=\"opts.name for opts in ctrl.business\" required></select>\n            <label class=\"gf-form-label width-7\">특이사항</label>\n            <input type=\"text\" class=\"gf-form-input width-20 max-width-24\"  data-placement=\"auto\" ng-model=\"ctrl.machine.memo\" placeholder=\"\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\n        </div>\n        <div class=\"gf-form\">\n            <button class=\"btn btn-success width-5\" ng-click=\"ctrl.updateMachineItem(ctrl.businessSelect, ctrl.machine.name, ctrl.machine.memo)\">\n                변경\n            </button>\n            &nbsp;&nbsp;\n            <button class=\"btn btn-success width-5\" ng-click=\"ctrl.deleteMachineItem(ctrl.machine.name)\">\n                삭제\n            </button>\n            &nbsp;&nbsp;\n            <button class=\"btn btn-success width-6\" ng-click=\"ctrl.close()\">\n                창 닫기\n            </button>\n        </div>\n    </div>\n</div>";
 
 /***/ }),
 

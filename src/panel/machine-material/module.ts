@@ -42,33 +42,34 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
   business = [];
   checker = [];
   aligns = [];
-  businessSelect : any;
-  selectColumn : any;
-  machine : any;
-  dataJson : any;
+  businessSelect: any;
+  selectColumn: any;
+  machine: any;
+  dataJson: any;
   defTabulatorOpts: object;
   selectObj: any;
-  selectTableRow : any;
-  mode : any;
-  isEditor : any;
-  isViewer : any;
-  isAdmin : any;
-  dataIDMap : any;
+  selectTableRow: any;
+  mode: any;
+  isEditor: any;
+  isViewer: any;
+  isAdmin: any;
+  dataIDMap: any;
 
   constructor($scope, private $rootScope, $injector, $http, $location, uiSegmentSrv, annotationsSrv, contextSrv, private rsDsSrv, private alertSrv) {
     super($scope, $injector);
-    
+
     _.defaults(this.panel, panelDefaults);
     // _.defaults(this.panel);
     this.isViewer = contextSrv.hasRole('Viewer');
-    if (!this.isViewer)
+    if (!this.isViewer) {
       this.mode = 'showBtn';
-    
+    }
+
     this.machine = {
       id : DEVICE_ID,
       name : DEVICE_NAME,
       memo : DEVICE_MEMO
-    }
+    };
     this.aligns = ['LEFT','CENTER','RIGHT'];
 
     this.divID = 'table-rms-' + this.panel.id;
@@ -82,10 +83,9 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
   delFormatter(index) {
     this.panel.formatters.splice(index,1);
   }
-  
   addFormatter() {
     console.log(this.panel.formatters);
-    this.panel.formatters.push({name: '', localstring: false, decimal: 2, fontsize: 0, width: 100, align:this.aligns[0]});
+    this.panel.formatters.push({name: '', localstring: false, decimal: 2, fontsize: 0, width: 100, align: this.aligns[0]});
   }
 
   onInitialized() {
@@ -108,7 +108,7 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
           deferred.reject(err);
           console.log(err);
       });
-      return deferred.promise;  
+      return deferred.promise;
     }
   }
 
@@ -133,8 +133,9 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
     this.dataRaw = dataList;
     Promise.resolve(this.transformer(this.dataRaw));
     this.createTable(this.dataJson);
-    if (this.mode != 'edit')
+    if (this.mode !== 'edit') {
       this.initQueryData();
+    }
   }
 
   createTable(dataList) {
@@ -145,14 +146,14 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
       { id: 4, name: "Brendon Philips", age: "125", col: "orange", dob: "01/08/1980"},
       { id: 5, name: "Margret Marmajuke", age: "16", col: "yellow", dob: "31/01/1999"},
     ];
-    if (this.initalized == true) {
+    if (this.initalized) {
       this.container.tabulator("destroy");
     }
     this.defTabulatorOpts = {
       pagination: "local",
       paginationSize: 10,
       selectable: 1,
-      fitColumns: true,     
+      fitColumns: true,
       layout: "fitColumns",
       resizableColumns: this.panel.resizeValue,
       columns: this.columns
@@ -203,16 +204,14 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
       {
         this.machine.name = "";
         this.machine.memo = "";
-        this.businessSelect = null;        
+        this.businessSelect = null;
       }
     }
   }
 
   close() {
-    if (this.isViewer)
-      this.showCtrlMode('list');
-    else
-      this.showCtrlMode('showBtn');
+    const mode = (this.isViewer) ? 'list' : 'showBtn';
+    this.showCtrlMode(mode);
     this.refresh();
   }
 
@@ -220,14 +219,12 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
     this.business = [];
     var data = dataList[0];
     var rows = data.rows;
-    for (var count=0; count < rows.length; count++) {
-      var item = rows[count];
-      var obj = {
-        name:item[1] +" : "+ item[2],
-        id:item[0]
-      }
-      this.business.push(obj)
-    }
+    rows.forEach((item, count) => {
+      this.business.push({
+        name: item[1] +" : "+ item[2],
+        id: item[0]
+      });
+    });
   }
 
   columnOption(obj) {
@@ -239,71 +236,70 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
       obj.align = formatter.align;
       obj.formatter = function(cell, formatterParam) {
         var value = cell.getValue();
-        if (isNaN(value) == false) {
-          if (formatter.localstring == true) {
+        if (isNaN(value) === false) {
+          if (formatter.localstring) {
             return Number((Number(value)).toFixed(formatter.decimal)).toLocaleString('en');
           } else {
             return (Number(value)).toFixed(formatter.decimal);
-          }          
-        } else
+          }
+        } else {
           return value;
-      }
+        }
+      };
     }
   }
-  
+
   transformer(dataList) {
     this.columns = [];
     this.checker = [];
     var data = dataList[0];
     var rows = data.rows;
     var getColumns = data.columns;
-    for (var count=0; count < getColumns.length; count++) {
-      var column = getColumns[count].text;
-      var obj = {
+    getColumns.forEach((columnObj, count) => {
+      const column = columnObj.text,
+      obj = {
         title: column,
         field: column,
         // editor: this.autocompEditor,
-      }
-      if (this.panel.formatters.length > 0)
+      };
+      if (this.panel.formatters.length > 0) {
         this.columnOption(obj);
+      }
       this.columns.push(obj);
-    }
+    });
     var jArray = new Array;
     var mapData = new Map();
 
-    for (var count=0; count < rows.length; count++) {
+    for (var count = 0; count < rows.length; count++) {
       var row = rows[count];
-      for (var row_count=0; row_count < row.length; row_count++) {
+      for (var row_count = 0; row_count < row.length; row_count++) {
         var item = row[row_count];
-        if (getColumns[row_count].text == DEVICE_NAME) {
+        if (getColumns[row_count].text === DEVICE_NAME) {
           this.checker.push(item);
         }
         mapData.set(getColumns[row_count].text,item);
 
       }
       var object = Object();
-      mapData.forEach((v,k)=> {object[k] = v});
+      mapData.forEach((v,k)=> {object[k] = v;});
       jArray.push(object);
     }
     this.dataJson = jArray;
-  };
+  }
 
   insertChecker(value) {
-    if(this.checker.indexOf(value) == -1)
-      return false;
-    else 
-      return true;
+    return (this.checker.indexOf(value) === -1) ? false: true;
   }
 
   addMachineItem(businessSelect, name, memo) {
-    if (businessSelect == undefined) {
+    if (businessSelect === undefined) {
       this.alertSrv.set("업체를 입력해 주세요", 'error', 5000);
       return;
-    } else if (name == undefined) {
+    } else if (name === undefined) {
       this.alertSrv.set("장비 이름을 입력해 주세요", 'error', 5000);
       return;
     } else {
-      if(!this.insertChecker(name)) {
+      if (!this.insertChecker(name)) {
         let columns = "(PLANT_ID";
         let values = "('1000'";
         columns = columns + ", MACHINE_NAME";
@@ -324,7 +320,7 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
         }).catch( err => {
             this.alertSrv.set(name + " 추가 실패", err, 'error', 5000);
             console.error(err);
-        });  
+        });
       } else {
         this.alertSrv.set(name + "가 같은 장비 이름이 존재합니다. 다른 것으로 입력해주세요.", 'error', 5000);
         return;
@@ -333,18 +329,20 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
   }
 
   updateMachineItem(businessSelect, name, memo) {
-    if (businessSelect == undefined) {
+    if (businessSelect === undefined) {
       this.alertSrv.set("업체를 입력해 주세요", 'error', 5000);
       return;
-    } else if (name == undefined) {
+    } else if (name === undefined) {
       this.alertSrv.set("장비 이름을 입력해 주세요", 'error', 5000);
       return;
     } else {
       let selectId = this.datasource.id;
-      if (memo === undefined)
+      if (memo === undefined) {
         memo = "";
+      }
       let query = [
-        "update t_machine set MACHINE_NAME = '" + name + "', BUSINESS_ID = " + businessSelect.id + ", MEMO = '" + memo + "' where MACHINE_ID = '" + this.machine.id + "'",
+        "update t_machine set MACHINE_NAME = '" + name + "', BUSINESS_ID = " + businessSelect.id + ", MEMO = '" + memo
+          + "' where MACHINE_ID = '" + this.machine.id + "'",
       ];
       this.rsDsSrv.query(selectId, query).then( result => {
           // this.updateInspectionPropertyList(selectId);
@@ -353,7 +351,7 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
       }).catch( err => {
           this.alertSrv.set(name + " 변경 실패", err, 'error', 5000);
           console.error(err);
-      });  
+      });
     }
   }
 
@@ -371,10 +369,8 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
         this.rsDsSrv.query(selectId, query).then( result => {
             // this.updateInspectionPropertyList(selectId);
             this.alertSrv.set(name + "이(가) 삭제 되었습니다.", '', 'success', 1000);
-            if (this.isViewer)
-              this.showCtrlMode('list');
-            else
-              this.showCtrlMode('showBtn');
+            const mode = (this.isViewer) ? 'list' : 'showBtn';
+            this.showCtrlMode(mode);
             this.refresh();
         }).catch( err => {
             this.alertSrv.set(name + " 삭제 실패", err, 'error', 5000);
@@ -385,16 +381,16 @@ class RmsMachineMaterialPanelCtrl extends MetricsPanelCtrl {
   }
 
   showCtrlMode(value) {
-    if (value == 'new') {
+    if (value === 'new') {
       var selectedRows = this.container.tabulator("getSelectedRows");
-      if (selectedRows != undefined) {
+      if (selectedRows !== undefined) {
         this.container.tabulator("deselectRow", selectedRows);
       }
       this.machine = {
         id : '',
         name : '',
         memo : ''
-      }
+      };
       this.refresh();
     }
     this.mode = value;

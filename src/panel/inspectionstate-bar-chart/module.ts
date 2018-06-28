@@ -110,7 +110,7 @@ class RmsInspectionStateBarChartPanelCtrl extends MetricsPanelCtrl {
         }
       });
     } else {
-      if(this.chart) this.chart.clear();
+      if (this.chart) { this.chart.clear(); }
     }
   }
 

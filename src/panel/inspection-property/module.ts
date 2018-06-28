@@ -269,7 +269,7 @@ export class InspectionPropertyPanelCtrl  extends MetricsPanelCtrl  {
             allQ.push("SELECT * FROM t_inspection_property where IDX = " + obj.IDX);
             this.rsDsSrv.query(selectId, allQ).then( result => {
                 let data = this.rsDsSrv.getTableObj(result)[0][0];
-                if(data !== null && data !== undefined) {
+                if (data !== null && data !== undefined) {
                     this.rsMqttSrv.publishMessage(topic, JSON.stringify(Object.assign(data)), this.mqttdefaultOpts);
                 }
             });

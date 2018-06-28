@@ -46244,8 +46244,9 @@ var RmsMoldListPanelCtrl = /** @class */ (function (_super) {
             resizeValue: false
         };
         _this.isViewer = contextSrv.hasRole('Viewer');
-        if (!_this.isViewer)
+        if (!_this.isViewer) {
             _this.mode = 'showBtn';
+        }
         _this.aligns = ['LEFT', 'CENTER', 'RIGHT'];
         lodash__WEBPACK_IMPORTED_MODULE_0___default.a.defaults(_this.panel, _this.panelDefaults);
         _this.panel.inputlItem.change_date = new Date();
@@ -46305,7 +46306,7 @@ var RmsMoldListPanelCtrl = /** @class */ (function (_super) {
         //   { id: 4, mold_name: "D모델", change_date: "2018/05/15", change_period: "10000", use_count: "10000",  memo: ''},
         //   { id: 5, mold_name: "E모델", change_date: "2018/05/15", change_period: "10000", use_count: "10000",  memo: ''}
         // ];
-        if (this.initalized == true) {
+        if (this.initalized) {
             this.container.tabulator("destroy");
         }
         this.panel.businessCategory.length = 0;
@@ -46316,12 +46317,11 @@ var RmsMoldListPanelCtrl = /** @class */ (function (_super) {
             ];
             this.rsDsSrv.query(selectId, query1).then(function (result) {
                 var data = result[0];
-                //console.log("data rows: " + data.rows.length);  
-                //console.log(data);  
-                for (var i = 0; i < data.rows.length; i++) {
-                    //var obj = {name:data.rows[i]};
-                    _this.panel.businessCategory.push(data.rows[i][0]);
-                }
+                //console.log("data rows: " + data.rows.length);
+                //console.log(data);
+                data.rows.forEach(function (row, i) {
+                    _this.panel.businessCategory.push(row[0]);
+                });
             }).catch(function (err) {
                 console.error(err);
             });
@@ -46366,42 +46366,40 @@ var RmsMoldListPanelCtrl = /** @class */ (function (_super) {
         jquery__WEBPACK_IMPORTED_MODULE_1___default()(window).trigger('resize');
     };
     RmsMoldListPanelCtrl.prototype.transformer = function (dataList) {
+        var _this = this;
         this.columns = [];
         var data = dataList[0];
         var rows = data.rows;
         var getColumns = data.columns;
-        for (var count = 0; count < getColumns.length; count++) {
-            var column = getColumns[count].text;
+        getColumns.forEach(function (columnObj, count) {
+            var column = columnObj.text;
             var obj = {
                 title: column,
                 field: column,
             };
-            this.columnOption(obj);
-            this.columns.push(obj);
-        }
+            _this.columnOption(obj);
+            _this.columns.push(obj);
+        });
         var jArray = new Array;
         var mapData = new Map();
-        for (var count = 0; count < rows.length; count++) {
-            var row = rows[count];
-            for (var row_count = 0; row_count < row.length; row_count++) {
-                var item = row[row_count];
+        rows.forEach(function (row, count) {
+            row.forEach(function (item, row_count) {
                 mapData.set(getColumns[row_count].text, item);
-            }
+            });
             var object = Object();
             mapData.forEach(function (v, k) { object[k] = v; });
             jArray.push(object);
-        }
+        });
         this.dataJson = jArray;
     };
-    ;
     RmsMoldListPanelCtrl.prototype.onNew = function () {
         var _this = this;
         var info = this.panel.inputlItem;
         console.log(info);
         if (info.business_name == null
-            || info.mold_name == ""
-            || info.period == ""
-            || info.use_count == "") {
+            || info.mold_name === ""
+            || info.period === ""
+            || info.use_count === "") {
             this.alertSrv.set("입력 정보를 확인해 주세요", 'error', 5000);
         }
         else {
@@ -46417,8 +46415,8 @@ var RmsMoldListPanelCtrl = /** @class */ (function (_super) {
                     ];
                     _this.rsDsSrv.query(selectId, query1).then(function (result) {
                         var data = result[0];
-                        //console.log("data rows: " + data.rows.length);  
-                        if (data.rows.length == 0) {
+                        //console.log("data rows: " + data.rows.length);
+                        if (data.rows.length === 0) {
                             var query2 = [
                                 'select business_id from t_business where name="'
                                     + info.business_name + '" and business_type="금형업체"'
@@ -46457,7 +46455,7 @@ var RmsMoldListPanelCtrl = /** @class */ (function (_super) {
         }
         // var day = new Date(this.panel.inputlItem.change_date);
         // console.log("select CHANGE_DATE1: " + this.panel.inputlItem.change_date);
-        // console.log("select CHANGE_DATE2: " 
+        // console.log("select CHANGE_DATE2: "
         // + day.getFullYear() + '/' + (day.getMonth()+1) + '/' + day.getDate());
         // let info = this.panel.materialItem;
         // info.id = this.data.length + 1;
@@ -46466,12 +46464,11 @@ var RmsMoldListPanelCtrl = /** @class */ (function (_super) {
         // this.data.push(info);
         // this.container.tabulator("setData", this.data);
     };
-    ;
     RmsMoldListPanelCtrl.prototype.onEdit = function () {
         var _this = this;
         var info = this.panel.inputlItem;
         console.log(info);
-        if (info.mold_id != -1) {
+        if (info.mold_id !== -1) {
             this.$rootScope.appEvent('confirm-modal', {
                 title: '수정',
                 text: '정말로 수정 하시겠습니까?',
@@ -46484,8 +46481,8 @@ var RmsMoldListPanelCtrl = /** @class */ (function (_super) {
                     ];
                     _this.rsDsSrv.query(selectId, query1).then(function (result) {
                         var data = result[0];
-                        //console.log("data rows: " + data.rows.length);  
-                        if (data.rows.length == 0) {
+                        //console.log("data rows: " + data.rows.length);
+                        if (data.rows.length === 0) {
                             var query2 = [
                                 'select business_id from t_business where name="'
                                     + info.business_name + '" and business_type="금형업체"'
@@ -46532,11 +46529,10 @@ var RmsMoldListPanelCtrl = /** @class */ (function (_super) {
             this.alertSrv.set("테이블의 Row를 선택해 주세요", 'error', 5000);
         }
     };
-    ;
     RmsMoldListPanelCtrl.prototype.onDel = function () {
         var _this = this;
         var info = this.panel.inputlItem;
-        if (info.mold_id != -1) {
+        if (info.mold_id !== -1) {
             this.$rootScope.appEvent('confirm-modal', {
                 title: '삭제',
                 text: '정말로 삭제 하시겠습니까?',
@@ -46572,18 +46568,15 @@ var RmsMoldListPanelCtrl = /** @class */ (function (_super) {
             this.alertSrv.set("테이블의 Row를 선택해 주세요", 'error', 5000);
         }
     };
-    ;
     RmsMoldListPanelCtrl.prototype.close = function () {
-        if (this.isViewer)
-            this.showCtrlMode('list');
-        else
-            this.showCtrlMode('showBtn');
+        var mode = (this.isViewer) ? 'list' : 'showBtn';
+        this.showCtrlMode(mode);
         this.refresh();
     };
     RmsMoldListPanelCtrl.prototype.showCtrlMode = function (mode) {
-        if (mode == 'new') {
+        if (mode === 'new') {
             var selectedRows = this.container.tabulator("getSelectedRows");
-            if (selectedRows != undefined) {
+            if (selectedRows !== undefined) {
                 this.container.tabulator("deselectRow", selectedRows);
             }
             this.panel.inputlItem = {
@@ -46601,7 +46594,6 @@ var RmsMoldListPanelCtrl = /** @class */ (function (_super) {
         this.mode = mode;
         this.events.emit('panel-size-changed');
     };
-    ;
     RmsMoldListPanelCtrl.prototype.columnOption = function (obj) {
         // console.log(obj);
         var count = this.panel.formatters.map(function (e) { return e.name; }).indexOf(obj.title);
@@ -46611,16 +46603,17 @@ var RmsMoldListPanelCtrl = /** @class */ (function (_super) {
             obj.align = formatter.align;
             obj.formatter = function (cell, formatterParam) {
                 var value = cell.getValue();
-                if (isNaN(value) == false) {
-                    if (formatter.localstring == true) {
+                if (isNaN(value) === false) {
+                    if (formatter.localstring) {
                         return Number((Number(value)).toFixed(formatter.decimal)).toLocaleString('en');
                     }
                     else {
                         return (Number(value)).toFixed(formatter.decimal);
                     }
                 }
-                else
+                else {
                     return value;
+                }
             };
         }
         else {
@@ -46656,7 +46649,7 @@ var RmsMoldListPanelCtrl = /** @class */ (function (_super) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div ng-switch on='ctrl.mode'>\r\n    <div ng-switch-when=\"showBtn\">\r\n        <button type=\"submit\" class=\"btn btn-primary\" ng-click=\"ctrl.showCtrlMode('new')\">신규 등록</button>\r\n        <br></br>\r\n    </div>\r\n    <div class=\"editor-row\">\r\n        <div class=\"thingspin-table\"></div>\r\n    </div>\r\n    <br></br>    \r\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new\">\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-6\">모델명</label>\r\n            <input type=\"text\" class=\"gf-form-input min-width-15 width-15\" placeholder=\"모델명\" ng-model=\"ctrl.panel.inputlItem.mold_name\">\r\n        </div>\r\n\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-6\">업체명</label>\r\n            <div class=\"gf-form-select-wrapper\">\r\n                    <select class=\"gf-form-input min-width-15 width-15\" placeholder=\"업체명\" \r\n                        ng-model=\"ctrl.panel.inputlItem.business_name\"\r\n                        ng-options=\"f for f in ctrl.panel.businessCategory\">\r\n                    </select>\r\n            </div>                    \r\n        </div>             \r\n    </div>\r\n    \r\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new|edit\" ng-switch-when-separator=\"|\">\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-6\">사용횟수</label>\r\n            <input type=\"text\" class=\"gf-form-input min-width-15 width-15\" placeholder=\"사용횟수\" ng-model=\"ctrl.panel.inputlItem.use_count\">\r\n        </div>\r\n\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-6\">교체주기</label>\r\n            <input type=\"text\" class=\"gf-form-input min-width-15 width-15\" placeholder=\"교체주기\" ng-model=\"ctrl.panel.inputlItem.period\">\r\n        </div>\r\n\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-6\">교체일</label>\r\n            <input type=\"date\" class=\"gf-form-input min-width-15 width-15\" placeholder=\"교체일\" ng-model=\"ctrl.panel.inputlItem.change_date\">\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new\">\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-6\">메모</label>\r\n            <input type=\"text\" class=\"gf-form-input min-width-15 width-15\" placeholder=\"메모\" ng-model=\"ctrl.panel.inputlItem.memo\">\r\n        </div>            \r\n        \r\n        <div class=\"gf-form\">\r\n            <button class=\"btn btn-success min-width-11 width-11\" ng-click=\"ctrl.onNew()\">\r\n                신규 등록\r\n            </button>\r\n            &nbsp;\r\n            <button class=\"btn btn-success min-width-10 width-10\" ng-click=\"ctrl.close()\">\r\n                창 닫기\r\n            </button>\r\n        </div>\r\n    </div>  \r\n\r\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"edit\">\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-6\">메모</label>\r\n            <input type=\"text\" class=\"gf-form-input min-width-15 width-15\" placeholder=\"메모\" ng-model=\"ctrl.panel.inputlItem.memo\">\r\n        </div>            \r\n        \r\n        <div class=\"gf-form\">\r\n            <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onEdit()\">\r\n                수정\r\n            </button>\r\n            &nbsp;\r\n            <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onDel()\">\r\n                삭제\r\n            </button>\r\n            &nbsp;\r\n            <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.close()\">\r\n                창 닫기\r\n            </button>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n\r\n    \r\n    \r\n    ";
+module.exports = "<div ng-switch on='ctrl.mode'>\n    <div ng-switch-when=\"showBtn\">\n        <button type=\"submit\" class=\"btn btn-primary\" ng-click=\"ctrl.showCtrlMode('new')\">신규 등록</button>\n        <br></br>\n    </div>\n    <div class=\"editor-row\">\n        <div class=\"thingspin-table\"></div>\n    </div>\n    <br></br>    \n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new\">\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-6\">모델명</label>\n            <input type=\"text\" class=\"gf-form-input min-width-15 width-15\" placeholder=\"모델명\" ng-model=\"ctrl.panel.inputlItem.mold_name\">\n        </div>\n\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-6\">업체명</label>\n            <div class=\"gf-form-select-wrapper\">\n                    <select class=\"gf-form-input min-width-15 width-15\" placeholder=\"업체명\" \n                        ng-model=\"ctrl.panel.inputlItem.business_name\"\n                        ng-options=\"f for f in ctrl.panel.businessCategory\">\n                    </select>\n            </div>                    \n        </div>             \n    </div>\n    \n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new|edit\" ng-switch-when-separator=\"|\">\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-6\">사용횟수</label>\n            <input type=\"text\" class=\"gf-form-input min-width-15 width-15\" placeholder=\"사용횟수\" ng-model=\"ctrl.panel.inputlItem.use_count\">\n        </div>\n\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-6\">교체주기</label>\n            <input type=\"text\" class=\"gf-form-input min-width-15 width-15\" placeholder=\"교체주기\" ng-model=\"ctrl.panel.inputlItem.period\">\n        </div>\n\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-6\">교체일</label>\n            <input type=\"date\" class=\"gf-form-input min-width-15 width-15\" placeholder=\"교체일\" ng-model=\"ctrl.panel.inputlItem.change_date\">\n        </div>\n    </div>\n\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new\">\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-6\">메모</label>\n            <input type=\"text\" class=\"gf-form-input min-width-15 width-15\" placeholder=\"메모\" ng-model=\"ctrl.panel.inputlItem.memo\">\n        </div>            \n        \n        <div class=\"gf-form\">\n            <button class=\"btn btn-success min-width-11 width-11\" ng-click=\"ctrl.onNew()\">\n                신규 등록\n            </button>\n            &nbsp;\n            <button class=\"btn btn-success min-width-10 width-10\" ng-click=\"ctrl.close()\">\n                창 닫기\n            </button>\n        </div>\n    </div>  \n\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"edit\">\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-6\">메모</label>\n            <input type=\"text\" class=\"gf-form-input min-width-15 width-15\" placeholder=\"메모\" ng-model=\"ctrl.panel.inputlItem.memo\">\n        </div>            \n        \n        <div class=\"gf-form\">\n            <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onEdit()\">\n                수정\n            </button>\n            &nbsp;\n            <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onDel()\">\n                삭제\n            </button>\n            &nbsp;\n            <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.close()\">\n                창 닫기\n            </button>\n        </div>\n    </div>\n</div>\n\n\n    \n    \n    ";
 
 /***/ }),
 

@@ -144,7 +144,7 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
           var ctx = chart.ctx;
           ctx.fillStyle = '#09033f';
           ctx.font= "20px Arial Black";
-          ctx.textAlign="end";
+          ctx.textAlign= "end";
           ctx.fillText("CPK = "+ chart.options.cpk.toFixed(3), chart.width - 70, chart.height * 0.21);
           ctx.fillText("CP = "+ chart.options.cp.toFixed(3), chart.width - 70, chart.height * 0.1);
 

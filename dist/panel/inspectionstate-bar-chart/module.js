@@ -228,8 +228,9 @@ var RmsInspectionStateBarChartPanelCtrl = /** @class */ (function (_super) {
             });
         }
         else {
-            if (this.chart)
+            if (this.chart) {
                 this.chart.clear();
+            }
         }
     };
     RmsInspectionStateBarChartPanelCtrl.prototype.addData = function (chart, data) {
