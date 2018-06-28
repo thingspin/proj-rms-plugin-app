@@ -2,6 +2,7 @@
   "annotations": {
     "list": [
       {
+        "$$hashKey": "object:137",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -15,7 +16,7 @@
   "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1530158409315,
+  "iteration": 1530159532736,
   "links": [],
   "panels": [
     {
@@ -59,11 +60,12 @@
       "steppedLine": false,
       "targets": [
         {
+          "$$hashKey": "object:188",
           "alias": "$tag_inm",
           "groupBy": [
             {
               "params": [
-                "1w"
+                "$__interval"
               ],
               "type": "time"
             },
@@ -153,15 +155,17 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:248",
           "decimals": 2,
-          "format": "none",
+          "format": "short",
           "label": "CPK",
           "logBase": 1,
-          "max": "2",
+          "max": null,
           "min": "0",
           "show": true
         },
         {
+          "$$hashKey": "object:249",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -303,7 +307,7 @@
     ]
   },
   "time": {
-    "from": "now-5d",
+    "from": "now-3d",
     "to": "now"
   },
   "timepicker": {
@@ -325,6 +329,6 @@
   },
   "timezone": "",
   "title": "CPK Trend 분석 (Weekly)",
-  "uid": "GLvILMvmk",
-  "version": 8
+  "uid": "KLhsiaNmz",
+  "version": 26
 }

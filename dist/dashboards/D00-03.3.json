@@ -2,6 +2,7 @@
   "annotations": {
     "list": [
       {
+        "$$hashKey": "object:137",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -15,7 +16,7 @@
   "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1530158468028,
+  "iteration": 1530159920764,
   "links": [],
   "panels": [
     {
@@ -63,7 +64,7 @@
           "groupBy": [
             {
               "params": [
-                "1d"
+                "$__interval"
               ],
               "type": "time"
             },
@@ -151,7 +152,7 @@
           "format": "none",
           "label": "CPK",
           "logBase": 1,
-          "max": "2.0",
+          "max": null,
           "min": "0",
           "show": true
         },
@@ -296,8 +297,8 @@
     ]
   },
   "time": {
-    "from": "now-5d",
-    "to": "now"
+    "from": "now-1d/d",
+    "to": "now-1d/d"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -318,6 +319,6 @@
   },
   "timezone": "",
   "title": "CPK Trend 분석 (Daily)",
-  "uid": "B0vSYMviz",
-  "version": 9
+  "uid": "IY2yiaHiz",
+  "version": 29
 }
