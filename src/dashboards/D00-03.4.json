@@ -2,7 +2,6 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:415",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -13,90 +12,34 @@
       }
     ]
   },
-  "editable": true,
+  "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1529473033415,
+  "iteration": 1530157173204,
   "links": [],
   "panels": [
-    {
-      "allDeciaml": 3,
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
-      "formatters": [],
-      "gridPos": {
-        "h": 18,
-        "w": 24,
-        "x": 0,
-        "y": 0
-      },
-      "id": 5,
-      "kernel": null,
-      "links": [],
-      "resizeValue": false,
-      "scripts": "",
-      "targets": [
-        {
-          "$$hashKey": "object:816",
-          "groupBy": [
-            {
-              "params": [
-                "1w"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "inm"
-              ],
-              "type": "tag"
-            }
-          ],
-          "measurement": "/^inspection.detail-*/",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "A",
-          "resultFormat": "table",
-          "select": [
-            [
-              {
-                "params": [
-                  "cpk"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "title": "Weekly CPK Trend",
-      "transparent": true,
-      "type": "rms-cpk-trend-table"
-    },
     {
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
       "dashes": false,
       "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
-      "fill": 1,
+      "fill": 0,
       "gridPos": {
-        "h": 8,
+        "h": 12,
         "w": 24,
         "x": 0,
-        "y": 18
+        "y": 0
       },
       "id": 9,
       "kernel": null,
       "legend": {
+        "alignAsTable": true,
         "avg": false,
         "current": false,
         "max": false,
         "min": false,
+        "rightSide": true,
         "show": true,
         "total": false,
         "values": false
@@ -116,7 +59,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "$$hashKey": "object:1323",
+          "alias": "$tag_inm",
           "groupBy": [
             {
               "params": [
@@ -153,7 +96,32 @@
           "tags": []
         }
       ],
-      "thresholds": [],
+      "thresholds": [
+        {
+          "colorMode": "warning",
+          "fill": true,
+          "line": false,
+          "op": "lt",
+          "value": 1.33,
+          "yaxis": "left"
+        },
+        {
+          "colorMode": "ok",
+          "fill": true,
+          "line": false,
+          "op": "gt",
+          "value": 1.66,
+          "yaxis": "left"
+        },
+        {
+          "colorMode": "critical",
+          "fill": true,
+          "line": false,
+          "op": "lt",
+          "value": 1,
+          "yaxis": "left"
+        }
+      ],
       "timeFrom": null,
       "timeShift": null,
       "title": "Weekly CPK Trend - Graph",
@@ -162,7 +130,7 @@
         "sort": 0,
         "value_type": "individual"
       },
-      "transparent": true,
+      "transparent": false,
       "type": "graph",
       "xaxis": {
         "buckets": null,
@@ -173,28 +141,84 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:1491",
+          "decimals": 2,
           "format": "none",
-          "label": null,
+          "label": "CPK",
           "logBase": 1,
-          "max": null,
-          "min": null,
+          "max": "2",
+          "min": "0",
           "show": true
         },
         {
-          "$$hashKey": "object:1492",
           "format": "short",
           "label": null,
           "logBase": 1,
           "max": null,
           "min": null,
-          "show": true
+          "show": false
         }
       ],
       "yaxis": {
         "align": false,
         "alignLevel": null
       }
+    },
+    {
+      "allDeciaml": 3,
+      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "formatters": [],
+      "gridPos": {
+        "h": 18,
+        "w": 24,
+        "x": 0,
+        "y": 12
+      },
+      "id": 5,
+      "kernel": null,
+      "links": [],
+      "resizeValue": false,
+      "scripts": "",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "1w"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "inm"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "/^inspection.detail-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "cpk"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        }
+      ],
+      "title": "",
+      "transparent": false,
+      "type": "rms-cpk-trend-table"
     }
   ],
   "refresh": false,
@@ -300,5 +324,6 @@
   },
   "timezone": "",
   "title": "CPK Trend 분석 (Weekly)",
-  "version": 2
+  "uid": "KLhsiaNmz",
+  "version": 20
 }
