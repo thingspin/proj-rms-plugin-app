@@ -3,6 +3,7 @@ import $ from 'jquery';
 import 'jquery-ui';
 import 'jquery.tabulator/dist/css/tabulator.min.css';
 import 'jquery.tabulator/dist/js/tabulator.min';
+import 'jquery-sparkline';
 import {MetricsPanelCtrl, loadPluginCss} from  'grafana/app/plugins/sdk';
 
 import '../../services/remoteSolutionDS';
@@ -32,6 +33,8 @@ const CONSUMABLES_CYCLE_TIME = '교체주기 시간';
 const CONSUMABLES_SUBJECT = '특이사항';
 const CONSUMABLES_BUSINESS = '업체명';
 const CONSUMABLES_PERSON = '담당자';
+const CONSUMABLES_GRAPH = "Graph";
+const CONSUMABLES_BULLET = "bullet";
 
 class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
   static template = template;
@@ -295,6 +298,11 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
     }
   }
 
+  createGraph (cell, formatterParam) {
+    setTimeout(function() {
+      cell.getElement().sparkline(cell.getValue(), {width:"100%", type:CONSUMABLES_BULLET, disableTooltips:true});
+    }, 10);
+  }
 
   transformer(dataList) {
     this.columns = [];
@@ -311,21 +319,47 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
       };
       this.columnOption(obj);
       this.columns.push(obj);
+      if (obj.title === CONSUMABLES_CYCLE) {
+        var object = {
+          title: CONSUMABLES_GRAPH,
+          field: CONSUMABLES_BULLET,
+          formatter:this.createGraph
+        };
+        this.columnOption(object);
+        this.columns.push(object);
+        console.log(object);
+      }
 
     });
     var jArray = new Array;
     var mapData = new Map();
     for (var count = 0; count < rows.length; count++) {
       var row = rows[count];
+      var total = 0;
+      var changeRate = 0;
+      var limit = 0;
       for (var row_count = 0; row_count < row.length; row_count++) {
         var item = row[row_count];
         mapData.set(getColumns[row_count].text,item);
-        if (getColumns[row_count].text === CONSUMABLES_STANDARD) {
-          this.checker.push(item);
+        switch(getColumns[row_count].text) {
+          case CONSUMABLES_STANDARD:
+            this.checker.push(item);
+          break;
+          case CONSUMABLES_SAFE_COUNT:
+            limit = item;
+          break;
+          case CONSUMABLES_COUNT:
+            total = item;
+          break;
+          case CONSUMABLES_CYCLE:
+          changeRate = item;
+          break;
         }
       }
+      mapData.set(CONSUMABLES_BULLET, [limit, total, changeRate]);
       var object = Object();
       mapData.forEach((v,k)=> {object[k] = v;});
+      console.log(object);
       jArray.push(object);
     }
     this.dataJson = jArray;
