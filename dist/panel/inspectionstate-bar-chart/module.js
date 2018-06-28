@@ -212,7 +212,7 @@ var RmsInspectionStateBarChartPanelCtrl = /** @class */ (function (_super) {
     RmsInspectionStateBarChartPanelCtrl.prototype.onInitEditMode = function () {
     };
     RmsInspectionStateBarChartPanelCtrl.prototype.createChart = function (inputData) {
-        if (inputData !== undefined) {
+        if (inputData) {
             if (this.chart) {
                 this.chart.destroy();
             }
@@ -220,56 +220,16 @@ var RmsInspectionStateBarChartPanelCtrl = /** @class */ (function (_super) {
                 type: 'bar',
                 data: inputData,
                 options: {
-                    maintainAspectRatio: false
+                    maintainAspectRatio: false,
+                    legend: {
+                        position: 'right'
+                    }
                 }
             });
         }
-        else if (inputData === null) {
-            this.chart.clear();
-        }
         else {
-            if (!this.chart) {
-                this.chart = new chart_js_dist_Chart_min__WEBPACK_IMPORTED_MODULE_1__(this.context, {
-                    type: 'bar',
-                    data: {
-                        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-                        datasets: [{
-                                label: '# of Votes',
-                                data: [12, 19, 3, 5, 2, 3],
-                                backgroundColor: [
-                                    'rgba(255, 99, 132, 0.2)',
-                                    'rgba(54, 162, 235, 0.2)',
-                                    'rgba(255, 206, 86, 0.2)',
-                                    'rgba(75, 192, 192, 0.2)',
-                                    'rgba(153, 102, 255, 0.2)',
-                                    'rgba(255, 159, 64, 0.2)'
-                                ],
-                                borderColor: [
-                                    'rgba(255,99,132,1)',
-                                    'rgba(54, 162, 235, 1)',
-                                    'rgba(255, 206, 86, 1)',
-                                    'rgba(75, 192, 192, 1)',
-                                    'rgba(153, 102, 255, 1)',
-                                    'rgba(255, 159, 64, 1)'
-                                ],
-                                borderWidth: 1
-                            }]
-                    },
-                    options: {
-                        scales: {
-                            yAxes: [{
-                                    ticks: {
-                                        beginAtZero: false
-                                    }
-                                }]
-                        },
-                        tooltips: {
-                            enabled: true
-                        },
-                        maintainAspectRatio: false
-                    }
-                });
-            }
+            if (this.chart)
+                this.chart.clear();
         }
     };
     RmsInspectionStateBarChartPanelCtrl.prototype.addData = function (chart, data) {
@@ -381,7 +341,7 @@ var RmsInspectionStateBarChartPanelCtrl = /** @class */ (function (_super) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <div class=\"chart-container\" style=\"position: relative; height:40vh; width:80vw\"> -->\n<canvas class=\"chart\" style=\"position: relative; width:100%\"></canvas>";
+module.exports = "<canvas class=\"chart\" style=\"position: relative; width:100%\"></canvas>";
 
 /***/ }),
 
