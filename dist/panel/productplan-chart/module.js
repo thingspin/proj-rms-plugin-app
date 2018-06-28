@@ -262,9 +262,17 @@ var RmsProductPlanBarChartPanelCtrl = /** @class */ (function (_super) {
                         _this.models.push(item);
                         tempModel = item;
                     }
+                    else
+                        tempModel = item;
                     break;
                 case 3:
-                    _this.mapPlan.set(tempModel, item);
+                    if (_this.mapPlan.has(tempModel) === true) {
+                        var val = _this.mapPlan.get(tempModel);
+                        _this.mapPlan.set(tempModel, (item + val));
+                    }
+                    else {
+                        _this.mapPlan.set(tempModel, item);
+                    }
                     break;
             }
         });
