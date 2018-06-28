@@ -2,7 +2,7 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:151",
+        "$$hashKey": "object:153",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -16,7 +16,7 @@
   "editable": false,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1530155546960,
+  "iteration": 1530180811877,
   "links": [
     {
       "icon": "external link",
@@ -769,8 +769,9 @@
         {
           "alias": "$col",
           "groupBy": [],
+          "limit": "500",
           "measurement": "/^inspection.summary-*/",
-          "orderByTime": "ASC",
+          "orderByTime": "DESC",
           "policy": "default",
           "query": "SELECT \"ok\", \"model\", \"pass\", \"facility\", \"channel\", \"stime\", \"etime\" FROM \"inspection\" WHERE $timeFilter",
           "rawQuery": false,
@@ -867,6 +868,7 @@
       "type": "table"
     }
   ],
+  "refresh": "1s",
   "schemaVersion": 16,
   "style": "light",
   "tags": [
@@ -1110,5 +1112,5 @@
   "timezone": "",
   "title": "모델별 검사기록",
   "uid": "rAgfpx7iz",
-  "version": 13
+  "version": 21
 }
