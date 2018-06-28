@@ -29067,8 +29067,6 @@ Object(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_5__["loadPluginCss"])({
     dark: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.dark.css',
     light: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.light.css'
 });
-var template = __webpack_require__(/*! ./partial/templet.html */ "./panel/company-list/partial/templet.html");
-//const options = require("./partial/options.html");
 var BUSINESS_ID = '업체 ID';
 var BUSINESS_NAME = '업체명';
 var BUSINESS_TYPE = '업종';
@@ -29111,8 +29109,9 @@ var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
             resizeValue: false
         };
         _this.isViewer = contextSrv.hasRole('Viewer');
-        if (!_this.isViewer)
+        if (!_this.isViewer) {
             _this.mode = 'showBtn';
+        }
         _this.aligns = ['LEFT', 'CENTER', 'RIGHT'];
         lodash__WEBPACK_IMPORTED_MODULE_0___default.a.defaults(_this.panel, _this.panelDefaults);
         _this.panel.inputlItem.business_id = -1;
@@ -29174,12 +29173,12 @@ var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
         this.createTable(this.dataJson);
     };
     RmsCompanyListPanelCtrl.prototype.createTable = function (dataList) {
-        //console.log("create table ...");   
+        //console.log("create table ...");
         // var tabledata = [
-        //   { id: 1, name: 'A업체', phone: '010-1234-1234', person: '아무개', mail: 'email1@mda.com',  memo: ''}, 
-        //   { id: 2, name: 'B업체', phone: '010-1234-1234', person: '아무개', mail: 'email1@mda.com',  memo: ''},     
+        //   { id: 1, name: 'A업체', phone: '010-1234-1234', person: '아무개', mail: 'email1@mda.com',  memo: ''},
+        //   { id: 2, name: 'B업체', phone: '010-1234-1234', person: '아무개', mail: 'email1@mda.com',  memo: ''},
         // ];
-        if (this.initalized == true) {
+        if (this.initalized) {
             this.container.tabulator("destroy");
         }
         var g_root = this;
@@ -29207,9 +29206,9 @@ var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
                 // g_root.panel.inputlItem.phone = row.getData().PHONE;
                 // g_root.panel.inputlItem.person = row.getData().PERSON;
                 // g_root.panel.inputlItem.mail = row.getData().MAIL;
-                // g_root.panel.inputlItem.memo = row.getData().MEMO;               
+                // g_root.panel.inputlItem.memo = row.getData().MEMO;
                 g_root.events.emit('panel-size-changed');
-                //g_root.$rootScope.$broadcast('refresh');           
+                //g_root.$rootScope.$broadcast('refresh');
                 console.log("select business_id: " + g_root.panel.inputlItem.business_id);
             },
         });
@@ -29228,37 +29227,35 @@ var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
         jquery__WEBPACK_IMPORTED_MODULE_1___default()(window).trigger('resize');
     };
     RmsCompanyListPanelCtrl.prototype.transformer = function (dataList) {
+        var _this = this;
         this.columns = [];
         var data = dataList[0];
         var rows = data.rows;
         var getColumns = data.columns;
-        for (var count = 0; count < getColumns.length; count++) {
-            var column = getColumns[count].text;
+        getColumns.forEach(function (columnObj, count) {
+            var column = columnObj.text;
             var obj = {
                 title: column,
                 field: column,
                 align: "left",
             };
-            if (this.panel.formatters.length > 0) {
-                this.columnOption(obj);
+            if (_this.panel.formatters.length > 0) {
+                _this.columnOption(obj);
             }
-            this.columns.push(obj);
-        }
+            _this.columns.push(obj);
+        });
         var jArray = new Array;
         var mapData = new Map();
-        for (var count = 0; count < rows.length; count++) {
-            var row = rows[count];
-            for (var row_count = 0; row_count < row.length; row_count++) {
-                var item = row[row_count];
+        rows.forEach(function (row, count) {
+            row.forEach(function (item, row_count) {
                 mapData.set(getColumns[row_count].text, item);
-            }
+            });
             var object = Object();
             mapData.forEach(function (v, k) { object[k] = v; });
             jArray.push(object);
-        }
+        });
         this.dataJson = jArray;
     };
-    ;
     RmsCompanyListPanelCtrl.prototype.onNew = function () {
         var _this = this;
         var info = this.panel.inputlItem;
@@ -29266,10 +29263,10 @@ var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
         // console.log(info.person);
         // console.log(info.mail);
         // console.log(info.phone);
-        if (info.name == ""
-            || info.person == ""
-            || info.mail == ""
-            || info.phone == "") {
+        if (info.name === ""
+            || info.person === ""
+            || info.mail === ""
+            || info.phone === "") {
             this.alertSrv.set("입력 정보를 확인해 주세요", 'error', 5000);
         }
         else {
@@ -29281,9 +29278,9 @@ var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
                 onConfirm: function () {
                     var selectId = _this.datasource.id;
                     // let query1 = [
-                    //   'select * from t_business where business_type="' 
+                    //   'select * from t_business where business_type="'
                     //   + info.business_type + '" and name="' + info.name + '" and person="' + info.person + '";'
-                    // ];     
+                    // ];
                     var query1 = [
                         'select * from t_business where business_type="'
                             + info.business_type + '" and name="' + info.name + '"'
@@ -29291,11 +29288,16 @@ var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
                     //console.log(selectId + " " + query);
                     _this.rsDsSrv.query(selectId, query1).then(function (result) {
                         var data = result[0];
-                        //console.log("data rows: " + data.rows.length);  
-                        if (data.rows.length == 0) {
+                        //console.log("data rows: " + data.rows.length);
+                        if (data.rows.length === 0) {
                             var query2 = [
                                 'insert into t_business(business_type, name, phone, person, mail, memo) values("'
-                                    + info.business_type + '", "' + info.name + '", "' + info.phone + '", "' + info.person + '", "' + info.mail + '", "' + info.memo + '");'
+                                    + info.business_type + '", "'
+                                    + info.name + '", "'
+                                    + info.phone + '", "'
+                                    + info.person + '", "'
+                                    + info.mail + '", "'
+                                    + info.memo + '");'
                             ];
                             _this.rsDsSrv.query(selectId, query2).then(function (result) {
                                 _this.panel.inputlItem.business_id = -1;
@@ -29315,45 +29317,43 @@ var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
                     //   let query = [
                     //     'insert into t_business(business_type, name, phone, person, mail, memo) values("'
                     //     + info.business_type + '", "' + info.name + '", "' + info.phone + '", "' + info.person + '", "' +  info.mail + '", "' +  info.memo + '");'
-                    //   ];       
+                    //   ];
                     //   // let query = [
                     //   //   'insert into t_business(business_type, name, phone, person, mail, memo) select "'
-                    //   //   + info.business_type + '", "' 
-                    //   //   + info.name + '", "' 
-                    //   //   + info.phone + '", "' 
-                    //   //   + info.person + '", "' 
-                    //   //   +  info.mail + '", "' 
+                    //   //   + info.business_type + '", "'
+                    //   //   + info.name + '", "'
+                    //   //   + info.phone + '", "'
+                    //   //   + info.person + '", "'
+                    //   //   +  info.mail + '", "'
                     //   //   +  info.memo + '" from dual where not exists(select * from t_business where business_type="'
                     //   //                                               + info.business_type + '" and name="'
                     //   //                                               + info.name + '" and person="'
                     //   //                                               + info.person + '")'
-                    //   // ];       
+                    //   // ];
                     //   console.log(selectId + " " + query);
-                    //   this.dsSrv.query(selectId, query).then( result => {            
+                    //   this.dsSrv.query(selectId, query).then( result => {
                     //     this.panel.inputlItem.business_id = -1;
                     //     this.$rootScope.$broadcast('refresh');
                     //   }).catch( err => {
                     //     console.error(err);
-                    //   });   
+                    //   });
                     // }
                     //console.log("select business_id: " + this.panel.inputlItem.business_id);
                 }
             });
         }
     };
-    ;
     RmsCompanyListPanelCtrl.prototype.onEdit = function () {
         var _this = this;
         var info = this.panel.inputlItem;
-        if (info.business_id != -1) {
+        if (info.business_id !== -1) {
             this.$rootScope.appEvent('confirm-modal', {
                 title: '수정',
                 text: '정말로 수정 하시겠습니까?',
                 //icon: 'fa-trash',
                 //yesText: '삭제',
                 onConfirm: function () {
-                    var selectId = _this.datasource.id;
-                    var query2 = [
+                    var selectId = _this.datasource.id, query2 = [
                         'update t_business set ' +
                             'name="' + info.name + '", ' +
                             'business_type="' + info.business_type + '", ' +
@@ -29390,9 +29390,7 @@ var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
                           'person="' + info.person + '", ' +
                           'memo="' + info.memo + '" where business_id=' + info.business_id
                         ];
-                  
                         //console.log(selectId + " " + query2);
-                  
                         this.rsDsSrv.query(selectId, query2).then( result => {
                           this.panel.inputlItem.business_id = -1;
                           this.showCtrlMode('showBtn');
@@ -29416,11 +29414,10 @@ var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
             this.alertSrv.set("테이블의 Row를 선택해 주세요", 'error', 5000);
         }
     };
-    ;
     RmsCompanyListPanelCtrl.prototype.onDel = function () {
         var _this = this;
         var info = this.panel.inputlItem;
-        if (info.business_id != -1) {
+        if (info.business_id !== -1) {
             this.$rootScope.appEvent('confirm-modal', {
                 title: '삭제',
                 text: '정말로 삭제 하시겠습니까?',
@@ -29455,18 +29452,19 @@ var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
             this.alertSrv.set("테이블의 Row를 선택해 주세요", 'error', 5000);
         }
     };
-    ;
     RmsCompanyListPanelCtrl.prototype.close = function () {
-        if (this.isViewer)
+        if (this.isViewer) {
             this.showCtrlMode('list');
-        else
+        }
+        else {
             this.showCtrlMode('showBtn');
+        }
         this.refresh();
     };
     RmsCompanyListPanelCtrl.prototype.showCtrlMode = function (mode) {
-        if (mode == 'new') {
+        if (mode === 'new') {
             var selectedRows = this.container.tabulator("getSelectedRows");
-            if (selectedRows != undefined) {
+            if (selectedRows !== undefined) {
                 this.container.tabulator("deselectRow", selectedRows);
             }
             this.panel.inputlItem = {
@@ -29483,7 +29481,6 @@ var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
         this.mode = mode;
         this.events.emit('panel-size-changed');
     };
-    ;
     RmsCompanyListPanelCtrl.prototype.columnOption = function (obj) {
         // console.log(obj);
         var count = this.panel.formatters.map(function (e) { return e.name; }).indexOf(obj.title);
@@ -29493,20 +29490,18 @@ var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
             obj.align = formatter.align;
             obj.formatter = function (cell, formatterParam) {
                 var value = cell.getValue();
-                if (isNaN(value) == false) {
-                    if (formatter.localstring == true) {
-                        return Number((Number(value)).toFixed(formatter.decimal)).toLocaleString('en');
-                    }
-                    else {
-                        return (Number(value)).toFixed(formatter.decimal);
-                    }
+                if (isNaN(value) === false) {
+                    return formatter.localstring
+                        ? Number((Number(value)).toFixed(formatter.decimal)).toLocaleString('en')
+                        : (Number(value)).toFixed(formatter.decimal);
                 }
-                else
+                else {
                     return value;
+                }
             };
         }
     };
-    RmsCompanyListPanelCtrl.template = template;
+    RmsCompanyListPanelCtrl.template = __webpack_require__(/*! ./partial/templet.html */ "./panel/company-list/partial/templet.html");
     return RmsCompanyListPanelCtrl;
 }(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_5__["MetricsPanelCtrl"]));
 
@@ -29521,7 +29516,7 @@ var RmsCompanyListPanelCtrl = /** @class */ (function (_super) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div ng-switch on='ctrl.mode'>\r\n    <div ng-switch-when=\"showBtn\">\r\n        <button type=\"submit\" class=\"btn btn-primary\" ng-click=\"ctrl.showCtrlMode('new')\">신규 등록</button>\r\n        <br></br>\r\n    </div>\r\n    <div class=\"editor-row\">\r\n        <div class=\"thingspin-table\"></div>\r\n    </div>\r\n    <br></br>\r\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new|edit\" ng-switch-when-separator=\"|\">\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-5\">업체명</label>\r\n            <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" placeholder=\"업체명\" ng-model=\"ctrl.panel.inputlItem.name\">\r\n        </div>            \r\n\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-5\">업종</label>\r\n            <div class=\"gf-form-select-wrapper\">\r\n                <select class=\"gf-form-input min-width-16 width-16\" placeholder=\"업종\"\r\n                    ng-model=\"ctrl.panel.inputlItem.business_type\"\r\n                    ng-options=\"f for f in ctrl.panel.businessCategory\">\r\n                </select>\r\n            </div>                    \r\n        </div>            \r\n    </div>\r\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new|edit\" ng-switch-when-separator=\"|\">\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-5\">담당자</label>\r\n            <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" placeholder=\"담당자\" ng-model=\"ctrl.panel.inputlItem.person\">\r\n        </div>\r\n\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-5\">연락처</label>\r\n            <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" placeholder=\"연락처\" ng-model=\"ctrl.panel.inputlItem.phone\">\r\n        </div>\r\n\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-5\">이메일</label>\r\n            <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" placeholder=\"이메일\" ng-model=\"ctrl.panel.inputlItem.mail\">\r\n        </div>\r\n    </div>\r\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new\">\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-5\">메모</label>\r\n            <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" placeholder=\"메모\" ng-model=\"ctrl.panel.inputlItem.memo\">\r\n        </div>  \r\n        <div class=\"gf-form\">\r\n            <button class=\"btn btn-success min-width-11 width-11\" ng-click=\"ctrl.onNew()\">\r\n                신규 등록\r\n            </button>\r\n            &nbsp;\r\n            <button class=\"btn btn-success min-width-10 width-10\" ng-click=\"ctrl.close()\">\r\n                창 닫기\r\n            </button>\r\n        </div>      \r\n    </div>\r\n\r\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"edit\">\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-5\">메모</label>\r\n            <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" placeholder=\"메모\" ng-model=\"ctrl.panel.inputlItem.memo\">\r\n        </div>  \r\n        <div class=\"gf-form\">\r\n            <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onEdit()\">\r\n                수정\r\n            </button>\r\n            &nbsp;\r\n            <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onDel()\">\r\n                삭제\r\n            </button>\r\n            &nbsp;\r\n            <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.close()\">\r\n                창 닫기\r\n            </button>\r\n        </div>   \r\n    </div>\r\n</div>\r\n\r\n\r\n\r\n<!--\r\n\r\n<div class=\"editor-row\">\r\n        <div class=\"section gf-form-group\">\r\n            <div class=\"gf-form\">\r\n                <label class=\"gf-form-label width-5\">업체명</label>\r\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.name\">\r\n            </div>            \r\n\r\n            <div class=\"gf-form\">\r\n                <label class=\"gf-form-label width-5\">업종</label>\r\n                <div class=\"gf-form-select-wrapper\">\r\n                        <select class=\"gf-form-input min-width-16 width-16\" \r\n                            ng-model=\"ctrl.panel.inputlItem.business_type\"\r\n                            ng-options=\"f for f in ctrl.panel.businessCategory\">\r\n                        </select>\r\n                </div>                    \r\n            </div>            \r\n        </div>\r\n        \r\n        <div class=\"section gf-form-group\">\r\n            <div class=\"gf-form\">\r\n                <label class=\"gf-form-label width-5\">담당자</label>\r\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.person\">\r\n            </div>\r\n\r\n            <div class=\"gf-form\">\r\n                <label class=\"gf-form-label width-5\">연락처</label>\r\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.phone\">\r\n            </div>\r\n\r\n            <div class=\"gf-form\">\r\n                <label class=\"gf-form-label width-5\">이메일</label>\r\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.mail\">\r\n            </div>\r\n        </div>\r\n        <div class=\"section gf-form-group\">\r\n            <div class=\"gf-form\">\r\n                <label class=\"gf-form-label width-5\">메모</label>\r\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.memo\">\r\n            </div>            \r\n            \r\n            <div class=\"gf-form\">\r\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onNew()\">\r\n                    등록\r\n                </button>\r\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onEdit()\">\r\n                    수정\r\n                </button>\r\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onDel()\">\r\n                    삭제\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    \r\n    <div class=\"editor-row\">\r\n        <div class=\"thingspin-table\"></div>\r\n    </div>\r\n\r\n    -->\r\n    ";
+module.exports = "<div ng-switch on='ctrl.mode'>\n    <div ng-switch-when=\"showBtn\">\n        <button type=\"submit\" class=\"btn btn-primary\" ng-click=\"ctrl.showCtrlMode('new')\">신규 등록</button>\n        <br></br>\n    </div>\n    <div class=\"editor-row\">\n        <div class=\"thingspin-table\"></div>\n    </div>\n    <br></br>\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new|edit\" ng-switch-when-separator=\"|\">\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-5\">업체명</label>\n            <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" placeholder=\"업체명\" ng-model=\"ctrl.panel.inputlItem.name\">\n        </div>            \n\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-5\">업종</label>\n            <div class=\"gf-form-select-wrapper\">\n                <select class=\"gf-form-input min-width-16 width-16\" placeholder=\"업종\"\n                    ng-model=\"ctrl.panel.inputlItem.business_type\"\n                    ng-options=\"f for f in ctrl.panel.businessCategory\">\n                </select>\n            </div>                    \n        </div>            \n    </div>\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new|edit\" ng-switch-when-separator=\"|\">\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-5\">담당자</label>\n            <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" placeholder=\"담당자\" ng-model=\"ctrl.panel.inputlItem.person\">\n        </div>\n\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-5\">연락처</label>\n            <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" placeholder=\"연락처\" ng-model=\"ctrl.panel.inputlItem.phone\">\n        </div>\n\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-5\">이메일</label>\n            <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" placeholder=\"이메일\" ng-model=\"ctrl.panel.inputlItem.mail\">\n        </div>\n    </div>\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new\">\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-5\">메모</label>\n            <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" placeholder=\"메모\" ng-model=\"ctrl.panel.inputlItem.memo\">\n        </div>  \n        <div class=\"gf-form\">\n            <button class=\"btn btn-success min-width-11 width-11\" ng-click=\"ctrl.onNew()\">\n                신규 등록\n            </button>\n            &nbsp;\n            <button class=\"btn btn-success min-width-10 width-10\" ng-click=\"ctrl.close()\">\n                창 닫기\n            </button>\n        </div>      \n    </div>\n\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"edit\">\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-5\">메모</label>\n            <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" placeholder=\"메모\" ng-model=\"ctrl.panel.inputlItem.memo\">\n        </div>  \n        <div class=\"gf-form\">\n            <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onEdit()\">\n                수정\n            </button>\n            &nbsp;\n            <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onDel()\">\n                삭제\n            </button>\n            &nbsp;\n            <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.close()\">\n                창 닫기\n            </button>\n        </div>   \n    </div>\n</div>\n\n\n\n<!--\n\n<div class=\"editor-row\">\n        <div class=\"section gf-form-group\">\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-5\">업체명</label>\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.name\">\n            </div>            \n\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-5\">업종</label>\n                <div class=\"gf-form-select-wrapper\">\n                        <select class=\"gf-form-input min-width-16 width-16\" \n                            ng-model=\"ctrl.panel.inputlItem.business_type\"\n                            ng-options=\"f for f in ctrl.panel.businessCategory\">\n                        </select>\n                </div>                    \n            </div>            \n        </div>\n        \n        <div class=\"section gf-form-group\">\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-5\">담당자</label>\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.person\">\n            </div>\n\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-5\">연락처</label>\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.phone\">\n            </div>\n\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-5\">이메일</label>\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.mail\">\n            </div>\n        </div>\n        <div class=\"section gf-form-group\">\n            <div class=\"gf-form\">\n                <label class=\"gf-form-label width-5\">메모</label>\n                <input type=\"text\" class=\"gf-form-input min-width-16 width-16\" ng-model=\"ctrl.panel.inputlItem.memo\">\n            </div>            \n            \n            <div class=\"gf-form\">\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onNew()\">\n                    등록\n                </button>\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onEdit()\">\n                    수정\n                </button>\n                <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onDel()\">\n                    삭제\n                </button>\n            </div>\n        </div>\n    </div>\n    \n    <div class=\"editor-row\">\n        <div class=\"thingspin-table\"></div>\n    </div>\n\n    -->\n    ";
 
 /***/ }),
 

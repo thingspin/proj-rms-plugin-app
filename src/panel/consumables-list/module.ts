@@ -50,16 +50,16 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
   business = [];
   checker = [];
   aligns = [];
-  businessSelect : any;
-  comsumable : any;
-  selectItem : any;
-  dataJson : any;
+  businessSelect: any;
+  comsumable: any;
+  selectItem: any;
+  dataJson: any;
   defTabulatorOpts: object;
   selectObj: any;
-  selectTableRow : any;
-  mode : any;
-  tableName : string;
-  isViewer : any;
+  selectTableRow: any;
+  mode: any;
+  tableName: string;
+  isViewer: any;
 
   constructor($scope, private $rootScope, $injector, $http, $location, uiSegmentSrv, annotationsSrv, contextSrv, private rsDsSrv, private alertSrv) {
     super($scope, $injector);
@@ -68,9 +68,10 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
     // _.defaults(this.panel);
 
     this.isViewer = contextSrv.hasRole('Viewer');
-    if (!this.isViewer)
+    if (!this.isViewer) {
       this.mode = 'showBtn';
-    
+    }
+
     this.aligns = ['LEFT','CENTER','RIGHT'];
 
     this.comsumable = {
@@ -81,7 +82,7 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
       count_time_count : CONSUMABLES_CYCLE,
       count_time : CONSUMABLES_CYCLE_TIME,
       memo : CONSUMABLES_SUBJECT
-    }
+    };
     this.tableName = "t_consumables";
 
     this.divID = 'table-rms-' + this.panel.id;
@@ -112,7 +113,7 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
           deferred.reject(err);
           console.log(err);
       });
-      return deferred.promise;  
+      return deferred.promise;
     }
   }
 
@@ -151,8 +152,9 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
     this.dataRaw = dataList;
     Promise.resolve(this.transformer(this.dataRaw));
     this.createTable(this.dataJson);
-    if (this.mode != 'edit')
+    if (this.mode !== 'edit') {
       this.initQueryData();
+    }
   }
 
   createTable(dataList) {
@@ -163,14 +165,14 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
       { id: 4, name: "Brendon Philips", age: "125", col: "orange", dob: "01/08/1980"},
       { id: 5, name: "Margret Marmajuke", age: "16", col: "yellow", dob: "31/01/1999"},
     ];
-    if (this.initalized == true) {
+    if (this.initalized) {
       this.container.tabulator("destroy");
     }
     this.defTabulatorOpts = {
       pagination: "local",
       paginationSize: 10,
       selectable: 1,
-      fitColumns: true,     
+      fitColumns: true,
       layout: "fitColumns",
       resizableColumns: this.panel.resizeValue,
       columns: this.columns
@@ -223,7 +225,7 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
         this.comsumable.count = "",
         this.comsumable.count_time_count = "",
         this.comsumable.count_time = "",
-        this.comsumable.memo = ""
+        this.comsumable.memo = "";
       }
       case 'edit' :
       {
@@ -233,16 +235,14 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
         this.comsumable.count = "",
         this.comsumable.count_time_count = "",
         this.comsumable.count_time = "",
-        this.comsumable.memo = ""
+        this.comsumable.memo = "";
       }
     }
   }
 
   close() {
-    if (this.isViewer)
-      this.showCtrlMode('list');
-    else
-      this.showCtrlMode('showBtn');
+    const mode = this.isViewer ? 'list' : 'showBtn';
+    this.showCtrlMode(mode);
     this.refresh();
   }
 
@@ -254,13 +254,13 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
     this.business = [];
     var data = dataList[0];
     var rows = data.rows;
-    for (var count=0; count < rows.length; count++) {
+    for (var count = 0; count < rows.length; count++) {
       var item = rows[count];
       var obj = {
-        name:item[1] +" : "+ item[2],
-        id:item[0]
-      }
-      this.business.push(obj)
+        name: item[1] +" : "+ item[2],
+        id: item[0]
+      };
+      this.business.push(obj);
     }
   }
 
@@ -273,21 +273,22 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
       obj.align = formatter.align;
       obj.formatter = function(cell, formatterParam) {
         var value = cell.getValue();
-        if (isNaN(value) == false) {
-          if (formatter.localstring == true) {
+        if (isNaN(value) === false) {
+          if (formatter.localstring) {
             return Number((Number(value)).toFixed(formatter.decimal)).toLocaleString('en');
           } else {
             return (Number(value)).toFixed(formatter.decimal);
-          }          
-        } else
+          }
+        } else {
           return value;
-      }
+        }
+      };
     } else {
       if (obj.title === CONSUMABLES_SAFE_COUNT || obj.title === CONSUMABLES_COUNT ||  obj.title === CONSUMABLES_CYCLE) {
         obj.align = this.aligns[2];
         obj.formatter = function(cell, formatterParam) {
           return Number(cell.getValue()).toLocaleString('en');
-        }
+        };
       } else {
         obj.align = this.aligns[0];
       }
@@ -300,54 +301,52 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
     var data = dataList[0];
     var rows = data.rows;
     var getColumns = data.columns;
-    for (var count=0; count < getColumns.length; count++) {
-      var column = getColumns[count].text;
-      var obj = {
+    getColumns.forEach((columnObj, count) => {
+      const column = columnObj.text,
+      obj = {
         title: column,
         field: column,
         align: "left",
         // editor: this.autocompEditor,
-      }
+      };
       this.columnOption(obj);
       this.columns.push(obj);
-    }  
+
+    });
     var jArray = new Array;
     var mapData = new Map();
-    for (var count=0; count < rows.length; count++) {
+    for (var count = 0; count < rows.length; count++) {
       var row = rows[count];
-      for (var row_count=0; row_count < row.length; row_count++) {
+      for (var row_count = 0; row_count < row.length; row_count++) {
         var item = row[row_count];
         mapData.set(getColumns[row_count].text,item);
-        if (getColumns[row_count].text == CONSUMABLES_STANDARD) {
+        if (getColumns[row_count].text === CONSUMABLES_STANDARD) {
           this.checker.push(item);
         }
       }
       var object = Object();
-      mapData.forEach((v,k)=> {object[k] = v});
+      mapData.forEach((v,k)=> {object[k] = v;});
       jArray.push(object);
     }
     this.dataJson = jArray;
-  };
+  }
 
   insertChecker(value) {
-    if(this.checker.indexOf(value) == -1)
-      return false;
-    else 
-      return true;
+    return (this.checker.indexOf(value) === -1) ? false : true;
   }
 
   addConsumableItem(businessSelect, name, standard, count, cycle_count, count_time_count, count_time, memo) {
-    if (name == undefined) {
+    if (name === undefined) {
       this.alertSrv.set("품목을 입력해 주세요", 'error', 5000);
       return;
-    } else if (standard == undefined) {
+    } else if (standard === undefined) {
       this.alertSrv.set("규격을 입력해 주세요", 'error', 5000);
       return;
-    } else if (count == undefined) {
+    } else if (count === undefined) {
       this.alertSrv.set("재고수량을 입력해 주세요", 'error', 5000);
       return;
     } else {
-      if(!this.insertChecker(standard)) {
+      if (!this.insertChecker(standard)) {
         let columns = "(PLANT_ID";
         let values = "('1000'";
         columns = columns + ", BUSINESS_ID";
@@ -358,15 +357,15 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
         values = values + ", '" + standard + "'";
         columns = columns + ", COUNT";
         values = values + ", " + count;
-        if (cycle_count.length !== 0){
+        if (cycle_count.length !== 0) {
           columns = columns + ", CYCLE_COUNT";
           values = values + ", " + cycle_count;
         }
-        if (count_time_count.length !== 0){
+        if (count_time_count.length !== 0) {
           columns = columns + ", CYCLE_TIME_COUNT";
           values = values + ", " + count_time_count;
         }
-        if (memo !== undefined && memo !== null )       { values = values + ", '" + memo + "')";} else { values = values + ", '')";}
+        if (memo !== undefined && memo !== null ) { values = values + ", '" + memo + "')";} else { values = values + ", '')";}
         columns = columns + ", MEMO)";
         let selectId = this.datasource.id;
 
@@ -383,7 +382,7 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
         }).catch( err => {
             this.alertSrv.set(name + " 추가 실패", err, 'error', 5000);
             console.error(err);
-        });  
+        });
       } else {
         this.alertSrv.set(name + "가 같은 규격이 존재합니다. 다른 것으로 입력해주세요.", 'error', 5000);
         return;
@@ -392,16 +391,22 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
   }
 
   updateConsumableItem(businessSelect, name, standard,count, cycle_count, count_time_count, count_time, memo) {
-    if (name == undefined) {
+    if (name === undefined) {
       this.alertSrv.set("품목을 입력해 주세요", 'error', 5000);
       return;
-    } else if (count == undefined) {
+    } else if (count === undefined) {
       this.alertSrv.set("재고수량을 입력해 주세요", 'error', 5000);
       return;
-    } else {      
+    } else {
       let selectId = this.datasource.id;
       let query = [
-        "update " + this.tableName + " set CONSUMABLES_NAME = '" + name + "', CONSUMABLES_STANDARD = '" + standard + "', COUNT = " + count + ", CYCLE_COUNT = " + cycle_count + ", MEMO = '" + memo + "' where CONSUMABLES_ID = " + this.comsumable.id + ";",
+        "update " + this.tableName
+        + " set CONSUMABLES_NAME = '" + name
+        + "', CONSUMABLES_STANDARD = '" + standard
+        + "', COUNT = " + count
+        + ", CYCLE_COUNT = " + cycle_count
+        + ", MEMO = '" + memo
+        + "' where CONSUMABLES_ID = " + this.comsumable.id + ";",
       ];
       console.log(query);
       this.rsDsSrv.query(selectId, query).then( result => {
@@ -412,7 +417,7 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
       }).catch( err => {
           this.alertSrv.set(name + " 변경 실패", err, 'error', 5000);
           console.error(err);
-      });  
+      });
     }
   }
 
@@ -430,10 +435,8 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
         this.rsDsSrv.query(selectId, query).then( result => {
             // this.updateInspectionPropertyList(selectId);
             this.alertSrv.set(name + " " + standard + "이(가) 삭제 되었습니다.", '', 'success', 1000);
-            if (this.isViewer)
-              this.showCtrlMode('list');
-            else
-              this.showCtrlMode('showBtn');
+            const mode = (this.isViewer) ? 'list' : 'showBtn';
+            this.showCtrlMode(mode);
             this.refresh();
         }).catch( err => {
             this.alertSrv.set(name + " 삭제 실패", err, 'error', 5000);
@@ -444,9 +447,9 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
   }
 
   showCtrlMode(mode) {
-    if (mode == 'new') {
+    if (mode === 'new') {
       var selectedRows = this.container.tabulator("getSelectedRows");
-      if (selectedRows != undefined) {
+      if (selectedRows !== undefined) {
         this.container.tabulator("deselectRow", selectedRows);
       }
       this.comsumable = {
@@ -457,7 +460,7 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
         count_time_count : '',
         count_time : '',
         memo : ''
-      }
+      };
       this.refresh();
     }
     this.mode = mode;

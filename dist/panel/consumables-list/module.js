@@ -29100,8 +29100,9 @@ var RmsConsumablesPanelCtrl = /** @class */ (function (_super) {
         lodash__WEBPACK_IMPORTED_MODULE_0___default.a.defaults(_this.panel, panelDefaults);
         // _.defaults(this.panel);
         _this.isViewer = contextSrv.hasRole('Viewer');
-        if (!_this.isViewer)
+        if (!_this.isViewer) {
             _this.mode = 'showBtn';
+        }
         _this.aligns = ['LEFT', 'CENTER', 'RIGHT'];
         _this.comsumable = {
             name: CONSUMABLES_PRODUCT,
@@ -29172,8 +29173,9 @@ var RmsConsumablesPanelCtrl = /** @class */ (function (_super) {
         this.dataRaw = dataList;
         Promise.resolve(this.transformer(this.dataRaw));
         this.createTable(this.dataJson);
-        if (this.mode != 'edit')
+        if (this.mode !== 'edit') {
             this.initQueryData();
+        }
     };
     RmsConsumablesPanelCtrl.prototype.createTable = function (dataList) {
         var _this = this;
@@ -29184,7 +29186,7 @@ var RmsConsumablesPanelCtrl = /** @class */ (function (_super) {
             { id: 4, name: "Brendon Philips", age: "125", col: "orange", dob: "01/08/1980" },
             { id: 5, name: "Margret Marmajuke", age: "16", col: "yellow", dob: "31/01/1999" },
         ];
-        if (this.initalized == true) {
+        if (this.initalized) {
             this.container.tabulator("destroy");
         }
         this.defTabulatorOpts = {
@@ -29258,10 +29260,8 @@ var RmsConsumablesPanelCtrl = /** @class */ (function (_super) {
         }
     };
     RmsConsumablesPanelCtrl.prototype.close = function () {
-        if (this.isViewer)
-            this.showCtrlMode('list');
-        else
-            this.showCtrlMode('showBtn');
+        var mode = this.isViewer ? 'list' : 'showBtn';
+        this.showCtrlMode(mode);
         this.refresh();
     };
     RmsConsumablesPanelCtrl.prototype.transDataInput = function (dataList) {
@@ -29289,16 +29289,17 @@ var RmsConsumablesPanelCtrl = /** @class */ (function (_super) {
             obj.align = formatter.align;
             obj.formatter = function (cell, formatterParam) {
                 var value = cell.getValue();
-                if (isNaN(value) == false) {
-                    if (formatter.localstring == true) {
+                if (isNaN(value) === false) {
+                    if (formatter.localstring) {
                         return Number((Number(value)).toFixed(formatter.decimal)).toLocaleString('en');
                     }
                     else {
                         return (Number(value)).toFixed(formatter.decimal);
                     }
                 }
-                else
+                else {
                     return value;
+                }
             };
         }
         else {
@@ -29314,20 +29315,20 @@ var RmsConsumablesPanelCtrl = /** @class */ (function (_super) {
         }
     };
     RmsConsumablesPanelCtrl.prototype.transformer = function (dataList) {
+        var _this = this;
         this.columns = [];
         var data = dataList[0];
         var rows = data.rows;
         var getColumns = data.columns;
-        for (var count = 0; count < getColumns.length; count++) {
-            var column = getColumns[count].text;
-            var obj = {
+        getColumns.forEach(function (columnObj, count) {
+            var column = columnObj.text, obj = {
                 title: column,
                 field: column,
                 align: "left",
             };
-            this.columnOption(obj);
-            this.columns.push(obj);
-        }
+            _this.columnOption(obj);
+            _this.columns.push(obj);
+        });
         var jArray = new Array;
         var mapData = new Map();
         for (var count = 0; count < rows.length; count++) {
@@ -29335,7 +29336,7 @@ var RmsConsumablesPanelCtrl = /** @class */ (function (_super) {
             for (var row_count = 0; row_count < row.length; row_count++) {
                 var item = row[row_count];
                 mapData.set(getColumns[row_count].text, item);
-                if (getColumns[row_count].text == CONSUMABLES_STANDARD) {
+                if (getColumns[row_count].text === CONSUMABLES_STANDARD) {
                     this.checker.push(item);
                 }
             }
@@ -29345,24 +29346,20 @@ var RmsConsumablesPanelCtrl = /** @class */ (function (_super) {
         }
         this.dataJson = jArray;
     };
-    ;
     RmsConsumablesPanelCtrl.prototype.insertChecker = function (value) {
-        if (this.checker.indexOf(value) == -1)
-            return false;
-        else
-            return true;
+        return (this.checker.indexOf(value) === -1) ? false : true;
     };
     RmsConsumablesPanelCtrl.prototype.addConsumableItem = function (businessSelect, name, standard, count, cycle_count, count_time_count, count_time, memo) {
         var _this = this;
-        if (name == undefined) {
+        if (name === undefined) {
             this.alertSrv.set("품목을 입력해 주세요", 'error', 5000);
             return;
         }
-        else if (standard == undefined) {
+        else if (standard === undefined) {
             this.alertSrv.set("규격을 입력해 주세요", 'error', 5000);
             return;
         }
-        else if (count == undefined) {
+        else if (count === undefined) {
             this.alertSrv.set("재고수량을 입력해 주세요", 'error', 5000);
             return;
         }
@@ -29417,18 +29414,24 @@ var RmsConsumablesPanelCtrl = /** @class */ (function (_super) {
     };
     RmsConsumablesPanelCtrl.prototype.updateConsumableItem = function (businessSelect, name, standard, count, cycle_count, count_time_count, count_time, memo) {
         var _this = this;
-        if (name == undefined) {
+        if (name === undefined) {
             this.alertSrv.set("품목을 입력해 주세요", 'error', 5000);
             return;
         }
-        else if (count == undefined) {
+        else if (count === undefined) {
             this.alertSrv.set("재고수량을 입력해 주세요", 'error', 5000);
             return;
         }
         else {
             var selectId = this.datasource.id;
             var query = [
-                "update " + this.tableName + " set CONSUMABLES_NAME = '" + name + "', CONSUMABLES_STANDARD = '" + standard + "', COUNT = " + count + ", CYCLE_COUNT = " + cycle_count + ", MEMO = '" + memo + "' where CONSUMABLES_ID = " + this.comsumable.id + ";",
+                "update " + this.tableName
+                    + " set CONSUMABLES_NAME = '" + name
+                    + "', CONSUMABLES_STANDARD = '" + standard
+                    + "', COUNT = " + count
+                    + ", CYCLE_COUNT = " + cycle_count
+                    + ", MEMO = '" + memo
+                    + "' where CONSUMABLES_ID = " + this.comsumable.id + ";",
             ];
             console.log(query);
             this.rsDsSrv.query(selectId, query).then(function (result) {
@@ -29457,10 +29460,8 @@ var RmsConsumablesPanelCtrl = /** @class */ (function (_super) {
                 _this.rsDsSrv.query(selectId, query).then(function (result) {
                     // this.updateInspectionPropertyList(selectId);
                     _this.alertSrv.set(name + " " + standard + "이(가) 삭제 되었습니다.", '', 'success', 1000);
-                    if (_this.isViewer)
-                        _this.showCtrlMode('list');
-                    else
-                        _this.showCtrlMode('showBtn');
+                    var mode = (_this.isViewer) ? 'list' : 'showBtn';
+                    _this.showCtrlMode(mode);
                     _this.refresh();
                 }).catch(function (err) {
                     _this.alertSrv.set(name + " 삭제 실패", err, 'error', 5000);
@@ -29470,9 +29471,9 @@ var RmsConsumablesPanelCtrl = /** @class */ (function (_super) {
         });
     };
     RmsConsumablesPanelCtrl.prototype.showCtrlMode = function (mode) {
-        if (mode == 'new') {
+        if (mode === 'new') {
             var selectedRows = this.container.tabulator("getSelectedRows");
-            if (selectedRows != undefined) {
+            if (selectedRows !== undefined) {
                 this.container.tabulator("deselectRow", selectedRows);
             }
             this.comsumable = {
@@ -29504,7 +29505,7 @@ var RmsConsumablesPanelCtrl = /** @class */ (function (_super) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div ng-switch on='ctrl.mode'>\r\n    <div ng-switch-when=\"showBtn\">\r\n        <button type=\"submit\" class=\"btn btn-primary\" ng-click=\"ctrl.showCtrlMode('new')\">신규 등록</button>\r\n        <br></br>\r\n    </div>\r\n    <div class=\"editor-row\">\r\n        <div class=\"thingspin-table\"></div>\r\n    </div>\r\n    <br></br>\r\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new\">\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-4\">품목</label>\r\n            <input type=\"text\" class=\"gf-form-input width-12\"  data-placement=\"auto\" ng-model=\"ctrl.comsumable.name\" placeholder=\"품목\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\r\n            <label class=\"gf-form-label width-4\">규격</label>\r\n            <input type=\"text\" class=\"gf-form-input width-14\"  data-placement=\"auto\" ng-model=\"ctrl.comsumable.standard\" placeholder=\"규격\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\r\n            <label class=\"gf-form-label width-7\">업체 선택</label>\r\n            <select class=\"gf-form-input width-10\" ng-model=\"ctrl.businessSelect\" ng-options=\"opts.name for opts in ctrl.business\" required></select>\r\n            <label class=\"gf-form-label width-6\">재고수량</label>\r\n            <input type=\"number\" class=\"gf-form-input width-8\"  data-placement=\"auto\" ng-model=\"ctrl.comsumable.count\" placeholder=\"재고수량\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\r\n        </div>\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-6\">안전수량</label>\r\n            <input type=\"number\" class=\"gf-form-input width-8\"  data-placement=\"auto\" ng-model=\"ctrl.comsumable.cycle_count\" placeholder=\"안전수량\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\r\n            <label class=\"gf-form-label width-6\">교체주기</label>\r\n            <input type=\"number\" class=\"gf-form-input width-8\"  data-placement=\"auto\" ng-model=\"ctrl.comsumable.count_time_count\" placeholder=\"교체주기\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\r\n            <label class=\"gf-form-label width-6\">특이사항</label>\r\n            <input type=\"text\" class=\"gf-form-input width-10\"  data-placement=\"auto\" ng-model=\"ctrl.comsumable.memo\" placeholder=\"특이사항\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\r\n        </div>\r\n        <div class=\"gf-form\">\r\n            <button class=\"btn btn-success width-7\" ng-click=\"ctrl.addConsumableItem(ctrl.businessSelect, ctrl.comsumable.name, ctrl.comsumable.standard, ctrl.comsumable.count, ctrl.comsumable.cycle_count, ctrl.comsumable.count_time_count, ctrl.comsumable.count_time, ctrl.comsumable.memo)\">\r\n                신규 등록\r\n            </button>\r\n            &nbsp;&nbsp;\r\n            <button class=\"btn btn-success width-6\" ng-click=\"ctrl.close()\">\r\n                창 닫기\r\n            </button>\r\n        </div>\r\n    </div>\r\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"edit\">\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-4\">품목</label>\r\n            <input type=\"text\" class=\"gf-form-input width-12\"  data-placement=\"auto\" ng-model=\"ctrl.comsumable.name\" placeholder=\"품목\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\r\n            <label class=\"gf-form-label width-4\">규격</label>\r\n            <input type=\"text\" class=\"gf-form-input width-14\"  data-placement=\"auto\" ng-model=\"ctrl.comsumable.standard\" placeholder=\"규격\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\r\n            <label class=\"gf-form-label width-7\">업체 선택</label>\r\n            <select class=\"gf-form-input width-10\" ng-model=\"ctrl.businessSelect\" ng-options=\"opts.name for opts in ctrl.business\" required></select>\r\n            <label class=\"gf-form-label width-6\">재고수량</label>\r\n            <input type=\"number\" class=\"gf-form-input width-8\"  data-placement=\"auto\" ng-model=\"ctrl.comsumable.count\" placeholder=\"재고수량\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\r\n        </div>\r\n        <div class=\"gf-form\">\r\n            <label class=\"gf-form-label width-6\">안전수량</label>\r\n            <input type=\"number\" class=\"gf-form-input width-8\"  data-placement=\"auto\" ng-model=\"ctrl.comsumable.cycle_count\" placeholder=\"안전수량\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\r\n            <label class=\"gf-form-label width-6\">교체주기</label>\r\n            <input type=\"number\" class=\"gf-form-input width-8\"  data-placement=\"auto\" ng-model=\"ctrl.comsumable.count_time_count\" placeholder=\"교체주기\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\r\n            <label class=\"gf-form-label width-6\">특이사항</label>\r\n            <input type=\"text\" class=\"gf-form-input width-10\"  data-placement=\"auto\" ng-model=\"ctrl.comsumable.memo\" placeholder=\"특이사항\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\r\n        </div>\r\n        <div class=\"gf-form\">\r\n            <button class=\"btn btn-success width-5\" ng-click=\"ctrl.updateConsumableItem(ctrl.businessSelect, ctrl.comsumable.name, ctrl.comsumable.standard, ctrl.comsumable.count, ctrl.comsumable.cycle_count, ctrl.comsumable.count_time_count, ctrl.comsumable.count_time, ctrl.comsumable.memo)\">\r\n                변경\r\n            </button>\r\n            &nbsp;&nbsp;\r\n            <button class=\"btn btn-success width-5\" ng-click=\"ctrl.deleteConsumableItem(ctrl.comsumable.name, ctrl.comsumable.standard)\">\r\n                삭제\r\n            </button>\r\n            &nbsp;&nbsp;\r\n            <button class=\"btn btn-success width-6\" ng-click=\"ctrl.close()\">\r\n                창 닫기\r\n            </button>\r\n        </div>\r\n    </div>       \r\n</div>";
+module.exports = "<div ng-switch on='ctrl.mode'>\n    <div ng-switch-when=\"showBtn\">\n        <button type=\"submit\" class=\"btn btn-primary\" ng-click=\"ctrl.showCtrlMode('new')\">신규 등록</button>\n        <br></br>\n    </div>\n    <div class=\"editor-row\">\n        <div class=\"thingspin-table\"></div>\n    </div>\n    <br></br>\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new\">\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-4\">품목</label>\n            <input type=\"text\" class=\"gf-form-input width-12\"  data-placement=\"auto\" ng-model=\"ctrl.comsumable.name\" placeholder=\"품목\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\n            <label class=\"gf-form-label width-4\">규격</label>\n            <input type=\"text\" class=\"gf-form-input width-14\"  data-placement=\"auto\" ng-model=\"ctrl.comsumable.standard\" placeholder=\"규격\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\n            <label class=\"gf-form-label width-7\">업체 선택</label>\n            <select class=\"gf-form-input width-10\" ng-model=\"ctrl.businessSelect\" ng-options=\"opts.name for opts in ctrl.business\" required></select>\n            <label class=\"gf-form-label width-6\">재고수량</label>\n            <input type=\"number\" class=\"gf-form-input width-8\"  data-placement=\"auto\" ng-model=\"ctrl.comsumable.count\" placeholder=\"재고수량\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\n        </div>\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-6\">안전수량</label>\n            <input type=\"number\" class=\"gf-form-input width-8\"  data-placement=\"auto\" ng-model=\"ctrl.comsumable.cycle_count\" placeholder=\"안전수량\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\n            <label class=\"gf-form-label width-6\">교체주기</label>\n            <input type=\"number\" class=\"gf-form-input width-8\"  data-placement=\"auto\" ng-model=\"ctrl.comsumable.count_time_count\" placeholder=\"교체주기\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\n            <label class=\"gf-form-label width-6\">특이사항</label>\n            <input type=\"text\" class=\"gf-form-input width-10\"  data-placement=\"auto\" ng-model=\"ctrl.comsumable.memo\" placeholder=\"특이사항\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\n        </div>\n        <div class=\"gf-form\">\n            <button class=\"btn btn-success width-7\" ng-click=\"ctrl.addConsumableItem(ctrl.businessSelect, ctrl.comsumable.name, ctrl.comsumable.standard, ctrl.comsumable.count, ctrl.comsumable.cycle_count, ctrl.comsumable.count_time_count, ctrl.comsumable.count_time, ctrl.comsumable.memo)\">\n                신규 등록\n            </button>\n            &nbsp;&nbsp;\n            <button class=\"btn btn-success width-6\" ng-click=\"ctrl.close()\">\n                창 닫기\n            </button>\n        </div>\n    </div>\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"edit\">\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-4\">품목</label>\n            <input type=\"text\" class=\"gf-form-input width-12\"  data-placement=\"auto\" ng-model=\"ctrl.comsumable.name\" placeholder=\"품목\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\n            <label class=\"gf-form-label width-4\">규격</label>\n            <input type=\"text\" class=\"gf-form-input width-14\"  data-placement=\"auto\" ng-model=\"ctrl.comsumable.standard\" placeholder=\"규격\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\n            <label class=\"gf-form-label width-7\">업체 선택</label>\n            <select class=\"gf-form-input width-10\" ng-model=\"ctrl.businessSelect\" ng-options=\"opts.name for opts in ctrl.business\" required></select>\n            <label class=\"gf-form-label width-6\">재고수량</label>\n            <input type=\"number\" class=\"gf-form-input width-8\"  data-placement=\"auto\" ng-model=\"ctrl.comsumable.count\" placeholder=\"재고수량\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\n        </div>\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-6\">안전수량</label>\n            <input type=\"number\" class=\"gf-form-input width-8\"  data-placement=\"auto\" ng-model=\"ctrl.comsumable.cycle_count\" placeholder=\"안전수량\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\n            <label class=\"gf-form-label width-6\">교체주기</label>\n            <input type=\"number\" class=\"gf-form-input width-8\"  data-placement=\"auto\" ng-model=\"ctrl.comsumable.count_time_count\" placeholder=\"교체주기\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\n            <label class=\"gf-form-label width-6\">특이사항</label>\n            <input type=\"text\" class=\"gf-form-input width-10\"  data-placement=\"auto\" ng-model=\"ctrl.comsumable.memo\" placeholder=\"특이사항\" ng-blur=\"ctrl.render()\" data-min-length=0 data-items=64 ng-model-onblur>\n        </div>\n        <div class=\"gf-form\">\n            <button class=\"btn btn-success width-5\" ng-click=\"ctrl.updateConsumableItem(ctrl.businessSelect, ctrl.comsumable.name, ctrl.comsumable.standard, ctrl.comsumable.count, ctrl.comsumable.cycle_count, ctrl.comsumable.count_time_count, ctrl.comsumable.count_time, ctrl.comsumable.memo)\">\n                변경\n            </button>\n            &nbsp;&nbsp;\n            <button class=\"btn btn-success width-5\" ng-click=\"ctrl.deleteConsumableItem(ctrl.comsumable.name, ctrl.comsumable.standard)\">\n                삭제\n            </button>\n            &nbsp;&nbsp;\n            <button class=\"btn btn-success width-6\" ng-click=\"ctrl.close()\">\n                창 닫기\n            </button>\n        </div>\n    </div>       \n</div>";
 
 /***/ }),
 
