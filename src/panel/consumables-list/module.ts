@@ -208,10 +208,9 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
     this.comsumable.memo = obj[CONSUMABLES_MEMO];
     this.comsumable.name = obj[CONSUMABLES_PRODUCT];
     this.comsumable.standard = obj[CONSUMABLES_STANDARD];
-    this.comsumable.cycle_count = obj[CONSUMABLES_SAFE_COUNT];
     this.comsumable.count = obj[CONSUMABLES_COUNT];
+    this.comsumable.cycle_count = obj[CONSUMABLES_SAFE_COUNT];
     this.comsumable.count_time_count = obj[CONSUMABLES_CYCLE];
-    this.comsumable.count_time = obj[CONSUMABLES_CYCLE_TIME];
     this.comsumable.memo = obj[CONSUMABLES_SUBJECT];
     var cmpStr = obj[CONSUMABLES_BUSINESS] + " : " + obj[CONSUMABLES_PERSON];
     var result = this.business.map(x => x.name).indexOf(cmpStr);
@@ -369,7 +368,7 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
     return (this.checker.indexOf(value) === -1) ? false : true;
   }
 
-  addConsumableItem(businessSelect, name, standard, count, cycle_count, count_time_count, count_time, memo) {
+  addConsumableItem(businessSelect, name, standard, count, cycle_count, count_time_count, memo) {
     if (name === undefined) {
       this.alertSrv.set("품목을 입력해 주세요", 'error', 5000);
       return;
@@ -424,7 +423,7 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
     }
   }
 
-  updateConsumableItem(businessSelect, name, standard,count, cycle_count, count_time_count, count_time, memo) {
+  updateConsumableItem(businessSelect, name, standard, count, cycle_count, count_time_count, memo) {
     if (name === undefined) {
       this.alertSrv.set("품목을 입력해 주세요", 'error', 5000);
       return;
@@ -439,6 +438,7 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
         + "', CONSUMABLES_STANDARD = '" + standard
         + "', COUNT = " + count
         + ", CYCLE_COUNT = " + cycle_count
+        + ", CYCLE_TIME_COUNT = " + count_time_count
         + ", MEMO = '" + memo
         + "' where CONSUMABLES_ID = " + this.comsumable.id + ";",
       ];
