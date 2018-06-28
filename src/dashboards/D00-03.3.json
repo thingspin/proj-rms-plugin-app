@@ -15,7 +15,7 @@
   "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1530157086645,
+  "iteration": 1530158468028,
   "links": [],
   "panels": [
     {
@@ -93,7 +93,13 @@
               }
             ]
           ],
-          "tags": []
+          "tags": [
+            {
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            }
+          ]
         }
       ],
       "thresholds": [
@@ -213,10 +219,22 @@
               }
             ]
           ],
-          "tags": []
+          "tags": [
+            {
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "facility",
+              "operator": "=~",
+              "value": "/^$FACILITY$/"
+            }
+          ]
         }
       ],
-      "title": "Daily CPK Trend",
+      "title": "",
       "transparent": true,
       "type": "rms-cpk-trend-table"
     }
@@ -232,63 +250,40 @@
       {
         "allValue": null,
         "current": {
-          "text": "All",
-          "value": "$__all"
+          "text": "EC11A00",
+          "value": "EC11A00"
         },
         "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
-        "hide": 2,
-        "includeAll": true,
-        "label": "검사기",
-        "multi": false,
-        "name": "FACILITY",
-        "options": [],
-        "query": "show tag values from /inspection/ with key=facility",
-        "refresh": 2,
-        "regex": "",
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": null,
-        "current": {
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
-        "hide": 2,
-        "includeAll": true,
-        "label": "채널",
-        "multi": false,
-        "name": "CHANNEL",
-        "options": [],
-        "query": "show tag values from /inspection/ with key=channel",
-        "refresh": 2,
-        "regex": "",
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": null,
-        "current": {
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
-        "hide": 2,
+        "hide": 0,
         "includeAll": true,
         "label": "모델",
         "multi": false,
         "name": "MODEL",
         "options": [],
         "query": "show tag values from /inspection/ with key=model",
+        "refresh": 2,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "검사기",
+        "multi": false,
+        "name": "FACILITY",
+        "options": [],
+        "query": "show tag values from /inspection/ with key=facility",
         "refresh": 2,
         "regex": "",
         "sort": 0,
@@ -323,6 +318,6 @@
   },
   "timezone": "",
   "title": "CPK Trend 분석 (Daily)",
-  "uid": "IY2yiaHiz",
-  "version": 22
+  "uid": "B0vSYMviz",
+  "version": 9
 }
