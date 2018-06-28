@@ -156,10 +156,16 @@ class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
             if (this.models.indexOf(item) === -1) {
               this.models.push(item);
               tempModel = item;
-            }
+            } else 
+              tempModel = item;
           break;
           case 3:
-            this.mapPlan.set(tempModel,item);
+            if (this.mapPlan.has(tempModel) === true) {
+              var val = this.mapPlan.get(tempModel);
+              this.mapPlan.set(tempModel, (item + val));
+            } else {
+              this.mapPlan.set(tempModel,item);
+            }
           break;
         }
       });
