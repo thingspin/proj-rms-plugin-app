@@ -132,7 +132,6 @@ var __extends = (undefined && undefined.__extends) || (function () {
 })();
 
 
-// import * as cbundle from 'chart.js/dist/Chart.bundle.min';
 var PLAN = 0;
 var TRUE = 1;
 var FALSE = 2;

@@ -79,7 +79,7 @@ class RmsProductStateBarChartPanelCtrl extends MetricsPanelCtrl {
                   if (label) {
                       label += ': ';
                   }
-                  
+
                   label += tooltipItem.yLabel.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
                   return label;

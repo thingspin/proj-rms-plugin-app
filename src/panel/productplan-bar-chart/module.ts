@@ -1,7 +1,5 @@
 import {MetricsPanelCtrl} from  'grafana/app/plugins/sdk';
-
 import * as Chart from 'chart.js/dist/Chart.min';
-// import * as cbundle from 'chart.js/dist/Chart.bundle.min';
 
 const PLAN = 0;
 const TRUE = 1;
@@ -60,7 +58,7 @@ class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
 
                   if (label) {
                       label += ': ';
-                  }                  
+                  }
                   
                   label += tooltipItem.yLabel.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
@@ -79,7 +77,7 @@ class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
                 callback: function(value, index, values) {
                     return value.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                 }
-              }              
+              }
             }]
           },
           maintainAspectRatio: false
