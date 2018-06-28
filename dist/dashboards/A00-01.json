@@ -12,10 +12,10 @@
       }
     ]
   },
-  "editable": true,
+  "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1529660115677,
+  "iteration": 1530180263152,
   "links": [],
   "originalTemplating": [
     {
@@ -38,6 +38,14 @@
         "value": "$__all"
       },
       "name": "MODEL"
+    },
+    {
+      "current": {
+        "tags": [],
+        "text": "RMS-BRANCH-INFLUXDB(V1.0)",
+        "value": "RMS-BRANCH-INFLUXDB(V1.0)"
+      },
+      "name": "DATABASE"
     }
   ],
   "originalTime": {
@@ -54,7 +62,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "datasource": "$DATABASE",
       "decimals": 0,
       "format": "locale",
       "gauge": {
@@ -162,7 +170,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "datasource": "$DATABASE",
       "decimals": 0,
       "format": "locale",
       "gauge": {
@@ -270,7 +278,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "datasource": "$DATABASE",
       "decimals": 0,
       "format": "locale",
       "gauge": {
@@ -378,7 +386,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "datasource": "$DATABASE",
       "decimals": 2,
       "enableScript": true,
       "format": "s",
@@ -525,7 +533,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "datasource": "$DATABASE",
       "decimals": 0,
       "format": "locale",
       "gauge": {
@@ -651,7 +659,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "datasource": "$DATABASE",
       "decimals": 0,
       "enableScript": true,
       "format": "s",
@@ -779,7 +787,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "datasource": "$DATABASE",
       "decimals": 0,
       "format": "locale",
       "gauge": {
@@ -898,7 +906,7 @@
     },
     {
       "columns": [],
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "datasource": "$DATABASE",
       "enableScript": true,
       "fontSize": "100%",
       "gridPos": {
@@ -1098,7 +1106,7 @@
     },
     {
       "columns": [],
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "datasource": "$DATABASE",
       "enableScript": true,
       "fontSize": "100%",
       "gridPos": {
@@ -1298,7 +1306,7 @@
     },
     {
       "columns": [],
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "datasource": "$DATABASE",
       "enableScript": true,
       "fontSize": "100%",
       "gridPos": {
@@ -1574,6 +1582,21 @@
         "tagsQuery": "",
         "type": "query",
         "useTags": false
+      },
+      {
+        "current": {
+          "tags": [],
+          "text": "RMS-BRANCH-INFLUXDB(V1.0)",
+          "value": "RMS-BRANCH-INFLUXDB(V1.0)"
+        },
+        "hide": 2,
+        "label": "본사/지점",
+        "name": "DATABASE",
+        "options": [],
+        "query": "influxdb",
+        "refresh": 1,
+        "regex": "/^RMS-*/",
+        "type": "datasource"
       }
     ]
   },
@@ -1601,5 +1624,5 @@
   "timezone": "",
   "title": "Tack Time",
   "uid": "gMbFYYHiz",
-  "version": 82
+  "version": 5
 }

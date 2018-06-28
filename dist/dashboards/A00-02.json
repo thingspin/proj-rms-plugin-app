@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1529661117174,
+  "iteration": 1530180339278,
   "links": [],
   "originalTemplating": [
     {
@@ -38,6 +38,13 @@
         "value": "$__all"
       },
       "name": "MODEL"
+    },
+    {
+      "current": {
+        "text": "RMS-BRANCH-INFLUXDB(V1.0)",
+        "value": "RMS-BRANCH-INFLUXDB(V1.0)"
+      },
+      "name": "DATABASE"
     }
   ],
   "originalTime": {
@@ -54,7 +61,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "datasource": "$DATABASE",
       "decimals": 0,
       "format": "locale",
       "gauge": {
@@ -162,7 +169,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "datasource": "$DATABASE",
       "decimals": 0,
       "format": "locale",
       "gauge": {
@@ -270,7 +277,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "datasource": "$DATABASE",
       "decimals": 0,
       "format": "locale",
       "gauge": {
@@ -378,7 +385,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "datasource": "$DATABASE",
       "decimals": 2,
       "enableScript": true,
       "format": "s",
@@ -525,7 +532,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "datasource": "$DATABASE",
       "decimals": 0,
       "format": "locale",
       "gauge": {
@@ -651,7 +658,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "datasource": "$DATABASE",
       "decimals": 0,
       "enableScript": true,
       "format": "s",
@@ -779,7 +786,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "datasource": "$DATABASE",
       "decimals": 0,
       "format": "locale",
       "gauge": {
@@ -901,7 +908,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "datasource": "$DATABASE",
       "enableScript": true,
       "fill": 1,
       "gridPos": {
@@ -923,7 +930,7 @@
         "total": false,
         "values": false
       },
-      "lines": true,
+      "lines": false,
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
@@ -1075,7 +1082,7 @@
     },
     {
       "columns": [],
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "datasource": "$DATABASE",
       "enableScript": true,
       "fontSize": "100%",
       "gridPos": {
@@ -1279,7 +1286,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "datasource": "$DATABASE",
       "enableScript": true,
       "fill": 1,
       "gridPos": {
@@ -1301,7 +1308,7 @@
         "total": false,
         "values": false
       },
-      "lines": true,
+      "lines": false,
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
@@ -1452,7 +1459,7 @@
     },
     {
       "columns": [],
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "datasource": "$DATABASE",
       "enableScript": true,
       "fontSize": "100%",
       "gridPos": {
@@ -1656,7 +1663,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+      "datasource": "$DATABASE",
       "enableScript": true,
       "fill": 1,
       "gridPos": {
@@ -1678,7 +1685,7 @@
         "total": false,
         "values": false
       },
-      "lines": true,
+      "lines": false,
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
@@ -1904,6 +1911,20 @@
         "tagsQuery": "",
         "type": "query",
         "useTags": false
+      },
+      {
+        "current": {
+          "text": "RMS-BRANCH-INFLUXDB(V1.0)",
+          "value": "RMS-BRANCH-INFLUXDB(V1.0)"
+        },
+        "hide": 2,
+        "label": "본사/지점 선택",
+        "name": "DATABASE",
+        "options": [],
+        "query": "influxdb",
+        "refresh": 1,
+        "regex": "/RMS-*/",
+        "type": "datasource"
       }
     ]
   },
@@ -1931,5 +1952,5 @@
   "timezone": "",
   "title": "Tack Time Graph",
   "uid": "5rimVENmk",
-  "version": 13
+  "version": 6
 }
