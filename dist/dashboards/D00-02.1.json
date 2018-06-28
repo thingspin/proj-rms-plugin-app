@@ -2,7 +2,7 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:153",
+        "$$hashKey": "object:143",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -16,14 +16,14 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1529050445220,
+  "iteration": 1530150619235,
   "links": [],
   "panels": [
     {
       "datasource": "$DATABASE",
       "gridPos": {
-        "h": 11,
-        "w": 11,
+        "h": 9,
+        "w": 24,
         "x": 0,
         "y": 0
       },
@@ -87,16 +87,16 @@
           ]
         }
       ],
-      "title": "검사기와 채널 별",
+      "title": "검사기 및 채널 별 생산(양품, 불량) 수량",
       "type": "rms-product-state-bar"
     },
     {
       "datasource": "-- Mixed --",
       "gridPos": {
         "h": 11,
-        "w": 12,
-        "x": 11,
-        "y": 0
+        "w": 24,
+        "x": 0,
+        "y": 9
       },
       "id": 6,
       "kernel": null,
@@ -104,6 +104,7 @@
       "scripts": "",
       "targets": [
         {
+          "$$hashKey": "object:186",
           "datasource": "$DATABASE",
           "groupBy": [
             {
@@ -165,7 +166,7 @@
           ]
         }
       ],
-      "title": "검사항목별",
+      "title": "검사기 및 검사항목 별 생산(양품, 불량) 수량",
       "type": "rms-Inspection-state-bar"
     }
   ],
@@ -176,6 +177,7 @@
     "list": [
       {
         "current": {
+          "selected": true,
           "text": "RMS-CENTER-INFLUXDB(V1.0)",
           "value": "RMS-CENTER-INFLUXDB(V1.0)"
         },
@@ -191,6 +193,7 @@
       {
         "allValue": null,
         "current": {
+          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -214,6 +217,7 @@
       {
         "allValue": null,
         "current": {
+          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -300,5 +304,5 @@
   "timezone": "",
   "title": "불량 현황",
   "uid": "KfvX3wVik",
-  "version": 1
+  "version": 8
 }
