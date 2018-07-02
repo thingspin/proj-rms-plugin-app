@@ -91,7 +91,7 @@ class RmsMonitorFactoryPanelCtrl extends MetricsPanelCtrl {
   initSvgDOM() {
     const $svg = $(this.svg.node);
 
-    const dialog =  $svg.find("g#Dialogs");
+    const dialog =  $svg.find("g#dialogue");
     dialog.hide();
 
     let result = {
@@ -103,8 +103,8 @@ class RmsMonitorFactoryPanelCtrl extends MetricsPanelCtrl {
           main: dialog.find("#main-title"),
           sub: dialog.find("#sub-title"),
         },
-        button: dialog.find("#Dialogs-button"),
-        memo: dialog.find("#Dialogs-text2 > text"),
+        button: dialog.find("#dialogue-button"),
+        memo: dialog.find("#memo > text"),
         memoTitle: dialog.find("#memo-title"),
 
       },
@@ -153,43 +153,43 @@ class RmsMonitorFactoryPanelCtrl extends MetricsPanelCtrl {
     }
 
     // test only
-    // $svg.find("#modeling1-title1").on("click", (evt) => {
-    //   this.lineAnimation(JSON.stringify({
-    //     tags: {
-    //       facility: "hello1",
-    //       channel: "3",
-    //       fireCNF: false,
-    //       fireCPK: true,
-    //       iid: 0,
-    //       inm: "L/Current",
-    //       alert: 1,
-    //       pass: false,
-    //       model: "RB70F00",
-    //     },
-    //     fields: {
-    //       tuid: "5d509ff6.20756",
-    //       val: -0.987,
-    //       min: -0.975,
-    //       max: 0.975,
-    //       acc: 0,
-    //       acum: 612,
-    //       cp: 0.8722,
-    //       cpk: 0.43728,
-    //       usl: 0.975,
-    //       lsl: -0.975,
-    //       camx: 2,
-    //     },
-    //     rule: {
-    //       memo: [
-    //         "가나다라마바사아자차카타파하아이우에오나니누네sd;fljsdljfksjkldfjlk",
-    //         "abcdefghijklmnopqrstuvwxyz1234567890",
-    //         "hello3",
-    //         "hello4",
-    //         "hello5",
-    //       ]
-    //     }
-    //   }));
-    // });
+    $svg.find("#modeling1-title1").on("click", (evt) => {
+      this.lineAnimation(JSON.stringify({
+        tags: {
+          facility: "hello1",
+          channel: "3",
+          fireCNF: false,
+          fireCPK: true,
+          iid: 0,
+          inm: "L/Current",
+          alert: 1,
+          pass: false,
+          model: "RB70F00",
+        },
+        fields: {
+          tuid: "5d509ff6.20756",
+          val: -0.987,
+          min: -0.975,
+          max: 0.975,
+          acc: 0,
+          acum: 612,
+          cp: 0.8722,
+          cpk: 0.43728,
+          usl: 0.975,
+          lsl: -0.975,
+          camx: 2,
+        },
+        rule: {
+          memo: [
+            "가나다라마바사아자차카타파하아이우에오나니누네sd;fljsdljfksjkldfjlk",
+            "abcdefghijklmnopqrstuvwxyz1234567890",
+            "hello3",
+            "hello4",
+            "hello5",
+          ]
+        }
+      }));
+    });
   }
 
   initAnimation() {
@@ -288,13 +288,13 @@ class RmsMonitorFactoryPanelCtrl extends MetricsPanelCtrl {
     }
 
     if (obj) {
-      const zoneTitle = `[라인 정지] ${obj.tags.facility}-${obj.tags.channel}`;
+      const zoneTitle = `${obj.tags.facility}-${obj.tags.channel}`;
       const fireType = obj.tags.fireCNF ? "연속 불량" : obj.tags.fireCPK ? "CPK 이탈" : "알 수 없음";
       const {root, title,zone, memo, memoTitle} = this.svgDOM.dialogDoms;
       let memolist = [];
       if (obj.rule && obj.rule.memo) { memolist = obj.rule.memo; }
 
-      root.attr("transform", "translate(0,50)");
+      // root.attr("transform", "translate(0,50)");
       root.show();
       title.main.text(`${fireType} 발생`);
       title.sub.html(`
