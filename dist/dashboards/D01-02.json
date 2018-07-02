@@ -44,7 +44,7 @@
       "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
       "fontSize": "90%",
       "gridPos": {
-        "h": 8,
+        "h": 10,
         "w": 24,
         "x": 0,
         "y": 8

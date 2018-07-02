@@ -32245,6 +32245,12 @@ var RmsConsumablesPanelCtrl = /** @class */ (function (_super) {
         var t = elem.find('.thingspin-table')[0];
         t.id = this.divID;
         this.container = jquery__WEBPACK_IMPORTED_MODULE_1___default()(t);
+        var link = document.createElement("link");
+        link.href = "public/plugins/proj-rms-plugin-app/panel/consumables-list/css/light.css";
+        link.type = "text/css";
+        link.rel = "stylesheet";
+        link.media = "screen,print";
+        document.getElementsByTagName("head")[0].appendChild(link);
     };
     /* dynamic ui process
     rander() {
@@ -32300,6 +32306,12 @@ var RmsConsumablesPanelCtrl = /** @class */ (function (_super) {
             this.container.tabulator("setData", tabledata);
         }
         this.container.tabulator("hideColumn", CONSUMABLES_ID);
+        this.container.addClass('tabulator-footer');
+        this.container.addClass('tabulator');
+        this.container.addClass('tabulator-col');
+        this.container.addClass('tabulator-cell');
+        this.container.addClass('tabulator-row-even');
+        this.container.addClass('tabulator-header');
         this.initalized = true;
         jquery__WEBPACK_IMPORTED_MODULE_1___default()(window).trigger('resize');
     };

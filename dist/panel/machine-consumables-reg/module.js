@@ -46271,6 +46271,12 @@ var RmsMachineConsumablesPanelCtrl = /** @class */ (function (_super) {
         var t = elem.find('.thingspin-table')[0];
         t.id = this.divID;
         this.container = jquery__WEBPACK_IMPORTED_MODULE_1___default()(t);
+        var link = document.createElement("link");
+        link.href = "public/plugins/proj-rms-plugin-app/panel/machine-consumables-reg/css/light.css";
+        link.type = "text/css";
+        link.rel = "stylesheet";
+        link.media = "screen,print";
+        document.getElementsByTagName("head")[0].appendChild(link);
     };
     /* dynamic ui process
     rander() {
