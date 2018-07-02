@@ -264,6 +264,7 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
       };
       this.business.push(obj);
     }
+    this.businessSelect = this.business[0];
   }
 
   columnOption(obj) {
