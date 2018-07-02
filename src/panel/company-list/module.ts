@@ -118,6 +118,13 @@ class RmsCompanyListPanelCtrl extends MetricsPanelCtrl {
     t.id = this.divID;
 
     this.container = $(t);
+    var link = document.createElement( "link" );
+    link.href = "public/plugins/proj-rms-plugin-app/panel/company-list/css/light.css";
+    link.type = "text/css";
+    link.rel = "stylesheet";
+    link.media = "screen,print";
+
+    document.getElementsByTagName( "head" )[0].appendChild( link );
   }
 
   // 2018.05.16

@@ -139,6 +139,14 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
     t.id = this.divID;
 
     this.container = $(t);
+    var link = document.createElement( "link" );
+    link.href = "public/plugins/proj-rms-plugin-app/panel/consumables-list/css/light.css";
+    link.type = "text/css";
+    link.rel = "stylesheet";
+    link.media = "screen,print";
+
+    document.getElementsByTagName( "head" )[0].appendChild( link );
+
   }
 
   /* dynamic ui process
@@ -196,6 +204,12 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
       this.container.tabulator("setData", tabledata);
     }
     this.container.tabulator("hideColumn", CONSUMABLES_ID);
+    this.container.addClass('tabulator-footer');
+    this.container.addClass('tabulator');
+    this.container.addClass('tabulator-col');
+    this.container.addClass('tabulator-cell');
+    this.container.addClass('tabulator-row-even');
+    this.container.addClass('tabulator-header');
     this.initalized = true;
     $(window).trigger('resize');
   }
