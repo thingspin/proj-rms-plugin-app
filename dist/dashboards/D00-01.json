@@ -2,7 +2,6 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:154",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -13,10 +12,10 @@
       }
     ]
   },
-  "editable": false,
+  "editable": true,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1530155654323,
+  "iteration": 1530508855212,
   "links": [
     {
       "icon": "external link",
@@ -128,19 +127,12 @@
       "targets": [
         {
           "alias": "$col",
-          "groupBy": [
-            {
-              "params": [
-                "$interval"
-              ],
-              "type": "time"
-            }
-          ],
+          "groupBy": [],
           "measurement": "/^inspection.detail-*/",
           "orderByTime": "ASC",
           "policy": "default",
           "query": "SELECT last(\"cpk\") AS \"cpk\", last(\"lsl\") AS \"lsl\", last(\"usl\") AS \"usl\", (last(\"usl\") + last(\"lsl\")) / 2 AS \"mean\" FROM /^inspection.detail-*/ WHERE (\"facility\" =~ /^$FACILITY$/ AND \"channel\" =~ /^$CHANNEL$/ AND \"iid\" =~ /^$INSPPROP$/ AND \"model\" =~ /^$MODEL$/) AND $timeFilter",
-          "rawQuery": true,
+          "rawQuery": false,
           "refId": "A",
           "resultFormat": "table",
           "select": [
@@ -201,7 +193,7 @@
             [
               {
                 "params": [
-                  "usl"
+                  "cp"
                 ],
                 "type": "field"
               },
@@ -211,13 +203,7 @@
               },
               {
                 "params": [
-                  " / 100"
-                ],
-                "type": "math"
-              },
-              {
-                "params": [
-                  "mean"
+                  "cp"
                 ],
                 "type": "alias"
               }
@@ -251,14 +237,7 @@
         },
         {
           "alias": "$col",
-          "groupBy": [
-            {
-              "params": [
-                "$interval"
-              ],
-              "type": "time"
-            }
-          ],
+          "groupBy": [],
           "measurement": "/^inspection.detail-*/",
           "orderByTime": "ASC",
           "policy": "default",
@@ -273,10 +252,6 @@
                   "val"
                 ],
                 "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
               },
               {
                 "params": [
@@ -452,14 +427,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "groupBy": [
-            {
-              "params": [
-                "$interval"
-              ],
-              "type": "time"
-            }
-          ],
+          "groupBy": [],
           "measurement": "/^inspection.detail-*/",
           "orderByTime": "ASC",
           "policy": "default",
@@ -474,10 +442,6 @@
                   "val"
                 ],
                 "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
               }
             ]
           ],
@@ -1013,7 +977,6 @@
       {
         "allValue": "",
         "current": {
-          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -1060,7 +1023,6 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -1084,7 +1046,6 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -1110,7 +1071,6 @@
         "auto_count": 30,
         "auto_min": "1s",
         "current": {
-          "selected": true,
           "text": "auto",
           "value": "$__auto_interval_INTERVAL"
         },
@@ -1205,7 +1165,6 @@
       },
       {
         "current": {
-          "selected": true,
           "text": "RMS-CENTER-INFLUXDB(V1.0)",
           "value": "RMS-CENTER-INFLUXDB(V1.0)"
         },
@@ -1254,5 +1213,5 @@
   "timezone": "",
   "title": "CPK 현황",
   "uid": "N36atb7mk",
-  "version": 27
+  "version": 7
 }
