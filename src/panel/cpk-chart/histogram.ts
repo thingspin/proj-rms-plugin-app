@@ -50,30 +50,23 @@ export function convertValuesToHistogram(values: number[], bucketSize: number, m
   }
 
   let list = [];
-  var distribution = gaussian(mean,variance);
-  //let histogam_series =
+  let distribution = gaussian(mean,variance);
+
+  // left points
   _.map(histogram, (count, bound) => {
-    list.push({"x": Number(bound),"y": distribution.pdf(Number(bound))});
-    //list.push(count);
-    //return {"x":Number(bound),"y":count};
-    //return Number(bound),count;
+    if(Number(bound) < mean) {
+       list.push({"x": Number(bound),"y": distribution.pdf(Number(bound))});
+    }
   });
-  //console.log(_.sortBy(list, "x"));
-  //console.log(histogam_series);
-  //console.log(histogam_series);
-  /*
-  //console.log("=============");
-  //console.log(list);
-  console.log(getCurvePoints(list,1,5,true));
-  list = getCurvePoints(list,0.5,25,false);
-  let list2 = [];
-  //let list2 = [];
-  for (let i=0;i<list.length;i+=2) {
-    list2.push({"x":list[i],"y":list[i+1]});
-  }
-  */
-  // Sort by Y axis values
-  //return final;
+
+  // right points
+  list.map(ele => {
+    let right = mean - ele.x;
+    right = mean+right;
+    list.push({"x": right,"y": distribution.pdf(right)});
+  });
+  // mean for normal distribution
+  list.push({"x": mean,"y": distribution.pdf(mean)});
   return _.sortBy(list, "x");
 }
 

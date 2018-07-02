@@ -104,9 +104,12 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
             this.lsl = dataList[i].rows[0][j];
           } else if (dataList[i].columns[j].text === 'usl') {
             this.usl = dataList[i].rows[0][j];
-          } else if (dataList[i].columns[j].text === 'mean') {
+          } 
+          /*
+          else if (dataList[i].columns[j].text === 'mean') {
             this.mean = dataList[i].rows[0][j];
           }
+          */
         }
       } else {
         data = dataList[i];
@@ -119,6 +122,7 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
 
     // Convert data to histogram data
     let result = convertToHistogramData([data], bucketSize, panelWidth);
+    this.mean = result[0].mean;
     result = result[0].data;
 
     this.data = {
@@ -176,7 +180,7 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
         options: {
           cpk: this.cpk,
           cp: this.cp,
-          mean: this.mean,
+          //mean: this.mean,
           legend: {
             display: false
           },
@@ -188,7 +192,7 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
             annotations: [
               {
                   type: 'line',
-                  id: 'lsl_line',
+                  //id: 'lsl_line',
                   mode: 'virtical',
 
                   borderColor: 'red',
@@ -215,10 +219,10 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
               },
               {
                 type: 'line',
-                id: 'usl_line',
+                //id: 'usl_line',
                 mode: 'virtical',
 
-                borderColor: 'red',
+                borderColor: 'blue',
                 borderDash: [2, 2],
                 borderWidth: 2,
 
@@ -242,7 +246,7 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
               },
               {
                 type: 'line',
-                id: 'mean_line',
+                //id: 'mean_line',
                 mode: 'virtical',
                 borderColor: 'black',
                 borderDash: [2, 2],
@@ -308,20 +312,20 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
 
     if (this.chart) {
       this.chart.data = this.data;
-
-      let annotations = this.chart.options.annotation.annotations;
-      for ( let i = 0; i< annotations.length; i++ ) {
-        if ( annotations[i].id === "lsl_line" ) {
-          annotations[i].value = this.lsl;
-        }else if ( annotations[i].id === "usl_line") {
-          annotations[i].value = this.usl;
-        }else if ( annotations[i].id === "mean_line") {
-          annotations[i].value = this.mean;
+      var annotations = this.chart.options.annotation.annotations;
+      // Update annotations
+      annotations.map(ele => {
+        if ( ele.borderColor === "red" ) {
+          ele.value = this.lsl;
+        }else if ( ele.borderColor === "blue" ) {
+          ele.value = this.usl;
+        }else if ( ele.borderColor === "black" ) {
+          ele.value = this.mean;
         }
-      }
+      });
       this.chart.options.annotation.annotations = annotations;
-
       this.chart.options.cpk = this.cpk;
+      //this.chart.options.mean = this.mean;
       this.chart.update();
     } else {
       this.createChart();

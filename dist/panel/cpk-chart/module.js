@@ -17453,29 +17453,20 @@ function convertValuesToHistogram(values, bucketSize, min, max, mean, variance) 
     }
     var list = [];
     var distribution = gaussian(mean, variance);
-    //let histogam_series =
+    // left points
     lodash__WEBPACK_IMPORTED_MODULE_0___default.a.map(histogram, function (count, bound) {
-        list.push({ "x": Number(bound), "y": distribution.pdf(Number(bound)) });
-        //list.push(count);
-        //return {"x":Number(bound),"y":count};
-        //return Number(bound),count;
+        if (Number(bound) < mean) {
+            list.push({ "x": Number(bound), "y": distribution.pdf(Number(bound)) });
+        }
     });
-    //console.log(_.sortBy(list, "x"));
-    //console.log(histogam_series);
-    //console.log(histogam_series);
-    /*
-    //console.log("=============");
-    //console.log(list);
-    console.log(getCurvePoints(list,1,5,true));
-    list = getCurvePoints(list,0.5,25,false);
-    let list2 = [];
-    //let list2 = [];
-    for (let i=0;i<list.length;i+=2) {
-      list2.push({"x":list[i],"y":list[i+1]});
-    }
-    */
-    // Sort by Y axis values
-    //return final;
+    // right points
+    list.map(function (ele) {
+        var right = mean - ele.x;
+        right = mean + right;
+        list.push({ "x": right, "y": distribution.pdf(right) });
+    });
+    // mean for normal distribution
+    list.push({ "x": mean, "y": distribution.pdf(mean) });
     return lodash__WEBPACK_IMPORTED_MODULE_0___default.a.sortBy(list, "x");
 }
 /**
@@ -17628,9 +17619,11 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
                     else if (dataList[i].columns[j].text === 'usl') {
                         this.usl = dataList[i].rows[0][j];
                     }
+                    /*
                     else if (dataList[i].columns[j].text === 'mean') {
-                        this.mean = dataList[i].rows[0][j];
+                      this.mean = dataList[i].rows[0][j];
                     }
+                    */
                 }
             }
             else {
@@ -17642,6 +17635,7 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
         var panelWidth = this.canvas.width;
         // Convert data to histogram data
         var result = Object(_histogram__WEBPACK_IMPORTED_MODULE_4__["convertToHistogramData"])([data], bucketSize, panelWidth);
+        this.mean = result[0].mean;
         result = result[0].data;
         this.data = {
             datasets: [
@@ -17691,7 +17685,7 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
             options: {
                 cpk: this.cpk,
                 cp: this.cp,
-                mean: this.mean,
+                //mean: this.mean,
                 legend: {
                     display: false
                 },
@@ -17702,7 +17696,7 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
                     annotations: [
                         {
                             type: 'line',
-                            id: 'lsl_line',
+                            //id: 'lsl_line',
                             mode: 'virtical',
                             borderColor: 'red',
                             borderDash: [2, 2],
@@ -17726,9 +17720,9 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
                         },
                         {
                             type: 'line',
-                            id: 'usl_line',
+                            //id: 'usl_line',
                             mode: 'virtical',
-                            borderColor: 'red',
+                            borderColor: 'blue',
                             borderDash: [2, 2],
                             borderWidth: 2,
                             value: this.usl,
@@ -17750,7 +17744,7 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
                         },
                         {
                             type: 'line',
-                            id: 'mean_line',
+                            //id: 'mean_line',
                             mode: 'virtical',
                             borderColor: 'black',
                             borderDash: [2, 2],
@@ -17789,25 +17783,28 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
         });
     };
     RmsCPKAnalyticsPanelCtrl.prototype.OnDraw = function () {
+        var _this = this;
         if (!this.context) {
             return;
         }
         if (this.chart) {
             this.chart.data = this.data;
             var annotations = this.chart.options.annotation.annotations;
-            for (var i = 0; i < annotations.length; i++) {
-                if (annotations[i].id === "lsl_line") {
-                    annotations[i].value = this.lsl;
+            // Update annotations
+            annotations.map(function (ele) {
+                if (ele.borderColor === "red") {
+                    ele.value = _this.lsl;
                 }
-                else if (annotations[i].id === "usl_line") {
-                    annotations[i].value = this.usl;
+                else if (ele.borderColor === "blue") {
+                    ele.value = _this.usl;
                 }
-                else if (annotations[i].id === "mean_line") {
-                    annotations[i].value = this.mean;
+                else if (ele.borderColor === "black") {
+                    ele.value = _this.mean;
                 }
-            }
+            });
             this.chart.options.annotation.annotations = annotations;
             this.chart.options.cpk = this.cpk;
+            //this.chart.options.mean = this.mean;
             this.chart.update();
         }
         else {
