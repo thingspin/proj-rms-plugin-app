@@ -36206,43 +36206,45 @@ var RmsMonitorFactoryPanelCtrl = /** @class */ (function (_super) {
             });
         }
         // test only
-        $svg.find("#modeling1-title1").on("click", function (evt) {
-            _this.lineAnimation(JSON.stringify({
-                tags: {
-                    facility: "hello1",
-                    channel: "3",
-                    fireCNF: false,
-                    fireCPK: true,
-                    iid: 0,
-                    inm: "L/Current",
-                    alert: 1,
-                    pass: false,
-                    model: "RB70F00",
-                },
-                fields: {
-                    tuid: "5d509ff6.20756",
-                    val: -0.987,
-                    min: -0.975,
-                    max: 0.975,
-                    acc: 0,
-                    acum: 612,
-                    cp: 0.8722,
-                    cpk: 0.43728,
-                    usl: 0.975,
-                    lsl: -0.975,
-                    camx: 2,
-                },
-                rule: {
-                    memo: [
-                        "가나다라마바사아자차카타파하아이우에오나니누네sd;fljsdljfksjkldfjlk",
-                        "abcdefghijklmnopqrstuvwxyz1234567890",
-                        "hello3",
-                        "hello4",
-                        "hello5",
-                    ]
-                }
-            }));
+        /*
+        $svg.find("#modeling1-title1").on("click", (evt) => {
+          this.lineAnimation(JSON.stringify({
+            tags: {
+              facility: "hello1",
+              channel: "3",
+              fireCNF: false,
+              fireCPK: true,
+              iid: 0,
+              inm: "L/Current",
+              alert: 1,
+              pass: false,
+              model: "RB70F00",
+            },
+            fields: {
+              tuid: "5d509ff6.20756",
+              val: -0.987,
+              min: -0.975,
+              max: 0.975,
+              acc: 0,
+              acum: 612,
+              cp: 0.8722,
+              cpk: 0.43728,
+              usl: 0.975,
+              lsl: -0.975,
+              camx: 2,
+            },
+            rule: {
+              memo: [
+                "가나다라마바사아자차카타파하아이우에오나니누네sd;fljsdljfksjkldfjlk",
+                "abcdefghijklmnopqrstuvwxyz1234567890",
+                "hello3",
+                "hello4",
+                "hello5",
+              ]
+            }
+          }));
         });
+        */
     };
     RmsMonitorFactoryPanelCtrl.prototype.initAnimation = function () {
         // set Process Animation DOM
