@@ -137,14 +137,39 @@ class RmsProductStateBarChartPanelCtrl extends MetricsPanelCtrl {
     this.barChartData = {};
 
     var rows = dataList[0].rows;
+
+    var labelMapData = new Map();
     rows.forEach((row, count) => {
+      var mapKeyValue = "";
+
       row.forEach((item, row_count) => {
         switch (row_count) {
           case 1:
           {
-            if (this.labels.indexOf(item) === -1) {
-              this.labels.push(item);
+            var valueItem = "";
+            switch (item) {
+              case "00" :
+                valueItem = "1";
+              break;
+              case "01" :
+                valueItem = "2";
+              break;
+              case "02" :
+                valueItem = "3";
+              break;
+              case "03" :
+                valueItem = "4";
+              break;
+              default :
+                valueItem = item;
+              break;
             }
+            console.log(valueItem);
+            if (this.labels.indexOf(valueItem) === -1) {
+              this.labels.push(valueItem);
+            }
+            mapKeyValue += valueItem;
+            
           }
           break;
           case 2:
@@ -152,11 +177,13 @@ class RmsProductStateBarChartPanelCtrl extends MetricsPanelCtrl {
             if (this.device.indexOf(item) === -1) {
               this.device.push(item);
             }
+            mapKeyValue += "-" + item;
           }
           break;
           case 3:
           {
             this.data.push(item);
+            labelMapData.set(mapKeyValue, this.data.length-1);
           }
           break;
           default:
@@ -164,33 +191,70 @@ class RmsProductStateBarChartPanelCtrl extends MetricsPanelCtrl {
         }
       });
     });
-
-    var dataRange = this.labels.length;
+    console.log(labelMapData);
+    console.log(this.data);
+    // var dataRange = this.labels.length;
     var map = new Map();
     this.labels.forEach((label, i) => {
       var deviceData = [];
       var obj = {
         label : label,
-        backgroundColor: this.backgroundColor[i],
-        borderColor: this.borderColor[i],
+        backgroundColor: this.backgroundColor[i%this.backgroundColor.length],
+        borderColor: this.borderColor[i%this.backgroundColor.length],
         borderWidth: 1,
         data: deviceData
       };
       map.set(label, obj);
     });
+    for (var totalcount = 0; totalcount < this.data.length; totalcount++) {
+      console.log("input Data : " + this.data[totalcount]);
+      var inputData = this.data[totalcount];
+      for (var labelcount = 0; labelcount < this.labels.length; labelcount++) {
+        var label = this.labels[labelcount];
+        for (var devicecount = 0; devicecount < this.device.length; devicecount++) {
+          var device = this.device[devicecount];
+          var cmpValue = label + "-" + device;
+          if (labelMapData.has(cmpValue)) {
+            var index = labelMapData.get(cmpValue);
+            if (totalcount == index) {
+              console.log(cmpValue);
+              var list = map.get(label);
+              console.log(list);
+              list.data.push(inputData);
+              map.set(label, list);
+              break;
+            }
+          }
+        }
+      }
+    }
 
+    /*
     this.data.forEach((item, data_count) => {
-      var list = map.get(this.labels[data_count%dataRange]);
-      list.data.push(item);
-      map.set(this.labels[data_count%dataRange],list);
+      var list = map.get(this.labels[data_count]);
+      this.device.forEach((item, data_count) => {
+        var strdevice = this.device[data_count];
+        var value = list.label + "-" + strdevice;
+        if(labelMapData.has(value)) {
+          console.log(value);
+          console.log(list);
+          list.data.push(item);
+          map.set(this.labels[data_count],list);
+        }
+      });
+      // list.data.push(item);
+      // map.set(this.labels[data_count],list);
     });
-
+    console.log(map);
+    */
     var dataset = Array.from(map.values());
-
+    console.log(dataset);
+    console.log(this.device);
     this.barChartData = {
       labels: this.device,
       datasets: dataset
     };
+    console.log(this.barChartData);
     this.createChart(this.barChartData);
   }
 }
