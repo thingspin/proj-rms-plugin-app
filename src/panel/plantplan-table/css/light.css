@@ -1,0 +1,121 @@
+.rm-btn-data-insert-box {
+    width: 56px;
+    height: 36px;
+    background: #00B2E3;
+    color: #FFFFFF;
+    font-size:14px;
+    font-weight: bold;
+    padding: 2px 2px 2px 2px;
+    box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.24);
+    margin-top: 43px;
+    margin-bottom: 18px;
+    margin-right: 16px;
+    position: static;
+    float: right;
+}
+
+.rm-btn-window-exit-box {
+    width:36px;
+    height: 36px;
+    background-color: transparent;
+    border: none;
+    font-size: 26px;
+    color: rgba($color: #000000, $alpha: 0.54);
+    position: static;
+    float: right;
+}
+
+.rm-btn-insert-box {
+    width:84px;
+    height:36px;
+    background:#00B2E3;
+    color: #FFFFFF;
+    font-size:14px;
+    font-weight: bold;
+    padding: 2px 2px 2px 2px;
+    box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.24);
+    margin-top: 10px;
+    margin-left: 8px;
+}
+
+.rm-btn-insert-run-box {
+    width:56px;
+    height:36px;
+    background:#00B2E3;
+    color: #FFFFFF;
+    font-size:14px;
+    font-weight: bold;
+    padding: 2px 2px 2px 2px;
+    box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.24);
+}
+
+.rm-insert-form {
+    width:99%;
+    height:auto;
+    border: solid #cccccc 1px;
+    margin-left: 8px;
+    margin-top: 10px;
+    margin-right: 8px;
+    position: relative;
+}
+
+.rm-table-form {
+    margin-top: 28px;
+    margin-left: 8px;
+}
+
+.rm-label-margin {
+    width: 100%;
+    height: 15px;
+    font-size: 12px;
+    color: #1F2029;
+    display: initial;
+}
+
+.rm-content-area {
+    width: 168px;
+    height: 59px;
+    margin-top: 20px;
+    margin-left: 18px;
+    margin-bottom: 18px;
+    display: inherit;
+}
+
+.rm-content-center-margin {
+    margin-top: 8px;
+}
+
+.rm-edit-box-color {
+    border: solid #CCCCCC 1px;
+    background-color: #F9F9FB;
+    font-size: 14px;
+}
+
+.tabulator .tabulator-footer {
+    background-color: #FFFFFF;
+    border-top: 1px solid #CCCCCC;
+}
+
+.tabulator {
+    border-color: #FFFFFF;
+    background-color: #ffffff;
+}
+
+.tabulator .tabulator-header .tabulator-col {
+    border-color: #CCCCCC;
+    background:#F9F9FB;
+    color: #1F2029;
+}
+
+.tabulator-row .tabulator-cell {
+    border-color: #CCCCCC;
+}
+
+.tabulator-row.tabulator-row-even {
+    background: #f9f9fb;
+}
+
+.tabulator .tabulator-header {
+    border-top: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
+}
