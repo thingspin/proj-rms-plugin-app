@@ -17,6 +17,7 @@ const panelDefaults = {
 
 const PLAN_MODEL = "모델";
 const PLAN_DATE = "날짜";
+const PLAN_FAIL = "불량";
 
 class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
   static template = require("./partial/templet.html");
@@ -182,7 +183,8 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
     var count = this.panel.formatters.map( (e) => {return e.name;}).indexOf(obj.title);
     if (count !== -1) {
       var formatter = this.panel.formatters[count];
-      obj.width = formatter.width;
+      if (obj.width !== 0)
+        obj.width = formatter.width;
       obj.align = formatter.align;
       obj.formatter = function(cell, formatterParam) {
         const value = cell.getValue();
@@ -204,6 +206,14 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
         } break;
         case PLAN_MODEL: {
           obj.align = this.aligns[0];
+        } break;
+        case PLAN_FAIL: {
+          obj.align = this.aligns[2];
+          obj.formatter = function(cell, formatterParam) {
+            console.log(cell.getValue());
+            var returnValue = (!cell.getValue()) ? 0 : Number(cell.getValue()).toLocaleString('en');
+            return "<span style='color:#F50357;'>" + returnValue + "</span>";
+          };          
         } break;
         default: {
           obj.align = this.aligns[2];
