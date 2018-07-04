@@ -16,23 +16,14 @@ loadPluginCss({
 const template = require("./partial/templet.html");
 // const options = require("./partial/options.html");
 
-const panelDefaults = {
-  formatters : [],
-  resizeValue : false
-};
-
 const CONSUMABLES_ID = '소모품 ID';
-const CONSUMABLES_DSC = '장비 설명';
-const CONSUMABLES_MEMO = '메모';
-const CONSUMABLES_PRODUCT = '품목';
+const CONSUMABLES_PRODUCT = '소모품명';
 const CONSUMABLES_STANDARD = '규격';
 const CONSUMABLES_SAFE_COUNT = '안전수량';
-const CONSUMABLES_COUNT = '재고수량';
-const CONSUMABLES_CYCLE = '교체주기';
-const CONSUMABLES_CYCLE_TIME = '교체주기 시간';
-const CONSUMABLES_SUBJECT = '특이사항';
-const CONSUMABLES_BUSINESS = '업체명';
-const CONSUMABLES_PERSON = '담당자';
+const CONSUMABLES_CURRENT_COUNT = '재고수량';
+const CONSUMABLES_CHANGE_RATE = '교체주기';
+const CONSUMABLES_BUSINESS = '소모품업체명';
+const CONSUMABLES_MEMO = '메모(담당자, 전화번호)';
 const CONSUMABLES_GRAPH = "Graph";
 const CONSUMABLES_BULLET = "bullet";
 
@@ -50,11 +41,8 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
 
   dataRaw = [];
   columns = [];
-  business = [];
-  checker = [];
   aligns = [];
-  businessSelect: any;
-  comsumable: any;
+  consumable: any;
   selectItem: any;
   dataJson: any;
   defTabulatorOpts: object;
@@ -64,10 +52,15 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
   tableName: string;
   isViewer: any;
 
+  panelDefaults = {
+    formatters : [],
+    resizeValue : false
+  };
+
   constructor($scope, private $rootScope, $injector, $http, $location, uiSegmentSrv, annotationsSrv, contextSrv, private rsDsSrv, private alertSrv) {
     super($scope, $injector);
 
-    _.defaults(this.panel, panelDefaults);
+    _.defaults(this.panel, this.panelDefaults);
     // _.defaults(this.panel);
 
     this.isViewer = contextSrv.hasRole('Viewer');
@@ -77,14 +70,14 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
 
     this.aligns = ['LEFT','CENTER','RIGHT'];
 
-    this.comsumable = {
+    this.consumable = {
       name : CONSUMABLES_PRODUCT,
       standard : CONSUMABLES_STANDARD,
-      cycle_count : CONSUMABLES_SAFE_COUNT,
-      count : CONSUMABLES_COUNT,
-      count_time_count : CONSUMABLES_CYCLE,
-      count_time : CONSUMABLES_CYCLE_TIME,
-      memo : CONSUMABLES_SUBJECT
+      safe_count : CONSUMABLES_SAFE_COUNT,
+      current_count : CONSUMABLES_CURRENT_COUNT,
+      change_rate : CONSUMABLES_CHANGE_RATE,
+      business_name : CONSUMABLES_BUSINESS,
+      memo : CONSUMABLES_MEMO
     };
     this.tableName = "t_consumables";
 
@@ -104,6 +97,7 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
     this.addEditorTab('Options', `public/plugins/proj-rms-plugin-app/panel/consumables-list/partial/options.html`, 2);
   }
 
+  /*
   initQueryData() {
     if (!this.isViewer) {
       let selectId = this.datasource.id;
@@ -119,6 +113,7 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
       return deferred.promise;
     }
   }
+  */
 
   // subTableQueryData() {
   //   let selectId = this.datasource.id;
@@ -163,9 +158,9 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
     this.dataRaw = dataList;
     Promise.resolve(this.transformer(this.dataRaw));
     this.createTable(this.dataJson);
-    if (this.mode !== 'edit') {
-      this.initQueryData();
-    }
+    // if (this.mode !== 'edit') {
+    //   this.initQueryData();
+    // }
   }
 
   createTable(dataList) {
@@ -204,12 +199,6 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
       this.container.tabulator("setData", tabledata);
     }
     this.container.tabulator("hideColumn", CONSUMABLES_ID);
-    this.container.addClass('tabulator-footer');
-    this.container.addClass('tabulator');
-    this.container.addClass('tabulator-col');
-    this.container.addClass('tabulator-cell');
-    this.container.addClass('tabulator-row-even');
-    this.container.addClass('tabulator-header');
     this.initalized = true;
     $(window).trigger('resize');
   }
@@ -217,41 +206,39 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
   selectRow(obj) {
     this.selectObj = obj;
     console.log(obj);
-    this.comsumable.id = obj[CONSUMABLES_ID];
-    this.comsumable.name = obj[CONSUMABLES_DSC];
-    this.comsumable.memo = obj[CONSUMABLES_MEMO];
-    this.comsumable.name = obj[CONSUMABLES_PRODUCT];
-    this.comsumable.standard = obj[CONSUMABLES_STANDARD];
-    this.comsumable.count = obj[CONSUMABLES_COUNT];
-    this.comsumable.cycle_count = obj[CONSUMABLES_SAFE_COUNT];
-    this.comsumable.count_time_count = obj[CONSUMABLES_CYCLE];
-    this.comsumable.memo = obj[CONSUMABLES_SUBJECT];
-    var cmpStr = obj[CONSUMABLES_BUSINESS] + " : " + obj[CONSUMABLES_PERSON];
-    var result = this.business.map(x => x.name).indexOf(cmpStr);
-    this.businessSelect = this.business[result];
+    this.consumable.id = obj[CONSUMABLES_ID];
+    this.consumable.name = obj[CONSUMABLES_PRODUCT];
+    this.consumable.standard = obj[CONSUMABLES_STANDARD];
+    this.consumable.safe_count = obj[CONSUMABLES_SAFE_COUNT];
+    this.consumable.current_count = obj[CONSUMABLES_CURRENT_COUNT];
+    this.consumable.change_rate = obj[CONSUMABLES_CHANGE_RATE];
+    this.consumable.business_name = obj[CONSUMABLES_BUSINESS];
+    this.consumable.memo = obj[CONSUMABLES_MEMO];
   }
 
   clearCtrl(mode) {
     switch (mode) {
       case 'new' :
       {
-        this.comsumable.name = "",
-        this.comsumable.standard = "",
-        this.comsumable.cycle_count = "",
-        this.comsumable.count = "",
-        this.comsumable.count_time_count = "",
-        this.comsumable.count_time = "",
-        this.comsumable.memo = "";
+        this.consumable.id = "";
+        this.consumable.name = "";
+        this.consumable.standard = "";
+        this.consumable.safe_count = "";
+        this.consumable.current_count = "";
+        this.consumable.change_rate = "";
+        this.consumable.business_name = "";
+        this.consumable.memo = "";
       }
       case 'edit' :
       {
-        this.comsumable.name = "",
-        this.comsumable.standard = "",
-        this.comsumable.cycle_count = "",
-        this.comsumable.count = "",
-        this.comsumable.count_time_count = "",
-        this.comsumable.count_time = "",
-        this.comsumable.memo = "";
+        this.consumable.id = "";
+        this.consumable.name = "";
+        this.consumable.standard = "";
+        this.consumable.safe_count = "";
+        this.consumable.current_count = "";
+        this.consumable.change_rate = "";
+        this.consumable.business_name = "";
+        this.consumable.memo = "";
       }
     }
   }
@@ -266,6 +253,7 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
     console.log(dataList);
   }
 
+  /*
   transDataBusiness(dataList) {
     this.business = [];
     var data = dataList[0];
@@ -280,6 +268,7 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
     }
     this.businessSelect = this.business[0];
   }
+  */
 
   columnOption(obj) {
     // console.log(obj);
@@ -301,7 +290,7 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
         }
       };
     } else {
-      if (obj.title === CONSUMABLES_SAFE_COUNT || obj.title === CONSUMABLES_COUNT ||  obj.title === CONSUMABLES_CYCLE) {
+      if (obj.title === CONSUMABLES_SAFE_COUNT || obj.title === CONSUMABLES_CURRENT_COUNT ||  obj.title === CONSUMABLES_CHANGE_RATE) {
         obj.align = this.aligns[2];
         obj.formatter = function(cell, formatterParam) {
           return Number(cell.getValue()).toLocaleString('en');
@@ -333,7 +322,7 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
       };
       this.columnOption(obj);
       this.columns.push(obj);
-      if (obj.title === CONSUMABLES_CYCLE) {
+      if (obj.title === CONSUMABLES_CHANGE_RATE) {
         var object = {
           title: CONSUMABLES_GRAPH,
           field: CONSUMABLES_BULLET,
@@ -356,16 +345,16 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
         var item = row[row_count];
         mapData.set(getColumns[row_count].text,item);
         switch(getColumns[row_count].text) {
-          case CONSUMABLES_STANDARD:
-            this.checker.push(item);
-          break;
+          // case CONSUMABLES_STANDARD:
+          //   this.checker.push(item);
+          // break;
           case CONSUMABLES_SAFE_COUNT:
             limit = item;
           break;
-          case CONSUMABLES_COUNT:
+          case CONSUMABLES_CURRENT_COUNT:
             total = item;
           break;
-          case CONSUMABLES_CYCLE:
+          case CONSUMABLES_CHANGE_RATE:
           changeRate = item;
           break;
         }
@@ -379,71 +368,89 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
     this.dataJson = jArray;
   }
 
+  /*
   insertChecker(value) {
     return (this.checker.indexOf(value) === -1) ? false : true;
   }
+  ctrl.consumable.change_rate, ctrl.consumable.business_name, ctrl.consumable.memo
+  */
 
-  addConsumableItem(businessSelect, name, standard, count, cycle_count, count_time_count, memo) {
+  addConsumableItem(name, standard, safe_count, current_count, change_rate, business_name, memo) {
     if (name === undefined) {
       this.alertSrv.set("품목을 입력해 주세요", 'error', 5000);
       return;
     } else if (standard === undefined) {
       this.alertSrv.set("규격을 입력해 주세요", 'error', 5000);
       return;
-    } else if (count === undefined) {
+    } else if (current_count === undefined) {
       this.alertSrv.set("재고수량을 입력해 주세요", 'error', 5000);
       return;
+    } else if (safe_count === undefined) {
+      this.alertSrv.set("안전수량을 입력해 주세요", 'error', 5000);
+      return;
+    } else if (change_rate === undefined) {
+      this.alertSrv.set("교체주기를 입력해 주세요", 'error', 5000);
+      return;
     } else {
-      if (!this.insertChecker(standard)) {
-        let columns = "(PLANT_ID";
-        let values = "('1000'";
-        columns = columns + ", BUSINESS_ID";
-        values = values + ", " + businessSelect.id;
-        columns = columns + ", CONSUMABLES_NAME";
-        values = values + ", '" + name + "'";
-        columns = columns + ", CONSUMABLES_STANDARD";
-        values = values + ", '" + standard + "'";
-        columns = columns + ", COUNT";
-        values = values + ", " + count;
-        if (cycle_count.length !== 0) {
-          columns = columns + ", CYCLE_COUNT";
-          values = values + ", " + cycle_count;
-        }
-        if (count_time_count.length !== 0) {
-          columns = columns + ", CYCLE_TIME_COUNT";
-          values = values + ", " + count_time_count;
-        }
-        if (memo !== undefined && memo !== null ) { values = values + ", '" + memo + "')";} else { values = values + ", '')";}
-        columns = columns + ", MEMO)";
-        let selectId = this.datasource.id;
-
-        let query = [
-          "insert into " + this.tableName + " " + columns + " values " + values,
-        ];
-        console.log(query);
-        this.rsDsSrv.query(selectId, query).then( result => {
-            // this.updateInspectionPropertyList(selectId);
-            this.alertSrv.set(name + "이(가) 추가되었습니다.", '', 'success', 1000);
-            // this.addSubData(name, standard);
-            this.showCtrlMode('showBtn');
-            this.refresh();
-        }).catch( err => {
-            this.alertSrv.set(name + " 추가 실패", err, 'error', 5000);
-            console.error(err);
-        });
-      } else {
-        this.alertSrv.set(name + "가 같은 규격이 존재합니다. 다른 것으로 입력해주세요.", 'error', 5000);
-        return;
+      // if (!this.insertChecker(standard)) {
+      let columns = "(";
+      let values = "(";
+      columns = columns + "CONSUMABLES_NAME";
+      values = values + "'" + name + "'";
+      columns = columns + ", CONSUMABLES_STANDARD";
+      values = values + ", '" + standard + "'";
+      columns = columns + ", SAFE_COUNT";
+      values = values + ", " + safe_count + "";
+      columns = columns + ", CURRENT_COUNT";
+      values = values + ", " + current_count + "";
+      columns = columns + ", CHANGE_RATE";
+      values = values + ", " + change_rate + "";
+      columns = columns + ", BUSINESS_NAME";
+      if (business_name !== undefined && business_name !== null ) { 
+        values = values + ", '" + business_name + "'";
+      } else { 
+        values = values + ", ''";
       }
+      columns = columns + ", MEMO)";
+      if (memo !== undefined && memo !== null ) { values = values + ", '" + memo + "')";} else { values = values + ", '')";}
+      let selectId = this.datasource.id;
+
+      let query = [
+        "insert into " + this.tableName + " " + columns + " values " + values,
+      ];
+      console.log(query);
+      this.rsDsSrv.query(selectId, query).then( result => {
+          // this.updateInspectionPropertyList(selectId);
+          this.alertSrv.set(name + "이(가) 추가되었습니다.", '', 'success', 1000);
+          // this.addSubData(name, standard);
+          this.showCtrlMode('showBtn');
+          this.refresh();
+      }).catch( err => {
+          this.alertSrv.set(name + " 추가 실패", err, 'error', 5000);
+          console.error(err);
+      });
+      // } else {
+      //   this.alertSrv.set(name + "가 같은 규격이 존재합니다. 다른 것으로 입력해주세요.", 'error', 5000);
+      //   return;
+      // }
     }
   }
 
-  updateConsumableItem(businessSelect, name, standard, count, cycle_count, count_time_count, memo) {
+  updateConsumableItem(name, standard, safe_count, current_count, change_rate, business_name, memo) {
     if (name === undefined) {
       this.alertSrv.set("품목을 입력해 주세요", 'error', 5000);
       return;
-    } else if (count === undefined) {
+    } else if (standard === undefined) {
+      this.alertSrv.set("규격을 입력해 주세요", 'error', 5000);
+      return;
+    } else if (current_count === undefined) {
       this.alertSrv.set("재고수량을 입력해 주세요", 'error', 5000);
+      return;
+    } else if (safe_count === undefined) {
+      this.alertSrv.set("안전수량을 입력해 주세요", 'error', 5000);
+      return;
+    } else if (change_rate === undefined) {
+      this.alertSrv.set("교체주기를 입력해 주세요", 'error', 5000);
       return;
     } else {
       let selectId = this.datasource.id;
@@ -451,11 +458,12 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
         "update " + this.tableName
         + " set CONSUMABLES_NAME = '" + name
         + "', CONSUMABLES_STANDARD = '" + standard
-        + "', COUNT = " + count
-        + ", CYCLE_COUNT = " + cycle_count
-        + ", CYCLE_TIME_COUNT = " + count_time_count
-        + ", MEMO = '" + memo
-        + "' where CONSUMABLES_ID = " + this.comsumable.id + ";",
+        + "', SAFE_COUNT = '" + safe_count
+        + "', CURRENT_COUNT = '" + current_count
+        + "', CHANGE_RATE = '" + change_rate
+        + "', BUSINESS_NAME = '" + business_name
+        + "', MEMO = '" + memo
+        + "' where CONSUMABLES_ID = " + this.consumable.id + ";",
       ];
       console.log(query);
       this.rsDsSrv.query(selectId, query).then( result => {
@@ -479,7 +487,7 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
       onConfirm: () => {
         let selectId = this.datasource.id;
         let query = [
-          "delete from " + this.tableName + " where CONSUMABLES_ID = " + this.comsumable.id,
+          "delete from " + this.tableName + " where CONSUMABLES_ID = " + this.consumable.id,
         ];
         this.rsDsSrv.query(selectId, query).then( result => {
             // this.updateInspectionPropertyList(selectId);
@@ -501,13 +509,13 @@ class RmsConsumablesPanelCtrl extends MetricsPanelCtrl {
       if (selectedRows !== undefined) {
         this.container.tabulator("deselectRow", selectedRows);
       }
-      this.comsumable = {
-        name : "",
+      this.consumable = {
+        name : '',
         standard : '',
-        cycle_count : '',
-        count : '',
-        count_time_count : '',
-        count_time : '',
+        safe_count : '',
+        current_count : '',
+        change_rate : '',
+        business_name : '',
         memo : ''
       };
       this.refresh();
