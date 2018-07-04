@@ -2,7 +2,6 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:156",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -16,14 +15,14 @@
   "editable": false,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1527070335688,
+  "iteration": 1530695473402,
   "links": [
     {
       "icon": "external link",
       "includeVars": false,
       "keepTime": false,
       "tags": [
-        "모델별검사기록"
+        "모델별 검사기록"
       ],
       "type": "dashboards"
     }
@@ -41,8 +40,10 @@
       },
       "hideTimeOverride": false,
       "id": 2,
+      "kernel": null,
       "links": [],
       "pageSize": 2,
+      "scripts": "",
       "scroll": true,
       "showHeader": true,
       "sort": {
@@ -347,6 +348,7 @@
       },
       "id": 19,
       "interval": null,
+      "kernel": null,
       "links": [],
       "mappingType": 1,
       "mappingTypes": [
@@ -373,6 +375,7 @@
           "to": "null"
         }
       ],
+      "scripts": "",
       "sparkline": {
         "fillColor": "rgba(31, 118, 189, 0.18)",
         "full": false,
@@ -382,7 +385,6 @@
       "tableColumn": "count",
       "targets": [
         {
-          "$$hashKey": "object:426",
           "alias": "$col",
           "groupBy": [],
           "measurement": "/^inspection.detail-*/",
@@ -462,8 +464,10 @@
       },
       "hideTimeOverride": false,
       "id": 17,
+      "kernel": null,
       "links": [],
       "pageSize": 30,
+      "scripts": "",
       "scroll": true,
       "showHeader": true,
       "sort": {
@@ -709,7 +713,6 @@
       ],
       "targets": [
         {
-          "$$hashKey": "object:216",
           "alias": "$col",
           "groupBy": [],
           "measurement": "/^inspection.detail-*/",
@@ -720,30 +723,6 @@
           "refId": "A",
           "resultFormat": "table",
           "select": [
-            [
-              {
-                "params": [
-                  "model"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "facility"
-                ],
-                "type": "field"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "channel"
-                ],
-                "type": "field"
-              }
-            ],
             [
               {
                 "params": [
@@ -835,8 +814,10 @@
       },
       "hideTimeOverride": false,
       "id": 16,
+      "kernel": null,
       "links": [],
       "pageSize": 30,
+      "scripts": "",
       "scroll": true,
       "showHeader": true,
       "sort": {
@@ -845,14 +826,12 @@
       },
       "styles": [
         {
-          "$$hashKey": "object:685",
           "alias": "Time",
           "dateFormat": "YYYY-MM-DD HH:mm:ss",
           "pattern": "Time",
           "type": "hidden"
         },
         {
-          "$$hashKey": "object:686",
           "alias": "모델",
           "colorMode": null,
           "colors": [
@@ -875,7 +854,6 @@
           "valueMaps": []
         },
         {
-          "$$hashKey": "object:687",
           "alias": "양불",
           "colorMode": null,
           "colors": [
@@ -921,7 +899,6 @@
           ]
         },
         {
-          "$$hashKey": "object:688",
           "alias": "검사장비",
           "colorMode": null,
           "colors": [
@@ -941,7 +918,6 @@
           "unit": "short"
         },
         {
-          "$$hashKey": "object:689",
           "alias": "채널",
           "colorMode": null,
           "colors": [
@@ -958,7 +934,6 @@
           "unit": "short"
         },
         {
-          "$$hashKey": "object:690",
           "alias": "검사시각",
           "colorMode": null,
           "colors": [
@@ -975,7 +950,6 @@
           "unit": "short"
         },
         {
-          "$$hashKey": "object:691",
           "alias": "종료시간",
           "colorMode": null,
           "colors": [
@@ -992,7 +966,6 @@
           "unit": "short"
         },
         {
-          "$$hashKey": "object:692",
           "alias": "",
           "colorMode": null,
           "colors": [
@@ -1010,7 +983,6 @@
           "unit": "short"
         },
         {
-          "$$hashKey": "object:693",
           "alias": "최소",
           "colorMode": null,
           "colors": [
@@ -1027,7 +999,6 @@
           "unit": "short"
         },
         {
-          "$$hashKey": "object:694",
           "alias": "최대",
           "colorMode": null,
           "colors": [
@@ -1044,7 +1015,6 @@
           "unit": "short"
         },
         {
-          "$$hashKey": "object:695",
           "alias": "측정치",
           "colorMode": null,
           "colors": [
@@ -1061,7 +1031,6 @@
           "unit": "locale"
         },
         {
-          "$$hashKey": "object:696",
           "alias": "검사항목",
           "colorMode": null,
           "colors": [
@@ -1078,7 +1047,6 @@
           "unit": "short"
         },
         {
-          "$$hashKey": "object:697",
           "alias": "",
           "colorMode": null,
           "colors": [
@@ -1095,7 +1063,6 @@
       ],
       "targets": [
         {
-          "$$hashKey": "object:572",
           "alias": "$col",
           "groupBy": [],
           "measurement": "/^inspection.detail-*/",
@@ -1184,8 +1151,8 @@
       {
         "allValue": null,
         "current": {
-          "text": "AMPSRH29T41",
-          "value": "AMPSRH29T41"
+          "text": "BB04A04",
+          "value": "BB04A04"
         },
         "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
         "hide": 2,
@@ -1207,8 +1174,8 @@
       {
         "allValue": null,
         "current": {
-          "text": "SOOSKIM03",
-          "value": "SOOSKIM03"
+          "text": "IPC01",
+          "value": "IPC01"
         },
         "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
         "hide": 2,
@@ -1230,8 +1197,8 @@
       {
         "allValue": null,
         "current": {
-          "text": "4",
-          "value": "4"
+          "text": "3",
+          "value": "3"
         },
         "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
         "hide": 2,
@@ -1370,8 +1337,8 @@
       },
       {
         "current": {
-          "text": "4b4041db.c8c69",
-          "value": "4b4041db.c8c69"
+          "text": "6c63b48a.f4701c",
+          "value": "6c63b48a.f4701c"
         },
         "hide": 2,
         "label": "상세항목",
@@ -1412,5 +1379,5 @@
   "timezone": "",
   "title": "모델별 검사기록 (상세)",
   "uid": "7cy0t97mz",
-  "version": 3
+  "version": 6
 }
