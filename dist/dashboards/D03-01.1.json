@@ -56,7 +56,7 @@
         {
           "alias": "",
           "format": "table",
-          "rawSql": "SELECT A.CONSUMABLES_ID as '소모품 ID', A.CONSUMABLES_NAME as '품목', A.CONSUMABLES_STANDARD as '규격', B.NAME as '업체명', B.PERSON as '담당자', A.CYCLE_COUNT as '안전수량', A.COUNT as '재고수량', A.CYCLE_TIME_COUNT as '교체주기', A.MEMO as '특이사항' FROM t_consumables as A left join t_business as B on (A.BUSINESS_ID = B.BUSINESS_ID) where (BUSINESS_TYPE='소모품업체');",
+          "rawSql": "SELECT CONSUMABLES_ID as '소모품 ID', CONSUMABLES_NAME as '소모품명', CONSUMABLES_STANDARD as '규격', SAFE_COUNT as '안전수량', CURRENT_COUNT as '재고수량', CHANGE_RATE as '교체주기', BUSINESS_NAME as '소모품업체명', MEMO as '메모(담당자, 전화번호)' FROM t_consumables;",
           "refId": "A"
         }
       ],
