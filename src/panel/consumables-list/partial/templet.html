@@ -5,63 +5,71 @@
     <div class="section rm-insert-form" ng-show='1' ng-switch-when="new">
         <button class="fa fa fa-remove rm-btn-window-exit-box" ng-click="ctrl.close()" />
         <div class="col rm-content-area">
-            <label class="rm-label-margin">품목</label>
-            <input type="text" class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.comsumable.name" placeholder="품목" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
+            <label class="rm-label-margin">소모품명</label>
+            <input type="text" class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.consumable.name" placeholder="품목" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
         </div>
         <div class="col rm-content-area">
             <label class="rm-label-margin">규격</label>
-            <input type="text" class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.comsumable.standard" placeholder="규격" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
-        </div> 
-        <div class="col rm-content-area">
-            <label class="rm-label-margin">업체 선택</label>
-            <select class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color" ng-model="ctrl.businessSelect" ng-options="opts.name for opts in ctrl.business" required></select>
+            <input type="text" class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.consumable.standard" placeholder="규격" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
         </div> 
         <div class="col rm-content-area">
             <label class="rm-label-margin">안전수량</label>
-            <input type="number" class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.comsumable.count" placeholder="재고수량" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
+            <input type="number" class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.consumable.safe_count" placeholder="안전수량" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
+        </div> 
+        <div class="col rm-content-area">
+            <label class="rm-label-margin">재고수량</label>
+            <input type="number" class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.consumable.current_count" placeholder="재고수량" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
         </div> 
         <div class="col rm-content-area">
             <label class="rm-label-margin">교체주기</label>
-            <input type="number" class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.comsumable.count_time_count" placeholder="교체주기" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
+            <input type="number" class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.consumable.change_rate" placeholder="교체주기" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
         </div> 
         <div class="col rm-content-area">
-            <label class="rm-label-margin">특이사항</label>
-            <input type="text" class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.comsumable.memo" placeholder="특이사항" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
+            <label class="rm-label-margin">소모품업체명</label>
+            <input type="text" class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.consumable.business_name" placeholder="소모품업체명" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
         </div>
-        <button class="btn rm-btn-data-insert-box" ng-click="ctrl.addConsumableItem(ctrl.businessSelect, ctrl.comsumable.name, ctrl.comsumable.standard, ctrl.comsumable.count, ctrl.comsumable.cycle_count, ctrl.comsumable.count_time_count, ctrl.comsumable.memo)">
+        <div class="col rm-content-area">
+            <label class="rm-label-margin">메모(담당자, 전화번호)</label>
+            <input type="text" class="gf-form-input width-16 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.consumable.memo" placeholder="메모(담당자, 전화번호)" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
+        </div>
+        <button class="btn rm-btn-data-insert-box" ng-click="ctrl.addConsumableItem(ctrl.consumable.name, ctrl.consumable.standard, ctrl.consumable.safe_count, ctrl.consumable.current_count, ctrl.consumable.change_rate, ctrl.consumable.business_name, ctrl.consumable.memo)">
             등록
         </button>
     </div>
     <div class="section rm-insert-form" ng-show='1' ng-switch-when="edit">
         <button class="fa fa fa-remove rm-btn-window-exit-box" ng-click="ctrl.close()" />
         <div class="col rm-content-area">
-            <label class="rm-label-margin">품목</label>
-            <input type="text" class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.comsumable.name" placeholder="품목" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
+            <label class="rm-label-margin">소모품명</label>
+            <input type="text" class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.consumable.name" placeholder="품목" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
         </div>
         <div class="col rm-content-area">
             <label class="rm-label-margin">규격</label>
-            <input type="text" class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.comsumable.standard" placeholder="규격" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
-        </div> 
-        <div class="col rm-content-area">
-            <label class="rm-label-margin">업체 선택</label>
-            <select class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color" ng-model="ctrl.businessSelect" ng-options="opts.name for opts in ctrl.business" required></select>
+            <input type="text" class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.consumable.standard" placeholder="규격" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
         </div> 
         <div class="col rm-content-area">
             <label class="rm-label-margin">안전수량</label>
-            <input type="number" class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.comsumable.count" placeholder="재고수량" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
+            <input type="number" class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.consumable.safe_count" placeholder="안전수량" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
+        </div> 
+        <div class="col rm-content-area">
+            <label class="rm-label-margin">재고수량</label>
+            <input type="number" class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.consumable.current_count" placeholder="재고수량" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
         </div> 
         <div class="col rm-content-area">
             <label class="rm-label-margin">교체주기</label>
-            <input type="number" class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.comsumable.count_time_count" placeholder="교체주기" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
+            <input type="number" class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.consumable.change_rate" placeholder="교체주기" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
         </div> 
         <div class="col rm-content-area">
-            <label class="rm-label-margin">특이사항</label>
-            <input type="text" class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.comsumable.memo" placeholder="특이사항" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
+            <label class="rm-label-margin">소모품업체명</label>
+            <input type="text" class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.consumable.business_name" placeholder="소모품업체명" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
         </div>
-        <button class="btn rm-btn-data-insert-box" ng-click="ctrl.deleteConsumableItem(ctrl.comsumable.name, ctrl.comsumable.standard)">
+        <div class="col rm-content-area">
+            <label class="rm-label-margin">메모(담당자, 전화번호)</label>
+            <input type="text" class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.consumable.memo" placeholder="메모(담당자, 전화번호)" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
+        </div>
+        <button class="btn rm-btn-data-insert-box" ng-click="ctrl.deleteConsumableItem(ctrl.consumable.name, ctrl.consumable.standard)">
             삭제
         </button>
-        <button class="btn rm-btn-data-insert-box" ng-click="ctrl.updateConsumableItem(ctrl.businessSelect, ctrl.comsumable.name, ctrl.comsumable.standard, ctrl.comsumable.count, ctrl.comsumable.cycle_count, ctrl.comsumable.count_time_count, ctrl.comsumable.memo)">
+        <button class="btn rm-btn-data-insert-box" ng-click="ctrl.updateConsumableItem(ctrl.consumable.name, ctrl.consumable.standard, ctrl.consumable.safe_count, ctrl.consumable.current_count, ctrl.consumable.change_rate, ctrl.consumable.business_name, ctrl.consumable.memo)">
             변경
         </button>
     </div>    
