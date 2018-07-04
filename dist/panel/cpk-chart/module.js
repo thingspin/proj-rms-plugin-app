@@ -17452,6 +17452,9 @@ function convertValuesToHistogram(values, bucketSize, min, max, mean, variance) 
         histogram[bound_1] = histogram[bound_1] + 1;
     }
     var list = [];
+    if (variance <= 0) {
+        return null;
+    }
     var distribution = gaussian(mean, variance);
     // left points
     lodash__WEBPACK_IMPORTED_MODULE_0___default.a.map(histogram, function (count, bound) {
@@ -17601,6 +17604,7 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
     };
     RmsCPKAnalyticsPanelCtrl.prototype.onDataReceived = function (dataList) {
         var data;
+        console.log(dataList);
         if (dataList == null || dataList.length > 2) {
             return;
         }
@@ -17631,12 +17635,15 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
             }
         }
         // Bucket size
-        var bucketSize = 10;
+        var bucketSize = 29;
         var panelWidth = this.canvas.width;
         // Convert data to histogram data
         var result = Object(_histogram__WEBPACK_IMPORTED_MODULE_4__["convertToHistogramData"])([data], bucketSize, panelWidth);
         this.mean = result[0].mean;
         result = result[0].data;
+        if (result === null) {
+            console.log("variance must be > 0");
+        }
         this.data = {
             datasets: [
                 {

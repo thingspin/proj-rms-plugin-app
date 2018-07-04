@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import {MetricsPanelCtrl} from  'grafana/app/plugins/sdk';
 import * as Chart from 'chart.js/dist/Chart.min';
 
@@ -32,14 +33,22 @@ class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
 
   barChartData: any;
 
+  panelDefaults = {
+    xlabel: "제품",
+    ylabel: "수량"
+  };
+
   constructor($scope, $injector) {
     super($scope, $injector);
+    _.defaults(this.panel, this.panelDefaults);
+
     this.chartID = `chart-rms-product-state-${this.panel.id}`;
     this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
     this.events.on('data-received', this.onDataReceived.bind(this));
   }
 
   onInitEditMode() {
+    this.addEditorTab('Options', `public/plugins/proj-rms-plugin-app/panel/productplan-bar-chart/options.html`, 2);
   }
 
   createChart(inputData) {
@@ -68,9 +77,17 @@ class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
           responsive: true,
           scales: {
             xAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: this.panel.xlabel
+              },  
               stacked: true,
             }],
             yAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: this.panel.ylabel
+              },  
               stacked: true,
               ticks: {
                 callback: function(value, index, values) {

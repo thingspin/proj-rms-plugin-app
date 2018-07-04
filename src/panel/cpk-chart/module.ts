@@ -88,7 +88,7 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
 
   onDataReceived(dataList) {
     let data;
-
+    console.log(dataList);
     if (dataList == null || dataList.length > 2) {
       return;
     }
@@ -117,14 +117,16 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
     }
 
     // Bucket size
-    let bucketSize = 10;
+    let bucketSize = 29;
     let panelWidth = this.canvas.width;
 
     // Convert data to histogram data
     let result = convertToHistogramData([data], bucketSize, panelWidth);
     this.mean = result[0].mean;
     result = result[0].data;
-
+    if (result === null) {
+      console.log("variance must be > 0");
+    }
     this.data = {
       datasets: [
         {
