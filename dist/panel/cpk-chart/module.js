@@ -17643,7 +17643,6 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
         result = result[0].data;
         if (result === null) {
             console.log("variance must be > 0");
-            return;
         }
         this.data = {
             datasets: [
