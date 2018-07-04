@@ -50,6 +50,9 @@ export function convertValuesToHistogram(values: number[], bucketSize: number, m
   }
 
   let list = [];
+  if (variance <= 0) {
+    return null
+  }
   let distribution = gaussian(mean,variance);
 
   // left points
