@@ -12,10 +12,10 @@
       }
     ]
   },
-  "editable": true,
+  "editable": false,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1530713238230,
+  "iteration": 1530713905571,
   "links": [
     {
       "icon": "external link",
@@ -573,10 +573,38 @@
                   "cpk"
                 ],
                 "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
               }
             ]
           ],
-          "tags": []
+          "tags": [
+            {
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "iid",
+              "operator": "=~",
+              "value": "/^$INSPPROP$/"
+            },
+            {
+              "condition": "AND",
+              "key": "facility",
+              "operator": "=~",
+              "value": "/^$FACILITY$/"
+            },
+            {
+              "condition": "AND",
+              "key": "channel",
+              "operator": "=~",
+              "value": "/^$CHANNEL$/"
+            }
+          ]
         }
       ],
       "thresholds": "1.33,1.66",
@@ -1384,8 +1412,8 @@
     ]
   },
   "time": {
-    "from": "2018-07-04T09:54:12.423Z",
-    "to": "2018-07-04T14:59:59.999Z"
+    "from": "2018-07-04T11:29:54.965Z",
+    "to": "2018-07-04T14:16:34.968Z"
   },
   "timepicker": {
     "hidden": false,
@@ -1417,5 +1445,5 @@
   "timezone": "",
   "title": "CPK 현황",
   "uid": "N36atb7mk",
-  "version": 13
+  "version": 15
 }
