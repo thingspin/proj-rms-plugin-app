@@ -1,0 +1,129 @@
+<div id="{{ctrl.divID}}" class="rms-model-spec" ng-switch on='ctrl.mode'>
+    <div class="page-container-fluid" ng-switch-default>
+        <div class="page-in-fullscreen page-header gf-form-inline">
+            <div class="btn-group">
+                <button type="button" class="btn btn-large btn-primary" ng-click="ctrl.deleteModelSpecItem()" ng-show="ctrl.enEtcMenu">삭제</button>
+                <button type="button" class="btn btn-large btn-primary" ng-click="ctrl.setMode = 'edit';" ng-show="ctrl.enEtcMenu">수정</button>
+                <button type="submit" class="btn btn-large btn-primary" ng-click="ctrl.setMode = 'new';">신규등록</button>
+            </div>
+        </div>
+        <div class="page-body" >
+            <div class="gf-form-group status-table" >
+                <h5 class="section-heading"> 검사 스펙 리스트 </h5>
+                <div id="modelSpec" ng-init="ctrl.initModelSpecTable()"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-container" ng-switch-when="new">
+        <div class="page-header">
+            <h1>신규 사전 조치 등록</h1>
+        </div>
+        <div class="page-body">
+            <div class="gf-form-group">
+                <div class="gf-form">
+                    <span class="gf-form-label width-10">모델</span>
+                    <div isteven-multi-select class="rms gf-form-input"
+                        input-model="ctrl.modelList" output-model="applyModels"
+                        button-label="icon name" item-label="icon name maker" tick-property="ticked"
+                        selection-mode="single"
+                    > </div>
+                </div>
+
+                <div ng-repeat="modelSpec in ctrl.inputModelSpecs">
+                    <div class="gf-form" >
+                        <span class="gf-form-label width-10">검사 항목 {{$index + 1}}</span>
+                        <div isteven-multi-select class="rms gf-form-input"
+                            input-model="ctrl.inputIpList[$index]" output-model="modelSpec.ip"
+                            button-label="icon name" item-label="icon name maker" tick-property="ticked"
+                            selection-mode="single"
+                            on-item-click="ctrl.changeIP(ip)"
+                            on-reset="ctrl.changeIP(ip)"
+                            on-confirm="ctrl.changeIP(ip)"
+                        > </div>
+                    </div>
+                    <div class="gf-form">
+                        <span class="gf-form-label width-20">MIN</span>
+                        <input class="gf-form-input" type="number" ng-model="modelSpec.min" ng-model-onblur ng-change="ctrl.refresh()">
+                    </div>
+                    <div class="gf-form">
+                        <span class="gf-form-label width-20">MAX</span>
+                        <input class="gf-form-input" type="number" ng-model="modelSpec.max" ng-model-onblur ng-change="ctrl.refresh()">
+                    </div>
+                    <div class="gf-form">
+                        <span class="gf-form-label width-20">LSL</span>
+                        <input class="gf-form-input" type="number" ng-model="modelSpec.lsl" ng-model-onblur ng-change="ctrl.refresh()">
+                    </div>
+                    <div class="gf-form">
+                        <span class="gf-form-label width-20">USL값</span>
+                        <input class="gf-form-input" type="number" ng-model="modelSpec.usl" ng-model-onblur ng-change="ctrl.refresh()">
+                    </div>
+                </div>
+
+                <div class="gf-form-button-row">
+                    <button type="button" class="btn btn-info" ng-click="ctrl.addSpec()">검사 항목 추가</button>
+                    <button type="button" class="btn btn-success" ng-click="ctrl.addModelSpec(applyModels)">등록</button>
+                    <a class="btn btn-link" ng-click="ctrl.setMode = 'list'">Back</a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-container" ng-switch-when="edit">
+        <div class="page-header">
+            <h1>신규 사전 조치 수정</h1>
+        </div>
+        <div class="page-body">
+                <div class="gf-form-group">
+                    <div class="gf-form">
+                        <span class="gf-form-label width-10">모델</span>
+                        <div isteven-multi-select class="rms gf-form-input"
+                            input-model="ctrl.modelList" output-model="applyModels"
+                            button-label="icon name" item-label="icon name maker" tick-property="ticked"
+                            is-disabled="true"
+                        > </div>
+                    </div>
+
+                    <div ng-repeat="modelSpec in ctrl.inputModelSpecs">
+                        <div class="gf-form" >
+                            <span class="gf-form-label width-10">검사 항목 {{$index + 1}}</span>
+                            <div isteven-multi-select class="rms gf-form-input"
+                                input-model="ctrl.inputIpList[$index]" output-model="modelSpec.ip"
+                                button-label="icon name" item-label="icon name maker" tick-property="ticked"
+                                selection-mode="single"
+                                on-item-click="ctrl.changeIP(ip)"
+                                on-reset="ctrl.changeIP(ip)"
+                                on-confirm="ctrl.changeIP(ip)"
+                            > </div>
+                        </div>
+                        <div class="gf-form">
+                            <span class="gf-form-label width-20">MIN</span>
+                            <input class="gf-form-input" type="number" ng-model="modelSpec.min" ng-model-onblur ng-change="ctrl.refresh()">
+                        </div>
+                        <div class="gf-form">
+                            <span class="gf-form-label width-20">MAX</span>
+                            <input class="gf-form-input" type="number" ng-model="modelSpec.max" ng-model-onblur ng-change="ctrl.refresh()">
+                        </div>
+                        <div class="gf-form">
+                            <span class="gf-form-label width-20">LSL</span>
+                            <input class="gf-form-input" type="number" ng-model="modelSpec.lsl" ng-model-onblur ng-change="ctrl.refresh()">
+                        </div>
+                        <div class="gf-form">
+                            <span class="gf-form-label width-20">USL값</span>
+                            <input class="gf-form-input" type="number" ng-model="modelSpec.usl" ng-model-onblur ng-change="ctrl.refresh()">
+                        </div>
+                    </div>
+
+
+                    <div class="gf-form-button-row">
+                        <button type="button" class="btn btn-info" ng-click="ctrl.addSpec()">검사 항목 추가</button>
+                        <button type="button" class="btn btn-success" ng-click="ctrl.editModelSpec(applyModels)">수정</button>
+                        <a class="btn btn-link" ng-click="ctrl.setMode = 'list'">Back</a>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

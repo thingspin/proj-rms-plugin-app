@@ -48,6 +48,7 @@
 
     {"type": "menu", "name": "공정 설정", "mainMenu": true, "slug": "modelbyeol-geomsagirog", "img":"img/thignspin_ic_48dp_white-05.svg", "menuID": 3},
     {"type": "dashboard", "name": "검사항목 / 불량유형", "path": "panel/inspection-property/module.json", "defaultNav": true, "addToNav": true, "menuID": 3, "ico":"fa fa-industry"},
+    {"type": "dashboard", "name": "모델 스펙", "path": "panel/model-spec/module.json", "defaultNav": true, "addToNav": true, "menuID": 3, "ico":"fa fa-industry"},
     {"type": "dashboard", "name": "사전조치 설정", "path": "panel/action-in-advance/module.json", "defaultNav": true, "addToNav": true, "menuID": 3, "ico":"fa fa-industry"},
     
     {"type": "menu", "name": "자산 현황", "mainMenu": true, "slug": "somopum-deungrog", "img":"img/thignspin_ic_48dp_white-06.svg", "menuID": 4},

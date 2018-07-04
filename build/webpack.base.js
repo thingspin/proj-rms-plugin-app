@@ -30,6 +30,7 @@ module.exports = {
       'panel/productplan-bar-chart/module.js' : './panel/productplan-bar-chart/module.ts',
       'panel/productplan-chart/module.js' : './panel/productplan-chart/module.ts',
       'panel/cpktrend-table/module.js' : './panel/cpktrend-table/module.ts',
+      'panel/model-spec/module.js' : './panel/model-spec/module.ts',
   },
   output: {
     path: resolve('dist'),

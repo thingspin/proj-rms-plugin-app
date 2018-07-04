@@ -1,0 +1,13 @@
+{
+  "type": "panel",
+  "name": "(RMS) Model Spec",
+  "id": "rms-model-spec",
+
+  "info": {
+    "description": "Remote Solution Model Spec",
+    "author": {
+      "name": "gunwoo@hancommds.com",
+      "url": "http://thingspin.io"
+    }
+  }
+}

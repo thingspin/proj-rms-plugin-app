@@ -19,4 +19,8 @@
   padding: 0;
   border: 0; }
 
+.rms-model-spec {
+  height: 100%;
+  overflow: auto; }
+
 /*# sourceMappingURL=rms-plugins-app.dark.css.map */
