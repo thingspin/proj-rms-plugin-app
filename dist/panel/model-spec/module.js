@@ -64545,10 +64545,11 @@ Object(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_0__["loadPluginCss"])({
 });
 var RmsModelSpecMgmtPanelCtrl = /** @class */ (function (_super) {
     __extends(RmsModelSpecMgmtPanelCtrl, _super);
-    function RmsModelSpecMgmtPanelCtrl($scope, $injector, $element, $rootScope, alertSrv, rsMqttSrv, rsDsSrv) {
+    function RmsModelSpecMgmtPanelCtrl($scope, $injector, $element, $rootScope, $location, alertSrv, rsMqttSrv, rsDsSrv) {
         var _this = _super.call(this, $scope, $injector) || this;
         _this.$element = $element;
         _this.$rootScope = $rootScope;
+        _this.$location = $location;
         _this.alertSrv = alertSrv;
         _this.rsMqttSrv = rsMqttSrv;
         _this.rsDsSrv = rsDsSrv;
@@ -64695,10 +64696,9 @@ var RmsModelSpecMgmtPanelCtrl = /** @class */ (function (_super) {
             return;
         }
         this.container = node;
-        // const urlPath = "/";
-        // const baseUrl = `ws://${this.$location.host()}:${this.$location.port()}/api/plugin-proxy/${this.appId}`;
-        // this.rsMqttSrv.connect(`${baseUrl}${urlPath}`);
-        this.rsMqttSrv.connect("ws://219.251.4.236:1884");
+        var urlPath = "/";
+        var baseUrl = "ws://" + this.$location.host() + ":" + this.$location.port() + "/api/plugin-proxy/" + appId;
+        this.rsMqttSrv.connect("" + baseUrl + urlPath);
     };
     RmsModelSpecMgmtPanelCtrl.prototype.onDataReceived = function (dataList) {
         var _this = this;

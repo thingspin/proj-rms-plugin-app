@@ -84,7 +84,7 @@ export class SettingActionInAdvancePanelCtrl extends MetricsPanelCtrl {
     }
     get setMode() { return this.mode; }
 
-    constructor($scope, $injector, private $rootScope, private $element,
+    constructor($scope, $injector, private $rootScope, private $element, private $location,
         private rsDsSrv, private rsMqttSrv,
         private alertSrv,) {
         super($scope, $injector);
@@ -94,8 +94,9 @@ export class SettingActionInAdvancePanelCtrl extends MetricsPanelCtrl {
         this.selectObj = null;
         this.memo = [ [''] ];
 
-
-        this.rsMqttSrv.connect("ws://219.251.4.236:1884");
+        const urlPath = "/";
+        const baseUrl = `ws://${this.$location.host()}:${this.$location.port()}/api/plugin-proxy/${appId}`;
+        this.rsMqttSrv.connect(`${baseUrl}${urlPath}`);
         this.mqttdefaultOpts = {
             qos: 0,
             retain: true,

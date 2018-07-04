@@ -8,6 +8,7 @@ import 'jquery-ui';
 import 'jquery.tabulator/dist/js/tabulator.min';
 import 'jquery.tabulator/dist/css/tabulator.min.css';
 
+const appId = "proj-rms-plugin-app";
 loadPluginCss({
     dark: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.dark.css',
     light: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.light.css'
@@ -30,7 +31,7 @@ export class InspectionPropertyPanelCtrl  extends MetricsPanelCtrl  {
     faultyTable: any;
     defTabulatorOpts: object;
 
-    constructor($scope, $injector, private $rootScope, private $element,
+    constructor($scope, $injector, private $rootScope, private $element, private $location,
         private alertSrv,
         private rsDsSrv, private rsMqttSrv) {
         super($scope, $injector);
@@ -42,7 +43,9 @@ export class InspectionPropertyPanelCtrl  extends MetricsPanelCtrl  {
         ];
 
         // param : host:string, topic:string, recvcallback:function
-        this.rsMqttSrv.connect("ws://219.251.4.236:1884");
+        const urlPath = "/";
+        const baseUrl = `ws://${this.$location.host()}:${this.$location.port()}/api/plugin-proxy/${appId}`;
+        this.rsMqttSrv.connect(`${baseUrl}${urlPath}`);
         // this.rsMqttSrv.subscribe = '#';
         // this.rsMqttSrv.recvMessage(this.mqttRecv.bind(this));
 

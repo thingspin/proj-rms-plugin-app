@@ -86,7 +86,7 @@ class RmsModelSpecMgmtPanelCtrl extends MetricsPanelCtrl {
     set inputIpList(inputIpList: any) { this._inputIpList = inputIpList; }
     get inputIpList() { return this._inputIpList; }
 
-    constructor($scope, $injector, private $element, private $rootScope,
+    constructor($scope, $injector, private $element, private $rootScope, private $location,
         private alertSrv,
         private rsMqttSrv, private rsDsSrv, ) {
         super($scope, $injector);
@@ -152,10 +152,9 @@ class RmsModelSpecMgmtPanelCtrl extends MetricsPanelCtrl {
             return;
         }
         this.container = node;
-        // const urlPath = "/";
-        // const baseUrl = `ws://${this.$location.host()}:${this.$location.port()}/api/plugin-proxy/${this.appId}`;
-        // this.rsMqttSrv.connect(`${baseUrl}${urlPath}`);
-        this.rsMqttSrv.connect("ws://219.251.4.236:1884");
+        const urlPath = "/";
+        const baseUrl = `ws://${this.$location.host()}:${this.$location.port()}/api/plugin-proxy/${appId}`;
+        this.rsMqttSrv.connect(`${baseUrl}${urlPath}`);
     }
 
     onDataReceived(dataList) {
