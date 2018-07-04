@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import {MetricsPanelCtrl} from  'grafana/app/plugins/sdk';
 
 import * as Chart from 'chart.js/dist/Chart.min';
@@ -79,8 +80,15 @@ class RmsInspectionStateBarChartPanelCtrl extends MetricsPanelCtrl {
     '#DEDAF7',
   ];
 
+  panelDefaults = {
+    xlabel: "검사항목",
+    ylabel: "수량"
+  };
+
   constructor($scope, $injector) {
     super($scope, $injector);
+    _.defaults(this.panel, this.panelDefaults);
+
     this.chart = null;
     this.chartID = `chart-rms-product-state-${this.panel.id}`;
     this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
@@ -92,6 +100,7 @@ class RmsInspectionStateBarChartPanelCtrl extends MetricsPanelCtrl {
   }
 
   onInitEditMode() {
+    this.addEditorTab('Options', `public/plugins/proj-rms-plugin-app/panel/inspectionstate-bar-chart/options.html`, 2);
   }
 
   createChart(inputData) {
@@ -106,6 +115,20 @@ class RmsInspectionStateBarChartPanelCtrl extends MetricsPanelCtrl {
           maintainAspectRatio: false,
           legend: {
             position: 'right'
+          },
+          scales: {
+            xAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: this.panel.xlabel
+              }
+            }],
+            yAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: this.panel.ylabel
+              },  
+            }]
           }
         }
       });

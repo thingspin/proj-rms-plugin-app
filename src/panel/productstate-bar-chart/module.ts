@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import {MetricsPanelCtrl} from  'grafana/app/plugins/sdk';
 
 import * as Chart from 'chart.js/dist/Chart.min';
@@ -19,6 +20,8 @@ class RmsProductStateBarChartPanelCtrl extends MetricsPanelCtrl {
   dataSet = [];
   dataMap = new Map();
   barChartData: any;
+  dataList : any;
+
   COLOR = ['#4dc9f6','#f67019','#f53794','#537bc4','#acc236','#166a8f','#00a950','#58595b','#8549ba'];
   backgroundColor = [
     'rgba(255, 99, 132, 0.2)',
@@ -37,8 +40,17 @@ class RmsProductStateBarChartPanelCtrl extends MetricsPanelCtrl {
       'rgba(255, 159, 64, 1)'
   ];
 
+  panelDefaults = {
+    xlabel: "검사기",
+    ylabel: "수량"
+  };
+ 
   constructor($scope, $injector) {
+    
     super($scope, $injector);
+
+    _.defaults(this.panel, this.panelDefaults);
+    
     this.chart = null;
     this.chartID = `chart-rms-product-state-${this.panel.id}`;
     this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
@@ -50,6 +62,7 @@ class RmsProductStateBarChartPanelCtrl extends MetricsPanelCtrl {
   }
 
   onInitEditMode() {
+    this.addEditorTab('Options', `public/plugins/proj-rms-plugin-app/panel/productstate-bar-chart/options.html`, 2);
   }
 
   createChart(inputData) {
@@ -60,7 +73,17 @@ class RmsProductStateBarChartPanelCtrl extends MetricsPanelCtrl {
         options: {
           maintainAspectRatio: false,
           scales: {
+            xAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: this.panel.xlabel
+              }
+            }],            
             yAxes: [{
+              scaleLabel: {
+                display: true,
+                labelString: this.panel.ylabel
+              },
               ticks: {
                 callback: function(value, index, values) {
                     return value.toFixed(0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -97,6 +120,8 @@ class RmsProductStateBarChartPanelCtrl extends MetricsPanelCtrl {
     }
   }
 
+
+
   addData(chart, data) {
     chart.data.datasets.forEach((dataset) => {
         dataset.data.push(data);
@@ -112,6 +137,7 @@ class RmsProductStateBarChartPanelCtrl extends MetricsPanelCtrl {
   }
 
   onDataReceived(dataList) {
+    this.dataList = dataList;
     if (dataList.length === 0) {
       this.createChart(null);
     } else {
@@ -120,6 +146,8 @@ class RmsProductStateBarChartPanelCtrl extends MetricsPanelCtrl {
       }
     }
   }
+
+
 
   link(scope, elem, attrs, ctrl) {
     this.canvas = elem.find('.chart')[0];
