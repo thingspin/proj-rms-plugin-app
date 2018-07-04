@@ -194,9 +194,7 @@
 .multiSelect .checkBoxContainer {
     display: block;
     padding: 8px;   
-
-    height: 400px;
-    overflow: auto;
+    overflow: hidden;
 }
 
 /* ! to show / hide the checkbox layer above */
