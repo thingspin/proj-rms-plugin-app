@@ -106,17 +106,14 @@ class RmsModelSpecMgmtPanelCtrl extends MetricsPanelCtrl {
             fitColumns: true,
             responsiveLayout: true,
             layout: "fitColumns", //fit columns to width of table (optional)
+            groupBy: "ID",
             columns: [ //Define Table Columns
                 { title: "모델명", field: "ID" },
-                { title: "검사 항목 스펙", field: "IP_JSON", formatter: (cell, formatterParams) => {
-                    let retStr = "";
-                    const arr = cell.getValue();
-                    arr.forEach((obj, idx) => {
-                        const {ip: [ip]} = obj;
-                        retStr += `${ip.name}${idx !== (arr.length-1) ? ", " : ""}`;
-                    });
-                    return retStr;
-                }},
+                { title: "name", field: "name" },
+                { title: "min", field: "min" },
+                { title: "max", field: "max" },
+                { title: "lsl", field: "lsl" },
+                { title: "usl", field: "usl" },
             ],
         };
 
@@ -163,7 +160,16 @@ class RmsModelSpecMgmtPanelCtrl extends MetricsPanelCtrl {
         data.forEach((arr) => {
             arr.forEach((item) => {
                 item.IP_JSON = JSON.parse(item.IP_JSON);
-                this.modelSpecList.push(item);
+                item.IP_JSON.forEach(({ip: [{name}], min, max, lsl, usl}) => {
+                    item.min = min;
+                    item.max = max;
+                    item.usl = usl;
+                    item.lsl = lsl;
+                    item.name = name;
+                    this.modelSpecList.push(JSON.parse(JSON.stringify(item)));
+                });
+                // console.log(item);
+                // this.modelSpecList.push(item);
             });
         });
         if (this.table) {

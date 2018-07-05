@@ -64570,17 +64570,14 @@ var RmsModelSpecMgmtPanelCtrl = /** @class */ (function (_super) {
             fitColumns: true,
             responsiveLayout: true,
             layout: "fitColumns",
+            groupBy: "ID",
             columns: [
                 { title: "모델명", field: "ID" },
-                { title: "검사 항목 스펙", field: "IP_JSON", formatter: function (cell, formatterParams) {
-                        var retStr = "";
-                        var arr = cell.getValue();
-                        arr.forEach(function (obj, idx) {
-                            var ip = obj.ip[0];
-                            retStr += "" + ip.name + (idx !== (arr.length - 1) ? ", " : "");
-                        });
-                        return retStr;
-                    } },
+                { title: "name", field: "name" },
+                { title: "min", field: "min" },
+                { title: "max", field: "max" },
+                { title: "lsl", field: "lsl" },
+                { title: "usl", field: "usl" },
             ],
         };
         _this.events.on('panel-initialized', _this.onInitialized.bind(_this));
@@ -64707,7 +64704,17 @@ var RmsModelSpecMgmtPanelCtrl = /** @class */ (function (_super) {
         data.forEach(function (arr) {
             arr.forEach(function (item) {
                 item.IP_JSON = JSON.parse(item.IP_JSON);
-                _this.modelSpecList.push(item);
+                item.IP_JSON.forEach(function (_a) {
+                    var name = _a.ip[0].name, min = _a.min, max = _a.max, lsl = _a.lsl, usl = _a.usl;
+                    item.min = min;
+                    item.max = max;
+                    item.usl = usl;
+                    item.lsl = lsl;
+                    item.name = name;
+                    _this.modelSpecList.push(JSON.parse(JSON.stringify(item)));
+                });
+                // console.log(item);
+                // this.modelSpecList.push(item);
             });
         });
         if (this.table) {
