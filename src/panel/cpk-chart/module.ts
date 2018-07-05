@@ -80,7 +80,6 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
   }
 
   OnInitialized() {
-    this.addEditorTab('Options', `public/plugins/proj-rms-plugin-app/panel/cpk-chart/options.html`, 2);
     this.OnDraw();
   }
 
@@ -89,6 +88,7 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
   }
 
   onInitEditMode() {
+     this.addEditorTab('Options', `public/plugins/proj-rms-plugin-app/panel/cpk-chart/options.html`, 2);
   }
 
   onDataReceived(dataList) {
@@ -264,7 +264,7 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
             ],
             drawTime: "afterDatasetsDraw"
           },
-
+         
           scales: {
             xAxes: [{
               id: 'x-axis-0',
@@ -314,6 +314,7 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
 }
 
   OnDraw() {
+    console.log("Draw");
     if (!this.context) {
       return;
     }
@@ -332,6 +333,8 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
         }
       });
       this.chart.options.annotation.annotations = annotations;
+      this.chart.options.scales.xAxes[0].scaleLabel.labelString = this.panel.xlabel;
+      this.chart.options.scales.yAxes[0].scaleLabel.labelString = this.panel.ylabel;
       this.chart.options.cpk = this.cpk;
       //this.chart.options.mean = this.mean;
       this.chart.update();

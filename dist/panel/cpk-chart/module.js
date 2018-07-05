@@ -17603,13 +17603,13 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
         */
     }
     RmsCPKAnalyticsPanelCtrl.prototype.OnInitialized = function () {
-        this.addEditorTab('Options', "public/plugins/proj-rms-plugin-app/panel/cpk-chart/options.html", 2);
         this.OnDraw();
     };
     RmsCPKAnalyticsPanelCtrl.prototype.onSizeChanged = function () {
         //console.log("size changed");
     };
     RmsCPKAnalyticsPanelCtrl.prototype.onInitEditMode = function () {
+        this.addEditorTab('Options', "public/plugins/proj-rms-plugin-app/panel/cpk-chart/options.html", 2);
     };
     RmsCPKAnalyticsPanelCtrl.prototype.onDataReceived = function (dataList) {
         var data;
@@ -17819,6 +17819,7 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
     };
     RmsCPKAnalyticsPanelCtrl.prototype.OnDraw = function () {
         var _this = this;
+        console.log("Draw");
         if (!this.context) {
             return;
         }
@@ -17838,6 +17839,8 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
                 }
             });
             this.chart.options.annotation.annotations = annotations;
+            this.chart.options.scales.xAxes[0].scaleLabel.labelString = this.panel.xlabel;
+            this.chart.options.scales.yAxes[0].scaleLabel.labelString = this.panel.ylabel;
             this.chart.options.cpk = this.cpk;
             //this.chart.options.mean = this.mean;
             this.chart.update();
