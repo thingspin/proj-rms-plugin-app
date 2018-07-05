@@ -32265,13 +32265,6 @@ var RmsConsumablesPanelCtrl = /** @class */ (function (_super) {
     };
     RmsConsumablesPanelCtrl.prototype.createTable = function (dataList) {
         var _this = this;
-        var tabledata = [
-            { id: 1, name: "Oli Bob", age: "12", col: "red", dob: "" },
-            { id: 2, name: "Mary May", age: "1", col: "blue", dob: "14/05/1982" },
-            { id: 3, name: "Christine Lobowski", age: "42", col: "green", dob: "22/05/1982" },
-            { id: 4, name: "Brendon Philips", age: "125", col: "orange", dob: "01/08/1980" },
-            { id: 5, name: "Margret Marmajuke", age: "16", col: "yellow", dob: "31/01/1999" },
-        ];
         if (this.initalized) {
             this.container.tabulator("destroy");
         }
@@ -32286,10 +32279,12 @@ var RmsConsumablesPanelCtrl = /** @class */ (function (_super) {
         };
         var opts = Object.assign({
             rowClick: function (e, row) {
-                _this.showCtrlMode('edit');
-                _this.selectRow(row.getData());
-                _this.selectTableRow = row;
-                // this.container.tabulator('deselectRow');
+                if (!_this.isViewer) {
+                    _this.showCtrlMode('edit');
+                    _this.selectRow(row.getData());
+                    _this.selectTableRow = row;
+                    // this.container.tabulator('deselectRow');
+                }
             },
         }, this.defTabulatorOpts);
         this.container.tabulator(opts);
@@ -32297,15 +32292,12 @@ var RmsConsumablesPanelCtrl = /** @class */ (function (_super) {
             this.container.tabulator("setData", dataList);
         }
         else {
-            this.dataTable.setData("setData", tabledata);
-            this.container.tabulator("setData", tabledata);
         }
         this.container.tabulator("hideColumn", CONSUMABLES_ID);
         this.initalized = true;
         jquery__WEBPACK_IMPORTED_MODULE_1___default()(window).trigger('resize');
     };
     RmsConsumablesPanelCtrl.prototype.selectRow = function (obj) {
-        this.selectObj = obj;
         console.log(obj);
         this.consumable.id = obj[CONSUMABLES_ID];
         this.consumable.name = obj[CONSUMABLES_PRODUCT];

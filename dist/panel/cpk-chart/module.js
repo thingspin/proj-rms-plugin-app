@@ -17527,13 +17527,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PanelCtrl", function() { return RmsCPKAnalyticsPanelCtrl; });
 /* harmony import */ var grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! grafana/app/plugins/sdk */ "grafana/app/plugins/sdk");
 /* harmony import */ var grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var chart_js_dist_Chart_bundle_min__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! chart.js/dist/Chart.bundle.min */ "../node_modules/chart.js/dist/Chart.bundle.min.js");
-/* harmony import */ var chart_js_dist_Chart_bundle_min__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(chart_js_dist_Chart_bundle_min__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var chartjs_plugin_annotation_chartjs_plugin_annotation_min__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! chartjs-plugin-annotation/chartjs-plugin-annotation.min */ "../node_modules/chartjs-plugin-annotation/chartjs-plugin-annotation.min.js");
-/* harmony import */ var chartjs_plugin_annotation_chartjs_plugin_annotation_min__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(chartjs_plugin_annotation_chartjs_plugin_annotation_min__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils */ "./panel/cpk-chart/utils.js");
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_utils__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _histogram__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./histogram */ "./panel/cpk-chart/histogram.ts");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash */ "../node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var chart_js_dist_Chart_bundle_min__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! chart.js/dist/Chart.bundle.min */ "../node_modules/chart.js/dist/Chart.bundle.min.js");
+/* harmony import */ var chart_js_dist_Chart_bundle_min__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(chart_js_dist_Chart_bundle_min__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var chartjs_plugin_annotation_chartjs_plugin_annotation_min__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! chartjs-plugin-annotation/chartjs-plugin-annotation.min */ "../node_modules/chartjs-plugin-annotation/chartjs-plugin-annotation.min.js");
+/* harmony import */ var chartjs_plugin_annotation_chartjs_plugin_annotation_min__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(chartjs_plugin_annotation_chartjs_plugin_annotation_min__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils */ "./panel/cpk-chart/utils.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_utils__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _histogram__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./histogram */ "./panel/cpk-chart/histogram.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -17549,12 +17551,18 @@ var __extends = (undefined && undefined.__extends) || (function () {
 
 
 
+
 var template = __webpack_require__(/*! ./templet.html */ "./panel/cpk-chart/templet.html");
 var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
     __extends(RmsCPKAnalyticsPanelCtrl, _super);
     function RmsCPKAnalyticsPanelCtrl($scope, $injector, $window) {
         var _this = _super.call(this, $scope, $injector) || this;
         _this.$window = $window;
+        _this.panelDefaults = {
+            xlabel: "Measurement",
+            ylabel: "Probability"
+        };
+        lodash__WEBPACK_IMPORTED_MODULE_1___default.a.defaults(_this.panel, _this.panelDefaults);
         _this.Chart = _this.$window.Chart;
         _this.chartID = 'chart-rms-cpk-' + _this.panel.id;
         _this.data = {};
@@ -17601,6 +17609,7 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
         //console.log("size changed");
     };
     RmsCPKAnalyticsPanelCtrl.prototype.onInitEditMode = function () {
+        this.addEditorTab('Options', "public/plugins/proj-rms-plugin-app/panel/cpk-chart/options.html", 2);
     };
     RmsCPKAnalyticsPanelCtrl.prototype.onDataReceived = function (dataList) {
         var data;
@@ -17638,7 +17647,7 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
         var bucketSize = 29;
         var panelWidth = this.canvas.width;
         // Convert data to histogram data
-        var result = Object(_histogram__WEBPACK_IMPORTED_MODULE_4__["convertToHistogramData"])([data], bucketSize, panelWidth);
+        var result = Object(_histogram__WEBPACK_IMPORTED_MODULE_5__["convertToHistogramData"])([data], bucketSize, panelWidth);
         this.mean = result[0].mean;
         result = result[0].data;
         if (result === null) {
@@ -17770,6 +17779,14 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
                             gridLines: {
                                 display: false
                             },
+                            scaleLabel: {
+                                display: true,
+                                labelString: this.panel.xlabel
+                            }
+                            //autoSkip: true,
+                            // position: "bottom",
+                            //type: "linear",
+                            //position: "bottom"
                         }],
                     yAxes: [{
                             id: 'y-axis-0',
@@ -17778,6 +17795,17 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
                             gridLines: {
                                 display: true
                             },
+                            scaleLabel: {
+                                display: true,
+                                labelString: this.panel.ylabel
+                            },
+                            //autoSkip: true,
+                            ticks: {
+                                callback: function (value) {
+                                    return (value * 100) + "%";
+                                }
+                            }
+                            //position: "left"
                         }]
                 },
                 responsive: true,
@@ -17791,6 +17819,7 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
     };
     RmsCPKAnalyticsPanelCtrl.prototype.OnDraw = function () {
         var _this = this;
+        console.log("Draw");
         if (!this.context) {
             return;
         }
@@ -17810,6 +17839,8 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
                 }
             });
             this.chart.options.annotation.annotations = annotations;
+            this.chart.options.scales.xAxes[0].scaleLabel.labelString = this.panel.xlabel;
+            this.chart.options.scales.yAxes[0].scaleLabel.labelString = this.panel.ylabel;
             this.chart.options.cpk = this.cpk;
             //this.chart.options.mean = this.mean;
             this.chart.update();

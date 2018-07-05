@@ -179,6 +179,22 @@ class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
     }
   }
 
+  render() {
+    console.log("render");
+    if (!this.context) {
+      return;
+    }
+
+    if (this.chart) {
+      this.chart.data = this.barChartData;
+
+      this.chart.options.scales.xAxes[0].scaleLabel.labelString = this.panel.xlabel;
+      this.chart.options.scales.yAxes[0].scaleLabel.labelString = this.panel.ylabel;
+      this.chart.update();
+    } else {
+      this.createChart(this.barChartData);
+    }
+  }
   link(scope, elem, attrs, ctrl) {
     this.canvas = elem.find('.chart')[0];
     if (!this.canvas) {

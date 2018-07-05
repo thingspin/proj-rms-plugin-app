@@ -11,10 +11,6 @@ loadPluginCss({
   light: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.light.css'
 });
 
-const panelDefaults = {
-  formatters : []
-};
-
 const PLAN_MODEL = "모델";
 const PLAN_DATE = "날짜";
 const PLAN_FAIL = "불량";
@@ -41,10 +37,14 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
   mode: any;
   tableName: string;
 
+  panelDefaults = {
+    formatters : []
+  };
+
   constructor($scope, $injector, $http, $location, uiSegmentSrv, annotationsSrv) {
     super($scope, $injector);
 
-    _.defaults(this.panel, panelDefaults);
+    _.defaults(this.panel, this.panelDefaults);
 
     this.aligns = ['LEFT','CENTER','RIGHT'];
 

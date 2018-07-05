@@ -1,5 +1,5 @@
 import {MetricsPanelCtrl} from  'grafana/app/plugins/sdk';
-
+import _ from 'lodash';
 import 'chart.js/dist/Chart.bundle.min';
 import 'chartjs-plugin-annotation/chartjs-plugin-annotation.min';
 
@@ -31,9 +31,13 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
   usl: number;
   mean: number;
 
+  panelDefaults = {
+    xlabel: "Measurement",
+    ylabel: "Probability"
+  };
   constructor($scope, $injector, private $window) {
     super($scope, $injector);
-
+     _.defaults(this.panel, this.panelDefaults);
     this.Chart = this.$window.Chart;
     this.chartID = 'chart-rms-cpk-' + this.panel.id;
     this.data = {};
@@ -84,6 +88,7 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
   }
 
   onInitEditMode() {
+     this.addEditorTab('Options', `public/plugins/proj-rms-plugin-app/panel/cpk-chart/options.html`, 2);
   }
 
   onDataReceived(dataList) {
@@ -259,7 +264,7 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
             ],
             drawTime: "afterDatasetsDraw"
           },
-
+         
           scales: {
             xAxes: [{
               id: 'x-axis-0',
@@ -268,15 +273,12 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
               gridLines: {
                 display: false
               },
+              scaleLabel: {
+                display: true,
+                labelString: this.panel.xlabel
+              }
               //autoSkip: true,
             // position: "bottom",
-              /*
-              ticks:{
-                min: this.limit["xmin"],
-                max: this.limit["xmax"]
-                //stepSize:
-              }
-              */
               //type: "linear",
               //position: "bottom"
             }]
@@ -288,12 +290,16 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
               gridLines: {
                 display: true
               },
+              scaleLabel: {
+                display: true,
+                labelString: this.panel.ylabel
+              },  
               //autoSkip: true,
-              // ticks:{
-              //   min: 0.0,
-              //   max: 1.0,
-              //   stepSize: 0.1
-              // }
+              ticks:{
+                callback: function(value) {
+                  return (value * 100) + "%"
+                }
+              }
               //position: "left"
             }]
           },
@@ -308,6 +314,7 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
 }
 
   OnDraw() {
+    console.log("Draw");
     if (!this.context) {
       return;
     }
@@ -326,6 +333,8 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
         }
       });
       this.chart.options.annotation.annotations = annotations;
+      this.chart.options.scales.xAxes[0].scaleLabel.labelString = this.panel.xlabel;
+      this.chart.options.scales.yAxes[0].scaleLabel.labelString = this.panel.ylabel;
       this.chart.options.cpk = this.cpk;
       //this.chart.options.mean = this.mean;
       this.chart.update();
