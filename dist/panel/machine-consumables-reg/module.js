@@ -46208,6 +46208,7 @@ var template = __webpack_require__(/*! ./partial/templet.html */ "./panel/machin
 var MACHINE_CONSUMABLE_ID = '등록 ID';
 var MACHINE_NAME = '장비명';
 var CONSUMABLE_NAME = '소모품명';
+var CONSUMABLE_STANDARD = '소모품 규격';
 var CONSUMABLE_COUNT = '소모품 개수';
 var CHANGE_DATE = '소모품 교체일';
 var MACHINE_CONSUMABLE_MEMO = '메모';
@@ -46230,10 +46231,12 @@ var RmsMachineConsumablesPanelCtrl = /** @class */ (function (_super) {
             // },
             machineCategory: [],
             consumablesCategory: [],
+            consumablesStandardCategory: [],
             inputlItem: {
                 machine_consumables_id: -1,
                 machine_name: '',
                 consumables_name: '',
+                consumables_standard: '',
                 count: '',
                 change_date: '',
                 memo: '',
@@ -46301,6 +46304,7 @@ var RmsMachineConsumablesPanelCtrl = /** @class */ (function (_super) {
         }
         this.panel.machineCategory.length = 0;
         this.panel.consumablesCategory.length = 0;
+        this.panel.consumablesStandardCategory.length = 0;
         var selectId = this.datasource.id;
         // 모델명 추가
         var query1 = [
@@ -46311,6 +46315,7 @@ var RmsMachineConsumablesPanelCtrl = /** @class */ (function (_super) {
             for (var i = 0; i < data.rows.length; i++) {
                 _this.panel.machineCategory.push(data.rows[i][0]);
             }
+            _this.panel.inputlItem.machine_name = _this.panel.machineCategory[0];
         }).catch(function (err) {
             console.error(err);
         });
@@ -46323,6 +46328,20 @@ var RmsMachineConsumablesPanelCtrl = /** @class */ (function (_super) {
             for (var i = 0; i < data.rows.length; i++) {
                 _this.panel.consumablesCategory.push(data.rows[i][0]);
             }
+            _this.panel.inputlItem.consumables_name = _this.panel.consumablesCategory[0];
+        }).catch(function (err) {
+            console.error(err);
+        });
+        // 소모품 규격 추가
+        var query3 = [
+            'SELECT consumables_standard FROM t_consumables'
+        ];
+        this.rsDsSrv.query(selectId, query3).then(function (result) {
+            var data = result[0];
+            for (var i = 0; i < data.rows.length; i++) {
+                _this.panel.consumablesStandardCategory.push(data.rows[i][0]);
+            }
+            _this.panel.inputlItem.consumables_standard = _this.panel.consumablesStandardCategory[0];
         }).catch(function (err) {
             console.error(err);
         });
@@ -46342,6 +46361,7 @@ var RmsMachineConsumablesPanelCtrl = /** @class */ (function (_super) {
                     g_root.panel.inputlItem.machine_consumables_id = row.getData()[MACHINE_CONSUMABLE_ID];
                     g_root.panel.inputlItem.machine_name = row.getData()[MACHINE_NAME];
                     g_root.panel.inputlItem.consumables_name = row.getData()[CONSUMABLE_NAME];
+                    g_root.panel.inputlItem.consumables_standard = row.getData()[CONSUMABLE_STANDARD];
                     g_root.panel.inputlItem.count = row.getData()[CONSUMABLE_COUNT];
                     g_root.panel.inputlItem.change_date = new Date(row.getData()[CHANGE_DATE]);
                     g_root.panel.inputlItem.memo = row.getData()[MACHINE_CONSUMABLE_MEMO];
@@ -46395,6 +46415,7 @@ var RmsMachineConsumablesPanelCtrl = /** @class */ (function (_super) {
         console.log(info);
         if (info.machine_name == null
             || info.consumables_name == null
+            || info.consumables_standard == null
             || info.count === "") {
             this.alertSrv.set("입력 정보를 확인해 주세요", 'error', 5000);
         }
@@ -46540,6 +46561,7 @@ var RmsMachineConsumablesPanelCtrl = /** @class */ (function (_super) {
                             machine_consumables_id: -1,
                             machine_name: '',
                             consumables_name: '',
+                            consumables_standard: '',
                             count: '',
                             change_date: '',
                             memo: '',
@@ -46571,6 +46593,7 @@ var RmsMachineConsumablesPanelCtrl = /** @class */ (function (_super) {
                 machine_consumables_id: -1,
                 machine_name: '',
                 consumables_name: '',
+                consumables_standard: '',
                 count: '',
                 change_date: '',
                 memo: '',
@@ -46635,7 +46658,7 @@ var RmsMachineConsumablesPanelCtrl = /** @class */ (function (_super) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div ng-switch on='ctrl.mode'>\n    <div ng-switch-when=\"showBtn\">\n        <button type=\"submit\" class=\"btn btn-primary\" ng-click=\"ctrl.showCtrlMode('new')\">신규 등록</button>\n        <br></br>\n    </div>\n    <div class=\"editor-row\">\n        <div class=\"thingspin-table\"></div>\n    </div>\n    <br></br>\n    \n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new|edit\" ng-switch-when-separator=\"|\">\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-8\">장비명</label>\n            <div class=\"gf-form-select-wrapper\">\n                    <select class=\"gf-form-input min-width-13 width-13\" placeholder=\"장비명\" \n                        ng-model=\"ctrl.panel.inputlItem.machine_name\"\n                        ng-options=\"f for f in ctrl.panel.machineCategory\">\n                    </select>\n            </div>                    \n        </div>             \n    </div>\n    \n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new|edit\" ng-switch-when-separator=\"|\">\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-8\">소모품명</label>\n            <div class=\"gf-form-select-wrapper\">\n                    <select class=\"gf-form-input min-width-13 width-13\" placeholder=\"소모품명\" \n                        ng-model=\"ctrl.panel.inputlItem.consumables_name\"\n                        ng-options=\"f for f in ctrl.panel.consumablesCategory\">\n                    </select>\n            </div>                    \n        </div>             \n\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-8\">소모품 개수</label>\n            <input type=\"text\" class=\"gf-form-input min-width-13 width-13\" placeholder=\"소모품 개수\" ng-model=\"ctrl.panel.inputlItem.count\">\n        </div>\n\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-8\">소모품 교체일</label>\n            <input type=\"date\" class=\"gf-form-input min-width-13 width-13\" placeholder=\"소모품 교체일\" ng-model=\"ctrl.panel.inputlItem.change_date\">\n        </div>\n    </div>\n\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new\">\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-8\">메모</label>\n            <input type=\"text\" class=\"gf-form-input min-width-13 width-13\" placeholder=\"메모\" ng-model=\"ctrl.panel.inputlItem.memo\">\n        </div>            \n        \n        <div class=\"gf-form\">\n            <button class=\"btn btn-success min-width-11 width-11\" ng-click=\"ctrl.onNew()\">\n                신규 등록\n            </button>\n            &nbsp;\n            <button class=\"btn btn-success min-width-10 width-10\" ng-click=\"ctrl.close()\">\n                창 닫기\n            </button>\n        </div>\n    </div>\n\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"edit\">\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-8\">메모</label>\n            <input type=\"text\" class=\"gf-form-input min-width-13 width-13\" placeholder=\"메모\" ng-model=\"ctrl.panel.inputlItem.memo\">\n        </div>            \n        \n        <div class=\"gf-form\">\n            <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onEdit()\">\n                수정\n            </button>\n            &nbsp;\n            <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onDel()\">\n                삭제\n            </button>\n            &nbsp;\n            <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.close()\">\n                창 닫기\n            </button>\n        </div>\n    </div>\n</div>\n\n\n    \n    \n    ";
+module.exports = "<div ng-switch on='ctrl.mode'>\n    <div ng-switch-when=\"showBtn\">\n        <button type=\"submit\" class=\"btn rm-btn-insert-box\" ng-click=\"ctrl.showCtrlMode('new')\">신규 등록</button>\n    </div>\n    <div class=\"section rm-insert-form\" ng-show='1' ng-switch-when=\"new\">\n        <button class=\"fa fa fa-remove rm-btn-window-exit-box\" ng-click=\"ctrl.close()\" />\n        <div class=\"col rm-content-area\">\n            <label class=\"rm-label-margin\">장비명</label>\n            <select class=\"gf-form-input min-width-13 width-13\" placeholder=\"장비명\" \n                    ng-model=\"ctrl.panel.inputlItem.machine_name\"\n                    ng-options=\"f for f in ctrl.panel.machineCategory\" />\n        </div>\n        <div class=\"col rm-content-area\">\n            <label class=\"rm-label-margin\">소모품명</label>\n            <select class=\"gf-form-input min-width-13 width-13\" placeholder=\"소모품명\" \n                    ng-model=\"ctrl.panel.inputlItem.consumables_name\"\n                    ng-options=\"f for f in ctrl.panel.consumablesCategory\" />\n        </div> \n        <div class=\"col rm-content-area\">\n            <label class=\"rm-label-margin\">소모품 규격</label>\n            <select class=\"gf-form-input min-width-13 width-13\" placeholder=\"소모품 규격\" \n                    ng-model=\"ctrl.panel.inputlItem.consumables_standard\"\n                    ng-options=\"f for f in ctrl.panel.consumablesStandardCategory\" />\n        </div>\n        <div class=\"col rm-content-area\">\n            <label class=\"rm-label-margin\">소모품 개수</label>\n            <input type=\"text\" class=\"gf-form-input min-width-13 width-13\" placeholder=\"소모품 개수\" ng-model=\"ctrl.panel.inputlItem.count\">\n        </div> \n        <div class=\"col rm-content-area\">\n            <label class=\"rm-label-margin\">소모품 교체일</label>\n            <input type=\"date\" class=\"gf-form-input min-width-13 width-13\" placeholder=\"소모품 교체일\" ng-model=\"ctrl.panel.inputlItem.change_date\">\n        </div> \n        <div class=\"col rm-content-area\">\n            <label class=\"rm-label-margin\">메모</label>\n            <input type=\"text\" class=\"gf-form-input min-width-13 width-13\" placeholder=\"메모\" ng-model=\"ctrl.panel.inputlItem.memo\">\n        </div> \n        <button class=\"btn rm-btn-data-insert-box\" ng-click=\"ctrl.addConsumableItem(ctrl.businessSelect, ctrl.comsumable.name, ctrl.comsumable.standard, ctrl.comsumable.count, ctrl.comsumable.cycle_count, ctrl.comsumable.count_time_count, ctrl.comsumable.memo)\">\n            등록\n        </button>       \n    </div>\n    <div class=\"editor-row rm-table-form\">\n        <div class=\"thingspin-table\"></div>\n    </div> \n    <!-- <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new|edit\" ng-switch-when-separator=\"|\">\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-8\">장비명</label>\n            <div class=\"gf-form-select-wrapper\">\n                    <select class=\"gf-form-input min-width-13 width-13\" placeholder=\"장비명\" \n                        ng-model=\"ctrl.panel.inputlItem.machine_name\"\n                        ng-options=\"f for f in ctrl.panel.machineCategory\">\n                    </select>\n            </div>                    \n        </div>             \n    </div>\n    \n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new|edit\" ng-switch-when-separator=\"|\">\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-8\">소모품명</label>\n            <div class=\"gf-form-select-wrapper\">\n                    <select class=\"gf-form-input min-width-13 width-13\" placeholder=\"소모품명\" \n                        ng-model=\"ctrl.panel.inputlItem.consumables_name\"\n                        ng-options=\"f for f in ctrl.panel.consumablesCategory\">\n                    </select>\n            </div>                    \n        </div>             \n\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-8\">소모품 개수</label>\n            <input type=\"text\" class=\"gf-form-input min-width-13 width-13\" placeholder=\"소모품 개수\" ng-model=\"ctrl.panel.inputlItem.count\">\n        </div>\n\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-8\">소모품 교체일</label>\n            <input type=\"date\" class=\"gf-form-input min-width-13 width-13\" placeholder=\"소모품 교체일\" ng-model=\"ctrl.panel.inputlItem.change_date\">\n        </div>\n    </div>\n\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"new\">\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-8\">메모</label>\n            <input type=\"text\" class=\"gf-form-input min-width-13 width-13\" placeholder=\"메모\" ng-model=\"ctrl.panel.inputlItem.memo\">\n        </div>            \n        \n        <div class=\"gf-form\">\n            <button class=\"btn btn-success min-width-11 width-11\" ng-click=\"ctrl.onNew()\">\n                신규 등록\n            </button>\n            &nbsp;\n            <button class=\"btn btn-success min-width-10 width-10\" ng-click=\"ctrl.close()\">\n                창 닫기\n            </button>\n        </div>\n    </div>\n\n    <div class=\"section gf-form-group\" ng-show='1' ng-switch-when=\"edit\">\n        <div class=\"gf-form\">\n            <label class=\"gf-form-label width-8\">메모</label>\n            <input type=\"text\" class=\"gf-form-input min-width-13 width-13\" placeholder=\"메모\" ng-model=\"ctrl.panel.inputlItem.memo\">\n        </div>            \n        \n        <div class=\"gf-form\">\n            <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onEdit()\">\n                수정\n            </button>\n            &nbsp;\n            <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.onDel()\">\n                삭제\n            </button>\n            &nbsp;\n            <button class=\"btn btn-success min-width-7 width-7\" ng-click=\"ctrl.close()\">\n                창 닫기\n            </button>\n        </div>\n    </div> -->\n</div>\n\n\n    \n    \n    ";
 
 /***/ }),
 

@@ -46201,9 +46201,6 @@ Object(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_6__["loadPluginCss"])({
     dark: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.dark.css',
     light: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.light.css'
 });
-var panelDefaults = {
-    formatters: []
-};
 var PLAN_MODEL = "모델";
 var PLAN_DATE = "날짜";
 var PLAN_FAIL = "불량";
@@ -46214,7 +46211,10 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
         _this.dataRaw = [];
         _this.columns = [];
         _this.aligns = [];
-        lodash__WEBPACK_IMPORTED_MODULE_0___default.a.defaults(_this.panel, panelDefaults);
+        _this.panelDefaults = {
+            formatters: []
+        };
+        lodash__WEBPACK_IMPORTED_MODULE_0___default.a.defaults(_this.panel, _this.panelDefaults);
         _this.aligns = ['LEFT', 'CENTER', 'RIGHT'];
         _this.divID = 'table-rms-' + _this.panel.id;
         _this.events.on('init-edit-mode', _this.onInitEditMode.bind(_this));

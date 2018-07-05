@@ -1,14 +1,47 @@
 <div ng-switch on='ctrl.mode'>
     <div ng-switch-when="showBtn">
-        <button type="submit" class="btn btn-primary" ng-click="ctrl.showCtrlMode('new')">신규 등록</button>
-        <br></br>
+        <button type="submit" class="btn rm-btn-insert-box" ng-click="ctrl.showCtrlMode('new')">신규 등록</button>
     </div>
-    <div class="editor-row">
+    <div class="section rm-insert-form" ng-show='1' ng-switch-when="new">
+        <button class="fa fa fa-remove rm-btn-window-exit-box" ng-click="ctrl.close()" />
+        <div class="col rm-content-area">
+            <label class="rm-label-margin">장비명</label>
+            <select class="gf-form-input min-width-13 width-13" placeholder="장비명" 
+                    ng-model="ctrl.panel.inputlItem.machine_name"
+                    ng-options="f for f in ctrl.panel.machineCategory" />
+        </div>
+        <div class="col rm-content-area">
+            <label class="rm-label-margin">소모품명</label>
+            <select class="gf-form-input min-width-13 width-13" placeholder="소모품명" 
+                    ng-model="ctrl.panel.inputlItem.consumables_name"
+                    ng-options="f for f in ctrl.panel.consumablesCategory" />
+        </div> 
+        <div class="col rm-content-area">
+            <label class="rm-label-margin">소모품 규격</label>
+            <select class="gf-form-input min-width-13 width-13" placeholder="소모품 규격" 
+                    ng-model="ctrl.panel.inputlItem.consumables_standard"
+                    ng-options="f for f in ctrl.panel.consumablesStandardCategory" />
+        </div>
+        <div class="col rm-content-area">
+            <label class="rm-label-margin">소모품 개수</label>
+            <input type="text" class="gf-form-input min-width-13 width-13" placeholder="소모품 개수" ng-model="ctrl.panel.inputlItem.count">
+        </div> 
+        <div class="col rm-content-area">
+            <label class="rm-label-margin">소모품 교체일</label>
+            <input type="date" class="gf-form-input min-width-13 width-13" placeholder="소모품 교체일" ng-model="ctrl.panel.inputlItem.change_date">
+        </div> 
+        <div class="col rm-content-area">
+            <label class="rm-label-margin">메모</label>
+            <input type="text" class="gf-form-input min-width-13 width-13" placeholder="메모" ng-model="ctrl.panel.inputlItem.memo">
+        </div> 
+        <button class="btn rm-btn-data-insert-box" ng-click="ctrl.addConsumableItem(ctrl.businessSelect, ctrl.comsumable.name, ctrl.comsumable.standard, ctrl.comsumable.count, ctrl.comsumable.cycle_count, ctrl.comsumable.count_time_count, ctrl.comsumable.memo)">
+            등록
+        </button>       
+    </div>
+    <div class="editor-row rm-table-form">
         <div class="thingspin-table"></div>
-    </div>
-    <br></br>
-    
-    <div class="section gf-form-group" ng-show='1' ng-switch-when="new|edit" ng-switch-when-separator="|">
+    </div> 
+    <!-- <div class="section gf-form-group" ng-show='1' ng-switch-when="new|edit" ng-switch-when-separator="|">
         <div class="gf-form">
             <label class="gf-form-label width-8">장비명</label>
             <div class="gf-form-select-wrapper">
@@ -78,7 +111,7 @@
                 창 닫기
             </button>
         </div>
-    </div>
+    </div> -->
 </div>
 
 
