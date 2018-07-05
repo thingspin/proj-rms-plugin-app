@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import $ from 'jquery';
-import moment from 'moment';
+// import moment from 'moment';
+
 import 'jquery-ui';
 import 'jquery.tabulator/dist/css/tabulator.min.css';
 import 'jquery.tabulator/dist/js/tabulator.min';
@@ -17,12 +18,11 @@ const template = require("./partial/templet.html");
 //const options = require("./partial/options.html");
 
 const MOLD_ID = "금형 ID";
-const MOLD_BUSINESS = "업체명";
-const MOLD_MODEL = "모델명";
-const MOLD_CHANGE_DATE = "교체일";
-const MOLD_PERIOD = "교체주기";
-const MOLD_USE_COUNT = "사용횟수";
-const MOLD_MEMO = "메모";
+const MOLD_REMOTE_MODEL = "리모컨 모델명";
+const MOLD_CHANGE_PERIOD = "금형 교체주기";
+const MOLD_USE_COUNT = "남은 사용횟수";
+const MOLD_BUSINESS_NAME = "금형업체명";
+const MOLD_MEMO = "메모(담당자, 전화번호)";
 
 class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
   static template = template;
@@ -47,29 +47,17 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
 
   mode: any;
   isViewer: any;
+  defTabulatorOpts: object;
+  selectTableRow: any;
 
   panelDefaults = {
-    // options: {
-    //   legend: {
-    //       show: true,
-    //       values: false
-    //   },
-    //   legendTable: false,
-    //   traceColors : {}
-    // },
-
-    businessCategory: [
-    ],
-
     inputlItem: {
       mold_id: -1,
-      plant_id: -1,
-      business_name: '',
-      mold_name: '',
-      change_date: '',
-      period : '',
+      remote_model: '',
+      change_period: '',
       use_count: '',
-      memo : '',
+      business_name: '',
+      memo : ''
     },
 
     formatters : [],
@@ -89,18 +77,14 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
 
     _.defaults(this.panel, this.panelDefaults);
 
-    this.panel.inputlItem.change_date = new Date();
-
     this.alertSrv = alertSrv;
     this.$rootScope = $rootScope;
     this.$scope = $scope;
 
     this.divID = 'table-rms-' + this.panel.id;
     this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
-    // this.events.on('render', this.onRender.bind(this)); //dynamic ui process
     this.events.on('data-received', this.onDataReceived.bind(this));
     this.events.on('data-error', this.onDataError.bind(this));
-    //this.events.on('panel-initialized', this.onInitialized.bind(this));
   }
 
   onInitialized() {
@@ -127,11 +111,6 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
     document.getElementsByTagName( "head" )[0].appendChild( link );
   }
 
-  /* dynamic ui process
-  rander() {
-  }
-  */
-
   delFormatter(index) {
     this.panel.formatters.splice(index,1);
   }
@@ -155,67 +134,30 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
   }
 
   createTable(dataList) {
-
-    console.log("create table ...");
-
-    // var tabledata = [
-    //   { id: 1, mold_name: "A모델", change_date: "2018/05/15", change_period: "10000", use_count: "10000",  memo: ''},
-    //   { id: 2, mold_name: "B모델", change_date: "2018/05/15", change_period: "10000", use_count: "10000",  memo: ''},
-    //   { id: 3, mold_name: "C모델", change_date: "2018/05/15", change_period: "10000", use_count: "10000",  memo: ''},
-    //   { id: 4, mold_name: "D모델", change_date: "2018/05/15", change_period: "10000", use_count: "10000",  memo: ''},
-    //   { id: 5, mold_name: "E모델", change_date: "2018/05/15", change_period: "10000", use_count: "10000",  memo: ''}
-    // ];
-
     if (this.initalized) {
       this.container.tabulator("destroy");
     }
 
-    this.panel.businessCategory.length = 0;
-
-    let selectId = this.datasource.id;
-    if (!this.isViewer) {
-      let query1 = [
-        'select name from t_business where business_type="금형업체"'
-      ];
-      this.rsDsSrv.query(selectId, query1).then( result => {
-
-        var data = result[0];
-        //console.log("data rows: " + data.rows.length);
-        //console.log(data);
-        data.rows.forEach((row, i) => {
-          this.panel.businessCategory.push(row[0]);
-        });
-
-      }).catch( err => {
-        console.error(err);
-      });
-    }
-
-    var g_root = this;
-    this.container.tabulator({
+    this.defTabulatorOpts = {
       pagination: "local",
       paginationSize: 10,
       selectable: 1,
       fitColumns: true,
       layout: "fitColumns",
       resizableColumns: this.panel.resizeValue,
-      columns: this.columns,
-      rowClick: function(e, row) {
+      columns: this.columns
+    };
+    let opts = Object.assign({ // deep copy
+      rowClick: (e, row) => { //trigger an alert message when the row is clicked
         if (!this.isViewer) {
-          g_root.showCtrlMode('edit');
-          row.select();
-          g_root.panel.inputlItem.mold_id = row.getData()[MOLD_ID];
-          //g_root.panel.inputlItem.plant_id = row.getData().PLANT_ID;
-          g_root.panel.inputlItem.business_name = row.getData()[MOLD_BUSINESS];
-          g_root.panel.inputlItem.mold_name = row.getData()[MOLD_MODEL];
-          g_root.panel.inputlItem.change_date = new Date(row.getData()[MOLD_CHANGE_DATE]);
-          g_root.panel.inputlItem.period = row.getData()[MOLD_PERIOD];
-          g_root.panel.inputlItem.use_count = row.getData()[MOLD_USE_COUNT];
-          g_root.panel.inputlItem.memo = row.getData()[MOLD_MEMO];
-          g_root.events.emit('panel-size-changed');
+          this.showCtrlMode('edit');
+          this.selectRow(row.getData());
+          this.selectTableRow = row;
+          // this.container.tabulator('deselectRow');
         }
       },
-    });
+    }, this.defTabulatorOpts);
+    this.container.tabulator(opts);
 
     if (dataList != null) {
       // this.container.tabulator("setData", dataList);
@@ -223,8 +165,6 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
       console.log(dataList);
       this.container.tabulator("setData",dataList);
     } else {
-      // this.dataTable.setData("setData",tabledata);
-      // this.container.tabulator("setData", tabledata);
     }
     this.container.tabulator("hideColumn", MOLD_ID);
     this.initalized = true;
@@ -245,7 +185,7 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
       };
       this.columnOption(obj);
       this.columns.push(obj);
-      if (obj.title === '사용횟수') {
+      if (obj.title === MOLD_USE_COUNT) {
         this.columns.push({
           title: this.panel.graphTitle,
           field: 'achievement',
@@ -263,12 +203,12 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
       row.forEach((item, row_count) => {
         mapData.set(getColumns[row_count].text,item);
         switch(getColumns[row_count].text) {
-          case '교체주기' :
+          case MOLD_CHANGE_PERIOD :
           limit = item;
           break;
-          case '사용횟수' :
+          case MOLD_USE_COUNT :
           useCount = item;
-          mapData.set('achievement', (100-(100*Number(useCount) / Number(limit))));
+          mapData.set('achievement', (100*Number(useCount) / Number(limit)));
           break;
         }
 
@@ -280,16 +220,27 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
     this.dataJson = jArray;
   }
 
-  onNew() {
+  selectRow(obj) {
+    console.log(obj);
+    this.panel.inputlItem.mold_id = obj[MOLD_ID];
+    this.panel.inputlItem.remote_model = obj[MOLD_REMOTE_MODEL];
+    this.panel.inputlItem.change_period = obj[MOLD_CHANGE_PERIOD];
+    this.panel.inputlItem.use_count = obj[MOLD_USE_COUNT];
+    this.panel.inputlItem.business_name = obj[MOLD_BUSINESS_NAME];
+    this.panel.inputlItem.memo = obj[MOLD_MEMO];
+  }
 
-    let info = this.panel.inputlItem;
+  onNew(inputData) {
+
+    let info = inputData;
 
     console.log(info);
-    if (info.business_name == null
-      || info.mold_name === ""
-      || info.period === ""
-      || info.use_count === "" ) {
-      this.alertSrv.set("입력 정보를 확인해 주세요", 'error', 5000);
+    if (info.remote_model === undefined || info.remote_model === "") {
+      this.alertSrv.set("리모컨 모델명을 입력해 주세요", 'error', 5000);
+    } else if(info.change_period === undefined || info.change_period.length === 0) { 
+      this.alertSrv.set("금형 교체주기를 입력해 주세요.", 'error', 5000);
+    } else if(info.use_count === undefined || info.use_count.length === 0) { 
+      this.alertSrv.set("남은 사용횟수를 입력해 주세요.", 'error', 5000);    
     } else {
       this.$rootScope.appEvent('confirm-modal', {
         title: '등록',
@@ -297,81 +248,44 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
         //icon: 'fa-trash',
         //yesText: '삭제',
         onConfirm: () => {
-
           let selectId = this.datasource.id;
-          let query1 = [
-            'select * from t_mold where mold_name="' + info.mold_name + '";'
+          let columns = "(";
+          let values = "(";
+          columns = columns + "REMOTE_MODEL";
+          values = values + "'" + info.remote_model + "'";
+          columns = columns + ", CHANGE_PERIOD";
+          values = values + ", " + info.change_period + "";
+          columns = columns + ", USE_COUNT";
+          values = values + ", " + info.use_count + "";
+          columns = columns + ", BUSINESS_NAME";
+          if (info.business_name !== undefined && info.business_name !== null ) { 
+            values = values + ", '" + info.business_name + "'";
+          } else { 
+            values = values + ", ''";
+          }
+          columns = columns + ", MEMO)";
+          if (info.memo !== undefined && info.memo !== null ) { values = values + ", '" + info.memo + "')";} else { values = values + ", '')";}
+          
+          let query = [
+            "insert into t_mold " + columns + " values " + values,
           ];
-
-          this.rsDsSrv.query(selectId, query1).then( result => {
-            var data = result[0];
-            //console.log("data rows: " + data.rows.length);
-            if (data.rows.length === 0) {
-              let query2 = [
-                'select business_id from t_business where name="'
-                + info.business_name + '" and business_type="금형업체"'
-              ];
-
-              this.rsDsSrv.query(selectId, query2).then( result => {
-                var data = result[0];
-                var business_id = data.rows[0][0];
-
-                var tmpDate = new Date(info.change_date);
-                var strDate = tmpDate.getFullYear() + '/' + (tmpDate.getMonth()+1) + '/' + tmpDate.getDate();
-
-                let query3 = [
-                  'insert into t_mold(plant_id, business_id, mold_name, change_date, change_period, use_count, memo) values(1000, '
-                  + business_id + ', "' + info.mold_name + '","'
-                  + strDate + '", "' + info.period + '", "'
-                  + info.use_count + '", "' +  info.memo + '");'
-                ];
-
-                //console.log(query3);
-
-                this.rsDsSrv.query(selectId, query3).then( result => {
-                  this.panel.inputlItem.mold_id = -1;
-                  this.showCtrlMode('showBtn');
-                  this.refresh();
-                }).catch( err => {
-                  console.error(err);
-                });
-
-              }).catch( err => {
-                console.error(err);
-              });
-            } else {
-              this.alertSrv.set("이미 등록 되어있습니다.", 'error', 5000);
-            }
+          
+          this.rsDsSrv.query(selectId, query).then( result => {
+            this.panel.inputlItem.mold_id = -1;
+            this.showCtrlMode('showBtn');
+            this.refresh();
           }).catch( err => {
             console.error(err);
           });
         }
       });
-
     }
-
-
-      // var day = new Date(this.panel.inputlItem.change_date);
-      // console.log("select CHANGE_DATE1: " + this.panel.inputlItem.change_date);
-      // console.log("select CHANGE_DATE2: "
-      // + day.getFullYear() + '/' + (day.getMonth()+1) + '/' + day.getDate());
-
-      // let info = this.panel.materialItem;
-      // info.id = this.data.length + 1;
-      // info.company = info.company.name;
-      // info.regdate = new Date('YYYY/MM/DD').toString();
-
-      // this.data.push(info);
-      // this.container.tabulator("setData", this.data);
   }
 
   onEdit() {
     let info = this.panel.inputlItem;
 
-    console.log(info);
-
     if (info.mold_id !== -1) {
-
       this.$rootScope.appEvent('confirm-modal', {
         title: '수정',
         text: '정말로 수정 하시겠습니까?',
@@ -381,61 +295,24 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
 
           let selectId = this.datasource.id;
 
-          let query1 = [
-            'select * from t_mold where mold_name="' + info.mold_name + '" and mold_id!=' + info.mold_id
+          let query3 = [
+            'update t_mold set ' +
+            'remote_model="' + info.remote_model + '", ' +
+            'change_period=' + info.change_period + ', ' +
+            'use_count=' + info.use_count + ', ' +
+            'business_name="' + info.business_name + '", ' +
+            'memo="' + info.memo + '" where mold_id=' + info.mold_id
           ];
-
-          this.rsDsSrv.query(selectId, query1).then( result => {
-            var data = result[0];
-            //console.log("data rows: " + data.rows.length);
-            if (data.rows.length === 0) {
-              let query2 = [
-                'select business_id from t_business where name="'
-                + info.business_name + '" and business_type="금형업체"'
-              ];
-
-              this.rsDsSrv.query(selectId, query2).then( result => {
-
-                var data = result[0];
-                var business_id = data.rows[0][0];
-
-                var tmpDate = new Date(info.change_date);
-                var strDate = tmpDate.getFullYear() + '/' + (tmpDate.getMonth()+1) + '/' + tmpDate.getDate();
-
-                let query3 = [
-                  'update t_mold set ' +
-                  'business_id="' + business_id + '", ' +
-                  'mold_name="' + info.mold_name + '", ' +
-                  'change_date="' + strDate + '", ' +
-                  'change_period="' + info.period + '", ' +
-                  'use_count="' + info.use_count + '", ' +
-                  'memo="' + info.memo + '" where mold_id=' + info.mold_id
-                ];
-
-                console.log(selectId + " " + query3);
-
-                this.rsDsSrv.query(selectId, query3).then( result => {
-                  this.alertSrv.set(name + "이(가) 변경 되었습니다.", '', 'success', 1000);
-                  this.showCtrlMode('showBtn');
-                  this.refresh();
-                  // this.panel.inputlItem.mold_id = -1;
-                  // this.$rootScope.$broadcast('refresh');
-                }).catch( err => {
-                  this.alertSrv.set(name + " 변경 실패", err, 'error', 5000);
-                  console.error(err);
-                });
-
-              }).catch( err => {
-                console.error(err);
-              });
-            } else {
-              this.alertSrv.set("이미 등록 되어있습니다.", 'error', 5000);
-            }
-
+          this.rsDsSrv.query(selectId, query3).then( result => {
+            this.alertSrv.set(name + "이(가) 변경 되었습니다.", '', 'success', 1000);
+            this.showCtrlMode('showBtn');
+            this.refresh();
+            // this.panel.inputlItem.mold_id = -1;
+            // this.$rootScope.$broadcast('refresh');
           }).catch( err => {
+            this.alertSrv.set(name + " 변경 실패", err, 'error', 5000);
             console.error(err);
           });
-
         }
       });
 
@@ -452,27 +329,22 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
         title: '삭제',
         text: '정말로 삭제 하시겠습니까?',
         icon: 'fa-trash',
-        //yesText: '삭제',
         onConfirm: () => {
           let selectId = this.datasource.id;
           let query = [
             'delete from t_mold where mold_id=' + info.mold_id
           ];
 
-          console.log(selectId + " " + query);
-
           this.rsDsSrv.query(selectId, query).then( result => {
             this.panel.inputlItem.mold_id = -1;
 
             this.panel.inputlItem = {
               mold_id: -1,
-              plant_id: -1,
+              remote_model: '',
+              change_period: -1,
+              use_count: -1,
               business_name: '',
-              mold_name: '',
-              change_date: '',
-              period : '',
-              use_count: '',
-              memo : '',
+              memo: ''
             };
             this.showCtrlMode('showBtn');
             this.$rootScope.$broadcast('refresh');
@@ -500,13 +372,11 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
       }
       this.panel.inputlItem = {
         mold_id: -1,
-        plant_id: -1,
-        business_name: '',
-        mold_name: '',
-        change_date: '',
-        period : '',
+        remote_model: '',
+        change_period: '',
         use_count: '',
-        memo : '',
+        business_name: '',
+        memo : ''
       };
       this.refresh();
     }
@@ -534,15 +404,10 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
         }
       };
     } else {
-      if (obj.title === MOLD_USE_COUNT || obj.title === MOLD_PERIOD) {
+      if (obj.title === MOLD_USE_COUNT || obj.title === MOLD_CHANGE_PERIOD) {
         obj.align = this.aligns[2];
         obj.formatter = function(cell, formatterParam) {
           return Number(cell.getValue()).toLocaleString('en');
-        };
-      } else if (obj.title === MOLD_CHANGE_DATE) {
-        obj.align = this.aligns[1];
-        obj.formatter = function(cell, formatterParam) {
-          return moment(cell.getValue()).format("YYYY/MM/DD");
         };
       } else {
         obj.align = this.aligns[0];

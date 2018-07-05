@@ -1,5 +1,71 @@
 <div ng-switch on='ctrl.mode'>
     <div ng-switch-when="showBtn">
+        <button type="submit" class="btn rm-btn-insert-box" ng-click="ctrl.showCtrlMode('new')">신규 등록</button>
+     </div>
+    <div class="section rm-insert-form" ng-show='1' ng-switch-when="new">
+        <button class="fa fa fa-remove rm-btn-window-exit-box" ng-click="ctrl.close()" />
+        <div class="col rm-content-area">
+            <label class="rm-label-margin">리모트 모델명</label>
+            <input type="text" class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.panel.inputlItem.remote_model" placeholder="리모컨 모델명" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
+        </div>
+        <div class="col rm-content-area">
+            <label class="rm-label-margin">금형 교체주기</label>
+            <input type="number" class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.panel.inputlItem.change_period" placeholder="금형 교체주기" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
+        </div> 
+        <div class="col rm-content-area">
+            <label class="rm-label-margin">남은 사용횟수</label>
+            <input type="number" class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.panel.inputlItem.use_count" placeholder="남은 사용횟수" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
+        </div> 
+        <div class="col rm-content-area">
+            <label class="rm-label-margin">금형업체명</label>
+            <input type="text" class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.panel.inputlItem.business_name" placeholder="금형업체명" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
+        </div> 
+        <div class="col rm-content-area">
+            <label class="rm-label-margin">메모(담당자, 전화번호)</label>
+            <input type="text" class="gf-form-input width-16 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.panel.inputlItem.memo" placeholder="메모(담당자, 전화번호)" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
+        </div>
+        <button class="btn rm-btn-data-insert-box" ng-click="ctrl.onNew(ctrl.panel.inputlItem)">
+            등록
+        </button>
+    </div>
+    <div class="section rm-insert-form" ng-show='1' ng-switch-when="edit">
+        <button class="fa fa fa-remove rm-btn-window-exit-box" ng-click="ctrl.close()" />
+        <div class="col rm-content-area">
+            <label class="rm-label-margin">리모트 모델명</label>
+            <input type="text" class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.panel.inputlItem.remote_model" placeholder="리모컨 모델명" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
+        </div>
+        <div class="col rm-content-area">
+            <label class="rm-label-margin">금형 교체주기</label>
+            <input type="number" class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.panel.inputlItem.change_period" placeholder="금형 교체주기" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
+        </div> 
+        <div class="col rm-content-area">
+            <label class="rm-label-margin">남은 사용횟수</label>
+            <input type="number" class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.panel.inputlItem.use_count" placeholder="남은 사용횟수" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
+        </div> 
+        <div class="col rm-content-area">
+            <label class="rm-label-margin">금형업체명</label>
+            <input type="text" class="gf-form-input width-12 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.panel.inputlItem.business_name" placeholder="금형업체명" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
+        </div> 
+        <div class="col rm-content-area">
+            <label class="rm-label-margin">메모(담당자, 전화번호)</label>
+            <input type="text" class="gf-form-input width-16 rm-content-center-margin rm-edit-box-color"  data-placement="auto" ng-model="ctrl.panel.inputlItem.memo" placeholder="메모(담당자, 전화번호)" ng-blur="ctrl.render()" data-min-length=0 data-items=64 ng-model-onblur>
+        </div>
+        <button class="btn rm-btn-data-insert-box" ng-click="ctrl.onDel(ctrl.panel.inputlItem)">
+            삭제
+        </button>
+        <button class="btn rm-btn-data-insert-box" ng-click="ctrl.onEdit(ctrl.panel.inputlItem)">
+            변경
+        </button>
+    </div>    
+    <div class="editor-row rm-table-form">
+        <div class="thingspin-table"></div>
+    </div>
+    <br></br>       
+</div>
+
+
+<!-- <div ng-switch on='ctrl.mode'>
+    <div ng-switch-when="showBtn">
         <button type="submit" class="btn btn-primary" ng-click="ctrl.showCtrlMode('new')">신규 등록</button>
         <br></br>
     </div>
@@ -78,9 +144,4 @@
             </button>
         </div>
     </div>
-</div>
-
-
-    
-    
-    
+</div> -->

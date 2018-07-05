@@ -19,6 +19,7 @@ const template = require("./partial/templet.html");
 const MACHINE_CONSUMABLE_ID = '등록 ID';
 const MACHINE_NAME = '장비명';
 const CONSUMABLE_NAME = '소모품명';
+const CONSUMABLE_STANDARD = '소모품 규격';
 const CONSUMABLE_COUNT = '소모품 개수';
 const CHANGE_DATE = '소모품 교체일';
 const MACHINE_CONSUMABLE_MEMO = '메모';
@@ -63,10 +64,14 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
     consumablesCategory: [
     ],
 
+    consumablesStandardCategory: [      
+    ],
+
     inputlItem: {
       machine_consumables_id: -1,
       machine_name: '',
       consumables_name: '',
+      consumables_standard: '',
       count: '',
       change_date: '',
       memo : '',
@@ -153,6 +158,7 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
 
     this.panel.machineCategory.length = 0;
     this.panel.consumablesCategory.length = 0;
+    this.panel.consumablesStandardCategory.length = 0;
 
     let selectId = this.datasource.id;
 
@@ -165,6 +171,7 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
       for (var i = 0; i<data.rows.length; i++) {
         this.panel.machineCategory.push(data.rows[i][0]);
       }
+      this.panel.inputlItem.machine_name = this.panel.machineCategory[0];
     }).catch( err => {
       console.error(err);
     });
@@ -178,10 +185,24 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
       for (var i = 0; i<data.rows.length; i++) {
         this.panel.consumablesCategory.push(data.rows[i][0]);
       }
+      this.panel.inputlItem.consumables_name = this.panel.consumablesCategory[0];
     }).catch( err => {
       console.error(err);
     });
 
+    // 소모품 규격 추가
+    let query3 = [
+      'SELECT consumables_standard FROM t_consumables'
+    ];
+    this.rsDsSrv.query(selectId, query3).then( result => {
+      var data = result[0];
+      for (var i = 0; i<data.rows.length; i++) {
+        this.panel.consumablesStandardCategory.push(data.rows[i][0]);
+      }
+      this.panel.inputlItem.consumables_standard = this.panel.consumablesStandardCategory[0];
+    }).catch( err => {
+      console.error(err);
+    });
 
     var g_root = this;
     this.container.tabulator({
@@ -200,6 +221,7 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
           g_root.panel.inputlItem.machine_consumables_id = row.getData()[MACHINE_CONSUMABLE_ID];
           g_root.panel.inputlItem.machine_name = row.getData()[MACHINE_NAME];
           g_root.panel.inputlItem.consumables_name = row.getData()[CONSUMABLE_NAME];
+          g_root.panel.inputlItem.consumables_standard = row.getData()[CONSUMABLE_STANDARD];
           g_root.panel.inputlItem.count = row.getData()[CONSUMABLE_COUNT];
           g_root.panel.inputlItem.change_date = new Date(row.getData()[CHANGE_DATE]);
           g_root.panel.inputlItem.memo = row.getData()[MACHINE_CONSUMABLE_MEMO];
@@ -261,6 +283,7 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
 
     if (info.machine_name == null
       || info.consumables_name == null
+      || info.consumables_standard == null
       || info.count === "" ) {
       this.alertSrv.set("입력 정보를 확인해 주세요", 'error', 5000);
     } else {
@@ -429,6 +452,7 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
               machine_consumables_id: -1,
               machine_name: '',
               consumables_name: '',
+              consumables_standard: '',
               count: '',
               change_date: '',
               memo : '',
@@ -461,6 +485,7 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
         machine_consumables_id: -1,
         machine_name: '',
         consumables_name: '',
+        consumables_standard: '',
         count: '',
         change_date: '',
         memo : '',
