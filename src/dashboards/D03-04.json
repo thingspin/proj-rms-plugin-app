@@ -19,21 +19,19 @@
         "y": 0
       },
       "id": 2,
+      
       "inputlItem": {        
-        "business_name": null,
-        "change_date": "",
-        "memo": "",
         "mold_id": -1,
-        "mold_name": "",
-        "period": "",
-        "plant_id": "1000",
-        "use_count": ""
-      },
+        "remote_model": "",
+        "change_period": -1,
+        "use_count": -1,
+        "business_name": "",
+        "memo" : ""      },
       "targets": [
         {
           "alias": "",
           "format": "table",
-          "rawSql": "SELECT MOLD_ID as '금형 ID', NAME as 업체명, MOLD_NAME as 모델명, CHANGE_DATE as 교체일, CHANGE_PERIOD as 교체주기, USE_COUNT as 사용횟수, b.MEMO as 메모 FROM t_business as a, t_mold as b where a.business_id = b.business_id;",
+          "rawSql": "SELECT MOLD_ID as '금형 ID', REMOTE_MODEL as '리모컨 모델명', CHANGE_PERIOD as '금형 교체주기', USE_COUNT as '남은 사용횟수', BUSINESS_NAME as '금형업체명', MEMO as '메모(담당자, 전화번호)' FROM t_mold;",
           "refId": "A"
         }
       ],
@@ -66,6 +64,6 @@
     ]
   },
   "timezone": "",
-  "title": "금형 리스트",
+  "title": "금형 관리",
   "version": 7
 }
