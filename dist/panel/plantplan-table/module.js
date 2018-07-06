@@ -46216,6 +46216,7 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
         };
         lodash__WEBPACK_IMPORTED_MODULE_0___default.a.defaults(_this.panel, _this.panelDefaults);
         _this.aligns = ['LEFT', 'CENTER', 'RIGHT'];
+        _this.getColumns = new Map();
         _this.divID = 'table-rms-' + _this.panel.id;
         _this.events.on('init-edit-mode', _this.onInitEditMode.bind(_this));
         _this.events.on('panel-size-changed', _this.onSizeChanged.bind(_this));
@@ -46402,13 +46403,25 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
             value.forEach(function (v, k) {
                 object[k] = v;
                 switch (k) {
-                    case '생산계획': tempTotal = v;
-                    case '실적수량': tempProduct = v;
+                    case '생산계획':
+                        tempTotal = v;
+                        break;
+                    case '실적수량':
+                        tempProduct = v;
+                        break;
                 }
             });
-            object.achievement = Math.round((tempProduct / tempTotal) * 100);
-            object.achievement_text = Math.round((tempProduct / tempTotal) * 100) + "%";
-            jArray.push(object);
+            console.log("Plan : " + tempTotal);
+            if (tempTotal !== 0) {
+                object.achievement = Math.round((tempProduct / tempTotal) * 100);
+                object.achievement_text = Math.round((tempProduct / tempTotal) * 100) + "%";
+                jArray.push(object);
+            }
+            else {
+                object.achievement = 0;
+                object.achievement_text = 0 + "%";
+                jArray.push(object);
+            }
         });
         this.columns.push({
             title: 'GRAPH',
@@ -46426,13 +46439,14 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
     RmsPlantPlanPanelCtrl.prototype.transAddedData = function (data, tableMap) {
         var _this = this;
         var rows = data.rows;
-        var getColumns = data.columns;
-        if (getColumns.map(function (x) { return x.text; }).indexOf('실적수량') !== -1
-            || getColumns.map(function (x) { return x.text; }).indexOf('양품') !== -1
-            || getColumns.map(function (x) { return x.text; }).indexOf('불량') !== -1) {
+        var columns = data.columns;
+        console.log(rows);
+        if (columns.map(function (x) { return x.text; }).indexOf('실적수량') !== -1
+            || columns.map(function (x) { return x.text; }).indexOf('양품') !== -1
+            || columns.map(function (x) { return x.text; }).indexOf('불량') !== -1) {
             var obj = {
-                title: getColumns[2].text,
-                field: getColumns[2].text,
+                title: columns[2].text,
+                field: columns[2].text,
                 align: "left",
             };
             this.columnOption(obj);
@@ -46441,16 +46455,28 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
                 var inputData = tableMap.get(row[1]);
                 if (inputData) {
                     if (row[2] !== 0) {
-                        // console.log(row[2] + inputData.get(obj.title));
                         var setData = inputData.get(obj.title) ? row[2] + inputData.get(obj.title) : row[2];
                         inputData.set(obj.title, setData);
                         tableMap.set(row[1], inputData);
                     }
                 }
+                else {
+                    if (row[2] !== 0) {
+                        var date = new Date(row[0]);
+                        var map = new Map();
+                        map.set('time_sec', row[0]);
+                        map.set('날짜', moment__WEBPACK_IMPORTED_MODULE_2___default()(date, "YYYYMMDD"));
+                        map.set('모델', row[1]);
+                        map.set('생산계획', 0);
+                        map.set(obj.title, row[2]);
+                        tableMap.set(row[1], map);
+                    }
+                }
             });
+            console.log(tableMap);
         }
         else {
-            getColumns.forEach(function (columnObj, count) {
+            columns.forEach(function (columnObj, count) {
                 var column = columnObj.text;
                 var obj = {
                     title: column,
@@ -46463,9 +46489,10 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
             rows.forEach(function (row, count) {
                 var map = new Map();
                 row.forEach(function (item, row_count) {
-                    map.set(getColumns[row_count].text, item);
+                    map.set(columns[row_count].text, item);
+                    _this.getColumns.set(columns[row_count].text, item);
                 });
-                tableMap.set(map.get(getColumns[2].text), map);
+                tableMap.set(map.get(columns[2].text), map);
             });
         }
     };

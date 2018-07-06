@@ -17457,6 +17457,7 @@ var RmsProductPlanBarChartPanelCtrl = /** @class */ (function (_super) {
     };
     RmsProductPlanBarChartPanelCtrl.prototype.transformerData = function (dataList) {
         var _this = this;
+        // console.log(dataList);
         this.arrayTrue = [];
         this.arrayFalse = [];
         this.arrayTrueEmpty = [];
@@ -17541,6 +17542,9 @@ var RmsProductPlanBarChartPanelCtrl = /** @class */ (function (_super) {
                 switch (rowCount) {
                     case 1:
                         tempModel = item;
+                        if (!_this.mapPlan.has(tempModel)) {
+                            _this.mapPlan.set(tempModel, 0);
+                        }
                         break;
                     case 2:
                         var valStr = (value === TRUE) ? "mapTrue" : "mapFalse";
