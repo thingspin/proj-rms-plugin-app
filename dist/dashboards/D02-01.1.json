@@ -22,7 +22,7 @@
       "includeVars": false,
       "keepTime": false,
       "tags": [
-        "모델별 검사기록"
+        "검사 기록"
       ],
       "type": "dashboards"
     }
@@ -1377,7 +1377,7 @@
     ]
   },
   "timezone": "",
-  "title": "모델별 검사기록 (상세)",
+  "title": "상세 검사로그",
   "uid": "7cy0t97mz",
   "version": 6
 }

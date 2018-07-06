@@ -871,7 +871,7 @@
   "schemaVersion": 16,
   "style": "light",
   "tags": [
-    "모델별 검사기록"
+    "검사 기록"
   ],
   "templating": {
     "list": [
@@ -1110,7 +1110,7 @@
     ]
   },
   "timezone": "",
-  "title": "검사기록",
+  "title": "검사 기록",
   "uid": "rAgfpx7iz",
   "version": 2
 }
