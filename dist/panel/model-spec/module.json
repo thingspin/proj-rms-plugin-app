@@ -12,10 +12,19 @@
       }
     ]
   },
-  "editable": true,
+  "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "links": [],
+  "id": null,
+  "links": [
+    {
+      "icon": "external link",
+      "tags": [
+        "공정 설정"
+      ],
+      "type": "dashboards"
+    }
+  ],
   "panels": [
     {
       "datasource": "REMOTESOLUTIONS(V1.0)",
@@ -27,6 +36,7 @@
       },
       "id": 2,
       "kernel": null,
+      "links": [],
       "scripts": "",
       "targets": [
         {
@@ -68,13 +78,15 @@
           "tags": []
         }
       ],
-      "title": "Panel Title",
+      "title": "모델 기본 스펙",
       "type": "rms-model-spec"
     }
   ],
   "schemaVersion": 16,
   "style": "dark",
-  "tags": [],
+  "tags": [
+    "공정 설정"
+  ],
   "templating": {
     "list": []
   },
@@ -83,6 +95,7 @@
     "to": "now"
   },
   "timepicker": {
+    "hidden": true,
     "refresh_intervals": [
       "5s",
       "10s",
@@ -110,5 +123,5 @@
   "timezone": "",
   "title": "모델 스펙",
   "uid": "MLir3Jvik",
-  "version": 1
+  "version": 3
 }
