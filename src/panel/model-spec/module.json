@@ -15,7 +15,16 @@
   "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "links": [],
+  "id": null,
+  "links": [
+    {
+      "icon": "external link",
+      "tags": [
+        "공정 설정"
+      ],
+      "type": "dashboards"
+    }
+  ],
   "panels": [
     {
       "datasource": "REMOTESOLUTIONS(V1.0)",
@@ -75,7 +84,9 @@
   ],
   "schemaVersion": 16,
   "style": "dark",
-  "tags": [],
+  "tags": [
+    "공정 설정"
+  ],
   "templating": {
     "list": []
   },

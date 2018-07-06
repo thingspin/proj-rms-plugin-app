@@ -15,7 +15,16 @@
   "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "links": [],
+  "id": null,
+  "links": [
+    {
+      "icon": "external link",
+      "tags": [
+        "공정 설정"
+      ],
+      "type": "dashboards"
+    }
+  ],
   "panels": [
     {
       "collapsed": false,
@@ -293,7 +302,8 @@
   "schemaVersion": 16,
   "style": "dark",
   "tags": [
-    "검사항목 / 불량유형"
+    "검사항목 / 불량유형",
+    "공정 설정"
   ],
   "templating": {
     "list": []
@@ -322,5 +332,5 @@
   "timezone": "",
   "title": "검사항목 / 불량유형",
   "uid": "AikbGQ7mz",
-  "version": 4
+  "version": 5
 }

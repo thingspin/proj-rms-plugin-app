@@ -16,7 +16,15 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "links": [],
+  "links": [
+    {
+      "icon": "external link",
+      "tags": [
+        "공정 설정"
+      ],
+      "type": "dashboards"
+    }
+  ],
   "panels": [
     {
       "datasource": "REMOTESOLUTIONS(V1.0)",
@@ -44,7 +52,9 @@
   ],
   "schemaVersion": 16,
   "style": "dark",
-  "tags": [],
+  "tags": [
+    "공정 설정"
+  ],
   "templating": {
     "list": []
   },
@@ -81,5 +91,5 @@
   "timezone": "",
   "title": "사전조치 설정",
   "uid": "o3830wvik",
-  "version": 2
+  "version": 3
 }
