@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import $ from 'jquery';
-import moment from 'moment';
+// import moment from 'moment';
 import 'jquery-ui';
 import 'jquery.tabulator/dist/css/tabulator.min.css';
 import 'jquery.tabulator/dist/js/tabulator.min';
@@ -16,13 +16,12 @@ loadPluginCss({
 const template = require("./partial/templet.html");
 //const options = require("./partial/options.html");
 
-const MACHINE_CONSUMABLE_ID = '등록 ID';
+const MACHINEUSE_ID = '장비 ID';
 const MACHINE_NAME = '장비명';
-const CONSUMABLE_NAME = '소모품명';
-const CONSUMABLE_STANDARD = '소모품 규격';
-const CONSUMABLE_COUNT = '소모품 개수';
-const CHANGE_DATE = '소모품 교체일';
-const MACHINE_CONSUMABLE_MEMO = '메모';
+const CONSUMABLE = '소모품';
+const MACHINEUSE_COUNT = '남은 사용횟수';
+const BUSINESS_NAME = '장비업체명';
+const MACHINEUSE_MEMO = '메모(담당자, 전화번호)';
 
 class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
   static template = template;
@@ -47,35 +46,23 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
 
   mode: any;
   isViewer: any;
+  defTabulatorOpts: object;
+  selectTableRow: any;
+
+  consumablesCategoryMap = new Map();
 
   panelDefaults = {
-    // options: {
-    //   legend: {
-    //       show: true,
-    //       values: false
-    //   },
-    //   legendTable: false,
-    //   traceColors : {}
-    // },
-
-    machineCategory: [
-    ],
-
     consumablesCategory: [
     ],
-
-    consumablesStandardCategory: [      
-    ],
-
     inputlItem: {
-      machine_consumables_id: -1,
+      machineuse_id: -1,
       machine_name: '',
-      consumables_name: '',
-      consumables_standard: '',
-      count: '',
-      change_date: '',
-      memo : '',
+      consumable: '',
+      machineuse_count:'',
+      business_name:'',
+      memo:''
     },
+
     formatters : [],
     resizeValue : false
   };
@@ -92,22 +79,18 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
 
     _.defaults(this.panel, this.panelDefaults);
 
-    this.panel.inputlItem.change_date = new Date();
-
     this.alertSrv = alertSrv;
     this.$rootScope = $rootScope;
     this.$scope = $scope;
 
     this.divID = 'table-rms-' + this.panel.id;
     this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
-    // this.events.on('render', this.onRender.bind(this)); //dynamic ui process
     this.events.on('data-received', this.onDataReceived.bind(this));
     this.events.on('data-error', this.onDataError.bind(this));
-    //this.events.on('panel-initialized', this.onInitialized.bind(this));
   }
 
   onInitialized() {
-    console.log("onInitialized");
+    // console.log("onInitialized");
     this.initalized = false;
   }
 
@@ -116,7 +99,7 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
   }
 
   link(scope, elem, attrs, ctrl) {
-    console.log("link");
+    // console.log("link");
     let t = elem.find('.thingspin-table')[0];
     t.id = this.divID;
 
@@ -141,108 +124,112 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
   }
 
   onDataReceived(dataList) {
-    console.log("onDataReceived");
+    // console.log("onDataReceived");
     this.dataRaw = dataList;
-    console.log(this.dataRaw);
+    // console.log(this.dataRaw);
     Promise.resolve(this.transformer(this.dataRaw));
     this.createTable(this.dataJson);
   }
 
   createTable(dataList) {
-
-    console.log("create table ...");
-
     if (this.initalized) {
       this.container.tabulator("destroy");
     }
 
-    this.panel.machineCategory.length = 0;
     this.panel.consumablesCategory.length = 0;
-    this.panel.consumablesStandardCategory.length = 0;
 
     let selectId = this.datasource.id;
 
-    // 모델명 추가
-    let query1 = [
-      'SELECT machine_name FROM t_machine'
-    ];
-    this.rsDsSrv.query(selectId, query1).then( result => {
-      var data = result[0];
-      for (var i = 0; i<data.rows.length; i++) {
-        this.panel.machineCategory.push(data.rows[i][0]);
-      }
-      this.panel.inputlItem.machine_name = this.panel.machineCategory[0];
-    }).catch( err => {
-      console.error(err);
-    });
-
     // 소모품명 추가
-    let query2 = [
-      'SELECT consumables_name FROM t_consumables'
+    let query = [
+      'SELECT CONSUMABLES_ID, CONCAT(CONSUMABLES_NAME, \'-\', CONSUMABLES_STANDARD) as CONSUMABLES, CURRENT_COUNT FROM t_consumables'
     ];
-    this.rsDsSrv.query(selectId, query2).then( result => {
+    this.rsDsSrv.query(selectId, query).then( result => {
       var data = result[0];
       for (var i = 0; i<data.rows.length; i++) {
-        this.panel.consumablesCategory.push(data.rows[i][0]);
+        // console.log(data.rows[i]);
+        var value = data.rows[i];
+        var obj = {
+          index : 0,
+          key : '',
+          current_count : 0
+        }
+        for (var j = 0; j<value.length; j++) {
+          switch(j) {
+            case 0:
+              obj.index = value[j];
+            break;
+            case 1:
+              obj.key = value[j];
+            break;
+            case 2:
+              obj.current_count = value[j];
+            break;
+          }
+        }
+        this.panel.consumablesCategory.push(obj.key);
+        this.consumablesCategoryMap.set(obj.key, obj);
       }
-      this.panel.inputlItem.consumables_name = this.panel.consumablesCategory[0];
+      this.panel.inputlItem.consumable = this.panel.consumablesCategory[0];
     }).catch( err => {
       console.error(err);
     });
 
     // 소모품 규격 추가
-    let query3 = [
-      'SELECT consumables_standard FROM t_consumables'
-    ];
-    this.rsDsSrv.query(selectId, query3).then( result => {
-      var data = result[0];
-      for (var i = 0; i<data.rows.length; i++) {
-        this.panel.consumablesStandardCategory.push(data.rows[i][0]);
-      }
-      this.panel.inputlItem.consumables_standard = this.panel.consumablesStandardCategory[0];
-    }).catch( err => {
-      console.error(err);
-    });
+    // let query3 = [
+    //   'SELECT consumables_standard FROM t_consumables'
+    // ];
+    // this.rsDsSrv.query(selectId, query3).then( result => {
+    //   var data = result[0];
+    //   for (var i = 0; i<data.rows.length; i++) {
+    //     this.panel.consumablesStandardCategory.push(data.rows[i][0]);
+    //   }
+    //   this.panel.inputlItem.consumables_standard = this.panel.consumablesStandardCategory[0];
+    // }).catch( err => {
+    //   console.error(err);
+    // });
 
-    var g_root = this;
-    this.container.tabulator({
+    this.defTabulatorOpts = {
       pagination: "local",
       paginationSize: 10,
       selectable: 1,
       fitColumns: true,
       layout: "fitColumns",
       resizableColumns: this.panel.resizeValue,
-      columns: this.columns,
-      rowClick: function(e, row) {
+      columns: this.columns
+    };
+    let opts = Object.assign({ // deep copy
+      rowClick: (e, row) => { //trigger an alert message when the row is clicked
         if (!this.isViewer) {
-          g_root.showCtrlMode('edit');
-          row.select();
-
-          g_root.panel.inputlItem.machine_consumables_id = row.getData()[MACHINE_CONSUMABLE_ID];
-          g_root.panel.inputlItem.machine_name = row.getData()[MACHINE_NAME];
-          g_root.panel.inputlItem.consumables_name = row.getData()[CONSUMABLE_NAME];
-          g_root.panel.inputlItem.consumables_standard = row.getData()[CONSUMABLE_STANDARD];
-          g_root.panel.inputlItem.count = row.getData()[CONSUMABLE_COUNT];
-          g_root.panel.inputlItem.change_date = new Date(row.getData()[CHANGE_DATE]);
-          g_root.panel.inputlItem.memo = row.getData()[MACHINE_CONSUMABLE_MEMO];
-
-          g_root.events.emit('panel-size-changed');
+          this.showCtrlMode('edit');
+          this.selectRow(row.getData());
+          this.selectTableRow = row;
+          // this.container.tabulator('deselectRow');
         }
       },
-    });
+    }, this.defTabulatorOpts);
+    this.container.tabulator(opts);
 
     if (dataList != null) {
       // this.container.tabulator("setData", dataList);
-      console.log(this.columns);
-      console.log(dataList);
       this.container.tabulator("setData",dataList);
     } else {
       // this.dataTable.setData("setData",tabledata);
       // this.container.tabulator("setData", tabledata);
     }
-    this.container.tabulator("hideColumn", MACHINE_CONSUMABLE_ID);
+    this.container.tabulator("hideColumn", MACHINEUSE_ID);
     this.initalized = true;
     $(window).trigger('resize');
+  }
+
+  selectRow(obj) {
+    console.log(obj);
+    this.panel.inputlItem.machineuse_id = obj[MACHINEUSE_ID];
+    this.panel.inputlItem.machine_name = obj[MACHINE_NAME];
+    this.panel.inputlItem.consumable = obj[CONSUMABLE];
+    this.panel.inputlItem.machineuse_count = obj[MACHINEUSE_COUNT];
+    this.panel.inputlItem.business_name = obj[BUSINESS_NAME];
+    this.panel.inputlItem.memo = obj[MACHINEUSE_MEMO];
   }
 
   transformer(dataList) {
@@ -276,16 +263,14 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
     this.dataJson = jArray;
   }
 
-  onNew() {
-    let info = this.panel.inputlItem;
+  onNew(value) {
+    let info = value;
 
-    console.log(info);
-
-    if (info.machine_name == null
-      || info.consumables_name == null
-      || info.consumables_standard == null
-      || info.count === "" ) {
-      this.alertSrv.set("입력 정보를 확인해 주세요", 'error', 5000);
+    // console.log(info);
+    if (info.machine_name === undefined || info.machine_name === "") {
+      this.alertSrv.set("장비명을 입력해 주세요", 'error', 5000);
+    } else if(info.machineuse_count === undefined || info.machineuse_count === null) { 
+      this.alertSrv.set("남은 사용횟수를 입력해 주세요.", 'error', 5000);
     } else {
       this.$rootScope.appEvent('confirm-modal', {
         title: '등록',
@@ -295,138 +280,86 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
         onConfirm: () => {
 
           let selectId = this.datasource.id;
+          var consumables = info.consumable.split('-');
+          var consumable_name = "";
+          for (var i=1;i<consumables.length;i++) {
+            if (consumables.length == i+1)
+            consumable_name += consumables[i];
+            else
+              consumable_name += consumables[i] + '-';
+          }
           let query1 = [
-            'SELECT machine_name, consumables_name '
-            + 'FROM t_machine AS a, t_consumables AS b, t_machine_consumables AS c WHERE a.machine_id = c.machine_id AND b.consumables_id = c.consumables_id '
-            + 'and a.machine_name="' + info.machine_name + '" and b.consumables_name="' + info.consumables_name + '"'
+            'SELECT MACHINE_NAME, b.CONSUMABLES_NAME, b.CONSUMABLES_STANDARD '
+            + 'FROM t_machine_use AS a, t_consumables AS b WHERE a.CONSUMABLES_ID = b.CONSUMABLES_ID '
+            + 'and a.machine_name="' + info.machine_name + '" and CONSUMABLES_NAME="' + consumables[0] + '"'
+            + 'and CONSUMABLES_STANDARD="' + consumable_name + '"'
           ];
-          //console.log(query1);
+          console.log(query1);
 
           this.rsDsSrv.query(selectId, query1).then( result => {
             var data = result[0];
             //console.log("data rows: " + data.rows.length);
             if (data.rows.length === 0) {
+              console.log("data is null");
+              var value = this.consumablesCategoryMap.get(info.consumable);
+
               let query2 = [
-                'select machine_id, consumables_id from t_machine, t_consumables where machine_name="'
-                + info.machine_name + '" and consumables_name="' + info.consumables_name + '"'
+                'insert into t_machine_use(MACHINE_NAME, CONSUMABLES_ID, MACHINEUSE_COUNT, BUSINESS_NAME, MEMO) values('
+                + info.machine_name + ', ' + value.index + ', ' + info.machineuse_count + ', "'
+                + info.business_name + '", "' + info.memo + '");'
               ];
-
+              console.log(query2);
               this.rsDsSrv.query(selectId, query2).then( result => {
-
-                var data = result[0];
-                var machine_id = data.rows[0][0];
-                var consumables_id = data.rows[0][1];
-
-                var tmpDate = new Date(info.change_date);
-                var strDate = tmpDate.getFullYear() + '/' + (tmpDate.getMonth()+1) + '/' + tmpDate.getDate();
-
-                let query3 = [
-                  'insert into t_machine_consumables(machine_id, consumables_id, consumables_count, change_date, memo) values('
-                  + machine_id + ', ' + consumables_id + ', ' + info.count + ', "'
-                  + strDate + '", "' + info.memo + '");'
-                ];
-
-                //console.log(query3);
-
-                this.rsDsSrv.query(selectId, query3).then( result => {
-                  this.panel.inputlItem.machine_consumables_id = -1;
-                  this.showCtrlMode('showBtn');
-                  this.$rootScope.$broadcast('refresh');
-                }).catch( err => {
-                  console.error(err);
-                });
+                this.panel.inputlItem.machine_consumables_id = -1;
+                this.showCtrlMode('showBtn');
+                this.$rootScope.$broadcast('refresh');
               }).catch( err => {
                 console.error(err);
               });
             } else {
               this.alertSrv.set("이미 등록 되어있습니다.", 'error', 5000);
             }
-
           }).catch( err => {
             console.error(err);
           });
-
         }
       });
-
     }
   }
 
-  onEdit() {
-    let info = this.panel.inputlItem;
+  onEdit(value) {
+    let info = value;
 
-    console.log(info);
+    // console.log(info);
 
-    if (info.machine_consumables_id !== -1) {
+    this.$rootScope.appEvent('confirm-modal', {
+      title: '수정',
+      text: '정말로 수정 하시겠습니까?',
+      //icon: 'fa-trash',
+      //yesText: '삭제',
+      onConfirm: () => {
 
-      this.$rootScope.appEvent('confirm-modal', {
-        title: '수정',
-        text: '정말로 수정 하시겠습니까?',
-        //icon: 'fa-trash',
-        //yesText: '삭제',
-        onConfirm: () => {
+        let selectId = this.datasource.id;
+        var value = this.consumablesCategoryMap.get(info.consumable);
+        let query2 = [
+          'update t_machine_use set ' +
+          'MACHINE_NAME=' + info.machine_name + ', ' +
+          'CONSUMABLES_ID=' + value.index + ', ' +
+          'MACHINEUSE_COUNT=' + info.machineuse_count + ', ' +
+          'BUSINESS_NAME="' + info.business_name + '", ' +
+          'memo="' + info.memo + '" where MACHINEUSE_ID=' + info.machineuse_id
+        ];
+        console.log(selectId + " " + query2);
 
-          let selectId = this.datasource.id;
-
-          let query1 = [
-            'SELECT machine_name, consumables_name '
-            + 'FROM t_machine AS a, t_consumables AS b, t_machine_consumables AS c WHERE a.machine_id = c.machine_id AND b.consumables_id = c.consumables_id '
-            + 'and a.machine_name="' + info.machine_name + '" and b.consumables_name="'
-            + info.consumables_name + '" and machine_consumables_id !=' + info.machine_consumables_id
-          ];
-
-          //console.log(query1);
-
-          this.rsDsSrv.query(selectId, query1).then( result => {
-            var data = result[0];
-            //console.log("data rows: " + data.rows.length);
-            if (data.rows.length === 0) {
-              let query2 = [
-                'select machine_id, consumables_id from t_machine, t_consumables where machine_name="'
-                    + info.machine_name + '" and consumables_name="' + info.consumables_name + '"'
-              ];
-              this.rsDsSrv.query(selectId, query2).then( result => {
-                var data = result[0];
-                var machine_id = data.rows[0][0];
-                var consumables_id = data.rows[0][1];
-
-                var tmpDate = new Date(info.change_date);
-                var strDate = tmpDate.getFullYear() + '/' + (tmpDate.getMonth()+1) + '/' + tmpDate.getDate();
-
-                let query2 = [
-                  'update t_machine_consumables set ' +
-                  'machine_id=' + machine_id + ', ' +
-                  'consumables_id=' + consumables_id + ', ' +
-                  'consumables_count=' + info.count + ', ' +
-                  'change_date="' + strDate + '", ' +
-                  'memo="' + info.memo + '" where machine_consumables_id=' + info.machine_consumables_id
-                ];
-                console.log(selectId + " " + query2);
-
-                this.rsDsSrv.query(selectId, query2).then( result => {
-                  this.panel.inputlItem.machine_consumables_id = -1;
-                  this.showCtrlMode('showBtn');
-                  this.$rootScope.$broadcast('refresh');
-                }).catch( err => {
-                  console.error(err);
-                });
-
-              }).catch( err => {
-                console.error(err);
-              });
-            } else {
-              this.alertSrv.set("이미 등록 되어있습니다.", 'error', 5000);
-            }
-
-          }).catch( err => {
-            console.error(err);
-          });
-        }
-      });
-
-    } else {
-      this.alertSrv.set("테이블의 Row를 선택해 주세요", 'error', 5000);
-    }
+        this.rsDsSrv.query(selectId, query2).then( result => {
+          this.panel.inputlItem.machine_consumables_id = -1;
+          this.showCtrlMode('showBtn');
+          this.$rootScope.$broadcast('refresh');
+        }).catch( err => {
+          console.error(err);
+        });
+      }
+    });
   }
 
   onDel() {
@@ -441,7 +374,7 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
         onConfirm: () => {
           let selectId = this.datasource.id;
           let query = [
-            'delete from t_machine_consumables where machine_consumables_id=' + info.machine_consumables_id
+            'delete from t_machine_use where MACHINEUSE_ID=' + info.machineuse_id
           ];
 
           console.log(selectId + " " + query);
@@ -482,13 +415,12 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
         this.container.tabulator("deselectRow", selectedRows);
       }
       this.panel.inputlItem = {
-        machine_consumables_id: -1,
+        machineuse_id: -1,
         machine_name: '',
-        consumables_name: '',
-        consumables_standard: '',
-        count: '',
-        change_date: '',
-        memo : '',
+        consumable: '',
+        machineuse_count:'',
+        business_name:'',
+        memo:''
       };
       this.refresh();
     }
@@ -516,15 +448,10 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
         }
       };
     } else {
-      if (obj.title === CONSUMABLE_COUNT) {
+      if (obj.title === MACHINEUSE_COUNT) {
         obj.align = this.aligns[2];
         obj.formatter = function(cell, formatterParam) {
           return Number(cell.getValue()).toLocaleString('en');
-        };
-      } else if (obj.title === CHANGE_DATE) {
-        obj.align = this.aligns[1];
-        obj.formatter = function(cell, formatterParam) {
-          return moment(cell.getValue()).format("YYYY/MM/DD");
         };
       } else {
         obj.align = this.aligns[0];

@@ -190,7 +190,8 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
           title: this.panel.graphTitle,
           field: 'achievement',
           align: "left",
-          formatter: "progress"
+          formatter: "progress",
+          formatterParams:{legend:true, legendAlign:'right', legendColor:'#000000'}
         });    
       }
     });
@@ -208,7 +209,7 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
           break;
           case MOLD_USE_COUNT :
           useCount = item;
-          mapData.set('achievement', (100*Number(useCount) / Number(limit)));
+          mapData.set('achievement', Math.floor(100*Number(useCount) / Number(limit)));
           break;
         }
 

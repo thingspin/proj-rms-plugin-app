@@ -9,8 +9,6 @@
   "links": [],
   "panels": [
     {
-      "consumablesCategory": [
-      ],
       "datasource": "REMOTESOLUTIONS(V1.0)",
       "gridPos": {
         "h": 17,
@@ -19,21 +17,11 @@
         "y": 0
       },
       "id": 2,
-      "inputlItem": {
-        "change_date": "",
-        "consumables_name": null,
-        "count": "",
-        "machine_consumables_id": -1,
-        "machine_name": null,
-        "memo": ""
-      },
-      "machineCategory": [
-      ],
       "targets": [
         {
           "alias": "",
           "format": "table",
-          "rawSql": "SELECT MACHINE_CONSUMABLES_ID as '등록 ID', MACHINE_NAME as 장비명, CONSUMABLES_NAME as 소모품명, CONSUMABLES_STANDARD as '소모품 규격', CONSUMABLES_COUNT as '소모품 개수', c.CHANGE_DATE as '소모품 교체일', c.MEMO as 메모\n  FROM t_machine AS a, t_consumables AS b, t_machine_consumables AS c\n WHERE a.machine_id = c.machine_id AND b.consumables_id = c.consumables_id;",
+          "rawSql": "SELECT A.MACHINEUSE_ID as '장비 ID', A.MACHINE_NAME as '장비명', CONCAT(B.CONSUMABLES_NAME, '-', B.CONSUMABLES_STANDARD) as '소모품', A.MACHINEUSE_COUNT as '남은 사용횟수', A.BUSINESS_NAME as '장비업체명', A.MEMO as '메모(담당자, 전화번호)' FROM t_machine_use as A JOIN t_consumables as B WHERE A.CONSUMABLES_ID = B.CONSUMABLES_ID;",
           "refId": "A"
         }
       ],
@@ -68,6 +56,6 @@
     ]
   },
   "timezone": "",
-  "title": "장비별 소모품 등록",
+  "title": "장비별 소모품 관리",
   "version": 8
 }
