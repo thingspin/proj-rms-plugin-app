@@ -204,6 +204,7 @@ class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
   }
 
   transformerData(dataList) {
+    // console.log(dataList);
     this.arrayTrue = [];
     this.arrayFalse = [];
     this.arrayTrueEmpty = [];
@@ -289,6 +290,9 @@ class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
         switch (rowCount) {
           case 1:
             tempModel = item;
+            if (!this.mapPlan.has(tempModel)) {
+              this.mapPlan.set(tempModel,0);
+            }
           break;
           case 2:
             const valStr = (value === TRUE) ? "mapTrue" : "mapFalse";
