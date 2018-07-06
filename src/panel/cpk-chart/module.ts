@@ -93,8 +93,8 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
 
   onDataReceived(dataList) {
     let data;
-    console.log(dataList);
-    if (dataList == null || dataList.length > 2) {
+    //console.log(dataList);
+    if (dataList.length === 0 || dataList.length > 2) {
       return;
     }
 

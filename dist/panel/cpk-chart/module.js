@@ -17613,8 +17613,8 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
     };
     RmsCPKAnalyticsPanelCtrl.prototype.onDataReceived = function (dataList) {
         var data;
-        console.log(dataList);
-        if (dataList == null || dataList.length > 2) {
+        //console.log(dataList);
+        if (dataList.length === 0 || dataList.length > 2) {
             return;
         }
         for (var i = 0; i < dataList.length; i++) {
