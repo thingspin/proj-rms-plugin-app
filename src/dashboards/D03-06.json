@@ -254,7 +254,7 @@
         "multi": true,
         "name": "MODEL",
         "options": [],
-        "query": "select MODEL_ID from t_model WHERE MODEL_ID <> \"*\"",
+        "query": "SELECT MODEL_ID FROM t_model WHERE MODEL_ID <> \"*\" AND MODEL_ID NOT LIKE 'KRB%' AND MODEL_ID NOT LIKE 'KRC%';",
         "refresh": 1,
         "regex": "",
         "sort": 0,
