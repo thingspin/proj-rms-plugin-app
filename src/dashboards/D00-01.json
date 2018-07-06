@@ -22,7 +22,7 @@
       "includeVars": true,
       "keepTime": true,
       "tags": [
-        "모델별 검사기록"
+        "검사 기록"
       ],
       "type": "dashboards"
     },
