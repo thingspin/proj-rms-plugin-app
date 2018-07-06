@@ -2,7 +2,6 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:238",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -13,28 +12,17 @@
       }
     ]
   },
-  "editable": true,
+  "editable": false,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1527078839622,
+  "iteration": 1530844813193,
   "links": [
     {
-      "$$hashKey": "object:305",
       "icon": "external link",
       "includeVars": true,
       "keepTime": true,
       "tags": [
-        "생산 계획"
-      ],
-      "type": "dashboards"
-    },
-    {
-      "$$hashKey": "object:306",
-      "icon": "external link",
-      "includeVars": true,
-      "keepTime": true,
-      "tags": [
-        "생산 현황"
+        "생산 실적"
       ],
       "type": "dashboards"
     }
@@ -51,8 +39,10 @@
         "y": 0
       },
       "id": 2,
+      "kernel": null,
       "links": [],
       "pageSize": null,
+      "scripts": "",
       "scroll": true,
       "showHeader": true,
       "sort": {
@@ -253,10 +243,9 @@
       {
         "allValue": null,
         "current": {
+          "selected": true,
           "text": "All",
-          "value": [
-            "$__all"
-          ]
+          "value": "$__all"
         },
         "datasource": "REMOTESOLUTIONS(V1.0)",
         "hide": 0,
@@ -301,5 +290,5 @@
   "timezone": "",
   "title": "생산 모델",
   "uid": "z_4Bcy7ik",
-  "version": 27
+  "version": 2
 }
