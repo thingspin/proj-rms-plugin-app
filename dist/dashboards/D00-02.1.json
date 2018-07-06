@@ -144,7 +144,7 @@
               "type": "tag"
             }
           ],
-          "measurement": "/^inspection.summary-*/",
+          "measurement": "/^inspection.detail-*/",
           "orderByTime": "ASC",
           "policy": "default",
           "refId": "A",
