@@ -186,8 +186,13 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
 
   initDataSet() {
     this.panel.consumablesCategory.length = 0;
-    if(this.panel.consumablesCategoryMap.size > 0)
-      this.panel.consumablesCategoryMap.clear();
+    if (this.panel.consumablesCategoryMap === undefined || this.panel.consumablesCategoryMap === null) {
+      this.panel.consumablesCategoryMap = new Map();
+    } else {
+      if (this.panel.consumablesCategoryMap.size > 0)
+        this.panel.consumablesCategoryMap.clear();
+    }
+    this.panel.consumablesCategoryMap.length = 0;
     let selectId = this.datasource.id;
 
     if (selectId !== undefined) {
@@ -477,11 +482,6 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
           return value;
         }
       };
-    } else if (obj.title === this.panel.graphTitle) {
-      console.log(obj);
-      obj.formatterParams = function(value) {
-        return value + " % ";  
-      }
     } else {
       if (obj.title === MACHINEUSE_COUNT) {
         obj.align = this.aligns[2];

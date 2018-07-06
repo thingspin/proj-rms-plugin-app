@@ -29202,8 +29202,14 @@ var RmsMachineConsumablesPanelCtrl = /** @class */ (function (_super) {
     RmsMachineConsumablesPanelCtrl.prototype.initDataSet = function () {
         var _this = this;
         this.panel.consumablesCategory.length = 0;
-        if (this.panel.consumablesCategoryMap.size > 0)
-            this.panel.consumablesCategoryMap.clear();
+        if (this.panel.consumablesCategoryMap === undefined || this.panel.consumablesCategoryMap === null) {
+            this.panel.consumablesCategoryMap = new Map();
+        }
+        else {
+            if (this.panel.consumablesCategoryMap.size > 0)
+                this.panel.consumablesCategoryMap.clear();
+        }
+        this.panel.consumablesCategoryMap.length = 0;
         var selectId = this.datasource.id;
         if (selectId !== undefined) {
             // 소모품명 추가
@@ -29478,12 +29484,6 @@ var RmsMachineConsumablesPanelCtrl = /** @class */ (function (_super) {
                 else {
                     return value;
                 }
-            };
-        }
-        else if (obj.title === this.panel.graphTitle) {
-            console.log(obj);
-            obj.formatterParams = function (value) {
-                return value + " % ";
             };
         }
         else {
