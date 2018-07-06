@@ -88,7 +88,7 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
   }
 
   onInitialized() {
-    console.log("onInitialized");
+    // console.log("onInitialized");
     this.initalized = false;
   }
 
@@ -97,7 +97,7 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
   }
 
   link(scope, elem, attrs, ctrl) {
-    console.log("link");
+    // console.log("link");
     let t = elem.find('.thingspin-table')[0];
     t.id = this.divID;
 
@@ -116,7 +116,7 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
   }
 
   addFormatter() {
-    console.log(this.panel.formatters);
+    // console.log(this.panel.formatters);
     this.panel.formatters.push({name: '', localstring: false, decimal: 2, fontsize: 0, width: 100, align: this.aligns[0]});
   }
 
@@ -126,9 +126,9 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
   }
 
   onDataReceived(dataList) {
-    console.log("onDataReceived");
+    // console.log("onDataReceived");
     this.dataRaw = dataList;
-    console.log(this.dataRaw);
+    // console.log(this.dataRaw);
     Promise.resolve(this.transformer(this.dataRaw));
     this.createTable(this.dataJson);
   }
@@ -161,8 +161,8 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
 
     if (dataList != null) {
       // this.container.tabulator("setData", dataList);
-      console.log(this.columns);
-      console.log(dataList);
+      // console.log(this.columns);
+      // console.log(dataList);
       this.container.tabulator("setData",dataList);
     } else {
     }
@@ -191,7 +191,7 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
           field: 'achievement',
           align: "left",
           formatter: "progress",
-          formatterParams:{legend:true, legendAlign:'right', legendColor:'#000000'}
+          formatterParams:{legend:function(value){return value + " %"}, legendAlign:'center', legendColor:'#000000'}
         });    
       }
     });
@@ -209,7 +209,7 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
           break;
           case MOLD_USE_COUNT :
           useCount = item;
-          mapData.set('achievement', Math.floor(100*Number(useCount) / Number(limit)));
+          mapData.set('achievement', (100-Math.floor(100*Number(useCount) / Number(limit))));
           break;
         }
 
@@ -222,7 +222,7 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
   }
 
   selectRow(obj) {
-    console.log(obj);
+    // console.log(obj);
     this.panel.inputlItem.mold_id = obj[MOLD_ID];
     this.panel.inputlItem.remote_model = obj[MOLD_REMOTE_MODEL];
     this.panel.inputlItem.change_period = obj[MOLD_CHANGE_PERIOD];
@@ -235,7 +235,7 @@ class RmsMoldListPanelCtrl extends MetricsPanelCtrl {
 
     let info = inputData;
 
-    console.log(info);
+    // console.log(info);
     if (info.remote_model === undefined || info.remote_model === "") {
       this.alertSrv.set("리모컨 모델명을 입력해 주세요", 'error', 5000);
     } else if(info.change_period === undefined || info.change_period.length === 0) { 

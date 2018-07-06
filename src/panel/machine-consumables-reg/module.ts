@@ -7,6 +7,7 @@ import 'jquery.tabulator/dist/js/tabulator.min';
 import {MetricsPanelCtrl, loadPluginCss} from  'grafana/app/plugins/sdk';
 
 import '../../services/remoteSolutionDS';
+// import { clearLine } from 'readline';
 
 loadPluginCss({
   dark: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.dark.css',
@@ -64,7 +65,8 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
     },
 
     formatters : [],
-    resizeValue : false
+    resizeValue : false,
+    graphTitle: "남은 비율"
   };
 
   constructor($rootScope, $scope, $injector, contextSrv, private rsDsSrv, alertSrv) {
@@ -127,54 +129,14 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
     // console.log("onDataReceived");
     this.dataRaw = dataList;
     // console.log(this.dataRaw);
-    Promise.resolve(this.transformer(this.dataRaw));
-    this.createTable(this.dataJson);
+    Promise.resolve(this.initDataSet());
+    // Promise.resolve(this.transformer(this.dataRaw));
   }
 
   createTable(dataList) {
     if (this.initalized) {
       this.container.tabulator("destroy");
     }
-
-    this.panel.consumablesCategory.length = 0;
-
-    let selectId = this.datasource.id;
-
-    // 소모품명 추가
-    let query = [
-      'SELECT CONSUMABLES_ID, CONCAT(CONSUMABLES_NAME, \'-\', CONSUMABLES_STANDARD) as CONSUMABLES, CURRENT_COUNT FROM t_consumables'
-    ];
-    this.rsDsSrv.query(selectId, query).then( result => {
-      var data = result[0];
-      for (var i = 0; i<data.rows.length; i++) {
-        // console.log(data.rows[i]);
-        var value = data.rows[i];
-        var obj = {
-          index : 0,
-          key : '',
-          current_count : 0
-        }
-        for (var j = 0; j<value.length; j++) {
-          switch(j) {
-            case 0:
-              obj.index = value[j];
-            break;
-            case 1:
-              obj.key = value[j];
-            break;
-            case 2:
-              obj.current_count = value[j];
-            break;
-          }
-        }
-        this.panel.consumablesCategory.push(obj.key);
-        this.consumablesCategoryMap.set(obj.key, obj);
-      }
-      this.panel.inputlItem.consumable = this.panel.consumablesCategory[0];
-    }).catch( err => {
-      console.error(err);
-    });
-
     // 소모품 규격 추가
     // let query3 = [
     //   'SELECT consumables_standard FROM t_consumables'
@@ -222,8 +184,54 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
     $(window).trigger('resize');
   }
 
+  initDataSet() {
+    this.panel.consumablesCategory.length = 0;
+    if(this.panel.consumablesCategoryMap.size > 0)
+      this.panel.consumablesCategoryMap.clear();
+    let selectId = this.datasource.id;
+
+    if (selectId !== undefined) {
+      // 소모품명 추가
+      let query = [
+        'SELECT CONSUMABLES_ID, CONCAT(CONSUMABLES_NAME, \'-\', CONSUMABLES_STANDARD) as CONSUMABLES, CURRENT_COUNT FROM t_consumables'
+      ];
+      this.rsDsSrv.query(selectId, query).then( result => {
+        var data = result[0];
+        for (var i = 0; i<data.rows.length; i++) {
+          // console.log(data.rows[i]);
+          var value = data.rows[i];
+          var obj = {
+            index : 0,
+            key : '',
+            current_count : 0
+          }
+          for (var j = 0; j<value.length; j++) {
+            switch(j) {
+              case 0:
+                obj.index = value[j];
+              break;
+              case 1:
+                obj.key = value[j];
+              break;
+              case 2:
+                obj.current_count = value[j];
+              break;
+            }
+          }
+          this.panel.consumablesCategory.push(obj.key);
+          this.consumablesCategoryMap.set(obj.key, obj);
+          // console.log(obj);
+          this.transformer(this.dataRaw);
+        }
+        this.panel.inputlItem.consumable = this.panel.consumablesCategory[0];
+      }).catch( err => {
+        console.error(err);
+      });
+    }
+  }
+
   selectRow(obj) {
-    console.log(obj);
+    // console.log(obj);
     this.panel.inputlItem.machineuse_id = obj[MACHINEUSE_ID];
     this.panel.inputlItem.machine_name = obj[MACHINE_NAME];
     this.panel.inputlItem.consumable = obj[CONSUMABLE];
@@ -246,14 +254,37 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
       };
       this.columnOption(obj);
       this.columns.push(obj);
+
+      if(obj.title === MACHINEUSE_COUNT) {
+        this.columns.push({
+          title: this.panel.graphTitle,
+          field:'achievement',
+          align:'left',
+          formatter: 'progress',
+          formatterParams:{legend:function(value){return value + " %"}, legendAlign:'center', legendColor:'#000000'}
+        });
+      }
     });
 
     var jArray = new Array;
     var mapData = new Map();
     rows.forEach((row, count) => {
+      var use_count = 0;
+      var graph_str = '';
       row.forEach((item, row_count) => {
         mapData.set(getColumns[row_count].text,item);
-
+        switch(getColumns[row_count].text) {
+          case CONSUMABLE :
+          graph_str = item;
+          break;
+          case MACHINEUSE_COUNT :
+          use_count = item;
+          var value = this.consumablesCategoryMap.get(graph_str);
+          // console.log(value);
+          if (value !== undefined)
+            mapData.set('achievement', (100-Math.floor(100*Number(use_count) / Number(value.current_count))));
+          break;
+        }
       });
       var object = Object();
       mapData.forEach((v,k)=> {object[k] = v;});
@@ -261,6 +292,7 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
 
     });
     this.dataJson = jArray;
+    this.createTable(this.dataJson);
   }
 
   onNew(value) {
@@ -294,7 +326,7 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
             + 'and a.machine_name="' + info.machine_name + '" and CONSUMABLES_NAME="' + consumables[0] + '"'
             + 'and CONSUMABLES_STANDARD="' + consumable_name + '"'
           ];
-          console.log(query1);
+          // console.log(query1);
 
           this.rsDsSrv.query(selectId, query1).then( result => {
             var data = result[0];
@@ -314,6 +346,7 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
                 this.showCtrlMode('showBtn');
                 this.$rootScope.$broadcast('refresh');
               }).catch( err => {
+                this.alertSrv.set("등록에 실패하였습니다.", 'error', 5000);
                 console.error(err);
               });
             } else {
@@ -343,13 +376,12 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
         var value = this.consumablesCategoryMap.get(info.consumable);
         let query2 = [
           'update t_machine_use set ' +
-          'MACHINE_NAME=' + info.machine_name + ', ' +
+          'MACHINE_NAME="' + info.machine_name + '", ' +
           'CONSUMABLES_ID=' + value.index + ', ' +
           'MACHINEUSE_COUNT=' + info.machineuse_count + ', ' +
           'BUSINESS_NAME="' + info.business_name + '", ' +
           'memo="' + info.memo + '" where MACHINEUSE_ID=' + info.machineuse_id
         ];
-        console.log(selectId + " " + query2);
 
         this.rsDsSrv.query(selectId, query2).then( result => {
           this.panel.inputlItem.machine_consumables_id = -1;
@@ -376,8 +408,6 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
           let query = [
             'delete from t_machine_use where MACHINEUSE_ID=' + info.machineuse_id
           ];
-
-          console.log(selectId + " " + query);
 
           this.rsDsSrv.query(selectId, query).then( result => {
             this.panel.inputlItem.machine_consumables_id = -1;
@@ -447,6 +477,11 @@ class RmsMachineConsumablesPanelCtrl extends MetricsPanelCtrl {
           return value;
         }
       };
+    } else if (obj.title === this.panel.graphTitle) {
+      console.log(obj);
+      obj.formatterParams = function(value) {
+        return value + " % ";  
+      }
     } else {
       if (obj.title === MACHINEUSE_COUNT) {
         obj.align = this.aligns[2];
