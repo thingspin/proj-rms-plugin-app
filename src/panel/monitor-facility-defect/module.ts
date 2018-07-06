@@ -314,7 +314,6 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
         }
       });
     });
-
     return res;
   }
 
@@ -329,10 +328,10 @@ class RmsMonitorFacilityDefectPanelCtrl extends MetricsPanelCtrl {
       $title.text(title);
       $total.text( `${!viewData[title].total ? 0 : viewData[title].total} / ${(!viewData[title].failed ? 0 : viewData[title].failed)}` );
 
-      [1, 2, 3, 4].forEach((chIdx) => {
+      [0, 1, 2, 3].forEach((chIdx) => {
         const index: string = String(chIdx);
         const chInfo = viewData[title].channels[index];
-        const chDOM = $nodes[chIdx-1];
+        const chDOM = $nodes[chIdx];
         let chColor: String;
         if (chInfo === undefined) {
           chDOM.text.text(0);

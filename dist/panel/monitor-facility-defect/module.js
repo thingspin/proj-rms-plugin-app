@@ -36370,10 +36370,10 @@ var RmsMonitorFacilityDefectPanelCtrl = /** @class */ (function (_super) {
             var _a = this_1.svgDomMap[mainIdx], $title = _a.$title, $total = _a.$total, $nodes = _a.$nodes;
             $title.text(title);
             $total.text((!viewData[title].total ? 0 : viewData[title].total) + " / " + (!viewData[title].failed ? 0 : viewData[title].failed));
-            [1, 2, 3, 4].forEach(function (chIdx) {
+            [0, 1, 2, 3].forEach(function (chIdx) {
                 var index = String(chIdx);
                 var chInfo = viewData[title].channels[index];
-                var chDOM = $nodes[chIdx - 1];
+                var chDOM = $nodes[chIdx];
                 var chColor;
                 if (chInfo === undefined) {
                     chDOM.text.text(0);
