@@ -12,10 +12,10 @@
       }
     ]
   },
-  "editable": true,
+  "editable": false,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1530847309247,
+  "iteration": 1530855263992,
   "links": [
     {
       "icon": "external link",
@@ -877,11 +877,10 @@
     "list": [
       {
         "current": {
-          "selected": true,
           "text": "RMS-CENTER-INFLUXDB(V1.0)",
           "value": "RMS-CENTER-INFLUXDB(V1.0)"
         },
-        "hide": 2,
+        "hide": 0,
         "label": "본사/지점 선택",
         "name": "DATABASE",
         "options": [],
@@ -896,14 +895,14 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
+        "datasource": "$DATABASE",
         "hide": 0,
         "includeAll": true,
         "label": "모델",
         "multi": false,
         "name": "MODEL",
         "options": [],
-        "query": "show tag values from /inspection/ with key=model",
+        "query": "show tag values from /inspection.summary/ with key=model",
         "refresh": 2,
         "regex": "",
         "sort": 0,
@@ -919,14 +918,14 @@
           "text": "IPC01",
           "value": "IPC01"
         },
-        "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
+        "datasource": "$DATABASE",
         "hide": 0,
         "includeAll": true,
         "label": "검사기",
         "multi": true,
         "name": "FACILITY",
         "options": [],
-        "query": "show tag values from /inspection/ with key=facility",
+        "query": "show tag values from /inspection.summary/ with key=facility",
         "refresh": 2,
         "regex": "",
         "sort": 0,
@@ -942,14 +941,14 @@
           "text": "All",
           "value": "$__all"
         },
-        "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
+        "datasource": "$DATABASE",
         "hide": 0,
         "includeAll": true,
         "label": "채널",
         "multi": true,
         "name": "CHANNEL",
         "options": [],
-        "query": "show tag values from /inspection/ with key=channel",
+        "query": "show tag values from /inspection.summary/ with key=channel",
         "refresh": 2,
         "regex": "",
         "sort": 0,
@@ -1111,7 +1110,7 @@
     ]
   },
   "timezone": "",
-  "title": "모델별 검사기록",
+  "title": "검사기록",
   "uid": "rAgfpx7iz",
-  "version": 4
+  "version": 2
 }

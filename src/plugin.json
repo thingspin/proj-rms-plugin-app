@@ -35,7 +35,7 @@
     {"type": "dashboard", "name": "생산 실적", "path": "dashboards/D01-01.json", "defaultNav": true, "addToNav": true, "menuID": 0, "ico":"fa fa-industry"},
 
     {"type": "menu", "name": "품질 현황", "mainMenu": true, "slug": "modelbyeol-geomsagirog", "img":"img/thignspin_ic_48dp_white-10.svg", "menuID": 1},
-    {"type": "dashboard", "name": "모델별 검사기록", "path": "dashboards/D02-01.json", "AddToNav": true, "menuID":1, "ico":"fa fa-industry"},
+    {"type": "dashboard", "name": "검사기록", "path": "dashboards/D02-01.json", "AddToNav": true, "menuID":1, "ico":"fa fa-industry"},
     {"type": "dashboard", "name": "CPK 현황", "path": "dashboards/D00-01.json", "AddToNav": true, "menuID": 1, "ico":"fa fa-industry"},
     {"type": "dashboard", "name": "불량 현황", "path": "dashboards/D00-02.1.json", "AddToNav": true, "menuID": 1, "ico":"fa fa-industry"},
 
