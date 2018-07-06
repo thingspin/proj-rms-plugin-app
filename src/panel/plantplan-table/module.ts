@@ -36,6 +36,7 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
   defTabulatorOpts: any;
   mode: any;
   tableName: string;
+  getColumns: any;
 
   panelDefaults = {
     formatters : []
@@ -47,6 +48,7 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
     _.defaults(this.panel, this.panelDefaults);
 
     this.aligns = ['LEFT','CENTER','RIGHT'];
+    this.getColumns = new Map();
 
     this.divID = 'table-rms-' + this.panel.id;
     this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
@@ -242,13 +244,20 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
       value.forEach((v,k) => {
         object[k] = v;
         switch (k) {
-          case '생산계획': tempTotal = v;
-          case '실적수량': tempProduct = v;
+          case '생산계획': tempTotal = v; break;
+          case '실적수량': tempProduct = v; break;
         }
       });
-      object.achievement = Math.round((tempProduct/tempTotal)*100);
-      object.achievement_text = Math.round((tempProduct/tempTotal)*100) + "%";
-      jArray.push(object);
+      console.log("Plan : " + tempTotal);
+      if (tempTotal !== 0) {
+        object.achievement = Math.round((tempProduct/tempTotal)*100);
+        object.achievement_text = Math.round((tempProduct/tempTotal)*100) + "%";
+        jArray.push(object);
+      } else {
+        object.achievement = 0;
+        object.achievement_text = 0 + "%";
+        jArray.push(object);
+      }
     });
     this.columns.push({
       title: 'GRAPH',
@@ -267,14 +276,15 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
 
   transAddedData(data, tableMap) {
     var rows = data.rows;
-    var getColumns = data.columns;
+    var columns = data.columns;
+    console.log(rows);
 
-    if (getColumns.map(x => x.text).indexOf('실적수량') !== -1
-      || getColumns.map(x => x.text).indexOf('양품') !== -1
-      || getColumns.map(x => x.text).indexOf('불량') !== -1) {
+    if (columns.map(x => x.text).indexOf('실적수량') !== -1
+      || columns.map(x => x.text).indexOf('양품') !== -1
+      || columns.map(x => x.text).indexOf('불량') !== -1) {
       var obj = {
-        title: getColumns[2].text,
-        field: getColumns[2].text,
+        title: columns[2].text,
+        field: columns[2].text,
         align: "left",
         // editor: this.autocompEditor,
       };
@@ -284,15 +294,26 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
         var inputData = tableMap.get(row[1]);
         if (inputData) {
           if (row[2] !== 0) {
-            // console.log(row[2] + inputData.get(obj.title));
             const setData = inputData.get(obj.title) ? row[2] + inputData.get(obj.title) : row[2];
             inputData.set(obj.title, setData);
             tableMap.set(row[1], inputData);
           }
+        } else {
+          if (row[2] !== 0) {
+            var date = new Date(row[0]);
+            var map = new Map();
+            map.set('time_sec', row[0]);
+            map.set('날짜', moment(date, "YYYYMMDD"));
+            map.set('모델', row[1]);
+            map.set('생산계획', 0);
+            map.set(obj.title, row[2]);
+            tableMap.set(row[1], map);
+          }
         }
       });
+      console.log(tableMap);
     } else {
-      getColumns.forEach((columnObj, count) => {
+      columns.forEach((columnObj, count) => {
         const column = columnObj.text;
         var obj = {
           title: column,
@@ -306,9 +327,10 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
       rows.forEach((row, count) => {
         var map = new Map();
         row.forEach((item, row_count) => {
-          map.set(getColumns[row_count].text, item);
+          map.set(columns[row_count].text, item);
+          this.getColumns.set(columns[row_count].text, item);
         });
-        tableMap.set(map.get(getColumns[2].text), map);
+        tableMap.set(map.get(columns[2].text), map);
       });
     }
   }
