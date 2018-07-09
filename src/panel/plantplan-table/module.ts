@@ -118,6 +118,38 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
     if (this.initalized) {
       this.container.tabulator("destroy");
     }
+
+    if (this.columns.map(x => x.title).indexOf('실적수량') === -1) {
+      var obj = {
+        title: '실적수량',
+        field: '실적수량',
+        align: "left",
+        // editor: this.autocompEditor,
+      };
+      this.columnOption(obj);
+      this.columns.push(obj);
+    }
+    if (this.columns.map(x => x.title).indexOf('양품') === -1) {
+      var obj = {
+        title: '양품',
+        field: '양품',
+        align: "left",
+        // editor: this.autocompEditor,
+      };
+      this.columnOption(obj);
+      this.columns.push(obj);
+    } 
+    if (this.columns.map(x => x.title).indexOf('불량') === -1) {
+      var obj = {
+        title: '불량',
+        field: '불량',
+        align: "left",
+        // editor: this.autocompEditor,
+      };
+      this.columnOption(obj);
+      this.columns.push(obj);
+    }
+
     this.defTabulatorOpts = {
       height: this.height-10,
       pagination: "local",
@@ -126,9 +158,6 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
       fitColumns: true,
       layout: "fitColumns",
       columns: this.columns,
-      initialSort: [
-        {column: "실적수량", dir: "desc"},
-      ]
     };
     this.defTabulatorOpts = Object.assign({ // deep copy
       rowClick: (e, row) => { //trigger an alert message when the row is clicked
@@ -232,8 +261,36 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
     this.columns = [];
     var jArray = new Array;
     var tableMap = new Map();
+    var tableSTMap =  new Map();
+    console.log(dataList);
     dataList.forEach(element => {
-      this.transAddedData(element, tableMap);
+      this.transAddedData(element, tableMap, tableSTMap);
+    });
+
+    tableSTMap.forEach(function (value, key, mapObj) {
+      var object = Object();
+      var sttime = 0;
+      var edtime = 0;
+      var count = 0;
+      var model = '';
+      value.forEach((v,k) => {
+        object[k] = v;
+        switch (k) {
+          case 'model' : model = v; break;
+          case 'sttime': sttime = v; break;
+          case 'edtime': edtime = v; break;
+          case 'count' : count = v; break;
+        }
+      });
+      if (sttime !== null) {
+        var duration = moment.duration(moment(edtime).diff(sttime));
+        console.log(duration.asSeconds());
+        console.log(duration.seconds());
+        var result = (duration.asSeconds()/count);
+        var mapValue = tableMap.get(model);
+        mapValue.set('stvalue', result.toFixed(3));
+        tableMap.set(model, mapValue);
+      }
     });
 
     tableMap.forEach(function (value, key, mapObj) {
@@ -270,14 +327,19 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
       field: 'achievement_text',
       align: "right",
     });
+    this.columns.push({
+      title: 'ST',
+      field: 'stvalue',
+      align: "right",
+    });
 
     this.dataJson = jArray;
   }
 
-  transAddedData(data, tableMap) {
+  transAddedData(data, tableMap, tableSTMap) {
     var rows = data.rows;
     var columns = data.columns;
-    console.log(rows);
+    console.log(data);
 
     if (columns.map(x => x.text).indexOf('실적수량') !== -1
       || columns.map(x => x.text).indexOf('양품') !== -1
@@ -312,6 +374,16 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
         }
       });
       console.log(tableMap);
+    } else if (columns.map(x => x.text).indexOf('starttime') !== -1) {
+      rows.forEach((row, count) => {
+        var map = new Map();
+        map.set('time', row[0]);
+        map.set('model', row[1]);
+        map.set('sttime', row[2]);
+        map.set('edtime', row[3]);
+        map.set('count', row[4]);
+        tableSTMap.set(row[0], map);
+      });
     } else {
       columns.forEach((columnObj, count) => {
         const column = columnObj.text;
