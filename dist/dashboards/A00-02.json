@@ -12,45 +12,11 @@
       }
     ]
   },
-  "editable": true,
+  "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1530180339278,
+  "iteration": 1531119209395,
   "links": [],
-  "originalTemplating": [
-    {
-      "current": {
-        "text": "All",
-        "value": "$__all"
-      },
-      "name": "FACILITY"
-    },
-    {
-      "current": {
-        "text": "All",
-        "value": "$__all"
-      },
-      "name": "CHANNEL"
-    },
-    {
-      "current": {
-        "text": "All",
-        "value": "$__all"
-      },
-      "name": "MODEL"
-    },
-    {
-      "current": {
-        "text": "RMS-BRANCH-INFLUXDB(V1.0)",
-        "value": "RMS-BRANCH-INFLUXDB(V1.0)"
-      },
-      "name": "DATABASE"
-    }
-  ],
-  "originalTime": {
-    "from": "now/d",
-    "to": "now/d"
-  },
   "panels": [
     {
       "cacheTimeout": null,
@@ -144,7 +110,13 @@
               }
             ]
           ],
-          "tags": []
+          "tags": [
+            {
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            }
+          ]
         }
       ],
       "thresholds": "",
@@ -248,9 +220,9 @@
           ],
           "tags": [
             {
-              "key": "pass",
-              "operator": "=",
-              "value": "false"
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
             }
           ]
         }
@@ -356,9 +328,9 @@
           ],
           "tags": [
             {
-              "key": "pass",
-              "operator": "=",
-              "value": "false"
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
             }
           ]
         }
@@ -507,7 +479,13 @@
               }
             ]
           ],
-          "tags": []
+          "tags": [
+            {
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            }
+          ]
         }
       ],
       "thresholds": "4000,9000",
@@ -632,6 +610,12 @@
               "key": "pass",
               "operator": "=",
               "value": "true"
+            },
+            {
+              "condition": "AND",
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
             }
           ]
         }
@@ -761,7 +745,13 @@
               }
             ]
           ],
-          "tags": []
+          "tags": [
+            {
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            }
+          ]
         }
       ],
       "thresholds": "",
@@ -886,6 +876,12 @@
               "key": "pass",
               "operator": "=",
               "value": "false"
+            },
+            {
+              "condition": "AND",
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
             }
           ]
         }
@@ -1035,7 +1031,13 @@
               }
             ]
           ],
-          "tags": []
+          "tags": [
+            {
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            }
+          ]
         }
       ],
       "thresholds": [],
@@ -1274,7 +1276,13 @@
               }
             ]
           ],
-          "tags": []
+          "tags": [
+            {
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            }
+          ]
         }
       ],
       "title": "Daily",
@@ -1412,7 +1420,13 @@
               }
             ]
           ],
-          "tags": []
+          "tags": [
+            {
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            }
+          ]
         }
       ],
       "thresholds": [],
@@ -1651,7 +1665,13 @@
               }
             ]
           ],
-          "tags": []
+          "tags": [
+            {
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            }
+          ]
         }
       ],
       "title": "Weekly",
@@ -1789,7 +1809,13 @@
               }
             ]
           ],
-          "tags": []
+          "tags": [
+            {
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            }
+          ]
         }
       ],
       "thresholds": [],
@@ -1846,6 +1872,30 @@
       {
         "allValue": null,
         "current": {
+          "isNone": true,
+          "text": "None",
+          "value": ""
+        },
+        "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
+        "hide": 0,
+        "includeAll": false,
+        "label": "모델",
+        "multi": false,
+        "name": "MODEL",
+        "options": [],
+        "query": "show tag values from /inspection.summary-/ with key=model",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
           "text": "All",
           "value": "$__all"
         },
@@ -1880,29 +1930,6 @@
         "name": "CHANNEL",
         "options": [],
         "query": "show tag values from /inspection/ with key=channel",
-        "refresh": 2,
-        "regex": "",
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
-      },
-      {
-        "allValue": null,
-        "current": {
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": "RMS-CENTER-INFLUXDB(V1.0)",
-        "hide": 2,
-        "includeAll": true,
-        "label": "모델",
-        "multi": false,
-        "name": "MODEL",
-        "options": [],
-        "query": "show tag values from /inspection/ with key=model",
         "refresh": 2,
         "regex": "",
         "sort": 0,
@@ -1952,5 +1979,5 @@
   "timezone": "",
   "title": "Tack Time Graph",
   "uid": "5rimVENmk",
-  "version": 6
+  "version": 21
 }
