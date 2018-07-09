@@ -46370,12 +46370,6 @@ var RmsProductFailPanelCtrl = /** @class */ (function (_super) {
                 align: "right",
             });
         }
-        else {
-            this.columns.push({
-                title: '데이터가 없습니다',
-                align: "center",
-            });
-        }
         this.dataJson = jArray;
     };
     RmsProductFailPanelCtrl.prototype.transAddedData = function (data, tableMap) {

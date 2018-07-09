@@ -212,11 +212,6 @@ class RmsProductFailPanelCtrl extends MetricsPanelCtrl {
         field: 'achievement',
         align: "right",
       });  
-    } else {
-      this.columns.push({
-        title: '데이터가 없습니다',
-        align: "center",
-      });  
     }
 
     this.dataJson = jArray;
