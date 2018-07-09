@@ -2,7 +2,6 @@
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:225",
         "builtIn": 1,
         "datasource": "-- Simulator --",
         "enable": true,
@@ -16,7 +15,7 @@
   "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1530155698049,
+  "iteration": 1531130039170,
   "links": [
     {
       "icon": "external link",
@@ -39,12 +38,316 @@
   ],
   "panels": [
     {
+      "colume": [],
+      "datasource": "$DATABASE",
+      "formatters": [],
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 8,
+      "kernel": null,
+      "links": [],
+      "scripts": "",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "1d,-9h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "model"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "/^inspection.summary-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "tuid"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              },
+              {
+                "params": [
+                  "생산수량"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            }
+          ]
+        },
+        {
+          "groupBy": [
+            {
+              "params": [
+                "1d,-9h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "model"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "/^inspection.summary-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "B",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "tuid"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              },
+              {
+                "params": [
+                  "양품수"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "pass",
+              "operator": "=",
+              "value": "true"
+            }
+          ]
+        },
+        {
+          "groupBy": [
+            {
+              "params": [
+                "1d,-9h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "model"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "/^inspection.summary-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "C",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "tuid"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              },
+              {
+                "params": [
+                  "불량수"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "pass",
+              "operator": "=",
+              "value": "false"
+            }
+          ]
+        }
+      ],
+      "title": "모델에 대한 불량율",
+      "type": "rms-product-fail-table"
+    },
+    {
+      "colume": [],
+      "datasource": "-- Mixed --",
+      "formatters": [],
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 10,
+      "kernel": null,
+      "links": [],
+      "scripts": "",
+      "targets": [
+        {
+          "datasource": "$DATABASE",
+          "groupBy": [
+            {
+              "params": [
+                "1d,-9h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "model"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "inm"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "/^inspection.detail-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "val"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              },
+              {
+                "params": [
+                  "불량수"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "pass",
+              "operator": "=",
+              "value": "false"
+            }
+          ]
+        },
+        {
+          "datasource": "$DATABASE",
+          "groupBy": [
+            {
+              "params": [
+                "1d,-9h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "model"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "/^inspection.summary-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "B",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "tuid"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              },
+              {
+                "params": [
+                  "생산수량"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            }
+          ]
+        }
+      ],
+      "title": "모델에 대한 검사항목별 불량수와 불량율",
+      "type": "rms-product-detail-fail-table"
+    },
+    {
       "datasource": "$DATABASE",
       "gridPos": {
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 9
       },
       "id": 2,
       "kernel": null,
@@ -115,7 +418,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 9
+        "y": 18
       },
       "id": 6,
       "kernel": null,
@@ -197,7 +500,7 @@
     "list": [
       {
         "current": {
-          "selected": true,
+          "selected":true,
           "text": "RMS-CENTER-INFLUXDB(V1.0)",
           "value": "RMS-CENTER-INFLUXDB(V1.0)"
         },
@@ -213,7 +516,7 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
+          "selected":true,
           "text": "All",
           "value": "$__all"
         },
@@ -237,7 +540,7 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
+          "selected":true,
           "text": "All",
           "value": "$__all"
         },
@@ -262,6 +565,7 @@
         "allValue": null,
         "current": {
           "selected": true,
+          "tags": [],
           "text": "false",
           "value": "false"
         },
@@ -289,6 +593,29 @@
         ],
         "query": "true, false",
         "type": "custom"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "$DATABASE",
+        "hide": 0,
+        "includeAll": true,
+        "label": "모델",
+        "multi": false,
+        "name": "MODEL",
+        "options": [],
+        "query": "show tag values from /inspection.summary/ with key=model",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
       }
     ]
   },
