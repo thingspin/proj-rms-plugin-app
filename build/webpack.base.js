@@ -32,6 +32,7 @@ module.exports = {
       'panel/cpktrend-table/module.js' : './panel/cpktrend-table/module.ts',
       'panel/model-spec/module.js' : './panel/model-spec/module.ts',
       'panel/product-fail-table/module.js' : './panel/product-fail-table/module.ts',
+      'panel/product-detail-fail-table/module.js' : './panel/product-detail-fail-table/module.ts',
   },
   output: {
     path: resolve('dist'),
