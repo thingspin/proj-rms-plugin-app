@@ -189,6 +189,13 @@ export class SettingActionInAdvancePanelCtrl extends MetricsPanelCtrl {
             },
         }, this.defTabulatorOpts);
         this.aiaTable = $(this.$element.find('#aiaTable')).tabulator(opts);
+        var link = document.createElement( "link" );
+        link.href = "public/plugins/proj-rms-plugin-app/panel/inspection-property/light.css";
+        link.type = "text/css";
+        link.rel = "stylesheet";
+        link.media = "screen,print";
+    
+        document.getElementsByTagName( "head" )[0].appendChild( link );        
     }
 
     memoInit() {
