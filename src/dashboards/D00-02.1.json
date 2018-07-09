@@ -15,7 +15,7 @@
   "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1531130039170,
+  "iteration": 1531131615930,
   "links": [
     {
       "icon": "external link",
@@ -38,6 +38,177 @@
   ],
   "panels": [
     {
+      "datasource": "$DATABASE",
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "kernel": null,
+      "links": [],
+      "scripts": "",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "facility"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "channel"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "/^inspection.summary-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "tuid"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "facility",
+              "operator": "=~",
+              "value": "/^$FACILITY$/"
+            },
+            {
+              "condition": "AND",
+              "key": "channel",
+              "operator": "=~",
+              "value": "/^$CHANNEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "pass",
+              "operator": "=",
+              "value": "false"
+            },
+            {
+              "condition": "AND",
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            }
+          ]
+        }
+      ],
+      "title": "채널 별 불량수",
+      "type": "rms-product-state-bar",
+      "xlabel": "검사기",
+      "ylabel": "수량"
+    },
+    {
+      "datasource": "-- Mixed --",
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 9
+      },
+      "id": 6,
+      "kernel": null,
+      "links": [],
+      "scripts": "",
+      "targets": [
+        {
+          "datasource": "$DATABASE",
+          "groupBy": [
+            {
+              "params": [
+                "inm"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "facility"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "channel"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "/^inspection.detail-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "val"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "facility",
+              "operator": "=~",
+              "value": "/^$FACILITY$/"
+            },
+            {
+              "condition": "AND",
+              "key": "channel",
+              "operator": "=~",
+              "value": "/^$CHANNEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "pass",
+              "operator": "=~",
+              "value": "/^$PASS$/"
+            },
+            {
+              "condition": "AND",
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "pass",
+              "operator": "=",
+              "value": "false"
+            }
+          ]
+        }
+      ],
+      "title": "검사항목 별  불량수",
+      "type": "rms-Inspection-state-bar",
+      "xlabel": "검사항목",
+      "ylabel": "수량"
+    },
+    {
       "colume": [],
       "datasource": "$DATABASE",
       "formatters": [],
@@ -45,7 +216,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 0
+        "y": 20
       },
       "id": 8,
       "kernel": null,
@@ -220,7 +391,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 0
+        "y": 20
       },
       "id": 10,
       "kernel": null,
@@ -340,155 +511,6 @@
       ],
       "title": "모델에 대한 검사항목별 불량수와 불량율",
       "type": "rms-product-detail-fail-table"
-    },
-    {
-      "datasource": "$DATABASE",
-      "gridPos": {
-        "h": 9,
-        "w": 24,
-        "x": 0,
-        "y": 9
-      },
-      "id": 2,
-      "kernel": null,
-      "links": [],
-      "scripts": "",
-      "targets": [
-        {
-          "groupBy": [
-            {
-              "params": [
-                "facility"
-              ],
-              "type": "tag"
-            },
-            {
-              "params": [
-                "channel"
-              ],
-              "type": "tag"
-            }
-          ],
-          "measurement": "/^inspection.summary-*/",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "A",
-          "resultFormat": "table",
-          "select": [
-            [
-              {
-                "params": [
-                  "tuid"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "count"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "facility",
-              "operator": "=~",
-              "value": "/^$FACILITY$/"
-            },
-            {
-              "condition": "AND",
-              "key": "channel",
-              "operator": "=~",
-              "value": "/^$CHANNEL$/"
-            },
-            {
-              "condition": "AND",
-              "key": "pass",
-              "operator": "=~",
-              "value": "/^$PASS$/"
-            }
-          ]
-        }
-      ],
-      "title": "검사기 및 채널 별 생산(양품, 불량) 수량",
-      "type": "rms-product-state-bar"
-    },
-    {
-      "datasource": "-- Mixed --",
-      "gridPos": {
-        "h": 11,
-        "w": 24,
-        "x": 0,
-        "y": 18
-      },
-      "id": 6,
-      "kernel": null,
-      "links": [],
-      "scripts": "",
-      "targets": [
-        {
-          "datasource": "$DATABASE",
-          "groupBy": [
-            {
-              "params": [
-                "inm"
-              ],
-              "type": "tag"
-            },
-            {
-              "params": [
-                "facility"
-              ],
-              "type": "tag"
-            },
-            {
-              "params": [
-                "channel"
-              ],
-              "type": "tag"
-            }
-          ],
-          "measurement": "/^inspection.detail-*/",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "A",
-          "resultFormat": "table",
-          "select": [
-            [
-              {
-                "params": [
-                  "val"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "count"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "facility",
-              "operator": "=~",
-              "value": "/^$FACILITY$/"
-            },
-            {
-              "condition": "AND",
-              "key": "channel",
-              "operator": "=~",
-              "value": "/^$CHANNEL$/"
-            },
-            {
-              "condition": "AND",
-              "key": "pass",
-              "operator": "=~",
-              "value": "/^$PASS$/"
-            }
-          ]
-        }
-      ],
-      "title": "검사기 및 검사항목 별 생산(양품, 불량) 수량",
-      "type": "rms-Inspection-state-bar"
     }
   ],
   "schemaVersion": 16,
@@ -500,7 +522,7 @@
     "list": [
       {
         "current": {
-          "selected":true,
+          "selected": true,
           "text": "RMS-CENTER-INFLUXDB(V1.0)",
           "value": "RMS-CENTER-INFLUXDB(V1.0)"
         },
@@ -516,12 +538,36 @@
       {
         "allValue": null,
         "current": {
-          "selected":true,
+          "selected": true,
+          "text": "RC76A00",
+          "value": "RC76A00"
+        },
+        "datasource": "$DATABASE",
+        "hide": 0,
+        "includeAll": false,
+        "label": "모델",
+        "multi": false,
+        "name": "MODEL",
+        "options": [],
+        "query": "show tag values from /inspection.summary/ with key=model",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
           "text": "All",
           "value": "$__all"
         },
         "datasource": "$DATABASE",
-        "hide": 0,
+        "hide": 2,
         "includeAll": true,
         "label": "검사기",
         "multi": true,
@@ -540,12 +586,12 @@
       {
         "allValue": null,
         "current": {
-          "selected":true,
+          "selected": true,
           "text": "All",
           "value": "$__all"
         },
         "datasource": "$DATABASE",
-        "hide": 0,
+        "hide": 2,
         "includeAll": true,
         "label": "채널",
         "multi": true,
@@ -565,18 +611,17 @@
         "allValue": null,
         "current": {
           "selected": true,
-          "tags": [],
-          "text": "false",
-          "value": "false"
+          "text": "All",
+          "value": "$__all"
         },
-        "hide": 0,
+        "hide": 2,
         "includeAll": true,
         "label": "합격",
         "multi": false,
         "name": "PASS",
         "options": [
           {
-            "selected": false,
+            "selected": true,
             "text": "All",
             "value": "$__all"
           },
@@ -586,36 +631,13 @@
             "value": "true"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "false",
             "value": "false"
           }
         ],
         "query": "true, false",
         "type": "custom"
-      },
-      {
-        "allValue": null,
-        "current": {
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": "$DATABASE",
-        "hide": 0,
-        "includeAll": true,
-        "label": "모델",
-        "multi": false,
-        "name": "MODEL",
-        "options": [],
-        "query": "show tag values from /inspection.summary/ with key=model",
-        "refresh": 1,
-        "regex": "",
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
       }
     ]
   },
@@ -651,5 +673,5 @@
   "timezone": "",
   "title": "불량 현황",
   "uid": "KfvX3wVik",
-  "version": 17
+  "version": 14
 }
