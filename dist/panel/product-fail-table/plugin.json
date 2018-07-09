@@ -1,0 +1,13 @@
+{
+  "type": "panel",
+  "name": "(RMS) Product Fail Table",
+  "id": "rms-product-fail-table",
+
+  "info": {
+    "description": "Asset management : Company",
+    "author": {
+      "name": "jiwoong@thingspin.io",
+      "url": "http://thingspin.io"
+    }
+  }
+}
