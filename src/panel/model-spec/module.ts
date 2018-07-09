@@ -32,7 +32,7 @@ class RmsModelSpecMgmtPanelCtrl extends MetricsPanelCtrl {
         switch (mode) {
             case "new":
                 this.inputModelSpecs = [{
-                    min: 0, max: 0, lsl: 0, usl: 0, bdAddr: " ", devName: " ",
+                    min: 0, max: 0, /*lsl: 0, usl: 0,*/ bdAddr: "", devName: "",
                 }];
             case "edit":
                 const selectId = this.datasource.id;
@@ -112,10 +112,10 @@ class RmsModelSpecMgmtPanelCtrl extends MetricsPanelCtrl {
                 { title: "name", field: "name" },
                 { title: "min", field: "min" },
                 { title: "max", field: "max" },
-                { title: "lsl", field: "lsl" },
-                { title: "usl", field: "usl" },
-                { title: "BD Address", field: "bdAddr" },
-                { title: "Device Name", field: "devName" },
+                // { title: "lsl", field: "lsl" },
+                // { title: "usl", field: "usl" },
+                { title: "String 0", field: "string0" },
+                { title: "String 1", field: "string1" },
             ],
         };
 
@@ -162,14 +162,16 @@ class RmsModelSpecMgmtPanelCtrl extends MetricsPanelCtrl {
         data.forEach((arr) => {
             arr.forEach((item) => {
                 item.IP_JSON = JSON.parse(item.IP_JSON);
-                item.IP_JSON.forEach(({ip: [{name}], min, max, lsl, usl, bdAddr, devName}) => {
+                item.IP_JSON.forEach(({ip: [{name}], min, max, /*lsl, usl,*/ string0, string1}) => {
                     item.min = min;
                     item.max = max;
+                    /*
                     item.usl = usl;
                     item.lsl = lsl;
+                    */
                     item.name = name;
-                    item.bdAddr = bdAddr;
-                    item.devName = devName;
+                    item.string0 = string0;
+                    item.string1 = string1;
                     this.modelSpecList.push(JSON.parse(JSON.stringify(item)));
                 });
                 // console.log(item);
@@ -222,22 +224,22 @@ class RmsModelSpecMgmtPanelCtrl extends MetricsPanelCtrl {
                     case "edit":
                         this.inputModelSpecs = [];
                         this.inputIpList = [];
-                        this.selectObj.IP_JSON.forEach(({ip: [ip], min, max, lsl, usl, bdAddr, devName}, mainIdx) => {
+                        this.selectObj.IP_JSON.forEach(({ip: [ip], min, max, /*lsl, usl,*/ string0, string1}, mainIdx) => {
                             const ipList = JSON.parse(JSON.stringify(this.oriIpList));
                             ipList.forEach(({name: name}, idx) => {
                                 ipList[idx].ticked = name === ip.name ? true : false;
                             });
                             if (!this.inputModelSpecs[mainIdx]) {
                                 this.inputModelSpecs.push({
-                                    min, max, lsl, usl, bdAddr, devName
+                                    min, max, /*lsl, usl,*/ string0, string1
                                 });
                             } else {
                                 this.inputModelSpecs[mainIdx].min = min;
                                 this.inputModelSpecs[mainIdx].max = max;
-                                this.inputModelSpecs[mainIdx].lsl = lsl;
-                                this.inputModelSpecs[mainIdx].usl = usl;
-                                this.inputModelSpecs[mainIdx].bdAddr = bdAddr;
-                                this.inputModelSpecs[mainIdx].devName = devName;
+                                // this.inputModelSpecs[mainIdx].lsl = lsl;
+                                // this.inputModelSpecs[mainIdx].usl = usl;
+                                this.inputModelSpecs[mainIdx].string0 = string0;
+                                this.inputModelSpecs[mainIdx].string1 = string1;
                             }
                             this.inputIpList.push(ipList);
                         });
@@ -271,7 +273,7 @@ class RmsModelSpecMgmtPanelCtrl extends MetricsPanelCtrl {
     }
     addSpec() {
         this.inputModelSpecs.push({
-            min: 0, max: 0, lsl: 0, usl: 0, bdAddr: " ", devName: " ",
+            min: 0, max: 0, /*lsl: 0, usl: 0,*/ bdAddr: "", devName: "",
         });
         const ipList = JSON.parse(JSON.stringify(this.oriIpList));
         this.inputIpList.push(ipList);
@@ -303,8 +305,8 @@ class RmsModelSpecMgmtPanelCtrl extends MetricsPanelCtrl {
             onConfirm: () => {
                 this.insertModelSpecTable(modelId).then( result => {
                     const topic = `${this.baseTopic}${modelId}`;
-                    const publishData = this.inputModelSpecs.map( ({ ip: [{data: ip}], min, max, lsl, usl, bdAddr, devName}) => {
-                        return { ip: ip, min, max, lsl, usl, iid: ip.IDX ,bdAddr, devName};
+                    const publishData = this.inputModelSpecs.map( ({ ip: [{data: ip}], min, max, /*lsl, usl,*/ string0, string1}) => {
+                        return { ip: ip, min, max, /*lsl, usl,*/ iid: ip.IDX ,string0, string1};
                     });
                     console.log(topic, publishData);
                     this.rsMqttSrv.publishMessage(topic, JSON.stringify(publishData), this.mqttdefaultOpts);
@@ -387,8 +389,8 @@ class RmsModelSpecMgmtPanelCtrl extends MetricsPanelCtrl {
             onConfirm: () => {
                 this.updateModelSpecTable(modelId).then( result => {
                     const topic = `${this.baseTopic}${modelId}`;
-                    const publishData = this.inputModelSpecs.map( ({ ip: [{data: ip}], min, max, lsl, usl, bdAddr, devName}) => {
-                        return { ip: ip, min, max, lsl, usl, iid: ip.IDX, bdAddr, devName };
+                    const publishData = this.inputModelSpecs.map( ({ ip: [{data: ip}], min, max, /*lsl, usl,*/ string0, string1}) => {
+                        return { ip: ip, min, max, /*lsl, usl,*/ iid: ip.IDX, string0, string1 };
                     });
                     console.log(topic, publishData);
                     this.rsMqttSrv.publishMessage(topic, JSON.stringify(publishData), this.mqttdefaultOpts);
