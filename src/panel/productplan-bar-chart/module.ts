@@ -180,7 +180,7 @@ class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
   }
 
   render() {
-    console.log("render");
+    // console.log("render");
     if (!this.context) {
       return;
     }
