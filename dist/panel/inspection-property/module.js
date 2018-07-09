@@ -29149,6 +29149,12 @@ var InspectionPropertyPanelCtrl = /** @class */ (function (_super) {
             },
         }, this.defTabulatorOpts);
         this.inspectTable = jquery__WEBPACK_IMPORTED_MODULE_3___default()(this.$element.find('#inspectTable')).tabulator(opts);
+        var link = document.createElement("link");
+        link.href = "public/plugins/proj-rms-plugin-app/panel/inspection-property/light.css";
+        link.type = "text/css";
+        link.rel = "stylesheet";
+        link.media = "screen,print";
+        document.getElementsByTagName("head")[0].appendChild(link);
     };
     InspectionPropertyPanelCtrl.prototype.initFaultyTable = function () {
         var _this = this;

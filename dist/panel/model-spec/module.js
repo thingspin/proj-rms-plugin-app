@@ -64687,6 +64687,12 @@ var RmsModelSpecMgmtPanelCtrl = /** @class */ (function (_super) {
                 }
             },
         }, this.defTabulatorOpts));
+        var link = document.createElement("link");
+        link.href = "public/plugins/proj-rms-plugin-app/panel/model-spec/light.css";
+        link.type = "text/css";
+        link.rel = "stylesheet";
+        link.media = "screen,print";
+        document.getElementsByTagName("head")[0].appendChild(link);
     };
     RmsModelSpecMgmtPanelCtrl.prototype.onInitialized = function () {
         var node = this.$element.find("ng-transclude > div");
