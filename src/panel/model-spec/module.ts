@@ -32,7 +32,7 @@ class RmsModelSpecMgmtPanelCtrl extends MetricsPanelCtrl {
         switch (mode) {
             case "new":
                 this.inputModelSpecs = [{
-                    min: 0, max: 0, /*lsl: 0, usl: 0,*/ bdAddr: "", devName: "",
+                    min: 0, max: 0, /*lsl: 0, usl: 0,*/ bdAddr: "", devName: "", ST: 0,
                 }];
             case "edit":
                 const selectId = this.datasource.id;
@@ -110,6 +110,7 @@ class RmsModelSpecMgmtPanelCtrl extends MetricsPanelCtrl {
             columns: [ //Define Table Columns
                 { title: "모델명", field: "ID" },
                 { title: "name", field: "name" },
+                { title: "목표 ST (단위 : 초)", field: "ST" },
                 { title: "min", field: "min" },
                 { title: "max", field: "max" },
                 // { title: "lsl", field: "lsl" },
@@ -147,7 +148,7 @@ class RmsModelSpecMgmtPanelCtrl extends MetricsPanelCtrl {
         link.type = "text/css";
         link.rel = "stylesheet";
         link.media = "screen,print";
-    
+
         document.getElementsByTagName( "head" )[0].appendChild( link );
     }
 
@@ -169,7 +170,7 @@ class RmsModelSpecMgmtPanelCtrl extends MetricsPanelCtrl {
         data.forEach((arr) => {
             arr.forEach((item) => {
                 item.IP_JSON = JSON.parse(item.IP_JSON);
-                item.IP_JSON.forEach(({ip: [{name}], min, max, /*lsl, usl,*/ string0, string1}) => {
+                item.IP_JSON.forEach(({ip: [{name}], min, max, /*lsl, usl,*/ string0, string1, ST}) => {
                     item.min = min;
                     item.max = max;
                     /*
@@ -179,6 +180,7 @@ class RmsModelSpecMgmtPanelCtrl extends MetricsPanelCtrl {
                     item.name = name;
                     item.string0 = string0;
                     item.string1 = string1;
+                    item.ST = ST;
                     this.modelSpecList.push(JSON.parse(JSON.stringify(item)));
                 });
                 // console.log(item);
@@ -231,14 +233,14 @@ class RmsModelSpecMgmtPanelCtrl extends MetricsPanelCtrl {
                     case "edit":
                         this.inputModelSpecs = [];
                         this.inputIpList = [];
-                        this.selectObj.IP_JSON.forEach(({ip: [ip], min, max, /*lsl, usl,*/ string0, string1}, mainIdx) => {
+                        this.selectObj.IP_JSON.forEach(({ip: [ip], min, max, /*lsl, usl,*/ string0, string1, ST}, mainIdx) => {
                             const ipList = JSON.parse(JSON.stringify(this.oriIpList));
                             ipList.forEach(({name: name}, idx) => {
                                 ipList[idx].ticked = name === ip.name ? true : false;
                             });
                             if (!this.inputModelSpecs[mainIdx]) {
                                 this.inputModelSpecs.push({
-                                    min, max, /*lsl, usl,*/ string0, string1
+                                    min, max, /*lsl, usl,*/ string0, string1, ST
                                 });
                             } else {
                                 this.inputModelSpecs[mainIdx].min = min;
@@ -247,6 +249,7 @@ class RmsModelSpecMgmtPanelCtrl extends MetricsPanelCtrl {
                                 // this.inputModelSpecs[mainIdx].usl = usl;
                                 this.inputModelSpecs[mainIdx].string0 = string0;
                                 this.inputModelSpecs[mainIdx].string1 = string1;
+                                this.inputModelSpecs[mainIdx].ST = ST;
                             }
                             this.inputIpList.push(ipList);
                         });
@@ -280,7 +283,7 @@ class RmsModelSpecMgmtPanelCtrl extends MetricsPanelCtrl {
     }
     addSpec() {
         this.inputModelSpecs.push({
-            min: 0, max: 0, /*lsl: 0, usl: 0,*/ bdAddr: "", devName: "",
+            min: 0, max: 0, /*lsl: 0, usl: 0,*/ bdAddr: "", devName: "", ST: 0,
         });
         const ipList = JSON.parse(JSON.stringify(this.oriIpList));
         this.inputIpList.push(ipList);
@@ -312,8 +315,8 @@ class RmsModelSpecMgmtPanelCtrl extends MetricsPanelCtrl {
             onConfirm: () => {
                 this.insertModelSpecTable(modelId).then( result => {
                     const topic = `${this.baseTopic}${modelId}`;
-                    const publishData = this.inputModelSpecs.map( ({ ip: [{data: ip}], min, max, /*lsl, usl,*/ string0, string1}) => {
-                        return { ip: ip, min, max, /*lsl, usl,*/ iid: ip.IDX ,string0, string1};
+                    const publishData = this.inputModelSpecs.map( ({ ip: [{data: ip}], min, max, /*lsl, usl,*/ string0, string1, ST}) => {
+                        return { ip: ip, min, max, /*lsl, usl,*/ iid: ip.IDX ,string0, string1, ST};
                     });
                     console.log(topic, publishData);
                     this.rsMqttSrv.publishMessage(topic, JSON.stringify(publishData), this.mqttdefaultOpts);
@@ -396,8 +399,8 @@ class RmsModelSpecMgmtPanelCtrl extends MetricsPanelCtrl {
             onConfirm: () => {
                 this.updateModelSpecTable(modelId).then( result => {
                     const topic = `${this.baseTopic}${modelId}`;
-                    const publishData = this.inputModelSpecs.map( ({ ip: [{data: ip}], min, max, /*lsl, usl,*/ string0, string1}) => {
-                        return { ip: ip, min, max, /*lsl, usl,*/ iid: ip.IDX, string0, string1 };
+                    const publishData = this.inputModelSpecs.map( ({ ip: [{data: ip}], min, max, /*lsl, usl,*/ string0, string1, ST}) => {
+                        return { ip: ip, min, max, /*lsl, usl,*/ iid: ip.IDX, string0, string1, ST };
                     });
                     console.log(topic, publishData);
                     this.rsMqttSrv.publishMessage(topic, JSON.stringify(publishData), this.mqttdefaultOpts);
