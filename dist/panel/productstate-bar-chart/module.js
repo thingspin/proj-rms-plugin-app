@@ -17398,7 +17398,7 @@ var RmsProductStateBarChartPanelCtrl = /** @class */ (function (_super) {
         }
     };
     RmsProductStateBarChartPanelCtrl.prototype.render = function () {
-        console.log("render");
+        // console.log("render");
         if (!this.context) {
             return;
         }
@@ -17452,7 +17452,7 @@ var RmsProductStateBarChartPanelCtrl = /** @class */ (function (_super) {
                                     valueItem = item;
                                     break;
                             }
-                            console.log(valueItem);
+                            // console.log(valueItem);
                             if (_this.labels.indexOf(valueItem) === -1) {
                                 _this.labels.push(valueItem);
                             }
@@ -17478,8 +17478,8 @@ var RmsProductStateBarChartPanelCtrl = /** @class */ (function (_super) {
                 }
             });
         });
-        console.log(labelMapData);
-        console.log(this.data);
+        // console.log(labelMapData);
+        // console.log(this.data);
         // var dataRange = this.labels.length;
         var map = new Map();
         this.labels.forEach(function (label, i) {
@@ -17494,7 +17494,7 @@ var RmsProductStateBarChartPanelCtrl = /** @class */ (function (_super) {
             map.set(label, obj);
         });
         for (var totalcount = 0; totalcount < this.data.length; totalcount++) {
-            console.log("input Data : " + this.data[totalcount]);
+            // console.log("input Data : " + this.data[totalcount]);
             var inputData = this.data[totalcount];
             for (var labelcount = 0; labelcount < this.labels.length; labelcount++) {
                 var label = this.labels[labelcount];
@@ -17504,9 +17504,9 @@ var RmsProductStateBarChartPanelCtrl = /** @class */ (function (_super) {
                     if (labelMapData.has(cmpValue)) {
                         var index = labelMapData.get(cmpValue);
                         if (totalcount == index) {
-                            console.log(cmpValue);
+                            // console.log(cmpValue);
                             var list = map.get(label);
-                            console.log(list);
+                            // console.log(list);
                             list.data.push(inputData);
                             map.set(label, list);
                             break;
@@ -17534,13 +17534,13 @@ var RmsProductStateBarChartPanelCtrl = /** @class */ (function (_super) {
         console.log(map);
         */
         var dataset = Array.from(map.values());
-        console.log(dataset);
-        console.log(this.device);
+        // console.log(dataset);
+        // console.log(this.device);
         this.barChartData = {
             labels: this.device,
             datasets: dataset
         };
-        console.log(this.barChartData);
+        // console.log(this.barChartData);
         this.createChart(this.barChartData);
     };
     RmsProductStateBarChartPanelCtrl.template = __webpack_require__(/*! ./templet.html */ "./panel/productstate-bar-chart/templet.html");

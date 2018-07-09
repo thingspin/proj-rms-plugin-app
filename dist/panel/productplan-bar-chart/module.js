@@ -17434,7 +17434,7 @@ var RmsProductPlanBarChartPanelCtrl = /** @class */ (function (_super) {
         }
     };
     RmsProductPlanBarChartPanelCtrl.prototype.render = function () {
-        console.log("render");
+        // console.log("render");
         if (!this.context) {
             return;
         }
@@ -17599,7 +17599,7 @@ var RmsProductPlanBarChartPanelCtrl = /** @class */ (function (_super) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <div class=\"chart-container\" style=\"position: relative; height:40vh; width:80vw\"> -->\r\n<canvas class=\"chart\" style=\"position: relative; width:100%\"></canvas>";
+module.exports = "<!-- <div class=\"chart-container\" style=\"position: relative; height:40vh; width:80vw\"> -->\n<canvas class=\"chart\" style=\"position: relative; width:100%\"></canvas>";
 
 /***/ }),
 
