@@ -288,7 +288,7 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
         console.log(duration.seconds());
         var result = (duration.asSeconds()/count);
         var mapValue = tableMap.get(model);
-        mapValue.set('stvalue', result.toFixed(3));
+        mapValue.set('stvalue', result.toFixed(2));
         tableMap.set(model, mapValue);
       }
     });
