@@ -15,7 +15,7 @@
   "editable": false,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1530876919728,
+  "iteration": 1531120902605,
   "links": [
     {
       "icon": "external link",
@@ -833,6 +833,14 @@
                 ],
                 "type": "field"
               }
+            ],
+            [
+              {
+                "params": [
+                  "serial"
+                ],
+                "type": "field"
+              }
             ]
           ],
           "tags": [
@@ -868,6 +876,7 @@
       "type": "table"
     }
   ],
+  "refresh": "1s",
   "schemaVersion": 16,
   "style": "light",
   "tags": [
@@ -1082,7 +1091,7 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-10m",
     "to": "now"
   },
   "timepicker": {
@@ -1114,5 +1123,5 @@
   "timezone": "",
   "title": "검사 기록",
   "uid": "rAgfpx7iz",
-  "version": 12
+  "version": 3
 }

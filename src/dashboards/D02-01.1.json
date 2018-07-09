@@ -15,7 +15,7 @@
   "editable": false,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1530876756407,
+  "iteration": 1531120809273,
   "links": [
     {
       "icon": "external link",
@@ -517,7 +517,7 @@
         {
           "alias": "$col",
           "groupBy": [],
-          "measurement": "inspection.detail-20180101",
+          "measurement": "inspection.summary-20180101",
           "orderByTime": "ASC",
           "policy": "default",
           "refId": "A",
@@ -526,7 +526,7 @@
             [
               {
                 "params": [
-                  "memo"
+                  "serial"
                 ],
                 "type": "field"
               }
@@ -560,7 +560,7 @@
         }
       ],
       "thresholds": "",
-      "title": "Memo",
+      "title": "Serial",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -1292,8 +1292,8 @@
         "allValue": null,
         "current": {
           "selected": true,
-          "text": "RB69A01",
-          "value": "RB69A01"
+          "text": "RC76A00",
+          "value": "RC76A00"
         },
         "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
         "hide": 2,
@@ -1315,9 +1315,9 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
-          "text": "IPC01",
-          "value": "IPC01"
+          "selected": true,
+          "text": "IPC02",
+          "value": "IPC02"
         },
         "datasource": "RMS-BRANCH-INFLUXDB(V1.0)",
         "hide": 2,
@@ -1480,8 +1480,8 @@
       },
       {
         "current": {
-          "text": "714ff27b.6fe2dc",
-          "value": "714ff27b.6fe2dc"
+          "text": "c5987dcd.4e9ca",
+          "value": "c5987dcd.4e9ca"
         },
         "hide": 2,
         "label": "상세항목",
@@ -1522,5 +1522,5 @@
   "timezone": "",
   "title": "상세 검사로그",
   "uid": "7cy0t97mz",
-  "version": 6
+  "version": 4
 }
