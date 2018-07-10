@@ -54,10 +54,8 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
     this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
     this.events.on('panel-size-changed', this.onSizeChanged.bind(this));
 
-    // this.events.on('render', this.onRender.bind(this)); //dynamic ui process
     this.events.on('data-received', this.onDataReceived.bind(this));
     this.events.on('data-error', this.onDataError.bind(this));
-
   }
 
   onInitialized() {
@@ -82,11 +80,6 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
     document.getElementsByTagName( "head" )[0].appendChild( link );
   }
 
-  /* dynamic ui process
-  rander() {
-  }
-  */
-
   onDataError(err) {
     this.dataRaw = [];
     this.render();
@@ -103,18 +96,10 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
   }
 
   addFormatter() {
-    // console.log(this.panel.formatters);
     this.panel.formatters.push({name: '', localstring: false, decimal: 2, fontsize: 0, width: 100, align: this.aligns[0]});
   }
 
   createTable(dataList) {
-    var tabledata = [
-      { id: 1, name: "Oli Bob", age: "12", col: "red", dob: ""},
-      { id: 2, name: "Mary May", age: "1", col: "blue", dob: "14/05/1982"},
-      { id: 3, name: "Christine Lobowski", age: "42", col: "green", dob: "22/05/1982"},
-      { id: 4, name: "Brendon Philips", age: "125", col: "orange", dob: "01/08/1980"},
-      { id: 5, name: "Margret Marmajuke", age: "16", col: "yellow", dob: "31/01/1999"},
-    ];
     if (this.initalized) {
       this.container.tabulator("destroy");
     }
@@ -170,9 +155,6 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
 
     if (dataList != null) {
       this.container.tabulator("setData",dataList);
-    } else {
-      this.dataTable.setData("setData",tabledata);
-      this.container.tabulator("setData", tabledata);
     }
     this.container.tabulator("hideColumn","time_sec");
     this.initalized = true;
@@ -241,7 +223,7 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
         case PLAN_FAIL: {
           obj.align = this.aligns[2];
           obj.formatter = function(cell, formatterParam) {
-            console.log(cell.getValue());
+            //console.log(cell.getValue());
             var returnValue = (!cell.getValue()) ? 0 : Number(cell.getValue()).toLocaleString('en');
             return "<span style='color:#F50357;'>" + returnValue + "</span>";
           };          
@@ -284,8 +266,8 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
       });
       if (sttime !== null) {
         var duration = moment.duration(moment(edtime).diff(sttime));
-        console.log(duration.asSeconds());
-        console.log(duration.seconds());
+        //console.log(duration.asSeconds());
+        //console.log(duration.seconds());
         var result = (duration.asSeconds()/count);
         var mapValue = tableMap.get(model);
         mapValue.set('stvalue', result.toFixed(2));
@@ -305,7 +287,7 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
           case '실적수량': tempProduct = v; break;
         }
       });
-      console.log("Plan : " + tempTotal);
+      //console.log("Plan : " + tempTotal);
       if (tempTotal !== 0) {
         object.achievement = Math.round((tempProduct/tempTotal)*100);
         object.achievement_text = Math.round((tempProduct/tempTotal)*100) + "%";
@@ -317,29 +299,41 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
       }
     });
     this.columns.push({
-      title: 'GRAPH',
+      title: '달성율',
       field: 'achievement',
       align: "left",
-      formatter: "progress"
+      formatter: "progress",
+      formatterParams:{legend:function(value){return value + " %"}, legendAlign:'right', legendColor:'#000000'}
     });
-    this.columns.push({
-      title: '달성률',
-      field: 'achievement_text',
-      align: "right",
-    });
+    // this.columns.push({
+    //   title: '달성률',
+    //   field: 'achievement_text',
+    //   align: "right",
+    // });
     this.columns.push({
       title: 'ST',
       field: 'stvalue',
       align: "right",
     });
 
+    this.columns.push({
+      title: '시작시간',
+      field: 'stime',
+      align: "left",
+    });
+    
+    this.columns.push({
+      title: '완료예정시간',
+      field: 'etime',
+      align: "left",
+    });
+    
     this.dataJson = jArray;
   }
 
   transAddedData(data, tableMap, tableSTMap) {
     var rows = data.rows;
     var columns = data.columns;
-    console.log(data);
 
     if (columns.map(x => x.text).indexOf('실적수량') !== -1
       || columns.map(x => x.text).indexOf('양품') !== -1
@@ -373,7 +367,7 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
           }
         }
       });
-      console.log(tableMap);
+      //console.log(tableMap);
     } else if (columns.map(x => x.text).indexOf('starttime') !== -1) {
       rows.forEach((row, count) => {
         var map = new Map();

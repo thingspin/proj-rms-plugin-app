@@ -46220,7 +46220,6 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
         _this.divID = 'table-rms-' + _this.panel.id;
         _this.events.on('init-edit-mode', _this.onInitEditMode.bind(_this));
         _this.events.on('panel-size-changed', _this.onSizeChanged.bind(_this));
-        // this.events.on('render', this.onRender.bind(this)); //dynamic ui process
         _this.events.on('data-received', _this.onDataReceived.bind(_this));
         _this.events.on('data-error', _this.onDataError.bind(_this));
         return _this;
@@ -46242,10 +46241,6 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
         link.media = "screen,print";
         document.getElementsByTagName("head")[0].appendChild(link);
     };
-    /* dynamic ui process
-    rander() {
-    }
-    */
     RmsPlantPlanPanelCtrl.prototype.onDataError = function (err) {
         this.dataRaw = [];
         this.render();
@@ -46259,18 +46254,10 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
         this.panel.formatters.splice(index, 1);
     };
     RmsPlantPlanPanelCtrl.prototype.addFormatter = function () {
-        // console.log(this.panel.formatters);
         this.panel.formatters.push({ name: '', localstring: false, decimal: 2, fontsize: 0, width: 100, align: this.aligns[0] });
     };
     RmsPlantPlanPanelCtrl.prototype.createTable = function (dataList) {
         var _this = this;
-        var tabledata = [
-            { id: 1, name: "Oli Bob", age: "12", col: "red", dob: "" },
-            { id: 2, name: "Mary May", age: "1", col: "blue", dob: "14/05/1982" },
-            { id: 3, name: "Christine Lobowski", age: "42", col: "green", dob: "22/05/1982" },
-            { id: 4, name: "Brendon Philips", age: "125", col: "orange", dob: "01/08/1980" },
-            { id: 5, name: "Margret Marmajuke", age: "16", col: "yellow", dob: "31/01/1999" },
-        ];
         if (this.initalized) {
             this.container.tabulator("destroy");
         }
@@ -46319,10 +46306,6 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
         this.tableInstance = this.container.tabulator(this.defTabulatorOpts);
         if (dataList != null) {
             this.container.tabulator("setData", dataList);
-        }
-        else {
-            this.dataTable.setData("setData", tabledata);
-            this.container.tabulator("setData", tabledata);
         }
         this.container.tabulator("hideColumn", "time_sec");
         this.initalized = true;
@@ -46393,7 +46376,7 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
                     {
                         obj.align = this.aligns[2];
                         obj.formatter = function (cell, formatterParam) {
-                            console.log(cell.getValue());
+                            //console.log(cell.getValue());
                             var returnValue = (!cell.getValue()) ? 0 : Number(cell.getValue()).toLocaleString('en');
                             return "<span style='color:#F50357;'>" + returnValue + "</span>";
                         };
@@ -46446,8 +46429,8 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
             });
             if (sttime !== null) {
                 var duration = moment__WEBPACK_IMPORTED_MODULE_2___default.a.duration(moment__WEBPACK_IMPORTED_MODULE_2___default()(edtime).diff(sttime));
-                console.log(duration.asSeconds());
-                console.log(duration.seconds());
+                //console.log(duration.asSeconds());
+                //console.log(duration.seconds());
                 var result = (duration.asSeconds() / count);
                 var mapValue = tableMap.get(model);
                 mapValue.set('stvalue', result.toFixed(2));
@@ -46470,7 +46453,7 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
                         break;
                 }
             });
-            console.log("Plan : " + tempTotal);
+            //console.log("Plan : " + tempTotal);
             if (tempTotal !== 0) {
                 object.achievement = Math.round((tempProduct / tempTotal) * 100);
                 object.achievement_text = Math.round((tempProduct / tempTotal) * 100) + "%";
@@ -46483,20 +46466,31 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
             }
         });
         this.columns.push({
-            title: 'GRAPH',
+            title: '달성율',
             field: 'achievement',
             align: "left",
-            formatter: "progress"
+            formatter: "progress",
+            formatterParams: { legend: function (value) { return value + " %"; }, legendAlign: 'right', legendColor: '#000000' }
         });
-        this.columns.push({
-            title: '달성률',
-            field: 'achievement_text',
-            align: "right",
-        });
+        // this.columns.push({
+        //   title: '달성률',
+        //   field: 'achievement_text',
+        //   align: "right",
+        // });
         this.columns.push({
             title: 'ST',
             field: 'stvalue',
             align: "right",
+        });
+        this.columns.push({
+            title: '시작시간',
+            field: 'stime',
+            align: "left",
+        });
+        this.columns.push({
+            title: '완료예정시간',
+            field: 'etime',
+            align: "left",
         });
         this.dataJson = jArray;
     };
@@ -46504,7 +46498,6 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
         var _this = this;
         var rows = data.rows;
         var columns = data.columns;
-        console.log(data);
         if (columns.map(function (x) { return x.text; }).indexOf('실적수량') !== -1
             || columns.map(function (x) { return x.text; }).indexOf('양품') !== -1
             || columns.map(function (x) { return x.text; }).indexOf('불량') !== -1) {
@@ -46537,7 +46530,7 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
                     }
                 }
             });
-            console.log(tableMap);
+            //console.log(tableMap);
         }
         else if (columns.map(function (x) { return x.text; }).indexOf('starttime') !== -1) {
             rows.forEach(function (row, count) {
@@ -46586,7 +46579,7 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"editor-row\">\n    <div class=\"thingspin-table\"></div>\n</div>\n";
+module.exports = "<div class=\"editor-row\">\r\n    <div class=\"thingspin-table\"></div>\r\n</div>\r\n";
 
 /***/ }),
 
