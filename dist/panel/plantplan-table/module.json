@@ -12,10 +12,10 @@
       }
     ]
   },
-  "editable": true,
+  "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1531202938102,
+  "iteration": 1531203224712,
   "links": [
     {
       "icon": "external link",
@@ -176,78 +176,6 @@
               "key": "pass",
               "operator": "=",
               "value": "false"
-            }
-          ]
-        },
-        {
-          "datasource": "$DATABASE",
-          "groupBy": [],
-          "measurement": "/^inspection.summary-*/",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "D",
-          "resultFormat": "table",
-          "select": [
-            [
-              {
-                "params": [
-                  "stime"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "first"
-              },
-              {
-                "params": [
-                  "starttime"
-                ],
-                "type": "alias"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "etime"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              },
-              {
-                "params": [
-                  "endtime"
-                ],
-                "type": "alias"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "tuid"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "count"
-              },
-              {
-                "params": [
-                  "count"
-                ],
-                "type": "alias"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "model",
-              "operator": "=~",
-              "value": "/^$MODEL$/"
             }
           ]
         }
@@ -687,5 +615,5 @@
   "timezone": "",
   "title": "생산 실적",
   "uid": "cU1lqH4mz",
-  "version": 21
+  "version": 11
 }
