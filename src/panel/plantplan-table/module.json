@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1531194097288,
+  "iteration": 1531202938102,
   "links": [
     {
       "icon": "external link",
@@ -266,7 +266,7 @@
         "x": 0,
         "y": 8
       },
-      "id": 8,
+      "id": 16,
       "kernel": null,
       "links": [],
       "scripts": "",
@@ -275,6 +275,7 @@
           "alias": "",
           "datasource": "REMOTESOLUTIONS(V1.0)",
           "format": "table",
+          "hide": false,
           "rawSql": "SELECT \n  UNIX_TIMESTAMP(PLAN_DATE) as time_sec,\n  PLAN_DATE as '날짜',\n  MODEL_ID AS '모델',\n  SUM(AMOUNT) AS '생산계획'\nFROM t_product_plan\nWHERE\n  $__timeFilter(PLAN_DATE) AND\n  MODEL_ID IN ($MODEL)\nGROUP BY MODEL_ID\nORDER BY PLAN_DATE ASC, SUM(AMOUNT) DESC, MODEL_ID ASC",
           "refId": "A"
         },
@@ -283,7 +284,7 @@
           "groupBy": [
             {
               "params": [
-                "1d,-9h"
+                "1d, -9h"
               ],
               "type": "time"
             },
@@ -292,12 +293,18 @@
                 "model"
               ],
               "type": "tag"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
             }
           ],
-          "measurement": "/^inspection.summary-*/",
+          "measurement": "inspection.summary-20180101",
           "orderByTime": "ASC",
           "policy": "default",
-          "refId": "E",
+          "refId": "C",
           "resultFormat": "table",
           "select": [
             [
@@ -321,15 +328,15 @@
           ],
           "tags": [
             {
-              "key": "model",
-              "operator": "=~",
-              "value": "/^$MODEL$/"
-            },
-            {
-              "condition": "AND",
               "key": "branch",
               "operator": "=~",
               "value": "/^$BRANCH$/"
+            },
+            {
+              "condition": "AND",
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
             }
           ]
         },
@@ -338,7 +345,7 @@
           "groupBy": [
             {
               "params": [
-                "1d,-9h"
+                "1d, -9h"
               ],
               "type": "time"
             },
@@ -347,12 +354,18 @@
                 "model"
               ],
               "type": "tag"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
             }
           ],
-          "measurement": "/^inspection.summary-*/",
+          "measurement": "inspection.summary-20180101",
           "orderByTime": "ASC",
           "policy": "default",
-          "refId": "B",
+          "refId": "E",
           "resultFormat": "table",
           "select": [
             [
@@ -376,6 +389,12 @@
           ],
           "tags": [
             {
+              "key": "branch",
+              "operator": "=~",
+              "value": "/^$BRANCH$/"
+            },
+            {
+              "condition": "AND",
               "key": "model",
               "operator": "=~",
               "value": "/^$MODEL$/"
@@ -385,12 +404,6 @@
               "key": "pass",
               "operator": "=",
               "value": "true"
-            },
-            {
-              "condition": "AND",
-              "key": "branch",
-              "operator": "=~",
-              "value": "/^$BRANCH$/"
             }
           ]
         },
@@ -399,7 +412,7 @@
           "groupBy": [
             {
               "params": [
-                "1d,-9h"
+                "1d, -9h"
               ],
               "type": "time"
             },
@@ -408,12 +421,18 @@
                 "model"
               ],
               "type": "tag"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
             }
           ],
-          "measurement": "/^inspection.summary-*/",
+          "measurement": "inspection.summary-20180101",
           "orderByTime": "ASC",
           "policy": "default",
-          "refId": "C",
+          "refId": "D",
           "resultFormat": "table",
           "select": [
             [
@@ -437,6 +456,12 @@
           ],
           "tags": [
             {
+              "key": "branch",
+              "operator": "=~",
+              "value": "/^$BRANCH$/"
+            },
+            {
+              "condition": "AND",
               "key": "model",
               "operator": "=~",
               "value": "/^$MODEL$/"
@@ -446,17 +471,10 @@
               "key": "pass",
               "operator": "=",
               "value": "false"
-            },
-            {
-              "condition": "AND",
-              "key": "branch",
-              "operator": "=~",
-              "value": "/^$BRANCH$/"
             }
           ]
         },
         {
-          "alias": "$col",
           "datasource": "$DATABASE",
           "groupBy": [
             {
@@ -467,35 +485,17 @@
             },
             {
               "params": [
-                "0"
+                "model"
               ],
-              "type": "fill"
+              "type": "tag"
             }
           ],
-          "measurement": "/^inspection.summary-*/",
+          "measurement": "inspection.summary-20180101",
           "orderByTime": "ASC",
           "policy": "default",
-          "refId": "D",
+          "refId": "B",
           "resultFormat": "table",
           "select": [
-            [
-              {
-                "params": [
-                  "model"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "first"
-              },
-              {
-                "params": [
-                  "model"
-                ],
-                "type": "alias"
-              }
-            ],
             [
               {
                 "params": [
@@ -505,7 +505,7 @@
               },
               {
                 "params": [],
-                "type": "min"
+                "type": "first"
               },
               {
                 "params": [
@@ -523,11 +523,11 @@
               },
               {
                 "params": [],
-                "type": "min"
+                "type": "last"
               },
               {
                 "params": [
-                  "endtime"
+                  "edtime"
                 ],
                 "type": "alias"
               }
@@ -687,5 +687,5 @@
   "timezone": "",
   "title": "생산 실적",
   "uid": "cU1lqH4mz",
-  "version": 9
+  "version": 21
 }

@@ -46400,7 +46400,6 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
         var jArray = new Array;
         var tableMap = new Map();
         var tableSTMap = new Map();
-        console.log(dataList);
         dataList.forEach(function (element) {
             _this.transAddedData(element, tableMap, tableSTMap);
         });
@@ -46429,11 +46428,19 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
             });
             if (sttime !== null) {
                 var duration = moment__WEBPACK_IMPORTED_MODULE_2___default.a.duration(moment__WEBPACK_IMPORTED_MODULE_2___default()(edtime).diff(sttime));
-                //console.log(duration.asSeconds());
-                //console.log(duration.seconds());
-                var result = (duration.asSeconds() / count);
+                var st = (duration.asSeconds() / count);
                 var mapValue = tableMap.get(model);
-                mapValue.set('stvalue', result.toFixed(2));
+                mapValue.set('stvalue', st.toFixed(2));
+                mapValue.set('sttime', sttime);
+                var p = mapValue.get('생산계획');
+                if (p) {
+                    var t = p * st;
+                    var fut = moment__WEBPACK_IMPORTED_MODULE_2___default()(sttime).add(t, 'seconds').format('YYYY-MM-DD HH:mm:ss');
+                    mapValue.set('edtime', fut);
+                }
+                else {
+                    mapValue.set('edtime', edtime);
+                }
                 tableMap.set(model, mapValue);
             }
         });
@@ -46472,24 +46479,19 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
             formatter: "progress",
             formatterParams: { legend: function (value) { return value + " %"; }, legendAlign: 'right', legendColor: '#000000' }
         });
-        // this.columns.push({
-        //   title: '달성률',
-        //   field: 'achievement_text',
-        //   align: "right",
-        // });
         this.columns.push({
-            title: 'ST',
+            title: 'ST (Sec.)',
             field: 'stvalue',
             align: "right",
         });
         this.columns.push({
             title: '시작시간',
-            field: 'stime',
+            field: 'sttime',
             align: "left",
         });
         this.columns.push({
             title: '완료예정시간',
-            field: 'etime',
+            field: 'edtime',
             align: "left",
         });
         this.dataJson = jArray;
