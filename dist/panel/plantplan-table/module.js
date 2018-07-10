@@ -46431,11 +46431,11 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
                 var st = (duration.asSeconds() / count);
                 var mapValue = tableMap.get(model);
                 mapValue.set('stvalue', st.toFixed(2));
-                mapValue.set('sttime', sttime);
+                mapValue.set('sttime', moment__WEBPACK_IMPORTED_MODULE_2___default()(sttime).format('MM/DD HH:mm:ss'));
                 var p = mapValue.get('생산계획');
                 if (p) {
                     var t = p * st;
-                    var fut = moment__WEBPACK_IMPORTED_MODULE_2___default()(sttime).add(t, 'seconds').format('YYYY-MM-DD HH:mm:ss');
+                    var fut = moment__WEBPACK_IMPORTED_MODULE_2___default()(sttime).add(t, 'seconds').format('MM/DD HH:mm:ss');
                     mapValue.set('edtime', fut);
                 }
                 else {
@@ -46487,12 +46487,12 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
         this.columns.push({
             title: '시작시간',
             field: 'sttime',
-            align: "left",
+            align: "center",
         });
         this.columns.push({
             title: '완료예정시간',
             field: 'edtime',
-            align: "left",
+            align: "center",
         });
         this.dataJson = jArray;
     };

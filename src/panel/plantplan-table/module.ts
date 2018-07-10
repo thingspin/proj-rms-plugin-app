@@ -269,13 +269,13 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
         let st = (duration.asSeconds()/count);
         let mapValue = tableMap.get(model);
         mapValue.set('stvalue', st.toFixed(2));
-        mapValue.set('sttime', sttime);
+        mapValue.set('sttime', moment(sttime).format('MM/DD HH:mm:ss'));
 
         let p = mapValue.get('생산계획');
         
         if(p) {
           let t = p * st;
-          let fut = moment(sttime).add(t, 'seconds').format('YYYY-MM-DD HH:mm:ss');
+          let fut = moment(sttime).add(t, 'seconds').format('MM/DD HH:mm:ss');
           mapValue.set('edtime', fut);
         } else {
           mapValue.set('edtime', edtime);
@@ -324,13 +324,13 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
     this.columns.push({
       title: '시작시간',
       field: 'sttime',
-      align: "left",
+      align: "center",
     });
 
     this.columns.push({
       title: '완료예정시간',
       field: 'edtime',
-      align: "left",
+      align: "center",
     });
 
     this.dataJson = jArray;
