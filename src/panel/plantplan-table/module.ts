@@ -313,7 +313,7 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
       field: 'achievement',
       align: "left",
       formatter: "progress",
-      formatterParams:{legend:function(value){return value + " %"}, legendAlign:'right', legendColor:'#000000'}
+      formatterParams:{color:["rgba(255, 99, 132, 0.2)", "rgba(255, 99, 132, 0.6)", "rgba(99, 255, 132, 0.8)"], legend:function(value){return value + " %"}, legendAlign:'right', legendColor:["rgba(0, 0, 0, 0.9)", "rgba(0, 0, 0, 0.9)", "rgba(0, 0, 0, 0.9)"]}
     });
     this.columns.push({
       title: 'ST (Sec.)',
