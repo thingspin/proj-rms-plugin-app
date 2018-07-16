@@ -314,33 +314,18 @@ class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
     var cpTrueMap = new Map(this.mapTrue);
     var cpFalseMap = new Map(this.mapFalse);
 
-    // keyList.forEach((key, keyCount) => {
-    //   ["True","False"].forEach((str) => {
-    //     var val = this[`map${str}`].get(key);
-    //     if (val) {
-    //       this[`array${str}`].push(val);
-    //       switch (str) {
-    //         case "True": cpTrueMap.delete(key); break;
-    //         case "False": cpFalseMap.delete(key); break;
-    //       }
-    //     }
-    //   });
-    // });
-    for (var keyCount=0;keyCount<keyList.length;keyCount++) {
-      var key = keyList[keyCount];
-      var trueValue = this.mapTrue.get(key);
-      if (trueValue !== undefined) {
-        this.arrayTrue.push(trueValue);
-        cpTrueMap.delete(key);
-      }
-      var falseValue = this.mapFalse.get(key);
-      if (falseValue !== undefined) {
-        this.arrayFalse.push(falseValue);
-        cpFalseMap.delete(key);
-      }
-    }
-
-
+    keyList.forEach((key, keyCount) => {
+      ["True","False"].forEach((str) => {
+        var val = this[`map${str}`].get(key);
+        if (val !== undefined) {
+          this[`array${str}`].push(val);
+          switch (str) {
+            case "True": cpTrueMap.delete(key); break;
+            case "False": cpFalseMap.delete(key); break;
+          }
+        }
+      });
+    });
     this.arrayTrueEmpty = Array.from(cpTrueMap.values());
     this.arrayFalseEmpty = Array.from(cpFalseMap.values());
   }
