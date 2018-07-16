@@ -17580,6 +17580,9 @@ var RmsProductPlanBarChartPanelCtrl = /** @class */ (function (_super) {
                             break;
                     }
                 }
+                else {
+                    _this["array" + str].push(0);
+                }
             });
         });
         this.arrayTrueEmpty = Array.from(cpTrueMap.values());

@@ -323,6 +323,8 @@ class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
             case "True": cpTrueMap.delete(key); break;
             case "False": cpFalseMap.delete(key); break;
           }
+        } else {
+          this[`array${str}`].push(0);
         }
       });
     });
