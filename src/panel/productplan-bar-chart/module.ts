@@ -220,6 +220,7 @@ class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
     // - dataCount >> 0:plan 1:true product 2:false product
     dataList.forEach((data, dataCount) => {
       const dataRows = data.rows;
+      console.log(dataRows);
       dataRows.forEach((dataRow, dataRowCount) => {
         switch (data.columns[2].text) {
           case FALSE_LABEL: this.mapDataInsert(FALSE, dataRow); break;
@@ -313,18 +314,32 @@ class RmsProductPlanBarChartPanelCtrl extends MetricsPanelCtrl {
     var cpTrueMap = new Map(this.mapTrue);
     var cpFalseMap = new Map(this.mapFalse);
 
-    keyList.forEach((key, keyCount) => {
-      ["True","False"].forEach((str) => {
-        var val = this[`map${str}`].get(key);
-        if (val) {
-          this[`array${str}`].push(val);
-          switch (str) {
-            case "True": cpTrueMap.delete(key); break;
-            case "False": cpFalseMap.delete(key); break;
-          }
-        }
-      });
-    });
+    // keyList.forEach((key, keyCount) => {
+    //   ["True","False"].forEach((str) => {
+    //     var val = this[`map${str}`].get(key);
+    //     if (val) {
+    //       this[`array${str}`].push(val);
+    //       switch (str) {
+    //         case "True": cpTrueMap.delete(key); break;
+    //         case "False": cpFalseMap.delete(key); break;
+    //       }
+    //     }
+    //   });
+    // });
+    for (var keyCount=0;keyCount<keyList.length;keyCount++) {
+      var key = keyList[keyCount];
+      var trueValue = this.mapTrue.get(key);
+      if (trueValue !== undefined) {
+        this.arrayTrue.push(trueValue);
+        cpTrueMap.delete(key);
+      }
+      var falseValue = this.mapFalse.get(key);
+      if (falseValue !== undefined) {
+        this.arrayFalse.push(falseValue);
+        cpFalseMap.delete(key);
+      }
+    }
+
 
     this.arrayTrueEmpty = Array.from(cpTrueMap.values());
     this.arrayFalseEmpty = Array.from(cpFalseMap.values());

@@ -17471,6 +17471,7 @@ var RmsProductPlanBarChartPanelCtrl = /** @class */ (function (_super) {
         // - dataCount >> 0:plan 1:true product 2:false product
         dataList.forEach(function (data, dataCount) {
             var dataRows = data.rows;
+            console.log(dataRows);
             dataRows.forEach(function (dataRow, dataRowCount) {
                 switch (data.columns[2].text) {
                     case FALSE_LABEL:
@@ -17561,26 +17562,34 @@ var RmsProductPlanBarChartPanelCtrl = /** @class */ (function (_super) {
         });
     };
     RmsProductPlanBarChartPanelCtrl.prototype.dataProcess = function () {
-        var _this = this;
         var keyList = Array.from(this.mapPlan.keys());
         var cpTrueMap = new Map(this.mapTrue);
         var cpFalseMap = new Map(this.mapFalse);
-        keyList.forEach(function (key, keyCount) {
-            ["True", "False"].forEach(function (str) {
-                var val = _this["map" + str].get(key);
-                if (val) {
-                    _this["array" + str].push(val);
-                    switch (str) {
-                        case "True":
-                            cpTrueMap.delete(key);
-                            break;
-                        case "False":
-                            cpFalseMap.delete(key);
-                            break;
-                    }
-                }
-            });
-        });
+        // keyList.forEach((key, keyCount) => {
+        //   ["True","False"].forEach((str) => {
+        //     var val = this[`map${str}`].get(key);
+        //     if (val) {
+        //       this[`array${str}`].push(val);
+        //       switch (str) {
+        //         case "True": cpTrueMap.delete(key); break;
+        //         case "False": cpFalseMap.delete(key); break;
+        //       }
+        //     }
+        //   });
+        // });
+        for (var keyCount = 0; keyCount < keyList.length; keyCount++) {
+            var key = keyList[keyCount];
+            var trueValue = this.mapTrue.get(key);
+            if (trueValue !== undefined) {
+                this.arrayTrue.push(trueValue);
+                cpTrueMap.delete(key);
+            }
+            var falseValue = this.mapFalse.get(key);
+            if (falseValue !== undefined) {
+                this.arrayFalse.push(falseValue);
+                cpFalseMap.delete(key);
+            }
+        }
         this.arrayTrueEmpty = Array.from(cpTrueMap.values());
         this.arrayFalseEmpty = Array.from(cpFalseMap.values());
     };
@@ -17599,7 +17608,7 @@ var RmsProductPlanBarChartPanelCtrl = /** @class */ (function (_super) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <div class=\"chart-container\" style=\"position: relative; height:40vh; width:80vw\"> -->\r\n<canvas class=\"chart\" style=\"position: relative; width:100%\"></canvas>";
+module.exports = "<!-- <div class=\"chart-container\" style=\"position: relative; height:40vh; width:80vw\"> -->\n<canvas class=\"chart\" style=\"position: relative; width:100%\"></canvas>";
 
 /***/ }),
 
