@@ -31,31 +31,47 @@ export class RemoteSolutionMQTTCtrl {
     connect(host: string) {
         this.host = host;
         try {
-            this.client = mqtt.connect(host);
-            this.client.on('connect', this.onConnect.bind(this));
-            this.client.on('close', this.onClose.bind(this));
+            if (this.client) {
+                this.client.end();
+            } else {
+                this.client = mqtt.connect(host);
+                this.client.on('connect', this.onConnect.bind(this));
+                this.client.on('close', this.onClose.bind(this));
+                this.client.on('end', this.onEnd.bind(this));
+            }
         } catch (e) {
             console.error(e);
-            this.client = null;
+            this.client = undefined;
         }
     }
 
     onConnect() {
         console.log("[MQTT] Connected : " + this.host);
+        if (this.subscribe &&  this.client) {
+            this.client.subscribe(this.subscribe);
+        }
     }
 
     onClose() {
-        this.client = null;
+        console.log("[MQTT] Disconnected : " + this.host);
+        this.client = undefined;
     }
+    onEnd() {
+        console.log("[MQTT] Disconnected : " + this.host);
+        this.client = mqtt.connect(this.host);
+        this.client.on('connect', this.onConnect.bind(this));
+        this.client.on('close', this.onClose.bind(this));
+        this.client.on('end', this.onEnd.bind(this));
+}
 
     recvMessage(callback: any) {
-        if (this.client !== undefined ) {
+        if (!this.client) {
             this.client.on('message', callback.bind(this));
         }
     }
 
     publishMessage(topic: string, message: string, options: object) {
-        if (this.client !== undefined ) {
+        if (this.client) {
             console.log('[MQTT publish]',topic, message, options);
             try {
                 this.client.publish(topic, message, options);
