@@ -68,7 +68,7 @@
     {
       "path": "/",
       "method": "*",
-      "url": "ws://219.251.4.236:1884",
+      "url": "ws://localhost:1884",
       "reqSignedIn": true
     }
   ],
