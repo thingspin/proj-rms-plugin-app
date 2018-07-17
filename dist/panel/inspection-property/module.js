@@ -29098,8 +29098,7 @@ var InspectionPropertyPanelCtrl = /** @class */ (function (_super) {
         ];
         // param : host:string, topic:string, recvcallback:function
         var urlPath = "/";
-        // const baseUrl = `ws://${this.$location.host()}:${this.$location.port()}/api/plugin-proxy/${appId}`;
-        var baseUrl = "ws://219.251.4.236':" + _this.$location.port() + "/api/plugin-proxy/" + appId;
+        var baseUrl = "ws://" + _this.$location.host() + ":" + _this.$location.port() + "/api/plugin-proxy/" + appId;
         _this.rsMqttSrv.connect("" + baseUrl + urlPath);
         // this.rsMqttSrv.subscribe = '#';
         // this.rsMqttSrv.recvMessage(this.mqttRecv.bind(this));
