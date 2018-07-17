@@ -215,8 +215,15 @@ export class InspectionPropertyPanelCtrl  extends MetricsPanelCtrl  {
             this.getInspectionProperty(name).then((res) => {
                 let data = this.rsDsSrv.getTableObj(res);
                 if (data.length === 1 && data[0].length === 1) {
-                    let topic = 'INSPPROP/' + data[0][0].IDX;
-                    let obj = data[0][0];
+                    let topic = '';
+                    let obj = Object;
+                    if (ipType.id === 1) {
+                        topic = 'INSPPROP/' + data[0][0].IDX;
+                        obj = data[0][0];
+                    } else {
+                        topic = 'EYEINSPR/' + data[0][0].IDX;
+                        obj = data[0][0];                   
+                    }
                     this.rsMqttSrv.publishMessage(topic, JSON.stringify(Object.assign(obj)), this.mqttdefaultOpts);
                 }
             });
@@ -242,7 +249,12 @@ export class InspectionPropertyPanelCtrl  extends MetricsPanelCtrl  {
                 query.push("delete from t_inspection_property where IDX = "
                     + item.IDX);
                 this.rsDsSrv.query(selectId, query).then( result => {
-                    let topic = 'INSPPROP/' + item.IDX;
+                    let topic = '';
+                    if (item.IP_TYPE === 1) {
+                        topic = 'INSPPROP/' + item.IDX;
+                    } else {
+                        topic = 'EYEINSPR/' + item.IDX;
+                    }
                     this.rsMqttSrv.publishMessage(topic, '', this.mqttdefaultOpts);
 
                     this.setMode('list');
@@ -274,13 +286,17 @@ export class InspectionPropertyPanelCtrl  extends MetricsPanelCtrl  {
             + obj.IDX);
 
         this.rsDsSrv.query(selectId, query).then( result => {
-            let topic = 'INSPPROP/' + obj.IDX;
-
             let allQ = [];
             allQ.push("SELECT * FROM t_inspection_property where IDX = " + obj.IDX);
             this.rsDsSrv.query(selectId, allQ).then( result => {
                 let data = this.rsDsSrv.getTableObj(result)[0][0];
                 if (data !== null && data !== undefined) {
+                    let topic ='';
+                    if (data.IP_TYPE === 1) {
+                        topic = 'INSPPROP/' + obj.IDX;
+                    } else {
+                        topic = 'EYEINSPR/' + obj.IDX;
+                    }
                     this.rsMqttSrv.publishMessage(topic, JSON.stringify(Object.assign(data)), this.mqttdefaultOpts);
                 }
             });
