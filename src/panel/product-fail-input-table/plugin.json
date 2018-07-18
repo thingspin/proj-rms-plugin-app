@@ -1,0 +1,13 @@
+{
+  "type": "panel",
+  "name": "(RMS) 불량입력기 전체 불량율",
+  "id": "rms-product-fail-input-table",
+
+  "info": {
+    "description": "Asset management : Company",
+    "author": {
+      "name": "jiwoong@thingspin.io",
+      "url": "http://thingspin.io"
+    }
+  }
+}

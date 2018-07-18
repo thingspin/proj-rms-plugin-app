@@ -81,7 +81,7 @@ define(["app/plugins/sdk"], function(__WEBPACK_EXTERNAL_MODULE_grafana_app_plugi
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./panel/product-detail-fail-table/module.ts");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./panel/product-fail-input-table/module.ts");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -46156,10 +46156,10 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ "./panel/product-detail-fail-table/module.ts":
-/*!***************************************************!*\
-  !*** ./panel/product-detail-fail-table/module.ts ***!
-  \***************************************************/
+/***/ "./panel/product-fail-input-table/module.ts":
+/*!**************************************************!*\
+  !*** ./panel/product-fail-input-table/module.ts ***!
+  \**************************************************/
 /*! exports provided: PanelCtrl */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -46201,9 +46201,8 @@ Object(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_6__["loadPluginCss"])({
     dark: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.dark.css',
     light: 'plugins/proj-rms-plugin-app/css/rms-plugins-app.light.css'
 });
-var PRODUCT_TOTAL = "생산수량";
-var PRODUCT_FAIL = "불량수";
-var PRODUCT_ITEM = "검사항목";
+var PRODUCT_TOTAL = "검사기 양품수";
+var PRODUCT_INPUT_MACHINE_TOTAL = "불량입력 불량수";
 var RmsProductFailPanelCtrl = /** @class */ (function (_super) {
     __extends(RmsProductFailPanelCtrl, _super);
     function RmsProductFailPanelCtrl($scope, $injector, $http, $location, uiSegmentSrv, annotationsSrv) {
@@ -46213,15 +46212,11 @@ var RmsProductFailPanelCtrl = /** @class */ (function (_super) {
         _this.aligns = [];
         _this.panelDefaults = {
             formatters: [],
-            colume: [],
-            itemTitle: ''
+            colume: []
         };
         lodash__WEBPACK_IMPORTED_MODULE_0___default.a.defaults(_this.panel, _this.panelDefaults);
         _this.aligns = ['LEFT', 'CENTER', 'RIGHT'];
         _this.getColumns = new Map();
-        if (_this.panel.itemTitle.length === 0) {
-            _this.panel.itemTitle = PRODUCT_ITEM;
-        }
         _this.divID = 'table-rms-' + _this.panel.id;
         _this.events.on('init-edit-mode', _this.onInitEditMode.bind(_this));
         _this.events.on('panel-size-changed', _this.onSizeChanged.bind(_this));
@@ -46235,7 +46230,7 @@ var RmsProductFailPanelCtrl = /** @class */ (function (_super) {
         this.columninit = false;
     };
     RmsProductFailPanelCtrl.prototype.onInitEditMode = function () {
-        this.addEditorTab('Options', "public/plugins/proj-rms-plugin-app/panel/product-detail-fail-table/partial/options.html", 2);
+        this.addEditorTab('Options', "public/plugins/proj-rms-plugin-app/panel/product-fail-table/partial/options.html", 2);
     };
     RmsProductFailPanelCtrl.prototype.link = function (scope, elem, attrs, ctrl) {
         var t = elem.find('.thingspin-table')[0];
@@ -46268,8 +46263,6 @@ var RmsProductFailPanelCtrl = /** @class */ (function (_super) {
         this.columns.push({ title: 'time_sec', field: 'time_sec', align: 'center' });
         this.columns.push({ title: '날짜', field: '날짜', align: 'center' });
         this.columns.push({ title: '모델', field: '모델', align: 'center' });
-        this.columns.push({ title: this.panel.itemTitle, field: this.panel.itemTitle, align: 'left' });
-        this.columns.push({ title: PRODUCT_FAIL, field: PRODUCT_FAIL, align: 'right' });
     };
     RmsProductFailPanelCtrl.prototype.createTable = function (dataList) {
         var _this = this;
@@ -46326,7 +46319,7 @@ var RmsProductFailPanelCtrl = /** @class */ (function (_super) {
             };
         }
         else {
-            if (obj.title === PRODUCT_TOTAL || obj.title === PRODUCT_FAIL) {
+            if (obj.title === PRODUCT_TOTAL || obj.title === PRODUCT_INPUT_MACHINE_TOTAL) {
                 obj.align = this.aligns[2];
                 obj.formatter = function (cell, formatterParam) {
                     if (cell.getValue() === undefined || cell.getValue === null)
@@ -46338,37 +46331,34 @@ var RmsProductFailPanelCtrl = /** @class */ (function (_super) {
     };
     RmsProductFailPanelCtrl.prototype.transformer = function (dataList) {
         var _this = this;
-        console.log(dataList);
         this.columns = [];
         this.columninit = false;
         var jArray = new Array;
         var tableMap = new Map();
-        var tableDetailMap = new Map();
         dataList.forEach(function (element) {
-            _this.transAddedData(element, tableMap, tableDetailMap);
+            _this.transAddedData(element, tableMap);
         });
         var inputValue = false;
         // console.log(this);
-        tableDetailMap.forEach(function (value, key, mapObj) {
+        tableMap.forEach(function (value, key, mapObj) {
             var object = Object();
-            var modelName = '';
+            var tempProduct = 0;
             var tempError = 0;
             value.forEach(function (v, k) {
                 object[k] = v;
                 switch (k) {
-                    case '모델':
-                        modelName = v;
+                    case PRODUCT_TOTAL:
+                        tempProduct = v;
                         break;
-                    case PRODUCT_FAIL:
+                    case PRODUCT_INPUT_MACHINE_TOTAL:
                         tempError = v;
                         break;
                 }
             });
-            if (modelName.length > 0) {
+            if (tempProduct !== 0) {
                 if (!inputValue)
                     inputValue = true;
-                var productObj = tableMap.get(modelName);
-                object.achievement = ((Number(tempError) * 100) / Number(productObj.get('생산수량'))).toFixed(2) + " %";
+                object.achievement = ((Number(tempError) * 100) / Number(tempProduct)).toFixed(2) + " %";
             }
             jArray.push(object);
         });
@@ -46381,39 +46371,48 @@ var RmsProductFailPanelCtrl = /** @class */ (function (_super) {
         }
         this.dataJson = jArray;
     };
-    RmsProductFailPanelCtrl.prototype.transAddedData = function (data, tableMap, tableDetailMap) {
-        var _this = this;
+    RmsProductFailPanelCtrl.prototype.transAddedData = function (data, tableMap) {
         var rows = data.rows;
         var columns = data.columns;
         // console.log("fail :" + rows);
-        if (columns.map(function (x) { return x.text; }).indexOf(PRODUCT_TOTAL) !== -1) {
-            rows.forEach(function (row, count) {
-                var map = new Map();
-                map.set('time_sec', row[0]);
-                map.set('모델', row[1]);
-                map.set(PRODUCT_TOTAL, row[2]);
-                tableMap.set(row[1], map);
-            });
-            // console.log(tableMap);
-        }
-        else if (columns.map(function (x) { return x.text; }).indexOf(PRODUCT_FAIL) !== -1) {
+        if (columns.map(function (x) { return x.text; }).indexOf(PRODUCT_TOTAL) !== -1
+            || columns.map(function (x) { return x.text; }).indexOf(PRODUCT_INPUT_MACHINE_TOTAL) !== -1) {
             if (!this.columninit) {
                 this.initColume();
                 this.columninit = true;
             }
+            var obj = {
+                title: columns[2].text,
+                field: columns[2].text,
+                align: "left",
+            };
+            this.columnOption(obj);
+            this.columns.push(obj);
             rows.forEach(function (row, count) {
-                var date = new Date(row[0]);
-                var map = new Map();
-                map.set('time_sec', row[0]);
-                map.set('날짜', moment__WEBPACK_IMPORTED_MODULE_2___default()(date).format("YYYY/MM/DD"));
-                map.set('모델', row[2]);
-                map.set(_this.panel.itemTitle, row[1]);
-                map.set(PRODUCT_FAIL, row[3]);
-                tableDetailMap.set(row[2] + row[1], map);
+                var inputData = tableMap.get(row[1]);
+                if (inputData) {
+                    if (row[2] !== 0) {
+                        var setData = inputData.get(obj.title) ? row[2] + inputData.get(obj.title) : row[2];
+                        inputData.set(obj.title, setData);
+                        tableMap.set(row[1], inputData);
+                    }
+                }
+                else {
+                    if (row[2] !== 0) {
+                        var date = new Date(row[0]);
+                        var map = new Map();
+                        map.set('time_sec', row[0]);
+                        map.set('날짜', moment__WEBPACK_IMPORTED_MODULE_2___default()(date).format("YYYY/MM/DD"));
+                        map.set('모델', row[1]);
+                        map.set(obj.title, row[2]);
+                        tableMap.set(row[1], map);
+                    }
+                }
             });
+            // console.log(tableMap);
         }
     };
-    RmsProductFailPanelCtrl.template = __webpack_require__(/*! ./partial/templet.html */ "./panel/product-detail-fail-table/partial/templet.html");
+    RmsProductFailPanelCtrl.template = __webpack_require__(/*! ./partial/templet.html */ "./panel/product-fail-input-table/partial/templet.html");
     return RmsProductFailPanelCtrl;
 }(grafana_app_plugins_sdk__WEBPACK_IMPORTED_MODULE_6__["MetricsPanelCtrl"]));
 
@@ -46421,10 +46420,10 @@ var RmsProductFailPanelCtrl = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "./panel/product-detail-fail-table/partial/templet.html":
-/*!**************************************************************!*\
-  !*** ./panel/product-detail-fail-table/partial/templet.html ***!
-  \**************************************************************/
+/***/ "./panel/product-fail-input-table/partial/templet.html":
+/*!*************************************************************!*\
+  !*** ./panel/product-fail-input-table/partial/templet.html ***!
+  \*************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 

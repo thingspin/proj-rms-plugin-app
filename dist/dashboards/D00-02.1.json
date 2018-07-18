@@ -12,10 +12,10 @@
       }
     ]
   },
-  "editable": false,
+  "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1531131615930,
+  "iteration": 1531893181614,
   "links": [
     {
       "icon": "external link",
@@ -380,7 +380,7 @@
           ]
         }
       ],
-      "title": "모델에 대한 불량율",
+      "title": "모델에 대한 검사항목에 총 불량율",
       "type": "rms-product-fail-table"
     },
     {
@@ -394,6 +394,7 @@
         "y": 20
       },
       "id": 10,
+      "itemTitle": "검사항목",
       "kernel": null,
       "links": [],
       "scripts": "",
@@ -511,6 +512,275 @@
       ],
       "title": "모델에 대한 검사항목별 불량수와 불량율",
       "type": "rms-product-detail-fail-table"
+    },
+    {
+      "colume": [],
+      "datasource": "$DATABASE",
+      "formatters": [],
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 29
+      },
+      "id": 12,
+      "kernel": null,
+      "links": [],
+      "scripts": "",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "1d,-9h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "model"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "/^inspection.summary-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "tuid"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              },
+              {
+                "params": [
+                  "검사기 양품수"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            }
+          ]
+        },
+        {
+          "groupBy": [
+            {
+              "params": [
+                "1d,-9h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "prodModel"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "/^inspection.eye-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"quantity\") AS \"불량입력 불량수\" FROM /^inspection.eye-*/ WHERE (\"prodModel\" =~ /^$MODEL$/) AND $timeFilter GROUP BY time(1d,-9h), \"prodModel\", \"idx\" fill(0)",
+          "rawQuery": false,
+          "refId": "B",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "quantity"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [
+                  "불량입력 불량수"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "prodModel",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            }
+          ]
+        }
+      ],
+      "title": "모델에 대한 불량입력기에 총 불량율",
+      "type": "rms-product-fail-input-table"
+    },
+    {
+      "colume": [],
+      "datasource": "$DATABASE",
+      "formatters": [],
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 29
+      },
+      "id": 13,
+      "itemTitle": "불량 입력 항목",
+      "kernel": null,
+      "links": [],
+      "scripts": "",
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "1d,-9h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "prodModel"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "idx"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "/^inspection.eye-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "quantity"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [
+                  "불량수"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "prodModel",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            }
+          ]
+        },
+        {
+          "groupBy": [
+            {
+              "params": [
+                "1d,-9h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "model"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "/^inspection.summary-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "B",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "tuid"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              },
+              {
+                "params": [
+                  "생산수량"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "pass",
+              "operator": "=",
+              "value": "true"
+            }
+          ]
+        }
+      ],
+      "title": "모델에 대한 불량입력기별 불량수와 불량율",
+      "type": "rms-product-detail-fail-table"
     }
   ],
   "schemaVersion": 16,
@@ -522,7 +792,6 @@
     "list": [
       {
         "current": {
-          "selected": true,
           "text": "RMS-CENTER-INFLUXDB(V1.0)",
           "value": "RMS-CENTER-INFLUXDB(V1.0)"
         },
@@ -538,9 +807,8 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
-          "text": "RC76A00",
-          "value": "RC76A00"
+          "text": "CRB89C00",
+          "value": "CRB89C00"
         },
         "datasource": "$DATABASE",
         "hide": 0,
@@ -562,7 +830,6 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -586,7 +853,6 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -673,5 +939,5 @@
   "timezone": "",
   "title": "불량 현황",
   "uid": "KfvX3wVik",
-  "version": 14
+  "version": 3
 }

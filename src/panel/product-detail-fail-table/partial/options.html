@@ -1,4 +1,11 @@
 <div class="editor-row">
+	<div class="section gf-form-group">
+		<div class="gf-form">
+			<label class="gf-form-label width-15">Item Column Title Change</label>
+			<input type="text" class="input-small gf-form-input width-16" ng-model="ctrl.panel.itemTitle" ng-change="ctrl.render()" />                        
+		</div>
+	</div>
+
 	<div ng-repeat="formatter in ctrl.panel.formatters">
 		<div class="section gf-form-group">
 			<h5 class="section-heading">&nbsp</h5>
