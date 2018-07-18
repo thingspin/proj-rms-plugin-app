@@ -15,7 +15,7 @@
   "editable": false,
   "gnetId": null,
   "graphTooltip": 1,
-  "iteration": 1531120902605,
+  "iteration": 1531894614943,
   "links": [
     {
       "icon": "external link",
@@ -554,7 +554,7 @@
       "fontSize": "80%",
       "gridPos": {
         "h": 17,
-        "w": 24,
+        "w": 17,
         "x": 0,
         "y": 11
       },
@@ -874,6 +874,99 @@
       "transform": "table",
       "transparent": false,
       "type": "table"
+    },
+    {
+      "columns": [],
+      "datasource": "$DATABASE",
+      "fontSize": "80%",
+      "gridPos": {
+        "h": 17,
+        "w": 7,
+        "x": 17,
+        "y": 11
+      },
+      "id": 18,
+      "kernel": null,
+      "links": [],
+      "pageSize": null,
+      "scripts": "",
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": 0,
+        "desc": true
+      },
+      "styles": [
+        {
+          "alias": "Time",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "date"
+        },
+        {
+          "alias": "",
+          "colorMode": null,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "groupBy": [
+            {
+              "params": [
+                "prodModel"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "idx"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "facility"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "inspection.eye-20180101",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "quantity"
+                ],
+                "type": "field"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "prodModel",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            }
+          ]
+        }
+      ],
+      "title": "불량 검사기 All",
+      "transform": "table",
+      "type": "table"
     }
   ],
   "refresh": "1s",
@@ -1123,5 +1216,5 @@
   "timezone": "",
   "title": "검사 기록",
   "uid": "rAgfpx7iz",
-  "version": 3
+  "version": 6
 }
