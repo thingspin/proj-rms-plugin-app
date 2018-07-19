@@ -87,6 +87,7 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
 
   onDataReceived(dataList) {
     this.dataRaw = dataList;
+    console.log(dataList);
     Promise.resolve(this.transformer(this.dataRaw));
     this.createTable(this.dataJson);
   }
@@ -124,10 +125,20 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
       this.columnOption(obj);
       this.columns.push(obj);
     } 
-    if (this.columns.map(x => x.title).indexOf('불량') === -1) {
+    if (this.columns.map(x => x.title).indexOf('불량(검사기)') === -1) {
       var obj = {
-        title: '불량',
-        field: '불량',
+        title: '불량(검사기)',
+        field: '불량(검사기)',
+        align: "left",
+        // editor: this.autocompEditor,
+      };
+      this.columnOption(obj);
+      this.columns.push(obj);
+    }
+    if (this.columns.map(x => x.title).indexOf('불량(불량입력기)') === -1) {
+      var obj = {
+        title: '불량(불량입력기)',
+        field: '불량(불량입력기)',
         align: "left",
         // editor: this.autocompEditor,
       };
@@ -288,19 +299,24 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
     tableMap.forEach(function (value, key, mapObj) {
       var object = Object();
       var tempTotal = 0;
-      var tempProduct = 0;
-      // var tempError = 0;
+      var tempSuccess = 0;
+      var tempMachineFail = 0;
       value.forEach((v,k) => {
         object[k] = v;
         switch (k) {
           case '생산계획': tempTotal = v; break;
-          case '실적수량': tempProduct = v; break;
+          case '양품': tempSuccess = v; break;
+          case '불량(불량입력기)': tempMachineFail = v; break;
         }
       });
-      //console.log("Plan : " + tempTotal);
+      var tempResult = tempSuccess - tempMachineFail;
+      if (tempResult > 0)
+        object['양품'] = tempResult;
+      else
+        object['양품'] = 0;
       if (tempTotal !== 0) {
-        object.achievement = Math.round((tempProduct/tempTotal)*100);
-        object.achievement_text = Math.round((tempProduct/tempTotal)*100) + "%";
+        object.achievement = Math.round((tempResult/tempTotal)*100);
+        object.achievement_text = Math.round((tempResult/tempTotal)*100) + "%";
         jArray.push(object);
       } else {
         object.achievement = 0;
@@ -342,7 +358,7 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
 
     if (columns.map(x => x.text).indexOf('실적수량') !== -1
       || columns.map(x => x.text).indexOf('양품') !== -1
-      || columns.map(x => x.text).indexOf('불량') !== -1) {
+      || columns.map(x => x.text).indexOf('불량(검사기)') !== -1) {
       var obj = {
         title: columns[2].text,
         field: columns[2].text,
@@ -373,7 +389,38 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
         }
       });
       //console.log(tableMap);
+    } else if (columns.map(x => x.text).indexOf('불량(불량입력기)') !== -1) {
+      if (this.columns.map(x => x.text).indexOf('불량(불량입력기)') !== -1) {
+        var obj = {
+          title: columns[2].text,
+          field: columns[2].text,
+          align: "left",
+        };
+        this.columnOption(obj);
+        this.columns.push(obj);  
+      }
+      rows.forEach((row, count) => {
+        var inputData = tableMap.get(row[1]);
+        if (inputData) {
+          if (row[2] !== 0) {
+            const setData = inputData.get(columns[2].text) ? row[2] + inputData.get(columns[2].text) : row[2];
+            inputData.set(columns[2].text, setData);
+            tableMap.set(row[1], inputData);
+          }
+        }
+      });
+
     } else if (columns.map(x => x.text).indexOf('starttime') !== -1) {
+      if (this.columns.map(x => x.title).indexOf('불량(불량입력기)') === -1) {
+        var failObj = {
+          title: '불량(불량입력기)',
+          field: '불량(불량입력기)',
+          align: "left",
+          // editor: this.autocompEditor,
+        };
+        this.columnOption(failObj);
+        this.columns.push(failObj);
+      }
       rows.forEach((row, count) => {
         var map = new Map();
         map.set('time', row[0]);

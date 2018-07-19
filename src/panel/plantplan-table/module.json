@@ -15,7 +15,7 @@
   "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1531203224712,
+  "iteration": 1531986968158,
   "links": [
     {
       "icon": "external link",
@@ -229,7 +229,8 @@
               "type": "fill"
             }
           ],
-          "measurement": "inspection.summary-20180101",
+          "hide": false,
+          "measurement": "/^inspection.summary-*/",
           "orderByTime": "ASC",
           "policy": "default",
           "refId": "C",
@@ -290,7 +291,8 @@
               "type": "fill"
             }
           ],
-          "measurement": "inspection.summary-20180101",
+          "hide": false,
+          "measurement": "/^inspection.summary-*/",
           "orderByTime": "ASC",
           "policy": "default",
           "refId": "E",
@@ -357,7 +359,8 @@
               "type": "fill"
             }
           ],
-          "measurement": "inspection.summary-20180101",
+          "hide": false,
+          "measurement": "/^inspection.summary-*/",
           "orderByTime": "ASC",
           "policy": "default",
           "refId": "D",
@@ -376,7 +379,7 @@
               },
               {
                 "params": [
-                  "불량"
+                  "불량(검사기)"
                 ],
                 "type": "alias"
               }
@@ -418,7 +421,7 @@
               "type": "tag"
             }
           ],
-          "measurement": "inspection.summary-20180101",
+          "measurement": "/^inspection.summary-*/",
           "orderByTime": "ASC",
           "policy": "default",
           "refId": "B",
@@ -488,6 +491,61 @@
             {
               "condition": "AND",
               "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            }
+          ]
+        },
+        {
+          "datasource": "$DATABASE",
+          "groupBy": [
+            {
+              "params": [
+                "1d,-9h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "prodModel"
+              ],
+              "type": "tag"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "/^inspection.eye-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "F",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "quantity"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              },
+              {
+                "params": [
+                  "불량(불량입력기)"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "prodModel",
               "operator": "=~",
               "value": "/^$MODEL$/"
             }
@@ -583,8 +641,8 @@
     ]
   },
   "time": {
-    "from": "now/d",
-    "to": "now/d"
+    "from": "now-3d",
+    "to": "now"
   },
   "timepicker": {
     "hidden": false,

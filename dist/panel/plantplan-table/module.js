@@ -46247,6 +46247,7 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
     };
     RmsPlantPlanPanelCtrl.prototype.onDataReceived = function (dataList) {
         this.dataRaw = dataList;
+        console.log(dataList);
         Promise.resolve(this.transformer(this.dataRaw));
         this.createTable(this.dataJson);
     };
@@ -46279,10 +46280,19 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
             this.columnOption(obj);
             this.columns.push(obj);
         }
-        if (this.columns.map(function (x) { return x.title; }).indexOf('불량') === -1) {
+        if (this.columns.map(function (x) { return x.title; }).indexOf('불량(검사기)') === -1) {
             var obj = {
-                title: '불량',
-                field: '불량',
+                title: '불량(검사기)',
+                field: '불량(검사기)',
+                align: "left",
+            };
+            this.columnOption(obj);
+            this.columns.push(obj);
+        }
+        if (this.columns.map(function (x) { return x.title; }).indexOf('불량(불량입력기)') === -1) {
+            var obj = {
+                title: '불량(불량입력기)',
+                field: '불량(불량입력기)',
                 align: "left",
             };
             this.columnOption(obj);
@@ -46447,23 +46457,30 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
         tableMap.forEach(function (value, key, mapObj) {
             var object = Object();
             var tempTotal = 0;
-            var tempProduct = 0;
-            // var tempError = 0;
+            var tempSuccess = 0;
+            var tempMachineFail = 0;
             value.forEach(function (v, k) {
                 object[k] = v;
                 switch (k) {
                     case '생산계획':
                         tempTotal = v;
                         break;
-                    case '실적수량':
-                        tempProduct = v;
+                    case '양품':
+                        tempSuccess = v;
+                        break;
+                    case '불량(불량입력기)':
+                        tempMachineFail = v;
                         break;
                 }
             });
-            //console.log("Plan : " + tempTotal);
+            var tempResult = tempSuccess - tempMachineFail;
+            if (tempResult > 0)
+                object['양품'] = tempResult;
+            else
+                object['양품'] = 0;
             if (tempTotal !== 0) {
-                object.achievement = Math.round((tempProduct / tempTotal) * 100);
-                object.achievement_text = Math.round((tempProduct / tempTotal) * 100) + "%";
+                object.achievement = Math.round((tempResult / tempTotal) * 100);
+                object.achievement_text = Math.round((tempResult / tempTotal) * 100) + "%";
                 jArray.push(object);
             }
             else {
@@ -46502,7 +46519,7 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
         var columns = data.columns;
         if (columns.map(function (x) { return x.text; }).indexOf('실적수량') !== -1
             || columns.map(function (x) { return x.text; }).indexOf('양품') !== -1
-            || columns.map(function (x) { return x.text; }).indexOf('불량') !== -1) {
+            || columns.map(function (x) { return x.text; }).indexOf('불량(검사기)') !== -1) {
             var obj = {
                 title: columns[2].text,
                 field: columns[2].text,
@@ -46534,7 +46551,37 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
             });
             //console.log(tableMap);
         }
+        else if (columns.map(function (x) { return x.text; }).indexOf('불량(불량입력기)') !== -1) {
+            if (this.columns.map(function (x) { return x.text; }).indexOf('불량(불량입력기)') !== -1) {
+                var obj = {
+                    title: columns[2].text,
+                    field: columns[2].text,
+                    align: "left",
+                };
+                this.columnOption(obj);
+                this.columns.push(obj);
+            }
+            rows.forEach(function (row, count) {
+                var inputData = tableMap.get(row[1]);
+                if (inputData) {
+                    if (row[2] !== 0) {
+                        var setData = inputData.get(columns[2].text) ? row[2] + inputData.get(columns[2].text) : row[2];
+                        inputData.set(columns[2].text, setData);
+                        tableMap.set(row[1], inputData);
+                    }
+                }
+            });
+        }
         else if (columns.map(function (x) { return x.text; }).indexOf('starttime') !== -1) {
+            if (this.columns.map(function (x) { return x.title; }).indexOf('불량(불량입력기)') === -1) {
+                var failObj = {
+                    title: '불량(불량입력기)',
+                    field: '불량(불량입력기)',
+                    align: "left",
+                };
+                this.columnOption(failObj);
+                this.columns.push(failObj);
+            }
             rows.forEach(function (row, count) {
                 var map = new Map();
                 map.set('time', row[0]);
@@ -46581,7 +46628,7 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"editor-row\">\r\n    <div class=\"thingspin-table\"></div>\r\n</div>\r\n";
+module.exports = "<div class=\"editor-row\">\n    <div class=\"thingspin-table\"></div>\n</div>\n";
 
 /***/ }),
 
