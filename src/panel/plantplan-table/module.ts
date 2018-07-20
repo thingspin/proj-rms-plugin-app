@@ -362,49 +362,81 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
   transAddedData(data, tableMap, tableSTMap) {
     var rows = data.rows;
     var columns = data.columns;
-
+    
     if (columns.map(x => x.text).indexOf('실적수량') !== -1
       || columns.map(x => x.text).indexOf('양품') !== -1
       || columns.map(x => x.text).indexOf('불량(검사기)') !== -1) {
-      var obj = {
-        title: columns[2].text,
-        field: columns[2].text,
-        align: "left",
-        // editor: this.autocompEditor,
-      };
-      this.columnOption(obj);
-      this.columns.push(obj);
-      rows.forEach((row, count) => {
-        var inputData = tableMap.get(row[1]);
-        if (inputData) {
-          if (row[2] !== 0) {
-            const setData = inputData.get(obj.title) ? row[2] + inputData.get(obj.title) : row[2];
-            inputData.set(obj.title, setData);
-            tableMap.set(row[1], inputData);
+        if (this.columns.length > 0) {
+          if (this.columns.map(x => x.title).indexOf('실적수량') === -1) {
+            var obj = {
+              title: '실적수량',
+              field: '실적수량',
+              align: "left",
+              // editor: this.autocompEditor,
+            };
+            this.columnOption(obj);
+            this.columns.push(obj);
+          }
+          if (this.columns.map(x => x.title).indexOf('양품') === -1) {
+            var obj = {
+              title: '양품',
+              field: '양품',
+              align: "left",
+              // editor: this.autocompEditor,
+            };
+            this.columnOption(obj);
+            this.columns.push(obj);
+          } 
+          if (this.columns.map(x => x.title).indexOf('불량(검사기)') === -1) {
+            var obj = {
+              title: '불량(검사기)',
+              field: '불량(검사기)',
+              align: "left",
+              // editor: this.autocompEditor,
+            };
+            this.columnOption(obj);
+            this.columns.push(obj);
           }
         } else {
-          if (row[2] !== 0) {
-            var date = new Date(row[0]);
-            var map = new Map();
-            map.set('time_sec', row[0]);
-            map.set('날짜', moment(date, "YYYYMMDD"));
-            map.set('모델', row[1]);
-            map.set('생산계획', 0);
-            map.set(obj.title, row[2]);
-            tableMap.set(row[1], map);
-          }
+          var object = {
+            title: columns[2].text,
+            field: columns[2].text,
+            align: "left",
+          };
+          this.columnOption(object);
+          this.columns.push(object);  
         }
-      });
+        rows.forEach((row, count) => {
+          var inputData = tableMap.get(row[1]);
+          if (inputData) {
+            if (row[2] !== 0) {
+              const setData = inputData.get(columns[2].text) ? row[2] + inputData.get(columns[2].text) : row[2];
+              inputData.set(columns[2].text, setData);
+              tableMap.set(row[1], inputData);
+            }
+          } else {
+            if (row[2] !== 0) {
+              var date = new Date(row[0]);
+              var map = new Map();
+              map.set('time_sec', row[0]);
+              map.set('날짜', moment(date, "YYYYMMDD"));
+              map.set('모델', row[1]);
+              map.set('생산계획', 0);
+              map.set(obj.title, row[2]);
+              tableMap.set(row[1], map);
+            }
+          }
+        });
       //console.log(tableMap);
     } else if (columns.map(x => x.text).indexOf('불량(불량입력기)') !== -1) {
       if (this.columns.map(x => x.text).indexOf('불량(불량입력기)') !== -1) {
-        var obj = {
+        var object = {
           title: columns[2].text,
           field: columns[2].text,
           align: "left",
         };
-        this.columnOption(obj);
-        this.columns.push(obj);  
+        this.columnOption(object);
+        this.columns.push(object);  
       }
       rows.forEach((row, count) => {
         var inputData = tableMap.get(row[1]);

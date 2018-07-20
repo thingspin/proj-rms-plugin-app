@@ -46527,19 +46527,50 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
         if (columns.map(function (x) { return x.text; }).indexOf('실적수량') !== -1
             || columns.map(function (x) { return x.text; }).indexOf('양품') !== -1
             || columns.map(function (x) { return x.text; }).indexOf('불량(검사기)') !== -1) {
-            var obj = {
-                title: columns[2].text,
-                field: columns[2].text,
-                align: "left",
-            };
-            this.columnOption(obj);
-            this.columns.push(obj);
+            if (this.columns.length > 0) {
+                if (this.columns.map(function (x) { return x.title; }).indexOf('실적수량') === -1) {
+                    var obj = {
+                        title: '실적수량',
+                        field: '실적수량',
+                        align: "left",
+                    };
+                    this.columnOption(obj);
+                    this.columns.push(obj);
+                }
+                if (this.columns.map(function (x) { return x.title; }).indexOf('양품') === -1) {
+                    var obj = {
+                        title: '양품',
+                        field: '양품',
+                        align: "left",
+                    };
+                    this.columnOption(obj);
+                    this.columns.push(obj);
+                }
+                if (this.columns.map(function (x) { return x.title; }).indexOf('불량(검사기)') === -1) {
+                    var obj = {
+                        title: '불량(검사기)',
+                        field: '불량(검사기)',
+                        align: "left",
+                    };
+                    this.columnOption(obj);
+                    this.columns.push(obj);
+                }
+            }
+            else {
+                var object = {
+                    title: columns[2].text,
+                    field: columns[2].text,
+                    align: "left",
+                };
+                this.columnOption(object);
+                this.columns.push(object);
+            }
             rows.forEach(function (row, count) {
                 var inputData = tableMap.get(row[1]);
                 if (inputData) {
                     if (row[2] !== 0) {
-                        var setData = inputData.get(obj.title) ? row[2] + inputData.get(obj.title) : row[2];
-                        inputData.set(obj.title, setData);
+                        var setData = inputData.get(columns[2].text) ? row[2] + inputData.get(columns[2].text) : row[2];
+                        inputData.set(columns[2].text, setData);
                         tableMap.set(row[1], inputData);
                     }
                 }
@@ -46560,13 +46591,13 @@ var RmsPlantPlanPanelCtrl = /** @class */ (function (_super) {
         }
         else if (columns.map(function (x) { return x.text; }).indexOf('불량(불량입력기)') !== -1) {
             if (this.columns.map(function (x) { return x.text; }).indexOf('불량(불량입력기)') !== -1) {
-                var obj = {
+                var object = {
                     title: columns[2].text,
                     field: columns[2].text,
                     align: "left",
                 };
-                this.columnOption(obj);
-                this.columns.push(obj);
+                this.columnOption(object);
+                this.columns.push(object);
             }
             rows.forEach(function (row, count) {
                 var inputData = tableMap.get(row[1]);
