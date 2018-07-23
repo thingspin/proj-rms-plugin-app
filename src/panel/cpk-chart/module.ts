@@ -297,7 +297,7 @@ class RmsCPKAnalyticsPanelCtrl extends MetricsPanelCtrl {
               //autoSkip: true,
               ticks:{
                 callback: function(value) {
-                  return (value * 100) + "%"
+                  return (value * 100).toFixed(3) + "%"
                 }
               }
               //position: "left"

@@ -17802,7 +17802,7 @@ var RmsCPKAnalyticsPanelCtrl = /** @class */ (function (_super) {
                             //autoSkip: true,
                             ticks: {
                                 callback: function (value) {
-                                    return (value * 100) + "%";
+                                    return (value * 100).toFixed(3) + "%";
                                 }
                             }
                             //position: "left"
