@@ -36,3 +36,4 @@ grafana
 .tscache
 .vscode-upload.json
 yarn.lock
+.vscode

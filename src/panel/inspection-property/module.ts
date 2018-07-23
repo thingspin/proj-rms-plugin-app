@@ -216,7 +216,7 @@ export class InspectionPropertyPanelCtrl  extends MetricsPanelCtrl  {
                 let data = this.rsDsSrv.getTableObj(res);
                 if (data.length === 1 && data[0].length === 1) {
                     let topic = '';
-                    let obj = Object;
+                    let obj;
                     if (ipType.id === 1) {
                         topic = 'INSPPROP/' + data[0][0].IDX;
                         obj = data[0][0];
@@ -224,7 +224,7 @@ export class InspectionPropertyPanelCtrl  extends MetricsPanelCtrl  {
                         topic = 'EYEINSPR/' + data[0][0].IDX;
                         obj = data[0][0];                   
                     }
-                    this.rsMqttSrv.publishMessage(topic, JSON.stringify(Object.assign(obj)), this.mqttdefaultOpts);
+                    this.rsMqttSrv.publishMessage(topic, JSON.stringify(Object.assign({IDX: obj.IDX, NAME: obj.NAME})), this.mqttdefaultOpts);
                 }
             });
             this.setMode('list');
@@ -291,13 +291,14 @@ export class InspectionPropertyPanelCtrl  extends MetricsPanelCtrl  {
             this.rsDsSrv.query(selectId, allQ).then( result => {
                 let data = this.rsDsSrv.getTableObj(result)[0][0];
                 if (data !== null && data !== undefined) {
-                    let topic ='';
+                    let topic = '';
                     if (data.IP_TYPE === 1) {
                         topic = 'INSPPROP/' + obj.IDX;
                     } else {
                         topic = 'EYEINSPR/' + obj.IDX;
                     }
-                    this.rsMqttSrv.publishMessage(topic, JSON.stringify(Object.assign(data)), this.mqttdefaultOpts);
+                    const {IDX,NAME} = data;
+                    this.rsMqttSrv.publishMessage(topic, JSON.stringify(Object.assign({IDX, NAME})), this.mqttdefaultOpts);
                 }
             });
 
