@@ -170,7 +170,7 @@ class RmsCPKTrendPanelCtrl extends MetricsPanelCtrl {
       if (rowMakeArray.indexOf(row[1]) === -1) {
         rowMakeArray.push(row[1]);
       }
-      valueMakeMap.set(row[0] + "-" + row[1], row[2]);
+      valueMakeMap.set(row[0] + "&" + row[1], row[2]);
     });
     // console.log(columnMakeMap);
     // console.log(rowMakeArray);
@@ -210,7 +210,7 @@ class RmsCPKTrendPanelCtrl extends MetricsPanelCtrl {
     var columnSize = this.columns.length-1;
     // console.log(columnSize);
     keyList.forEach((key, count) => {
-      var indexStr = key.split('-');
+      var indexStr = key.split('&');
 
       if (tableMakeMap.has(fieldArray[0]) === false) {
         tableMakeMap.set(fieldArray[0], indexStr[1]);
