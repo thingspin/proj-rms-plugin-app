@@ -39,7 +39,7 @@
                     <span class="gf-form-label width-10">설명</span>
                     <input class="gf-form-input" type="text" ng-model="description" ng-model-onblur ng-change="ctrl.refresh()" >
                 </div>
-                <div class="gf-form">
+                <!-- <div class="gf-form">
                         <span class="gf-form-label width-10">기본 검사치 최소값</span>
                         <input class="gf-form-input" type="number" ng-model="def_min" ng-init="def_min=0" ng-model-onblur ng-change="ctrl.refresh()">
                 </div>
@@ -54,9 +54,9 @@
                 <div class="gf-form">
                         <span class="gf-form-label width-10">기본 CPK 최소값</span>
                         <input class="gf-form-input" type="number" ng-model="def_cpk_max" ng-init="def_cpk_max=0" ng-model-onblur ng-change="ctrl.refresh()">
-                </div>
+                </div> -->
                 <div class="gf-form-button-row">
-                    <button type="button" class="btn btn-success" ng-click="ctrl.addInspectionItem(ipType, inspectionName, description, def_min, def_max, def_cpk_min, def_cpk_max)">등록</button>
+                    <button type="button" class="btn btn-success" ng-click="ctrl.addInspectionItem(ipType, inspectionName, description)">등록</button>
                     <a class="btn btn-link" ng-click="ctrl.setMode('list')">Back</a>
                 </div>
                 <div class="clearfix"></div>
@@ -78,7 +78,7 @@
                     <span class="gf-form-label width-10">설명</span>
                     <input class="gf-form-input" type="text" ng-model="ctrl.selectObj.DESCRIPTION" ng-model-onblur ng-change="ctrl.refresh()" >
                 </div>
-                <div class="gf-form">
+                <!-- <div class="gf-form">
                         <span class="gf-form-label width-10">기본 검사치 최소값</span>
                         <input class="gf-form-input" type="number" ng-model="ctrl.selectObj.DEFAULT_MIN" ng-model-onblur ng-change="ctrl.refresh()">
                 </div>
@@ -93,7 +93,7 @@
                 <div class="gf-form">
                         <span class="gf-form-label width-10">기본 CPK 최소값</span>
                         <input class="gf-form-input" type="number" ng-model="ctrl.selectObj.DEFAULT_CPK_MAX" ng-model-onblur ng-change="ctrl.refresh()">
-                </div>
+                </div> -->
                 <div class="gf-form-button-row">
                     <button type="button" class="btn btn-success" ng-click="ctrl.updateInspectionItem()">수정</button>
                     <a class="btn btn-link" ng-click="ctrl.setMode('list')">Back</a>

@@ -185,7 +185,7 @@ export class InspectionPropertyPanelCtrl  extends MetricsPanelCtrl  {
         return deferred.promise;
     }
 
-    addInspectionItem(ipType, name, desc, min, max, cpk_min, cpk_max) {
+    addInspectionItem(ipType, name, desc) {
         if (!name) {
             this.alertSrv.set('검사 항목명을 입력하세요.', '', 'info', 3000);
             return;
@@ -197,14 +197,14 @@ export class InspectionPropertyPanelCtrl  extends MetricsPanelCtrl  {
         values = values + ", " + ipType.id;
         columns = columns + ", DESCRIPTION";
         if (desc !== undefined && desc !== null )       { values = values + ",'" + desc + "'";} else { values = values + ", ''";}
-        columns = columns + ", DEFAULT_MIN";
-        if (min !== undefined && min !== null)          { values = values + ", " + min;} else {values = values + ", 0";}
-        columns = columns + ", DEFAULT_MAX";
-        if (max !== undefined && max !== null)          { values = values + ", " + max;} else {values = values + ", 0";}
-        columns = columns + ", DEFAULT_CPK_MIN";
-        if (cpk_min !== undefined && cpk_min !== null)  { values = values + ", " + cpk_min;} else {values = values + ", 0";}
-        columns = columns + ", DEFAULT_CPK_MAX";
-        if (cpk_max !== undefined && cpk_max !== null)  { values = values + ", " + cpk_max;} else {values = values + ", 0";}
+        // columns = columns + ", DEFAULT_MIN";
+        // if (min !== undefined && min !== null)          { values = values + ", " + min;} else {values = values + ", 0";}
+        // columns = columns + ", DEFAULT_MAX";
+        // if (max !== undefined && max !== null)          { values = values + ", " + max;} else {values = values + ", 0";}
+        // columns = columns + ", DEFAULT_CPK_MIN";
+        // if (cpk_min !== undefined && cpk_min !== null)  { values = values + ", " + cpk_min;} else {values = values + ", 0";}
+        // columns = columns + ", DEFAULT_CPK_MAX";
+        // if (cpk_max !== undefined && cpk_max !== null)  { values = values + ", " + cpk_max;} else {values = values + ", 0";}
         columns = columns + ")";
         values = values + ")";
         let query = [
@@ -277,11 +277,11 @@ export class InspectionPropertyPanelCtrl  extends MetricsPanelCtrl  {
             return;
         }
         let updateData = "NAME = '" + obj.NAME  + "'"
-            + ", DESCRIPTION = '"   + obj.DESCRIPTION + "'"
-            + ", DEFAULT_MIN = "    + obj.DEFAULT_MIN + ""
-            + ", DEFAULT_MAX = "    + obj.DEFAULT_MAX + ""
-            + ", DEFAULT_CPK_MIN = "+ obj.DEFAULT_CPK_MIN + ""
-            + ", DEFAULT_CPK_MAX = "+ obj.DEFAULT_CPK_MAX + "";
+            + ", DESCRIPTION = '"   + obj.DESCRIPTION + "'";
+            // + ", DEFAULT_MIN = "    + obj.DEFAULT_MIN + ""
+            // + ", DEFAULT_MAX = "    + obj.DEFAULT_MAX + ""
+            // + ", DEFAULT_CPK_MIN = "+ obj.DEFAULT_CPK_MIN + ""
+            // + ", DEFAULT_CPK_MAX = "+ obj.DEFAULT_CPK_MAX + "";
         query.push("update t_inspection_property set " + updateData + " where IDX = "
             + obj.IDX);
 
