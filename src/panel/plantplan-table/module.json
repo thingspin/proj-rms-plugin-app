@@ -15,7 +15,7 @@
   "editable": false,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1531986968158,
+  "iteration": 1532670965081,
   "links": [
     {
       "icon": "external link",
@@ -194,7 +194,7 @@
         "x": 0,
         "y": 8
       },
-      "id": 16,
+      "id": 8,
       "kernel": null,
       "links": [],
       "scripts": "",
@@ -203,7 +203,6 @@
           "alias": "",
           "datasource": "REMOTESOLUTIONS(V1.0)",
           "format": "table",
-          "hide": false,
           "rawSql": "SELECT \n  UNIX_TIMESTAMP(PLAN_DATE) as time_sec,\n  PLAN_DATE as '날짜',\n  MODEL_ID AS '모델',\n  SUM(AMOUNT) AS '생산계획'\nFROM t_product_plan\nWHERE\n  $__timeFilter(PLAN_DATE) AND\n  MODEL_ID IN ($MODEL)\nGROUP BY MODEL_ID\nORDER BY PLAN_DATE ASC, SUM(AMOUNT) DESC, MODEL_ID ASC",
           "refId": "A"
         },
@@ -212,7 +211,7 @@
           "groupBy": [
             {
               "params": [
-                "1d, -9h"
+                "1d,-9h"
               ],
               "type": "time"
             },
@@ -221,19 +220,12 @@
                 "model"
               ],
               "type": "tag"
-            },
-            {
-              "params": [
-                "0"
-              ],
-              "type": "fill"
             }
           ],
-          "hide": false,
           "measurement": "/^inspection.summary-*/",
           "orderByTime": "ASC",
           "policy": "default",
-          "refId": "C",
+          "refId": "E",
           "resultFormat": "table",
           "select": [
             [
@@ -257,151 +249,15 @@
           ],
           "tags": [
             {
-              "key": "branch",
-              "operator": "=~",
-              "value": "/^$BRANCH$/"
-            },
-            {
-              "condition": "AND",
-              "key": "model",
-              "operator": "=~",
-              "value": "/^$MODEL$/"
-            }
-          ]
-        },
-        {
-          "datasource": "$DATABASE",
-          "groupBy": [
-            {
-              "params": [
-                "1d, -9h"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "model"
-              ],
-              "type": "tag"
-            },
-            {
-              "params": [
-                "0"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "/^inspection.summary-*/",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "E",
-          "resultFormat": "table",
-          "select": [
-            [
-              {
-                "params": [
-                  "tuid"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "count"
-              },
-              {
-                "params": [
-                  "양품"
-                ],
-                "type": "alias"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "branch",
-              "operator": "=~",
-              "value": "/^$BRANCH$/"
-            },
-            {
-              "condition": "AND",
               "key": "model",
               "operator": "=~",
               "value": "/^$MODEL$/"
             },
             {
               "condition": "AND",
-              "key": "pass",
-              "operator": "=",
-              "value": "true"
-            }
-          ]
-        },
-        {
-          "datasource": "$DATABASE",
-          "groupBy": [
-            {
-              "params": [
-                "1d, -9h"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "model"
-              ],
-              "type": "tag"
-            },
-            {
-              "params": [
-                "0"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "/^inspection.summary-*/",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "D",
-          "resultFormat": "table",
-          "select": [
-            [
-              {
-                "params": [
-                  "tuid"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "count"
-              },
-              {
-                "params": [
-                  "불량(검사기)"
-                ],
-                "type": "alias"
-              }
-            ]
-          ],
-          "tags": [
-            {
               "key": "branch",
               "operator": "=~",
               "value": "/^$BRANCH$/"
-            },
-            {
-              "condition": "AND",
-              "key": "model",
-              "operator": "=~",
-              "value": "/^$MODEL$/"
-            },
-            {
-              "condition": "AND",
-              "key": "pass",
-              "operator": "=",
-              "value": "false"
             }
           ]
         },
@@ -430,42 +286,6 @@
             [
               {
                 "params": [
-                  "stime"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "first"
-              },
-              {
-                "params": [
-                  "starttime"
-                ],
-                "type": "alias"
-              }
-            ],
-            [
-              {
-                "params": [
-                  "etime"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              },
-              {
-                "params": [
-                  "edtime"
-                ],
-                "type": "alias"
-              }
-            ],
-            [
-              {
-                "params": [
                   "tuid"
                 ],
                 "type": "field"
@@ -476,7 +296,7 @@
               },
               {
                 "params": [
-                  "count"
+                  "양품"
                 ],
                 "type": "alias"
               }
@@ -484,15 +304,21 @@
           ],
           "tags": [
             {
-              "key": "branch",
-              "operator": "=~",
-              "value": "/^$BRANCH$/"
-            },
-            {
-              "condition": "AND",
               "key": "model",
               "operator": "=~",
               "value": "/^$MODEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "pass",
+              "operator": "=",
+              "value": "true"
+            },
+            {
+              "condition": "AND",
+              "key": "branch",
+              "operator": "=~",
+              "value": "/^$BRANCH$/"
             }
           ]
         },
@@ -507,37 +333,31 @@
             },
             {
               "params": [
-                "prodModel"
+                "model"
               ],
               "type": "tag"
-            },
-            {
-              "params": [
-                "0"
-              ],
-              "type": "fill"
             }
           ],
-          "measurement": "/^inspection.eye-*/",
+          "measurement": "/^inspection.summary-*/",
           "orderByTime": "ASC",
           "policy": "default",
-          "refId": "F",
+          "refId": "C",
           "resultFormat": "table",
           "select": [
             [
               {
                 "params": [
-                  "quantity"
+                  "tuid"
                 ],
                 "type": "field"
               },
               {
                 "params": [],
-                "type": "sum"
+                "type": "count"
               },
               {
                 "params": [
-                  "불량(불량입력기)"
+                  "불량(검사기)"
                 ],
                 "type": "alias"
               }
@@ -545,9 +365,147 @@
           ],
           "tags": [
             {
-              "key": "prodModel",
+              "key": "model",
               "operator": "=~",
               "value": "/^$MODEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "pass",
+              "operator": "=",
+              "value": "false"
+            },
+            {
+              "condition": "AND",
+              "key": "branch",
+              "operator": "=~",
+              "value": "/^$BRANCH$/"
+            }
+          ]
+        },
+        {
+          "datasource": "$DATABASE",
+          "groupBy": [
+            {
+              "params": [
+                "1d,-9h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "model"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "/^inspection.summary-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT first(\"stime\") AS \"starttime\", last(\"etime\") AS \"edtime\", count(\"tuid\") AS \"count\" FROM /^inspection.summary-*/ WHERE (\"branch\" =~ /^$BRANCH$/ AND \"model\" =~ /^$MODEL$/) AND $timeFilter GROUP BY time(1d,-9h), \"model\"",
+          "rawQuery": true,
+          "refId": "D",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "tuid"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              },
+              {
+                "params": [
+                  "불량"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "pass",
+              "operator": "=",
+              "value": "false"
+            },
+            {
+              "condition": "AND",
+              "key": "branch",
+              "operator": "=~",
+              "value": "/^$BRANCH$/"
+            }
+          ]
+        },
+        {
+          "datasource": "$DATABASE",
+          "groupBy": [
+            {
+              "params": [
+                "1d,-9h"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "model"
+              ],
+              "type": "tag"
+            }
+          ],
+          "measurement": "/^inspection.summary-*/",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"quantity\") AS \"불량(불량입력기)\" FROM /^inspection.eye-*/ WHERE (\"prodModel\" =~ /^$MODEL$/) AND $timeFilter GROUP BY time(1d,-9h), \"prodModel\" fill(0)",
+          "rawQuery": true,
+          "refId": "F",
+          "resultFormat": "table",
+          "select": [
+            [
+              {
+                "params": [
+                  "tuid"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "count"
+              },
+              {
+                "params": [
+                  "불량"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "model",
+              "operator": "=~",
+              "value": "/^$MODEL$/"
+            },
+            {
+              "condition": "AND",
+              "key": "pass",
+              "operator": "=",
+              "value": "false"
+            },
+            {
+              "condition": "AND",
+              "key": "branch",
+              "operator": "=~",
+              "value": "/^$BRANCH$/"
             }
           ]
         }
@@ -641,7 +599,7 @@
     ]
   },
   "time": {
-    "from": "now-3d",
+    "from": "now-7d",
     "to": "now"
   },
   "timepicker": {
@@ -673,5 +631,5 @@
   "timezone": "",
   "title": "생산 실적",
   "uid": "cU1lqH4mz",
-  "version": 11
+  "version": 3
 }
