@@ -467,7 +467,7 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
         map.set('sttime', row[2]);
         map.set('edtime', row[3]);
         map.set('count', row[4]);
-        tableSTMap.set(row[0], map);
+        tableSTMap.set(row[1], map);
       });
     } else {
       columns.forEach((columnObj, count) => {
