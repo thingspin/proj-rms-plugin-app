@@ -377,7 +377,7 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
             this.columnOption(obj);
             this.columns.push(obj);
           }
-          if (this.columns.map(x => x.title).indexOf('양품') === -1) {
+          else if (this.columns.map(x => x.title).indexOf('양품') === -1) {
             var obj = {
               title: '양품',
               field: '양품',
@@ -387,7 +387,7 @@ class RmsPlantPlanPanelCtrl extends MetricsPanelCtrl {
             this.columnOption(obj);
             this.columns.push(obj);
           } 
-          if (this.columns.map(x => x.title).indexOf('불량(검사기)') === -1) {
+          else if (this.columns.map(x => x.title).indexOf('불량(검사기)') === -1) {
             var obj = {
               title: '불량(검사기)',
               field: '불량(검사기)',
